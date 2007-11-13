@@ -606,8 +606,8 @@ add_menu_control( CamUnitControlWidget *self, CamUnitControl *ctl )
         GtkTreeIter iter;
         gtk_list_store_append (store, &iter);
         gtk_list_store_set (store, &iter,
-                0, ctl->menu_entries[j],
-                1, ctl->menu_entries_enabled ? ctl->menu_entries_enabled[j] : 1,
+                0, ctl->enum_entries[j],
+                1, ctl->enum_entries_enabled ? ctl->enum_entries_enabled[j] : 1,
                 -1);
     }
 
@@ -625,7 +625,7 @@ add_menu_control( CamUnitControlWidget *self, CamUnitControl *ctl )
 #if 0
     GtkWidget *mb = gtk_combo_box_new_text ();
     for (j = 0; j <= ctl->max_int; j++) {
-        gtk_combo_box_append_text (GTK_COMBO_BOX (mb), ctl->menu_entries[j]);
+        gtk_combo_box_append_text (GTK_COMBO_BOX (mb), ctl->enum_entries[j]);
     }
 #endif
 
@@ -1000,7 +1000,7 @@ cam_unit_control_widget_set_unit(
 
     // prepare the unit controls widgets
     if (self->unit) {
-        GList *controls = cam_unit_get_controls( unit );
+        GList *controls = cam_unit_list_controls( unit );
         GList *citer;
         for( citer=controls; citer; citer=citer->next ) {
             CamUnitControl *ctl = (CamUnitControl*) citer->data;
