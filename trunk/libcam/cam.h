@@ -6,7 +6,7 @@
 #include "unit_manager.h"
 #include "unit_chain.h"
 #include "filter_bayer.h"
-#include "filter_color_convert.h"
+#include "convert_colorspace.h"
 
 /**
  * SECTION:cam

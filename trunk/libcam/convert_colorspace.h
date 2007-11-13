@@ -59,25 +59,9 @@ GType cam_color_conversion_filter_get_type (void);
  * 
  * Don't call this function manually.  Instead, use the unit driver
  */
-CamColorConversionFilter * cam_color_conversion_filter_new();
+CamColorConversionFilter * cam_color_conversion_filter_new(void);
 
-CamUnitDriver * cam_color_conversion_filter_driver_new();
-
-/**
- * cam_color_conversion_filter_set_output_format:
- *
- * Use this function to programmatically restrict the output format of the
- * color conversion unit to a specific pixelformat.  If the filter is already
- * streaming or ready, then it is shutdown and re-initialized with the new
- * format.
- *
- * Note that this does not guarantee that you will definitely get images of the
- * specified pixelformat as output.  The color conversion filter will still
- * fail to initialize if it is unable to convert input frames to the requested
- * format.
- */
-void cam_color_conversion_filter_set_output_format (
-        CamColorConversionFilter *self, CamPixelFormat pixelformat);
+CamUnitDriver * cam_color_conversion_filter_driver_new(void);
 
 G_END_DECLS
 

@@ -49,9 +49,9 @@ GType cam_fast_bayer_filter_get_type (void);
  * 
  * Don't call this function manually.  Instead, use the unit driver
  */
-CamFastBayerFilter * cam_fast_bayer_filter_new();
+CamFastBayerFilter * cam_fast_bayer_filter_new (void);
 
-CamUnitDriver * cam_fast_bayer_filter_driver_new();
+CamUnitDriver * cam_fast_bayer_filter_driver_new (void);
 
 G_END_DECLS
 

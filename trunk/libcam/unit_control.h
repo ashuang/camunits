@@ -156,7 +156,7 @@ struct _CamUnitControlClass {
     GObjectClass parent_class;
 };
 
-GType cam_unit_control_get_type();
+GType cam_unit_control_get_type (void);
 
 /**
  * cam_unit_control_set_callback:

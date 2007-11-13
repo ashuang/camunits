@@ -186,7 +186,7 @@ struct _CamUnitClass {
             const GValue *proposed, GValue *actual);
 };
 
-GType cam_unit_get_type();
+GType cam_unit_get_type(void);
 
 // ======== CamUnit public methods =============
 

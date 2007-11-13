@@ -64,7 +64,7 @@ GType cam_unit_chain_get_type (void);
 /**
  * constructor.  create a new chain with a new unit manager
  */
-CamUnitChain * cam_unit_chain_new ();
+CamUnitChain * cam_unit_chain_new (void);
 
 /**
  * cam_unit_chain_new_with_manager:

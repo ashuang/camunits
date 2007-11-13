@@ -47,7 +47,7 @@ GType cam_input_example_driver_get_type (void);
 /**
  * Constructor
  */
-CamInputExampleDriver * cam_input_example_driver_new();
+CamInputExampleDriver * cam_input_example_driver_new(void);
 
 
 // =========================================================================
@@ -92,7 +92,7 @@ GType cam_input_example_get_type (void);
  * don't call this function manually.  Instead, let the CamInputExampleDriver
  * call it.
  */
-CamInputExample * cam_input_example_new();
+CamInputExample * cam_input_example_new(void);
 
 enum {
     CAM_INPUT_EXAMPLE_CONTROL_ENUM,

@@ -3,13 +3,14 @@
 #include <string.h>
 
 #include "unit_manager.h"
+#include "plugin.h"
 
 #include "input_example.h"
+#include "input_log.h"
 #include "filter_gl.h"
 #include "filter_fast_bayer.h"
-#include "filter_color_convert.h"
+#include "convert_colorspace.h"
 #include "filter_jpeg.h"
-#include "plugin.h"
 
 #ifdef USE_V4L2
 #include "input_v4l2.h"
@@ -293,6 +294,10 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     CamUnitDriver *input_example_driver = 
         CAM_UNIT_DRIVER (cam_input_example_driver_new ());
     cam_unit_manager_add_driver (self, input_example_driver);
+
+    CamUnitDriver *input_log_driver = 
+        CAM_UNIT_DRIVER (cam_input_log_driver_new ());
+    cam_unit_manager_add_driver (self, input_log_driver);
 
 #ifdef USE_V4L2
     CamUnitDriver *v4l2_driver = cam_v4l2_driver_new ();
