@@ -37,8 +37,8 @@ cam_unit_control_init (CamUnitControl *self)
     self->min_int = 0;
     self->step_int = 0;
 
-    self->menu_entries = NULL;
-    self->menu_entries_enabled = NULL;
+    self->enum_entries = NULL;
+    self->enum_entries_enabled = NULL;
 
     memset (&self->val, 0, sizeof (self->val));
     memset (&self->initial_val, 0, sizeof (self->initial_val));
@@ -95,14 +95,14 @@ cam_unit_control_finalize (GObject *obj)
 
     free (self->name);
     free (self->id);
-    if (self->menu_entries) {
+    if (self->enum_entries) {
         int i;
         for (i=0; i <= self->max_int; i++) {
-            free (self->menu_entries[i]);
+            free (self->enum_entries[i]);
         }
     }
-    free (self->menu_entries);
-    free (self->menu_entries_enabled);
+    free (self->enum_entries);
+    free (self->enum_entries_enabled);
 
     g_value_unset (&self->val);
     g_value_unset (&self->initial_val);
@@ -124,7 +124,7 @@ cam_unit_control_new_basic (const char *id, const char *name,
 }
 
 CamUnitControl * 
-cam_unit_control_new_menu (const char *id,
+cam_unit_control_new_enum (const char *id,
         const char *name, int initial_index, int enabled,
         const char **entries, const int * entries_enabled)
 {
@@ -135,14 +135,14 @@ cam_unit_control_new_menu (const char *id,
     for (nentries = 0; entries[nentries]; nentries++);
     self->max_int = nentries - 1;
     self->min_int = 0;
-    self->menu_entries = (char**) malloc ((self->max_int+1)*sizeof (char*));
+    self->enum_entries = (char**) malloc ((self->max_int+1)*sizeof (char*));
     int i;
     for (i=0; i<=self->max_int; i++) {
-        self->menu_entries[i] = strdup (entries[i]);
+        self->enum_entries[i] = strdup (entries[i]);
     }
     if (entries_enabled) {
-        self->menu_entries_enabled = (int*) malloc (nentries*sizeof (int));
-        memcpy (self->menu_entries_enabled, entries_enabled,
+        self->enum_entries_enabled = (int*) malloc (nentries*sizeof (int));
+        memcpy (self->enum_entries_enabled, entries_enabled,
                 nentries * sizeof (int));
     }
     g_value_init (&self->val, G_TYPE_INT);
@@ -154,27 +154,27 @@ cam_unit_control_new_menu (const char *id,
 }
 
 void
-cam_unit_control_modify_menu (CamUnitControl * self,
+cam_unit_control_modify_enum (CamUnitControl * self,
         int enabled, const char ** entries, const int * entries_enabled)
 {
     int i;
     for (i = 0; i <= self->max_int; i++)
-        free (self->menu_entries[i]);
-    free (self->menu_entries);
-    free (self->menu_entries_enabled);
-    self->menu_entries_enabled = NULL;
+        free (self->enum_entries[i]);
+    free (self->enum_entries);
+    free (self->enum_entries_enabled);
+    self->enum_entries_enabled = NULL;
 
     int nentries;
     for (nentries = 0; entries[nentries]; nentries++);
     self->max_int = nentries - 1;
     self->min_int = 0;
-    self->menu_entries = (char**) malloc ((self->max_int+1)*sizeof (char*));
+    self->enum_entries = (char**) malloc ((self->max_int+1)*sizeof (char*));
     for (i=0; i<=self->max_int; i++) {
-        self->menu_entries[i] = strdup (entries[i]);
+        self->enum_entries[i] = strdup (entries[i]);
     }
     if (entries_enabled) {
-        self->menu_entries_enabled = (int*) malloc (nentries*sizeof (int));
-        memcpy (self->menu_entries_enabled, entries_enabled,
+        self->enum_entries_enabled = (int*) malloc (nentries*sizeof (int));
+        memcpy (self->enum_entries_enabled, entries_enabled,
                 nentries * sizeof (int));
     }
     self->enabled = enabled;
