@@ -11,7 +11,7 @@ extern "C" {
  * Adds an event handler to the GTK mainloop that calls gtk_main_quit() when 
  * SIGINT, SIGTERM, or SIGHUP are received
  */
-int camview_gtk_quit_on_interrupt();
+int camview_gtk_quit_on_interrupt (void);
 
 #ifdef __cplusplus
 }
