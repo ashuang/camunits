@@ -767,7 +767,7 @@ update_video_standards (CamUnit * super, int modify)
     std_descs[i] = NULL;
     g_object_set_data (G_OBJECT (ctl), "v4l2-stds", stds);
     if (modify)
-        cam_unit_control_modify_menu (ctl, 1, (const char **) std_descs, NULL);
+        cam_unit_control_modify_enum (ctl, 1, (const char **) std_descs, NULL);
     int j;
     for (j = 0; j < i; j++)
         free (std_descs[j]);

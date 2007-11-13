@@ -18,7 +18,7 @@ extern "C" {
  * Typically, a #CamUnit will have a few of these controls that allow the user
  * to interact with the unit.  A control is strongly typed on construction, and
  * the following types of controls are currently supported:  Integer, Boolean,
- * Menu (enum), String.  The current value of a control can be queried using
+ * Enum, String.  The current value of a control can be queried using
  * the cam_unit_control_get_* methods.  There are two ways to possibly set the
  * value of a control - the polite way, and the forceful way.
  *
@@ -134,8 +134,8 @@ struct _CamUnitControl {
     CamUnitControlCallback try_set_function;
     void *user_data;
 
-    char **menu_entries;
-    int * menu_entries_enabled;
+    char **enum_entries;
+    int * enum_entries_enabled;
     int max_int;
     int min_int;
     int step_int;
@@ -174,7 +174,7 @@ void cam_unit_control_set_callback (CamUnitControl *self,
         CamUnitControlCallback callback, void *user_data);
 
 /**
- * cam_unit_control_new_menu:
+ * cam_unit_control_new_enum:
  * @id: a numerical identifier for the control.
  * @name: a nickname / human-understandable-name for the control.
  * @initial_index: the initial value for the control.
@@ -185,9 +185,9 @@ void cam_unit_control_set_callback (CamUnitControl *self,
  *           in @entries should be enabled.  1 indicates enabled, and 0
  *           disabled.  Specify NULL to implicitly enable all entries.
  *
- * Returns: a new menu control.
+ * Returns: a new enum control.
  */
-CamUnitControl * cam_unit_control_new_menu (const char *id, const char *name, 
+CamUnitControl * cam_unit_control_new_enum (const char *id, const char *name, 
         int initial_index, int enabled, const char **entries,
         const int * entries_enabled);
 
@@ -249,7 +249,7 @@ void cam_unit_control_modify_int (CamUnitControl * self,
         int min, int max, int step, int enabled);
 void cam_unit_control_modify_float (CamUnitControl * self,
         float min, float max, float step, int enabled);
-void cam_unit_control_modify_menu (CamUnitControl * self,
+void cam_unit_control_modify_enum (CamUnitControl * self,
         int enabled, const char ** entries, const int * entries_enabled);
 
 int cam_unit_control_try_set_val (CamUnitControl *self, const GValue *val);
