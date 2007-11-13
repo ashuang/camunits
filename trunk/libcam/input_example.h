@@ -75,6 +75,11 @@ typedef struct _CamInputExampleClass CamInputExampleClass;
 struct _CamInputExample {
     CamUnit parent;
 
+    CamUnitControl *enum_ctl;
+    CamUnitControl *bool_ctl;
+    CamUnitControl *int1_ctl;
+    CamUnitControl *int2_ctl;
+
     int64_t next_frame_time;
     int cur_row;
 
@@ -93,15 +98,6 @@ GType cam_input_example_get_type (void);
  * call it.
  */
 CamInputExample * cam_input_example_new(void);
-
-enum {
-    CAM_INPUT_EXAMPLE_CONTROL_ENUM,
-    CAM_INPUT_EXAMPLE_CONTROL_BOOLEAN,
-    CAM_INPUT_EXAMPLE_CONTROL_INT,
-    CAM_INPUT_EXAMPLE_CONTROL_INT2,
-    CAM_INPUT_EXAMPLE_CONTROL_STRING,
-    CAM_INPUT_EXAMPLE_CONTROL_DOUBLE
-};
 
 G_END_DECLS
 

@@ -70,7 +70,7 @@ cam_filter_jpeg_init (CamFilterJpeg *self)
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
 
-    self->quality_control = cam_unit_add_control_int (super, 0, 
+    self->quality_control = cam_unit_add_control_int (super, "quality", 
             "Quality", 1, 100, 1, 94, 1);
     g_signal_connect (G_OBJECT(self), "input-format-changed",
             G_CALLBACK(on_input_format_changed), NULL);

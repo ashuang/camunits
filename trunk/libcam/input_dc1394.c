@@ -35,6 +35,7 @@
 
 #define VENDOR_ID_POINT_GREY 0xb09d
 
+
 #define err(args...) fprintf (stderr, args)
 
 static CamUnit * driver_create_unit (CamUnitDriver * super,
@@ -724,6 +725,31 @@ static const char * trigger_mode_desc[] = {
 };
 #define NUM_TRIGGER_MODES 9
 
+static const char * feature_ids[] = {
+    "brightness",
+    "exposure",
+    "sharpness",
+    "white-balance",
+    "hue",
+    "saturation",
+    "gamma",
+    "shutter",
+    "gain",
+    "iris",
+    "focus",
+    "temperature",
+    "trigger",
+    "trigger-delay",
+    "white-shading",
+    "frame-rate",
+    "zoom",
+    "pan",
+    "tilt",
+    "optical-filter",
+    "capture-size",
+    "capture-quality",
+};
+
 static const char * feature_desc[] = {
     "Brightness",
     "Exposure",
@@ -789,7 +815,7 @@ add_all_camera_controls (CamUnit * super)
     if (reread)
         dc1394_get_camera_feature_set (self->cam, &features);
 
-    cam_unit_add_control_int (super, CAM_DC1394_CNTL_PACKET_SIZE,
+    cam_unit_add_control_int (super, "packet-size",
             "Packet Size", 1, 4192, 1, 4192, 1);
 
     for (i = 0; i < DC1394_FEATURE_NUM; i++) {
@@ -828,7 +854,8 @@ add_all_camera_controls (CamUnit * super)
                 if (f->is_on == DC1394_OFF)
                     cur_val = 0;
             }
-            cam_unit_add_control_enum (super, f->id, "Trigger", cur_val, 1,
+            cam_unit_add_control_enum (super, "trigger", "Trigger", 
+                    cur_val, 1,
                     trigger_mode_desc, entries_enabled);
 
             int aux_enabled = 0;
@@ -838,7 +865,7 @@ add_all_camera_controls (CamUnit * super)
             /* Add trigger polarity selection */
             if (f->polarity_capable)
                 cam_unit_add_control_boolean (super,
-                        CAM_DC1394_CNTL_TRIGGER_POLARITY, "Polarity",
+                        "polarity", "Polarity",
                         f->trigger_polarity, aux_enabled);
 
             /* Add trigger source selection */
@@ -850,14 +877,14 @@ add_all_camera_controls (CamUnit * super)
                 if (f->trigger_source == source)
                     cur_val = source - DC1394_TRIGGER_SOURCE_MIN;
             }
-            cam_unit_add_control_enum (super, CAM_DC1394_CNTL_TRIGGER_SOURCE,
+            cam_unit_add_control_enum (super, "trigger-source",
                     "Source", cur_val, aux_enabled, trigger_source_desc,
                     sources_enabled);
 
             /* Add one-shot software trigger */
             if (sources_enabled[CAM_DC1394_TRIGGER_SOURCE_SOFTWARE]) {
                 CamUnitControl * ctl = cam_unit_add_control_boolean (super,
-                        CAM_DC1394_CNTL_TRIGGER_NOW, "Trigger",
+                        "trigger-now", "Trigger",
                         0, aux_enabled);
                 cam_unit_control_set_ui_hints(ctl, CAM_UNIT_CONTROL_ONE_SHOT);
             }
@@ -893,9 +920,14 @@ add_all_camera_controls (CamUnit * super)
             else if (f->is_on)
                 cur_val = CAM_DC1394_MENU_MANUAL;
 
-            cam_unit_add_control_enum (super, CAM_DC1394_CNTL_FLAG_STATE | f->id,
+            char *ctl_id = g_strdup_printf ("%s-mode", feature_ids[i]);
+
+            cam_unit_add_control_enum (super, 
+                    ctl_id,
+//                    CAM_DC1394_CNTL_FLAG_STATE | f->id,
                     (char *) feature_desc[i], cur_val, 1,
                     feature_state_desc, entries_enabled);
+            free (ctl_id);
         }
 
         int enabled = (f->is_on && !f->auto_active) ||
@@ -907,10 +939,10 @@ add_all_camera_controls (CamUnit * super)
         }
 
         if (f->id == DC1394_FEATURE_WHITE_BALANCE) {
-            cam_unit_add_control_int (super, f->id,
+            cam_unit_add_control_int (super, "white-balance-red",
                     "W.B. Red", f->min, f->max, 1, f->RV_value,
                     enabled);
-            cam_unit_add_control_int (super, f->id | CAM_DC1394_CNTL_FLAG_ALT,
+            cam_unit_add_control_int (super, "white-balance-blue",
                     "W.B. Blue", f->min, f->max, 1, f->BU_value,
                     enabled);
             continue;
@@ -918,29 +950,31 @@ add_all_camera_controls (CamUnit * super)
 
         if (f->absolute_capable && f->abs_control) {
             if (f->abs_max <= f->abs_min) {
-                fprintf (stderr, "Disabling control \"%s\" because min >= max\n",
+                fprintf (stderr, 
+                        "Disabling control \"%s\" because min >= max\n",
                         feature_desc[i]);
-                cam_unit_add_control_float (super, f->id,
+                cam_unit_add_control_float (super, feature_ids[i],
                         (char *) feature_desc[i], 0, 1,
                         1, 0, 0);
                 continue;
             }
-            cam_unit_add_control_float (super, f->id,
+            cam_unit_add_control_float (super, feature_ids[i],
                     (char *) feature_desc[i], f->abs_min,
                     f->abs_max, (f->abs_max - f->abs_min) / NUM_FLOAT_STEPS,
                     f->abs_value, enabled);
         }
         else {
             if (f->max <= f->min) {
-                fprintf (stderr, "Disabling control \"%s\" because min >= max\n",
+                fprintf (stderr, 
+                        "Disabling control \"%s\" because min >= max\n",
                         feature_desc[i]);
-                cam_unit_add_control_int (super, f->id,
+                cam_unit_add_control_int (super, feature_ids[i],
                         (char *) feature_desc[i], 0, 1,
                         1, 0, 0);
                 continue;
             }
 
-            cam_unit_add_control_int (super, f->id,
+            cam_unit_add_control_int (super, feature_ids[i],
                     (char *) feature_desc[i], f->min, f->max,
                     1, f->value, enabled);
         }

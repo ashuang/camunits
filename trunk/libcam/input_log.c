@@ -188,21 +188,18 @@ cam_log_set_file (CamInputLog *self, const char *fname)
 
     self->nframes = cam_log_count_frames (self->camlog);
     self->frame_ctl = cam_unit_add_control_int (super,
-            CAM_INPUT_LOG_CONTROL_FRAME_ID,
-            "frame", 0, self->nframes-1, 1, 0, 1);
+            "frame", "Frame", 0, self->nframes-1, 1, 0, 1);
     self->pause_ctl = cam_unit_add_control_boolean (super,
-            CAM_INPUT_LOG_CONTROL_PAUSE_ID, "pause", 0, 1);
+            "pause", "Pause", 0, 1);
 
     const char *adv_mode_options[] = { "Soft", "Hard", NULL };
     int adv_mode_options_enabled[] = { 1, 0, 0 };
 
     self->adv_mode_ctl = cam_unit_add_control_enum (super,
-            CAM_INPUT_LOG_CONTROL_ADVANCE_MODE_ID,
-            "mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
+            "mode", "Mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
 
     self->adv_speed_ctl = cam_unit_add_control_float (super,
-            CAM_INPUT_LOG_CONTROL_ADVANCE_SPEED_ID,
-            "speed", 0.1, 20, 0.1, 1, 0);
+            "speed", "Speed", 0.1, 20, 0.1, 1, 0);
 
     return 0;
 }

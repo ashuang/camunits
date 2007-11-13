@@ -46,8 +46,8 @@ cam_bayer_filter_init( CamBayerFilter *self )
         NULL,
     };
     self->bayer_method_ctl =
-        cam_unit_add_control_enum( super, 0, "Method", 0, 1, bayer_methods,
-                NULL);
+        cam_unit_add_control_enum (super, "method", "Method", 
+                0, 1, bayer_methods, NULL);
 
     // WARNING.  do not change these without also changing the enum
     // in filter_bayer.h
@@ -59,8 +59,8 @@ cam_bayer_filter_init( CamBayerFilter *self )
         NULL,
     };
     self->bayer_tile_ctl =
-        cam_unit_add_control_enum( super, 1, "Tiling", 0, 1, bayer_tiles,
-                NULL);
+        cam_unit_add_control_enum (super, "tiling", "Tiling", 
+                0, 1, bayer_tiles, NULL);
 
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
