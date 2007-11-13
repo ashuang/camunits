@@ -90,7 +90,7 @@ struct _CamUnitDescriptionClass {
     GInitiallyUnownedClass parent_class;
 };
 
-GType cam_unit_description_get_type ();
+GType cam_unit_description_get_type (void);
 
 /**
  * cam_unit_description_new:
@@ -146,7 +146,7 @@ struct _CamUnitDriverClass {
             const CamUnitDescription *udesc);
 };
 
-GType cam_unit_driver_get_type ();
+GType cam_unit_driver_get_type (void);
 
 /**
  * cam_unit_driver_new_stock:

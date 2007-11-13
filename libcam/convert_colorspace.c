@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "filter_color_convert.h"
+#include "convert_colorspace.h"
 #include "dbg.h"
 
 #define err(args...) fprintf(stderr, args)
@@ -230,6 +230,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     update_output_formats (CAM_COLOR_CONVERSION_FILTER (super), infmt);
 }
 
+#if 0
 void
 cam_color_conversion_filter_set_output_format (CamColorConversionFilter *self,
         CamPixelFormat pixelformat)
@@ -267,3 +268,4 @@ cam_color_conversion_filter_set_output_format (CamColorConversionFilter *self,
             break;
     }
 }
+#endif

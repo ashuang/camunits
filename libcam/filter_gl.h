@@ -61,7 +61,7 @@ GType cam_filter_gl_get_type (void);
  *
  * Returns: a newly created CamFilterGL
  */
-CamFilterGL * cam_filter_gl_new();
+CamFilterGL * cam_filter_gl_new (void);
 
 /**
  * cam_filter_gl_driver_new:
@@ -72,7 +72,7 @@ CamFilterGL * cam_filter_gl_new();
  *
  * Returns: a newly created CamUnitDriver
  */
-CamUnitDriver * cam_filter_gl_driver_new();
+CamUnitDriver * cam_filter_gl_driver_new (void);
 
 G_END_DECLS
 

@@ -51,9 +51,9 @@ GType cam_filter_jpeg_get_type (void);
  * 
  * Don't call this function manually.  Instead, use the unit driver
  */
-CamFilterJpeg * cam_filter_jpeg_new();
+CamFilterJpeg * cam_filter_jpeg_new (void);
 
-CamUnitDriver * cam_filter_jpeg_driver_new();
+CamUnitDriver * cam_filter_jpeg_driver_new (void);
 
 G_END_DECLS
 

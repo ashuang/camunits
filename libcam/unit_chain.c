@@ -203,7 +203,7 @@ cam_unit_chain_finalize (GObject *obj)
 }
 
 CamUnitChain *
-cam_unit_chain_new ()
+cam_unit_chain_new (void)
 {
     CamUnitChain *self = 
         CAM_UNIT_CHAIN (g_object_new (CAM_TYPE_UNIT_CHAIN, NULL));

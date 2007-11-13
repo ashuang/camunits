@@ -1,6 +1,8 @@
 
 #include	<glib-object.h>
 
+#include "libcam-gmarshal.h"
+
 
 #ifdef G_ENABLE_DEBUG
 #define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)

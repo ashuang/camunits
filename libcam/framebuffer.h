@@ -66,7 +66,7 @@ struct _CamFrameBufferClass {
     GObjectClass parent;
 };
 
-GType cam_framebuffer_get_type();
+GType cam_framebuffer_get_type (void);
 
 /**
  * cam_framebuffer_new:
