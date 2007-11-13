@@ -96,7 +96,7 @@ on_unit_description_activated (CamUnitManagerWidget *mw,
 
 // ========== administrative methods (construction, destruction) ==========
 
-void
+static void
 setup_gtk (state_t *self)
 {
     self->window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
@@ -189,7 +189,7 @@ setup_gtk (state_t *self)
     gtk_widget_show_all (GTK_WIDGET (self->window));
 }
 
-int
+static int
 state_setup (state_t *self)
 {
     // create the image processing chain
@@ -210,7 +210,7 @@ state_setup (state_t *self)
     return 0;
 }
 
-int 
+static int 
 state_cleanup (state_t *self)
 {
     // halt and destroy chain
@@ -222,7 +222,7 @@ state_cleanup (state_t *self)
     return 0;
 }
 
-void 
+static void 
 usage (const char *progname)
 {
     fprintf (stderr, "usage: %s\n", progname);
