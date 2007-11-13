@@ -333,7 +333,7 @@ int cam_unit_get_fileno(CamUnit *self);
 int64_t cam_unit_get_next_event_time(CamUnit *self);
 
 /**
- * cam_unit_get_controls:
+ * cam_unit_list_controls:
  *
  * Retrieves the user controls available for this unit.  The list should be
  * released with g_list_free after usage.  Do not modify the objects in the
@@ -341,25 +341,124 @@ int64_t cam_unit_get_next_event_time(CamUnit *self);
  *
  * Returns: a GList of CamUnitControl objects.
  */
-GList * cam_unit_get_controls(CamUnit * self);
+GList * cam_unit_list_controls(CamUnit * self);
 
 /**
  * cam_unit_find_control:
  *
- * Searches for the CamUnitControl with the specified name.
+ * Searches for the CamUnitControl with the specified id.
  *
  * Returns: a pointer to the CamUnitControl, or NULL if not found.
  */
-CamUnitControl* cam_unit_find_control (CamUnit *self, const char *name);
+CamUnitControl* cam_unit_find_control (CamUnit *self, const char *id);
 
 /**
- * cam_unit_get_control_by_id:
+ * cam_unit_set_control_int:
  *
- * Looks up a control that belongs to this unit according to its unique id.
+ * Convenience function to set a control
  *
- * Returns: Pointer to the control, or NULL if not found.
+ * Returns: TRUE if the control was successfully set to the requested value,
+ *          FALSE if not.
  */
-CamUnitControl * cam_unit_get_control_by_id (CamUnit * self, int id);
+gboolean cam_unit_set_control_int (CamUnit *self, const char *id, int val);
+
+/**
+ * cam_unit_set_control_float:
+ *
+ * Convenience function to set a control
+ *
+ * Returns: TRUE if the control was successfully set to the requested value,
+ *          FALSE if not.
+ */
+gboolean cam_unit_set_control_float (CamUnit *self, const char *id, float val);
+
+/**
+ * cam_unit_set_control_enum:
+ *
+ * Convenience function to set a control
+ *
+ * Returns: TRUE if the control was successfully set to the requested value,
+ *          FALSE if not.
+ */
+gboolean cam_unit_set_control_enum (CamUnit *self, const char *id, int index);
+
+/**
+ * cam_unit_set_control_boolean:
+ *
+ * Convenience function to set a control
+ *
+ * Returns: TRUE if the control was successfully set to the requested value,
+ *          FALSE if not.
+ */
+gboolean cam_unit_set_control_boolean (CamUnit *self, const char *id, int val);
+
+/**
+ * cam_unit_set_control_string:
+ *
+ * Convenience function to set a control
+ *
+ * Returns: TRUE if the control was successfully set to the requested value,
+ *          FALSE if not.
+ */
+gboolean cam_unit_set_control_string (CamUnit *self, const char *id, 
+        const char *val);
+
+/**
+ * cam_unit_get_control_int:
+ * @val: output parameter
+ *
+ * Convenience function to retrieve the value of a control.
+ *
+ * Returns: TRUE if the value of the value of the control was successfully read,
+ *          FALSE if not
+ */
+gboolean cam_unit_get_control_int (CamUnit *self, const char *id, int *val);
+
+/**
+ * cam_unit_get_control_float:
+ * @val: output parameter
+ *
+ * Convenience function to retrieve the value of a control.
+ *
+ * Returns: TRUE if the value of the value of the control was successfully read,
+ *          FALSE if not
+ */
+gboolean cam_unit_get_control_float (CamUnit *self, const char *id, float *val);
+
+/**
+ * cam_unit_get_control_enum:
+ * @val: output parameter
+ *
+ * Convenience function to retrieve the value of a control.
+ *
+ * Returns: TRUE if the value of the value of the control was successfully read,
+ *          FALSE if not
+ */
+gboolean cam_unit_get_control_enum (CamUnit *self, const char *id, int *val);
+
+/**
+ * cam_unit_get_control_boolean:
+ * @val: output parameter
+ *
+ * Convenience function to retrieve the value of a control.
+ *
+ * Returns: TRUE if the value of the value of the control was successfully read,
+ *          FALSE if not
+ */
+gboolean cam_unit_get_control_boolean (CamUnit *self, const char *id, int *val);
+
+/**
+ * cam_unit_get_control_string:
+ * @val: output parameter.  On a successful return, this points to a newly
+ *       allocated string, and must be freed by the user when no longer needed.
+ *
+ * Convenience function to retrieve the value of a control.
+ *
+ * Returns: TRUE if the value of the value of the control was successfully read,
+ *          FALSE if not
+ */
+gboolean cam_unit_get_control_string (CamUnit *self, const char *id, 
+        char **val);
 
 /**
  * cam_unit_draw_gl_init:
@@ -405,7 +504,7 @@ void cam_unit_set_id (CamUnit *self, const char *unit_id);
  *
  * protected method.
  */
-CamUnitControl* cam_unit_add_control_enum (CamUnit *self, int id,
+CamUnitControl* cam_unit_add_control_enum (CamUnit *self, const char *id,
         const char *name, int default_index, int enabled,
         const char **entries, const int * entries_enabled);
 /**
@@ -413,7 +512,7 @@ CamUnitControl* cam_unit_add_control_enum (CamUnit *self, int id,
  *
  * protected method.
  */
-CamUnitControl* cam_unit_add_control_int (CamUnit *self, int id,
+CamUnitControl* cam_unit_add_control_int (CamUnit *self, const char *id,
         const char *name, int min, int max, int step, int default_val,
         int enabled);
 
@@ -422,7 +521,7 @@ CamUnitControl* cam_unit_add_control_int (CamUnit *self, int id,
  *
  * protected method.
  */
-CamUnitControl*  cam_unit_add_control_float (CamUnit *self, int id,
+CamUnitControl*  cam_unit_add_control_float (CamUnit *self, const char *id,
         const char *name, float min, float max, float step, float default_val,
         int enabled);
 /**
@@ -430,14 +529,14 @@ CamUnitControl*  cam_unit_add_control_float (CamUnit *self, int id,
  *
  * protected method.
  */
-CamUnitControl* cam_unit_add_control_boolean (CamUnit *self, int id,
+CamUnitControl* cam_unit_add_control_boolean (CamUnit *self, const char *id,
         const char *name, int default_val, int enabled);
 /**
  * cam_unit_add_control_string:
  *
  * protected method.
  */
-CamUnitControl* cam_unit_add_control_string (CamUnit *self, int id,
+CamUnitControl* cam_unit_add_control_string (CamUnit *self, const char *id,
         const char *name, const char *default_val, int enabled);
 
 /**
@@ -485,18 +584,6 @@ void cam_unit_produce_frame (CamUnit *self,
         const CamFrameBuffer *buffer, const CamUnitFormat *fmt);
 
 // ================== utility functions ==================
-
-/**
- * cam_unit_id_to_driver_and_id:
- *
- * convenience function to split a unit_id into a driver portion and an ID
- * portion
- *
- * Returns an NULL-terminated array of string pointers, which should have
- * exactly three entries (driver, id, NULL), and should be freed with
- * g_strfreev
- */
-char ** cam_unit_id_to_driver_and_id (const char *unit_id);
 
 const char *cam_unit_status_to_str (CamUnitStatus status);
 

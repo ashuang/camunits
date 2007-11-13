@@ -134,17 +134,14 @@ cam_input_example_init (CamInputExample *self)
     self->fps = fps_numer_options[0];
 
     const char *menu_options[] = { "1", "5", "15", "30", NULL };
-    cam_unit_add_control_enum (super, CAM_INPUT_EXAMPLE_CONTROL_ENUM, 
-            "menu",
+    self->enum_ctl = cam_unit_add_control_enum (super, "enum", "menu",
             0, 1, menu_options, NULL);
-
-    cam_unit_add_control_boolean (super, CAM_INPUT_EXAMPLE_CONTROL_BOOLEAN,
-            "bool", 0, 1);
-
-    cam_unit_add_control_int (super, CAM_INPUT_EXAMPLE_CONTROL_INT,
-            "int 1", 0, 100, 2, 50, 1);
-    cam_unit_add_control_int (super, CAM_INPUT_EXAMPLE_CONTROL_INT2,
-            "int 2", 10, 20, 1, 15, 0);
+    self->bool_ctl = cam_unit_add_control_boolean (super, "boolean", "bool", 
+            0, 1);
+    self->int1_ctl = cam_unit_add_control_int (super, "int1", "int 1", 
+            0, 100, 2, 50, 1);
+    self->int2_ctl = cam_unit_add_control_int (super, "int2", "int 2", 
+            10, 20, 1, 15, 0);
 
     cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB, 
             "640x480 RGB", 640, 480, 640*3, 640*480*3);
@@ -226,7 +223,7 @@ cam_example_try_set_control(CamUnit *super,
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual)
 {
     CamInputExample *self = CAM_INPUT_EXAMPLE (super);
-    if (ctl->id == CAM_INPUT_EXAMPLE_CONTROL_ENUM) {
+    if (ctl == self->enum_ctl) {
         self->fps = fps_numer_options[ g_value_get_int(proposed) ];
         self->next_frame_time = _timestamp_now();
     }

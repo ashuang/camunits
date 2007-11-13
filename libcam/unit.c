@@ -59,10 +59,10 @@ cam_unit_init (CamUnit *self)
 
     // create a hash table for the controls that automatically frees the 
     // memory used by a value when the value is removed
-    self->controls = g_hash_table_new_full (g_int_hash, g_int_equal, NULL, 
-           (GDestroyNotify) cam_unit_control_unref);
+    self->controls = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, 
+           (GDestroyNotify) g_object_unref);
     // also keep a strictly ordered linked list around.  This is mostly so that
-    // when get_controls is called, the result is a list with controls listed
+    // when list_controls is called, the result is a list with controls listed
     // in the order that they were added.
     self->controls_list = NULL;
 
@@ -251,7 +251,7 @@ uint32_t
 cam_unit_get_flags (const CamUnit *self) { return self->flags; }
 
 GList * 
-cam_unit_get_controls(CamUnit * self)
+cam_unit_list_controls(CamUnit * self)
 { return g_list_copy (self->controls_list); }
 
 const CamUnitFormat* 
@@ -579,12 +579,6 @@ on_control_parameters_changed (CamUnitControl *ctl, CamUnit *self)
             cam_unit_signals[CONTROL_PARAMETERS_CHANGED_SIGNAL], 0, ctl);
 }
 
-CamUnitControl *
-cam_unit_get_control_by_id (CamUnit * self, int id)
-{
-    return (CamUnitControl *) g_hash_table_lookup (self->controls, &id);
-}
-
 static CamUnitControl*
 try_add_control (CamUnit *self, CamUnitControl *new_ctl)
 {
@@ -592,11 +586,11 @@ try_add_control (CamUnit *self, CamUnitControl *new_ctl)
         dbg (DBG_UNIT, "failed to create new control\n");
         return NULL;
     }
-    CamUnitControl *oldctl = cam_unit_get_control_by_id (self, new_ctl->id);
+    CamUnitControl *oldctl = cam_unit_find_control (self, new_ctl->name);
     if (oldctl) {
         err("WARNING:  Refusing to replace existing control [%s]\n"
-            "          with new control [%s] that has same ID (%d)\n",
-            oldctl->name, new_ctl->name, new_ctl->id);
+            "          with new control [%s]\n",
+            oldctl->name, new_ctl->name);
         g_object_unref (new_ctl);
         return NULL;
     }
@@ -612,7 +606,7 @@ try_add_control (CamUnit *self, CamUnitControl *new_ctl)
 }
 
 CamUnitControl*
-cam_unit_add_control_enum (CamUnit *self, int id, const char *name, 
+cam_unit_add_control_enum (CamUnit *self, const char *id, const char *name, 
         int default_index, int enabled,
         const char **menu_entries, const int * entries_enabled)
 {
@@ -621,7 +615,7 @@ cam_unit_add_control_enum (CamUnit *self, int id, const char *name,
     return try_add_control (self, ctl);
 }
 CamUnitControl* 
-cam_unit_add_control_int (CamUnit *self, int id,
+cam_unit_add_control_int (CamUnit *self, const char *id,
         const char *name, int min, int max, int step, int default_val,
         int enabled)
 {
@@ -630,7 +624,7 @@ cam_unit_add_control_int (CamUnit *self, int id,
     return try_add_control (self, ctl);
 }
 CamUnitControl* 
-cam_unit_add_control_float (CamUnit *self, int id,
+cam_unit_add_control_float (CamUnit *self, const char *id,
         const char *name, float min, float max, float step, float default_val,
         int enabled)
 {
@@ -639,7 +633,7 @@ cam_unit_add_control_float (CamUnit *self, int id,
     return try_add_control (self, ctl);
 }
 CamUnitControl* 
-cam_unit_add_control_boolean (CamUnit *self, int id,
+cam_unit_add_control_boolean (CamUnit *self, const char *id,
         const char *name, int default_val, int enabled)
 {
     CamUnitControl *ctl = cam_unit_control_new_boolean (id, name,
@@ -647,7 +641,7 @@ cam_unit_add_control_boolean (CamUnit *self, int id,
     return try_add_control (self, ctl);
 }
 CamUnitControl*
-cam_unit_add_control_string (CamUnit *self, int id,
+cam_unit_add_control_string (CamUnit *self, const char *id,
         const char *name, const char * default_val, int enabled)
 {
     CamUnitControl *ctl = cam_unit_control_new_string (id, name,
@@ -656,13 +650,53 @@ cam_unit_add_control_string (CamUnit *self, int id,
 }
 
 CamUnitControl* 
-cam_unit_find_control (CamUnit *self, const char *name)
+cam_unit_find_control (CamUnit *self, const char *id)
 {
-    for (GList *citer = self->controls_list; citer; citer=citer->next) {
-        CamUnitControl *ctl = CAM_UNIT_CONTROL (citer->data);
-        if (!strcmp (ctl->name, name)) return ctl;
-    }
-    return NULL;
+    return g_hash_table_lookup (self->controls, id);
+}
+
+#define DEFINE_SET_CONTROL_FUNC(type,arg) \
+gboolean \
+cam_unit_set_control_##type (CamUnit *self, const char *id, arg val)\
+{\
+    CamUnitControl *ctl = cam_unit_find_control (self, id);\
+    if (!ctl) return FALSE;\
+    return cam_unit_control_try_set_##type (ctl, val);\
+}
+
+DEFINE_SET_CONTROL_FUNC (int, int)
+DEFINE_SET_CONTROL_FUNC (float, float)
+DEFINE_SET_CONTROL_FUNC (enum, int)
+DEFINE_SET_CONTROL_FUNC (boolean, int)
+DEFINE_SET_CONTROL_FUNC (string, const char *)
+
+#undef DEFINE_SET_CONTROL_FUNC
+
+#define DEFINE_GET_CONTROL_FUNC(type,arg) \
+gboolean \
+cam_unit_get_control_##type (CamUnit *self, const char *id, arg *val) \
+{ \
+    CamUnitControl *ctl = cam_unit_find_control (self, id); \
+    if (!ctl) return FALSE; \
+    *val = cam_unit_control_get_##type (ctl); \
+    return TRUE; \
+}
+
+DEFINE_GET_CONTROL_FUNC (int, int)
+DEFINE_GET_CONTROL_FUNC (float, float)
+DEFINE_GET_CONTROL_FUNC (enum, int)
+DEFINE_GET_CONTROL_FUNC (boolean, int)
+
+#undef DEFINE_GET_CONTROL_FUNC
+
+gboolean 
+cam_unit_get_control_string (CamUnit *self, const char *id, 
+        char **val)
+{
+    CamUnitControl *ctl = cam_unit_find_control (self, id);
+    if (!ctl) return FALSE;
+    *val = strdup (cam_unit_control_get_string (ctl));
+    return TRUE;
 }
 
 CamUnitFormat *
@@ -740,13 +774,6 @@ cam_unit_produce_frame (CamUnit *self, const CamFrameBuffer *buffer,
 }
 
 // ============ utility functions ============
-char ** 
-cam_unit_id_to_driver_and_id (const char *unit_id)
-{
-    char **result = g_strsplit (unit_id, ":", 2);
-    return result;
-}
-
 const char *
 cam_unit_status_to_str (CamUnitStatus status)
 {

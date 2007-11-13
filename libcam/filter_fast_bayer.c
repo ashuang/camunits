@@ -49,8 +49,8 @@ cam_fast_bayer_filter_init( CamFastBayerFilter *self )
         NULL,
     };
     self->bayer_tile_ctl =
-        cam_unit_add_control_enum( super, 1, "Tiling", 0, 1, bayer_tiles,
-                NULL);
+        cam_unit_add_control_enum (super, "tiling", "Tiling", 
+                0, 1, bayer_tiles, NULL);
 
     int i;
     for (i = 0; i < 4; i++) {

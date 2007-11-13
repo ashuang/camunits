@@ -27,7 +27,7 @@ static void
 cam_unit_control_init (CamUnitControl *self)
 {
     self->type = 0;
-    self->id = 0;
+    self->id = NULL;
     self->name = NULL;
     self->enabled = 0;
     self->try_set_function = NULL;
@@ -94,6 +94,7 @@ cam_unit_control_finalize (GObject *obj)
     CamUnitControl *self = CAM_UNIT_CONTROL (obj);
 
     free (self->name);
+    free (self->id);
     if (self->menu_entries) {
         int i;
         for (i=0; i <= self->max_int; i++) {
@@ -110,20 +111,20 @@ cam_unit_control_finalize (GObject *obj)
 }
 
 static CamUnitControl *
-cam_unit_control_new_basic (int id, const char *name, 
+cam_unit_control_new_basic (const char *id, const char *name, 
         int type, int enabled)
 {
     dbg (DBG_CONTROL, "new unit control [%s]\n", name);
     CamUnitControl *self = g_object_new (CAM_TYPE_UNIT_CONTROL, NULL);
-    self->id = id;
     self->type = type;
+    self->id = strdup (id);
     self->name = strdup (name);
     self->enabled = enabled;
     return self;
 }
 
 CamUnitControl * 
-cam_unit_control_new_menu (int id,
+cam_unit_control_new_menu (const char *id,
         const char *name, int initial_index, int enabled,
         const char **entries, const int * entries_enabled)
 {
@@ -182,7 +183,7 @@ cam_unit_control_modify_menu (CamUnitControl * self,
 }
 
 CamUnitControl * 
-cam_unit_control_new_int (int id, const char *name, 
+cam_unit_control_new_int (const char *id, const char *name, 
         int min, int max, int step, int initial_val, int enabled)
 {
     dbg (DBG_CONTROL, "[%s] - <%d, %d> step %d initial %d enabled %d\n",
@@ -238,7 +239,7 @@ num_chars_float (float x, int sf, int * width, int * prec)
 }
 
 CamUnitControl * 
-cam_unit_control_new_float (int id, const char *name, 
+cam_unit_control_new_float (const char *id, const char *name, 
         float min, float max, float step, float initial_val, int enabled)
 {
     dbg (DBG_CONTROL, "[%s] - <%f, %f> step %f initial %f enabled %d\n",
@@ -277,7 +278,7 @@ cam_unit_control_modify_float (CamUnitControl * self,
 
 
 CamUnitControl * 
-cam_unit_control_new_boolean (int id, const char *name,
+cam_unit_control_new_boolean (const char *id, const char *name,
         int initial_val, int enabled)
 {
     CamUnitControl *self = cam_unit_control_new_basic (id, name, 
@@ -296,7 +297,7 @@ cam_unit_control_new_boolean (int id, const char *name,
 }
 
 CamUnitControl * 
-cam_unit_control_new_string (int id, const char *name,
+cam_unit_control_new_string (const char *id, const char *name,
         const char *initial_val, int enabled)
 {
     CamUnitControl *self = cam_unit_control_new_basic (id, name,
@@ -559,12 +560,6 @@ int
 cam_unit_control_get_enabled (const CamUnitControl *self)
 {
     return self->enabled;
-}
-
-void 
-cam_unit_control_unref (CamUnitControl *self)
-{
-    g_object_unref (self);
 }
 
 void 

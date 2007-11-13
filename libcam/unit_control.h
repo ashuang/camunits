@@ -125,7 +125,7 @@ typedef gboolean (*CamUnitControlCallback)(const CamUnitControl *ctl,
 struct _CamUnitControl {
     GObject parent;
     CamUnitControlType type;
-    int id;
+    char * id;
     char * name;
 
 	/*< private >*/
@@ -187,7 +187,7 @@ void cam_unit_control_set_callback (CamUnitControl *self,
  *
  * Returns: a new menu control.
  */
-CamUnitControl * cam_unit_control_new_menu (int id, const char *name, 
+CamUnitControl * cam_unit_control_new_menu (const char *id, const char *name, 
         int initial_index, int enabled, const char **entries,
         const int * entries_enabled);
 
@@ -203,7 +203,7 @@ CamUnitControl * cam_unit_control_new_menu (int id, const char *name,
  *
  * Returns: a new integer control
  */
-CamUnitControl * cam_unit_control_new_int (int id, const char *name, 
+CamUnitControl * cam_unit_control_new_int (const char *id, const char *name, 
         int min, int max, int step, int initial_val, int enabled);
 
 /**
@@ -218,7 +218,7 @@ CamUnitControl * cam_unit_control_new_int (int id, const char *name,
  *
  * Returns: a new floating-point control
  */
-CamUnitControl * cam_unit_control_new_float (int id, const char *name, 
+CamUnitControl * cam_unit_control_new_float (const char *id, const char *name, 
         float min, float max, float step, float initial_val, int enabled);
 
 /**
@@ -230,7 +230,7 @@ CamUnitControl * cam_unit_control_new_float (int id, const char *name,
  * 
  * Returns: a new boolean control
  */
-CamUnitControl * cam_unit_control_new_boolean (int id, const char *name,
+CamUnitControl * cam_unit_control_new_boolean (const char *id, const char *name,
         int initial_val, int enabled);
 
 /**
@@ -242,17 +242,8 @@ CamUnitControl * cam_unit_control_new_boolean (int id, const char *name,
  * 
  * Returns: a new string control
  */
-CamUnitControl * cam_unit_control_new_string (int id, const char *name,
+CamUnitControl * cam_unit_control_new_string (const char *id, const char *name,
         const char *initial_val, int enabled);
-
-/**
- * cam_unit_control_unref:
- *
- * Decrements the reference count on the CamUnitControl.  A CamUnitControl
- * starts with a reference count of 1.  If this count ever reaches zero, the
- * control is destroyed.
- */
-void cam_unit_control_unref (CamUnitControl *self);
 
 void cam_unit_control_modify_int (CamUnitControl * self,
         int min, int max, int step, int enabled);
