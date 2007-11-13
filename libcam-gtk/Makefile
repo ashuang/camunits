@@ -10,8 +10,8 @@ CFLAGS := -I.. $(CFLAGS_STD) $(CFLAGS_GTK) $(CFLAGS_GLIB) \
 		 -ffast-math -msse2 -msse3 \
 		 -DLIBCAM_PLUGINS_PATH='"$(LIBCAM_PLUGINS_PATH)"' 
 
-static_lib:=$(LIB_PATH)/libcam.a
-shared_lib:=$(LIB_PATH)/libcam.so
+static_lib:=$(LIB_PATH)/libcam-gtk.a
+shared_lib:=$(LIB_PATH)/libcam-gtk.so
 
 obj_lib := 	unit_control_widget.o \
 	unit_chain_widget.o unit_manager_widget.o \
