@@ -120,9 +120,11 @@ struct _CamUnit {
 
     GList *output_formats;
 
-    // If the unit is initialized with cam_unit_stream_init_any_format, and
-    // this is not NULL, then this is the format that will be used
-    CamUnitFormat *preferred_format;
+    // If the unit is initialized with cam_unit_stream_init_any_format, then
+    // image formats matching these requests are preferred
+    CamPixelFormat requested_pixelformat;
+    int requested_width;
+    int requested_height;
 };
 
 /**
@@ -256,21 +258,23 @@ int cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format);
 int cam_unit_stream_init_any_format (CamUnit *self);
 
 /**
- * cam_unit_stream_set_preferred_format:
- * @format: the preferred format, or NULL to remove it.  This could, but does
- * not have to, be one of the formats returned from
- * cam_unit_get_output_formats.
+ * cam_unit_set_preferred_format:
+ * @pixelformat: the preferred pixel format, or CAM_PIXEL_FORMAT_INVALID to
+ *               indicate that any pixel format is acceptable.
+ * @width: the preferred image width, or 0 to indicate that any width is
+ *         acceptable.
+ * @height: the preferred image height, or 0 to indicate that any height is
+ *          acceptable.
  *
  * Sets the preferred format when initializing the stream via
- * cam_unit_stream_init_any_format.  During cam_unit_stream_init_any_format,
- * the unit will invoke cam_unit_format_equals on each format with this
- * preferred format.  If the result is true, then the unit will initialize with
- * the preferred format.  Otherwise, it will pick an arbitrary format.
+ * cam_unit_stream_init_any_format.  If a format matching the requested
+ * parameters is not found, then an arbitrary format is chosen.
  *
  * Returns: 0 on success, -1 if format does not belong to the unit and is not
  * NULL
  */
-int cam_unit_stream_set_preferred_format (CamUnit *self, CamUnitFormat *fmt);
+int cam_unit_set_preferred_format (CamUnit *self, 
+        CamPixelFormat pixelformat, int width, int height);
 
 /**
  * cam_unit_stream_shutdown:

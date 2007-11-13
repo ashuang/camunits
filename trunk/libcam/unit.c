@@ -68,6 +68,10 @@ cam_unit_init (CamUnit *self)
 
     self->output_formats = NULL;
     self->fmt = NULL;
+
+    self->requested_pixelformat = CAM_PIXEL_FORMAT_INVALID;
+    self->requested_width = 0;
+    self->requested_height = 0;
 }
 
 static void
@@ -93,9 +97,6 @@ cam_unit_finalize (GObject *obj)
         g_object_unref (ofiter->data);
     }
     g_list_free (self->output_formats);
-    if (self->preferred_format) {
-        g_object_unref (self->preferred_format);
-    }
 
     G_OBJECT_CLASS (cam_unit_parent_class)->finalize(obj);
 }
@@ -491,45 +492,41 @@ cam_unit_stream_init_any_format (CamUnit *self)
     if (! self->output_formats) return -1;
 
     const CamUnitFormat *fmt = NULL;
+    int best_score = 0;
 
-    if (self->preferred_format) {
-        dbg (DBG_UNIT, "Checking validity of preferred format %s\n", 
-                self->preferred_format->name);
-        // check that the preferred format is still valid
-        GList *fiter;
-        for (fiter=self->output_formats; fiter; fiter=fiter->next) {
-            CamUnitFormat *cfmt = CAM_UNIT_FORMAT(fiter->data);
-            if (cam_unit_format_equals(cfmt, self->preferred_format)) {
-                fmt = cfmt;
-                break;
-            }
+    // check that the preferred format is still valid
+    for (GList *fiter=self->output_formats; fiter; fiter=fiter->next) {
+        CamUnitFormat *cfmt = CAM_UNIT_FORMAT(fiter->data);
+        int score = 0;
+        if (self->requested_pixelformat != CAM_PIXEL_FORMAT_INVALID &&
+                self->requested_pixelformat == cfmt->pixelformat) {
+            score += 3;
         }
-        if (!fmt) {
-            dbg (DBG_UNIT, "Preferred format %s is no longer valid\n",
-                    self->preferred_format->name);
+        if (self->requested_width > 0 && 
+                self->requested_width == cfmt->width) {
+            score ++;
         }
-    }
-
-    if (! fmt) {
-        fmt = CAM_UNIT_FORMAT(self->output_formats->data);
+        if (self->requested_height > 0 &&
+                self->requested_height == cfmt->height) {
+            score ++;
+        }
+        if (!fmt || score > best_score) {
+            best_score = score;
+            fmt = cfmt;
+        }
     }
 
     cam_unit_stream_init (self, fmt);
-
     return 0;
 }
 
 int 
-cam_unit_stream_set_preferred_format (CamUnit *self, 
-        CamUnitFormat *format)
+cam_unit_set_preferred_format (CamUnit *self, 
+        CamPixelFormat pixelformat, int width, int height)
 {
-    if (self->preferred_format) {
-        g_object_unref(self->preferred_format);
-    }
-    self->preferred_format = format;
-    if(format) {
-        g_object_ref(format);
-    }
+    self->requested_pixelformat = pixelformat;
+    self->requested_width = width;
+    self->requested_height = height;
     return 0;
 }
 
