@@ -9,7 +9,7 @@ LDFLAGS := $(LDFLAGS_GTK) ../libcam/libcam.a ../libcam-gtk/libcam-gtk.a \
 		-lGL -lGLU -lglut -ldc1394 -ljpeg
 
 camview := $(BIN_PATH)/camview
-obj_camview := camview.o
+obj_camview := camview.o gtk_util.o
 
 targets := camview
 objects := $(obj_camview)

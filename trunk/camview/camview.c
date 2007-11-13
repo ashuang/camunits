@@ -9,14 +9,14 @@
 #include <libcam/cam.h>
 #include <libcam-gtk/cam_gtk.h>
 
+#include "gtk_util.h"
+
 typedef struct _state_t {
     CamUnitChain *chain;
 
     CamUnitChainWidget *chain_widget;
     CamUnitManagerWidget *manager_widget;
     CamUnitChainGLWidget *chain_gl_widget;
-
-    int framecount;
 
     char *cmdline_input_id;
 
@@ -36,10 +36,9 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit, const CamFrameBuffer *buf,
     state_t *self = (state_t*) user_data;
 
     cam_unit_chain_gl_widget_request_redraw (self->chain_gl_widget);
-
-    self->framecount++;
 }
 
+#if 0
 void
 on_open_menu_item_activate (GtkWidget *widget, void *nil)
 {
@@ -63,6 +62,7 @@ on_open_menu_item_activate (GtkWidget *widget, void *nil)
 
     gtk_widget_hide (dialog);
 }
+#endif
 
 static void
 on_show_manager_mi_toggled (GtkCheckMenuItem *mi, void *user_data)
@@ -109,9 +109,11 @@ setup_gtk (state_t *self)
     GtkWidget *vbox = gtk_vbox_new (FALSE, 0);
     gtk_container_add (GTK_CONTAINER (self->window), vbox);
 
+    // menu bar
     GtkWidget *menubar = gtk_menu_bar_new ();
     gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
     
+    // file menu
     GtkWidget *file_menu_item = gtk_menu_item_new_with_mnemonic ("_File");
     gtk_menu_bar_append (GTK_MENU_BAR (menubar), file_menu_item);
     GtkWidget *file_menu = gtk_menu_new ();
@@ -123,34 +125,65 @@ setup_gtk (state_t *self)
     gtk_signal_connect (GTK_OBJECT (quit_mi), "activate", 
             GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 
+    // view menu
+    GtkWidget *view_menu_item = gtk_menu_item_new_with_mnemonic ("_View");
+    gtk_menu_bar_append (GTK_MENU_BAR (menubar), view_menu_item);
+    GtkWidget *view_menu = gtk_menu_new ();
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (view_menu_item), view_menu);
+
+    GtkWidget *show_manager_mi = 
+        gtk_check_menu_item_new_with_mnemonic ("Show _Manager");
+    gtk_menu_append (GTK_MENU (view_menu), show_manager_mi);
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (show_manager_mi), 
+            TRUE);
+    gtk_signal_connect (GTK_OBJECT (show_manager_mi), "toggled",
+            GTK_SIGNAL_FUNC (on_show_manager_mi_toggled), self);
+    GtkWidget *show_chain_mi = 
+        gtk_check_menu_item_new_with_mnemonic ("Show _Chain");
+    gtk_menu_append (GTK_MENU (view_menu), show_chain_mi);
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (show_chain_mi), TRUE);
+    gtk_signal_connect (GTK_OBJECT (show_chain_mi), "toggled",
+            GTK_SIGNAL_FUNC (on_show_chain_mi_toggled), self);
+
+    // horizontal panes
     GtkWidget *hpane1 = gtk_hpaned_new ();
     gtk_box_pack_start (GTK_BOX (vbox), hpane1, TRUE, TRUE, 0);
+    self->manager_frame = gtk_frame_new ("Manager");
+    gtk_paned_pack1 (GTK_PANED (hpane1), self->manager_frame, FALSE, TRUE);
+
     
     GtkWidget *hpane2 = gtk_hpaned_new ();
     gtk_paned_pack2 (GTK_PANED(hpane1), hpane2, TRUE, TRUE);
 
-    // setup the chain widget
-    self->chain_widget = cam_unit_chain_widget_new (self->chain);
+    self->chain_frame = gtk_frame_new ("Chain");
+    GtkWidget *display_frame = gtk_frame_new ("Display");
+    gtk_paned_pack1 (GTK_PANED(hpane2), display_frame, TRUE, TRUE);
+    gtk_paned_pack2 (GTK_PANED(hpane2), self->chain_frame, FALSE, TRUE);
 
-    // setup the manager widget
+    gtk_paned_set_position (GTK_PANED (hpane1), 200);
+    gtk_paned_set_position (GTK_PANED (hpane2), 400);
+
+    // manager widget
     self->manager_widget = cam_unit_manager_widget_new (self->chain->manager);
     GtkWidget *sw = gtk_scrolled_window_new (NULL, NULL);
     gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (self->manager_widget));
+    gtk_container_add (GTK_CONTAINER (self->manager_frame), sw);
     gtk_paned_pack1 (GTK_PANED (hpane1), sw, FALSE, TRUE);
-//    gtk_widget_show (GTK_WIDGET (self->manager_widget));
-//    gtk_widget_show (sw);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     g_signal_connect (G_OBJECT (self->manager_widget), 
             "unit-description-activated", 
             G_CALLBACK (on_unit_description_activated), self);
 
-    // setup the chain gl widget
+    // chain gl widget
     self->chain_gl_widget = cam_unit_chain_gl_widget_new (self->chain);
-    gtk_paned_pack1 (GTK_PANED (hpane2), 
-            GTK_WIDGET (self->chain_gl_widget), TRUE, TRUE);
-    gtk_paned_pack2 (GTK_PANED(hpane2), GTK_WIDGET (self->chain_widget), 
-            FALSE, TRUE);
+    gtk_container_add (GTK_CONTAINER (display_frame), 
+                GTK_WIDGET (self->chain_gl_widget));
+
+    // chain widget
+    self->chain_widget = cam_unit_chain_widget_new (self->chain);
+    gtk_container_add (GTK_CONTAINER (self->chain_frame), 
+            GTK_WIDGET (self->chain_widget));
     gtk_widget_show (GTK_WIDGET (self->chain_widget));
 
     gtk_widget_show_all (GTK_WIDGET (self->window));
@@ -159,8 +192,6 @@ setup_gtk (state_t *self)
 int
 state_setup (state_t *self)
 {
-    self->framecount = 0;
-
     // create the image processing chain
     self->chain = cam_unit_chain_new ();
     cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_STREAMING);
@@ -230,7 +261,7 @@ int main (int argc, char **argv)
 
     if (0 != state_setup (self)) return 1;
 
-//    cam_gtk_quit_on_interrupt ();
+    camview_gtk_quit_on_interrupt ();
     gtk_main ();
 
     state_cleanup (self);
