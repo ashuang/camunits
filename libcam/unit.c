@@ -595,7 +595,7 @@ try_add_control (CamUnit *self, CamUnitControl *new_ctl)
         return NULL;
     }
     self->controls_list = g_list_append (self->controls_list, new_ctl);
-    g_hash_table_insert (self->controls, &new_ctl->id, new_ctl);
+    g_hash_table_insert (self->controls, new_ctl->id, new_ctl);
 
     cam_unit_control_set_callback (new_ctl, control_callback, self);
     g_signal_connect (G_OBJECT(new_ctl), "value-changed",

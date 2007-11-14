@@ -44,8 +44,6 @@ struct _CamColorConversionFilter {
         const CamUnitFormat *infmt, const CamFrameBuffer *inbuf,
         const CamUnitFormat *outfmt, CamFrameBuffer *outbuf);
     GList *conversions;
-
-    CamPixelFormat output_pixelformat_override;
 };
 
 struct _CamColorConversionFilterClass {

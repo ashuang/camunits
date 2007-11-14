@@ -101,8 +101,6 @@ cam_color_conversion_filter_init( CamColorConversionFilter *self )
 
     self->cc_func = NULL;
 
-    self->output_pixelformat_override = CAM_PIXEL_FORMAT_INVALID;
-
     g_signal_connect( G_OBJECT(self), "input-format-changed",
             G_CALLBACK(on_input_format_changed), NULL );
 }
@@ -194,78 +192,22 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 }
 
 static void
-update_output_formats (CamColorConversionFilter *self, 
-        const CamUnitFormat *infmt)
+on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamUnit *super = CAM_UNIT (self);
+    CamColorConversionFilter *self = CAM_COLOR_CONVERSION_FILTER (super);
     cam_unit_remove_all_output_formats (super);
-
     if (!infmt) return;
 
     for (GList *citer=self->conversions; citer; citer=citer->next) {
         conv_info_t *ci = (conv_info_t*) citer->data;
 
         if (ci->inpfmt == infmt->pixelformat) {
-           if ((self->output_pixelformat_override != CAM_PIXEL_FORMAT_INVALID) &&
-                   (self->output_pixelformat_override != ci->outpfmt)) {
-               dbg (DBG_FILTER, "color converter ignoring %s -> %s\n",
-                       cam_pixel_format_str (ci->inpfmt), 
-                       cam_pixel_format_str (ci->outpfmt));
-           } else {
-               int stride = 
-                   infmt->width * cam_pixel_format_bpp(ci->outpfmt) / 8;
-               int max_data_size = stride * infmt->height;
+            int stride = infmt->width * cam_pixel_format_bpp(ci->outpfmt) / 8;
+            int max_data_size = stride * infmt->height;
 
-               cam_unit_add_output_format_full (super, ci->outpfmt,
-                       NULL, infmt->width, infmt->height, 
-                       stride, max_data_size);
-           }
+            cam_unit_add_output_format_full (super, ci->outpfmt,
+                    NULL, infmt->width, infmt->height, 
+                    stride, max_data_size);
         }
     }
 }
-
-static void
-on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
-{
-    update_output_formats (CAM_COLOR_CONVERSION_FILTER (super), infmt);
-}
-
-#if 0
-void
-cam_color_conversion_filter_set_output_format (CamColorConversionFilter *self,
-        CamPixelFormat pixelformat)
-{
-    CamUnit *super = CAM_UNIT (self);
-    self->output_pixelformat_override = pixelformat;
-
-    CamUnitStatus original_status = cam_unit_get_status (super);
-    switch (original_status) {
-        case CAM_UNIT_STATUS_READY:
-            cam_unit_stream_shutdown (super);
-            break;
-        case CAM_UNIT_STATUS_STREAMING:
-            cam_unit_stream_off (super);
-            cam_unit_stream_shutdown (super);
-            break;
-        default:
-            break;
-    }
-
-    if (super->input_unit) {
-        update_output_formats (self, 
-                cam_unit_get_output_format (super->input_unit));
-    }
-
-    switch (original_status) {
-        case CAM_UNIT_STATUS_READY:
-            cam_unit_stream_init_any_format (super);
-            break;
-        case CAM_UNIT_STATUS_STREAMING:
-            cam_unit_stream_init_any_format (super);
-            cam_unit_stream_on (super);
-            break;
-        default:
-            break;
-    }
-}
-#endif

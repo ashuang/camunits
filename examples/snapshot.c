@@ -57,21 +57,19 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit,
 
 int main(int argc, char **argv)
 {
-    printf("camunit_tester\n");
-
     g_type_init();
 
     state_t s;
     memset (&s, 0, sizeof (s));
 
     // create the GLib mainloop
-    GMainLoop *mainloop = g_main_loop_new (NULL, FALSE);
+    s.mainloop = g_main_loop_new (NULL, FALSE);
 
     // create the image processing chain
     CamUnitChain * chain = cam_unit_chain_new();
 
     // create an input unit
-    cam_unit_chain_add_unit_by_id(chain, "example_input:0");
+    cam_unit_chain_add_unit_by_id(chain, "input:example_input");
 
     // create a colorspace converter
     CamUnit *color_converter = cam_unit_chain_add_unit_by_id(chain, 
@@ -93,10 +91,10 @@ int main(int argc, char **argv)
             G_CALLBACK (on_frame_ready), &s);
 
     // run 
-    g_main_loop_run (mainloop);
+    g_main_loop_run (s.mainloop);
 
     // cleanup
-    g_main_loop_unref (mainloop);
+    g_main_loop_unref (s.mainloop);
 
     cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_IDLE);
 
