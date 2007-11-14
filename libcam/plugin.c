@@ -112,6 +112,9 @@ cam_plugin_load_drivers (CamUnitManager * manager, const char * path)
     while ((dirent = readdir (dir))) {
         if (dirent->d_name[0] == '.')
             continue;
+        int len = strlen (dirent->d_name);
+        if (len > 3 && !strcmp (dirent->d_name + len - 3, ".la"))
+            continue;
 
         gchar * filename = g_build_filename (path, dirent->d_name, NULL);
 
