@@ -37,6 +37,11 @@ libcam_la_SOURCES = \
 	filter_jpeg.c \
 	filter_jpeg.h
 
+if LINUX
+libcam_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h
+AM_CFLAGS += -DUSE_V4L -DUSE_V4L2
+endif
+
 libcam_la_LIBADD = \
 	$(GLIB_LIBS)
 
