@@ -286,7 +286,38 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
 #endif
 
     char ctl_id[80];
-    snprintf (ctl_id, sizeof (ctl_id), "control-%d", queryctrl->id);
+    switch (queryctrl->id) {
+        case V4L2_CID_BRIGHTNESS: sprintf (ctl_id, "brightness"); break;
+        case V4L2_CID_CONTRAST: sprintf (ctl_id, "contrast"); break;
+        case V4L2_CID_SATURATION: sprintf (ctl_id, "saturation"); break;
+        case V4L2_CID_HUE: sprintf (ctl_id, "hue"); break;
+        case V4L2_CID_AUDIO_VOLUME: sprintf (ctl_id, "audio-volume"); break;
+        case V4L2_CID_AUDIO_BALANCE: sprintf (ctl_id, "audio-balance"); break;
+        case V4L2_CID_AUDIO_BASS: sprintf (ctl_id, "audio-bass"); break;
+        case V4L2_CID_AUDIO_TREBLE: sprintf (ctl_id, "treble"); break;
+        case V4L2_CID_AUDIO_MUTE: sprintf (ctl_id, "audio-mute"); break;
+        case V4L2_CID_AUDIO_LOUDNESS: sprintf (ctl_id, "audio-loudness"); break;
+        case V4L2_CID_BLACK_LEVEL: sprintf (ctl_id, "black-level"); break;
+        case V4L2_CID_AUTO_WHITE_BALANCE: 
+           sprintf (ctl_id, "auto-white-balance"); break;
+        case V4L2_CID_DO_WHITE_BALANCE: 
+           sprintf (ctl_id, "do-white-balance"); break;
+        case V4L2_CID_RED_BALANCE: 
+           sprintf (ctl_id, "white-balance-red"); break;
+        case V4L2_CID_BLUE_BALANCE: 
+           sprintf (ctl_id, "white-balance-blue"); break;
+        case V4L2_CID_GAMMA: sprintf (ctl_id, "gamma"); break;
+        case V4L2_CID_EXPOSURE: sprintf (ctl_id, "exposure"); break;
+        case V4L2_CID_AUTOGAIN: sprintf (ctl_id, "auto-gain"); break;
+        case V4L2_CID_GAIN: sprintf (ctl_id, "gain"); break;
+        case V4L2_CID_HFLIP: sprintf (ctl_id, "h-flip"); break;
+        case V4L2_CID_VFLIP: sprintf (ctl_id, "v-flip"); break;
+        case V4L2_CID_HCENTER: sprintf (ctl_id, "h-center"); break;
+        case V4L2_CID_VCENTER: sprintf (ctl_id, "v-center"); break;
+        default:
+           snprintf (ctl_id, sizeof (ctl_id), "control-%d", queryctrl->id);
+           break;
+    }
 
     switch (queryctrl->type) {
         case V4L2_CTRL_TYPE_INTEGER:
