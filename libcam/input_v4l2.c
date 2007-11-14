@@ -235,41 +235,46 @@ v4l2_finalize (GObject * obj)
         close (self->fd);
         self->fd = -1;
     }
+    for (GList *fiter=super->output_formats; fiter; fiter=fiter->next) {
+        CamUnitFormat *outfmt = CAM_UNIT_FORMAT (fiter->data);
+        free (g_object_get_data (G_OBJECT (outfmt), "input_v4l2:v4l2_format"));
+    }
 
     G_OBJECT_CLASS (cam_v4l2_parent_class)->finalize (obj);
 }
 
 static int
 add_v4l2_format (CamV4L2 * self, uint32_t width, uint32_t height,
-        uint32_t pixelformat)
+        CamPixelFormat cam_pixelformat, uint32_t v4l2_pixelformat)
 {
-    struct v4l2_format fmt;
-    memset (&fmt, 0, sizeof (fmt));
-    fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    fmt.fmt.pix.width = width;
-    fmt.fmt.pix.height = height;
-    fmt.fmt.pix.pixelformat = pixelformat;
-    fmt.fmt.pix.field = V4L2_FIELD_ANY;
-    fmt.fmt.pix.bytesperline = 0;
+    struct v4l2_format *fmt = calloc (1, sizeof (struct v4l2_format));
+    fmt->type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    fmt->fmt.pix.width = width;
+    fmt->fmt.pix.height = height;
+    fmt->fmt.pix.pixelformat = v4l2_pixelformat;
+    fmt->fmt.pix.field = V4L2_FIELD_ANY;
+    fmt->fmt.pix.bytesperline = 0;
 
-    if (ioctl (self->fd, VIDIOC_TRY_FMT, &fmt) < 0) {
+    if (ioctl (self->fd, VIDIOC_TRY_FMT, fmt) < 0) {
         perror ("ioctl");
         fprintf (stderr, 
                 "Error: VIDIOC_TRY_FMT failed (%s %dx%d)\n",
-                cam_pixel_format_str(pixelformat), width, height);
+                cam_pixel_format_str(cam_pixelformat), width, height);
         return -1;
     } 
 
-    if (fmt.fmt.pix.height*fmt.fmt.pix.bytesperline > fmt.fmt.pix.sizeimage) {
+    if (fmt->fmt.pix.height*fmt->fmt.pix.bytesperline > 
+            fmt->fmt.pix.sizeimage) {
         dbg (DBG_INPUT, "WARNING: v4l2 driver is reporting bogus row stride\n");
-        fmt.fmt.pix.bytesperline = 
-            fmt.fmt.pix.width * 
-            cam_pixel_format_bpp (pixelformat) / 8;
+        fmt->fmt.pix.bytesperline = 
+            fmt->fmt.pix.width * cam_pixel_format_bpp (cam_pixelformat) / 8;
     }
 
-    cam_unit_add_output_format_full (CAM_UNIT (self),
-            pixelformat, NULL, fmt.fmt.pix.width, fmt.fmt.pix.height,
-            fmt.fmt.pix.bytesperline, fmt.fmt.pix.sizeimage);
+    CamUnitFormat *new_fmt = cam_unit_add_output_format_full (CAM_UNIT (self),
+            cam_pixelformat, NULL, fmt->fmt.pix.width, fmt->fmt.pix.height,
+            fmt->fmt.pix.bytesperline, fmt->fmt.pix.sizeimage);
+
+    g_object_set_data (G_OBJECT (new_fmt), "input_v4l2:v4l2_format", fmt);
     return 0;
 }
 
@@ -364,8 +369,9 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
             }
             break;
         case V4L2_CTRL_TYPE_BUTTON:
-            err ("WARNING: unsupported button control (%s)\n",
-                    queryctrl->name);
+            newctl = cam_unit_add_control_boolean (super, 
+                    ctl_id, (char*) queryctrl->name, 0, 1);
+            cam_unit_control_set_ui_hints (newctl, CAM_UNIT_CONTROL_ONE_SHOT);
             break;
 #ifdef V4L2_CTRL_TYPE_INTEGER64
         case V4L2_CTRL_TYPE_INTEGER64:
@@ -410,10 +416,9 @@ cam_v4l2_new (const char *path)
         if (f.index != oldfindex && oldfindex != 0)
             break;
 
-        uint32_t pixelformat = f.pixelformat;
+        CamPixelFormat cam_pixelformat = f.pixelformat;
         if (f.pixelformat == 0x32435750) { // 'PWC2'
-            fprintf(stderr, "HACK!  forcing PWC2 FourCC to I420\n");
-            pixelformat = CAM_PIXEL_FORMAT_I420;
+            cam_pixelformat = CAM_PIXEL_FORMAT_I420;
         }
 
         int can_enum_frames = 0;
@@ -435,7 +440,8 @@ cam_v4l2_new (const char *path)
                 height = framesize.discrete.height;
             }
 
-            add_v4l2_format (self, width, height, pixelformat);
+            add_v4l2_format (self, width, height, cam_pixelformat, 
+                    f.pixelformat);
 
             framesize.index++;
         }
@@ -447,7 +453,7 @@ cam_v4l2_new (const char *path)
         if (!can_enum_frames) {
             /* Just add a big format.  The try-set will automatically
              * determine the real resolution. */
-            add_v4l2_format (self, 2000, 2000, pixelformat);
+            add_v4l2_format (self, 2000, 2000, cam_pixelformat, f.pixelformat);
         }
         
         f.index++;
@@ -490,14 +496,9 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
      * really true. */
     cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
 
-    struct v4l2_format fmt;
-    memset (&fmt, 0, sizeof (fmt));
-    fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    fmt.fmt.pix.width = format->width;
-    fmt.fmt.pix.height = format->height;
-    fmt.fmt.pix.pixelformat = format->pixelformat;
-    fmt.fmt.pix.field = V4L2_FIELD_ANY;
-    if (-1 == ioctl (self->fd, VIDIOC_S_FMT, &fmt)) {
+    struct v4l2_format *fmt = g_object_get_data (G_OBJECT (format),
+            "input_v4l2:v4l2_format");
+    if (-1 == ioctl (self->fd, VIDIOC_S_FMT, fmt)) {
         perror ("VIDIOC_S_FMT");
         fprintf (stderr, "Error: VIDIOC_S_FMT failed\n");
         return -1;
@@ -992,8 +993,12 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return FALSE;
     }
     
-    // read back the actual value of the control
+    // if the control is a push button, then ignore the value and return
+    if (cam_unit_control_get_ui_hints (ctl) & CAM_UNIT_CONTROL_ONE_SHOT) {
+        return FALSE;
+    }
 
+    // read back the actual value of the control
     if (-1 == ioctl (self->fd, VIDIOC_G_CTRL, &vctl)) {
         // readback failed.  just assume that the setting was successful and
         // return

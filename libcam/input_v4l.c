@@ -433,10 +433,10 @@ v4l_try_produce_frame (CamUnit * super)
     CamFrameBuffer *buf = cam_framebuffer_new_alloc (super->fmt->max_data_size);
 
     int status = read (self->fd, buf->data, buf->length);
-    if (status == buf->length) {
-        cam_unit_produce_frame (super, buf, super->fmt);
-    } else {
+    if (status <= 0) {
         perror ("read");
+    } else {
+        cam_unit_produce_frame (super, buf, super->fmt);
     }
 
     g_object_unref (buf);

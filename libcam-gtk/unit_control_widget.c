@@ -1069,7 +1069,7 @@ on_output_formats_changed( CamUnit *unit, CamUnitControlWidget *self )
     dbg(DBG_GUI, "detected changed output formats for [%s]\n", 
             cam_unit_get_id( unit ));
 
-    // TODO
+    update_formats_combo(self);
 }
 
 static void
