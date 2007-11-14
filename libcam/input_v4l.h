@@ -46,7 +46,7 @@ GType cam_v4l_driver_get_type (void);
 /**
  * Constructor
  */
-CamUnitDriver * cam_v4l_driver_new();
+CamUnitDriver * cam_v4l_driver_new (void);
 
 
 // =========================================================================
@@ -101,37 +101,6 @@ GType cam_v4l_get_type (void);
  * CamV4LDriver call it.
  */
 CamV4L * cam_v4l_new (int videonum);
-
-enum {
-    CAM_V4L_CONTROL_BRIGHTNESS_ID = 1,
-    CAM_V4L_CONTROL_HUE_ID,
-    CAM_V4L_CONTROL_COLOR_ID,
-    CAM_V4L_CONTROL_CONTRAST_ID,
-    CAM_V4L_CONTROL_WHITENESS_ID,
-    CAM_V4L_CONTROL_DEPTH_ID,
-    CAM_V4L_CONTROL_TUNERS_START_ID,
-    CAM_V4L_CONTROL_DEFAULT_MAX
-};
-
-/**
- * pwc specific controls (Logitech Quickcam, 4000, 3000, and older)
- */
-enum {
-    CAM_V4L_CONTROL_PWC_WB_MODE = CAM_V4L_CONTROL_DEFAULT_MAX + 1,
-    CAM_V4L_CONTROL_PWC_WB_MANUAL_RED,
-    CAM_V4L_CONTROL_PWC_WB_MANUAL_BLUE,
-};
-
-/**
- * pwc white balance modes
- */
-enum {
-    CAM_V4L_CONTROL_PWC_WB_INDOOR = 0,
-    CAM_V4L_CONTROL_PWC_WB_OUTDOOR,
-    CAM_V4L_CONTROL_PWC_WB_FLOURESCENT,
-    CAM_V4L_CONTROL_PWC_WB_MANUAL,
-    CAM_V4L_CONTROL_PWC_WB_AUTO
-};
 
 G_END_DECLS
 

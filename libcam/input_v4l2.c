@@ -18,7 +18,7 @@
 
 #define V4L2_BASE   "/dev/video"
 
-#define V4L2_DRIVER_NAME "v4l2"
+#define V4L2_PACKAGE "input.v4l2"
 
 #define NUM_BUFFERS 5
 
@@ -45,7 +45,7 @@ cam_v4l2_driver_init (CamV4L2Driver * self)
 {
     dbg (DBG_DRIVER, "v4l2 driver constructor\n");
     CamUnitDriver * super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_package (super, V4L2_DRIVER_NAME);
+    cam_unit_driver_set_package (super, V4L2_PACKAGE);
 }
 
 static void
@@ -132,7 +132,7 @@ driver_start (CamUnitDriver * super)
             continue;
 
         snprintf (name, sizeof (name), "%s (V4L2)", cap.card);
-        snprintf (unit_id, sizeof (unit_id), "%s:%d", V4L2_DRIVER_NAME, j);
+        snprintf (unit_id, sizeof (unit_id), "%s:%d", V4L2_PACKAGE, j);
 
         CamUnitDescription *udesc = 
             cam_unit_driver_add_unit_description (super, name, unit_id, 
@@ -285,16 +285,19 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
     int enabled = ! queryctrl->flags & V4L2_CTRL_FLAG_DISABLED;
 #endif
 
+    char ctl_id[80];
+    snprintf (ctl_id, sizeof (ctl_id), "control-%d", queryctrl->id);
+
     switch (queryctrl->type) {
         case V4L2_CTRL_TYPE_INTEGER:
             newctl = cam_unit_add_control_int (super, 
-                    queryctrl->id, (char*) queryctrl->name, 
+                    ctl_id, (char*) queryctrl->name, 
                     queryctrl->minimum, queryctrl->maximum, queryctrl->step,
                     queryctrl->default_value, enabled);
             break;
         case V4L2_CTRL_TYPE_BOOLEAN:
             newctl = cam_unit_add_control_boolean (super,
-                    queryctrl->id, (char*) queryctrl->name,
+                    ctl_id, (char*) queryctrl->name,
                     queryctrl->default_value, enabled);
             break;
         case V4L2_CTRL_TYPE_MENU:
@@ -321,7 +324,7 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
                     i++;
                 }
                 newctl = cam_unit_add_control_enum (super,
-                        queryctrl->id, (char*) queryctrl->name, 
+                        ctl_id, (char*) queryctrl->name, 
                         queryctrl->default_value,
                         enabled, (const char**) entries, entries_enabled);
 
@@ -341,6 +344,11 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
 #endif
         default:
             break;
+    }
+
+    if (newctl) {
+        g_object_set_data (G_OBJECT (newctl), "input_v4l2:queryctrl_id", 
+                GINT_TO_POINTER (queryctrl->id));
     }
 }
 
@@ -741,8 +749,6 @@ static int
 update_video_standards (CamUnit * super, int modify)
 {
     CamV4L2 * self = CAM_V4L2 (super);
-    CamUnitControl * ctl = cam_unit_get_control_by_id (super,
-            CAM_V4L2_CNTL_STD);
 
     v4l2_std_id stdid = 0;
     ioctl (self->fd, VIDIOC_G_STD, &stdid);
@@ -761,18 +767,19 @@ update_video_standards (CamUnit * super, int modify)
         std.index = ++i;
     }
     if (i == 0) {
-        cam_unit_control_set_enabled (ctl, FALSE);
+        cam_unit_control_set_enabled (self->standard_ctl, FALSE);
         return 0;
     }
     std_descs[i] = NULL;
-    g_object_set_data (G_OBJECT (ctl), "v4l2-stds", stds);
+    g_object_set_data (G_OBJECT (self->standard_ctl), "v4l2-stds", stds);
     if (modify)
-        cam_unit_control_modify_enum (ctl, 1, (const char **) std_descs, NULL);
+        cam_unit_control_modify_enum (self->standard_ctl, 1, 
+                (const char **) std_descs, NULL);
     int j;
     for (j = 0; j < i; j++)
         free (std_descs[j]);
 
-    cam_unit_control_force_set_int (ctl, cur_val);
+    cam_unit_control_force_set_int (self->standard_ctl, cur_val);
 
     return 0;
 }
@@ -835,16 +842,16 @@ add_all_controls (CamUnit * super)
     }
     if (i > 0 && ioctl (self->fd, VIDIOC_G_INPUT, &cur_val) == 0) {
         input_descs[i] = NULL;
-        cam_unit_add_control_enum (super, CAM_V4L2_CNTL_INPUT,
-                "Input", cur_val, 1, (const char **) input_descs, NULL);
+        cam_unit_add_control_enum (super, "input", "Input", 
+                cur_val, 1, (const char **) input_descs, NULL);
     }
     int j;
     for (j = 0; j < i; j++)
         free (input_descs[j]);
 
     const char * stds[] = { NULL };
-    cam_unit_add_control_enum (super, CAM_V4L2_CNTL_STD,
-            "Standard", 0, 0, stds, NULL);
+    self->standard_ctl = cam_unit_add_control_enum (super, 
+            "standard", "Standard", 0, 0, stds, NULL);
     update_video_standards (super, 1);
 
 
@@ -860,11 +867,17 @@ add_all_controls (CamUnit * super)
         if (tuner.rangehigh > 16000)
             tuner.rangehigh = 16000;
         if (ioctl (self->fd, VIDIOC_G_FREQUENCY, &freq) == 0) {
+            char ctl_id[80];
+            snprintf (ctl_id, sizeof (ctl_id), "tuner-%d", i);
             CamUnitControl * ctl = cam_unit_add_control_int (super,
-                    CAM_V4L2_CNTL_TUNER0 + i,
-                    (char *) tuner.name, tuner.rangelow, tuner.rangehigh, 1,
+                    ctl_id, (char *) tuner.name, 
+                    tuner.rangelow, tuner.rangehigh, 1,
                     freq.frequency, 1);
             cam_unit_control_set_ui_hints (ctl, CAM_UNIT_CONTROL_SPINBUTTON);
+
+            // set the tuner id, but add one so that we never set NULL
+            g_object_set_data (G_OBJECT (ctl), "input_v4l2:tuner-id",
+                    GINT_TO_POINTER (i + 1));
         }
         else {
             fprintf (stderr, "Warning: Can't get freq for V4L2 tuner %d\n", i);
@@ -882,7 +895,7 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual) {
     CamV4L2 * self = CAM_V4L2 (super);
 
-    if (ctl->id == CAM_V4L2_CNTL_INPUT) {
+    if (!strcmp (ctl->id, "input")) {
         int val = g_value_get_int (proposed);
         if (ioctl (self->fd, VIDIOC_S_INPUT, &val) < 0) {
             fprintf (stderr, "VIDIOC_S_INPUT failed: %s\n", strerror (errno));
@@ -892,7 +905,7 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         update_video_standards (super, 1);
         return TRUE;
     }
-    if (ctl->id == CAM_V4L2_CNTL_STD) {
+    if (ctl == self->standard_ctl) {
         int val = g_value_get_int (proposed);
         v4l2_std_id * stds = g_object_get_data (G_OBJECT (ctl),
                 "v4l2-stds");
@@ -904,27 +917,32 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         g_value_set_int (actual, val);
         return TRUE;
     }
-    if (ctl->id >= CAM_V4L2_CNTL_TUNER0 && ctl->id <= CAM_V4L2_CNTL_TUNER3) {
-        int val = g_value_get_int (proposed);
-        struct v4l2_frequency freq;
-        memset (&freq, 0, sizeof (struct v4l2_frequency));
-        freq.tuner = ctl->id - CAM_V4L2_CNTL_TUNER0;
-        freq.type = V4L2_TUNER_ANALOG_TV;
-        freq.frequency = val;
-        if (ioctl (self->fd, VIDIOC_S_FREQUENCY, &freq) < 0) {
-            fprintf (stderr, "VIDIOC_S_FREQUENCY failed: %s\n", 
-                    strerror (errno));
-            return FALSE;
+    if (!strncmp (ctl->id, "tuner-", strlen ("tuner-"))) {
+        int tuner_id = GPOINTER_TO_INT (
+            g_object_get_data (G_OBJECT (ctl), "input_v4l2:tuner-id")) - 1;
+        if (tuner_id >= 0) {
+            int val = g_value_get_int (proposed);
+            struct v4l2_frequency freq;
+            memset (&freq, 0, sizeof (struct v4l2_frequency));
+            freq.tuner = tuner_id;
+            freq.type = V4L2_TUNER_ANALOG_TV;
+            freq.frequency = val;
+            if (ioctl (self->fd, VIDIOC_S_FREQUENCY, &freq) < 0) {
+                fprintf (stderr, "VIDIOC_S_FREQUENCY failed: %s\n", 
+                        strerror (errno));
+                return FALSE;
+            }
+            g_value_set_int (actual, val);
+            return TRUE;
         }
-        g_value_set_int (actual, val);
-        return TRUE;
     }
 
     // user control
     struct v4l2_control vctl;
     memset (&vctl, 0, sizeof (vctl));
 
-    vctl.id = ctl->id;
+    vctl.id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (ctl), 
+                "input_v4l2:queryctrl_id"));
     switch (ctl->type) {
         case CAM_UNIT_CONTROL_TYPE_INT:
         case CAM_UNIT_CONTROL_TYPE_ENUM:

@@ -47,7 +47,7 @@ GType cam_v4l2_driver_get_type (void);
 /**
  * Constructor
  */
-CamUnitDriver * cam_v4l2_driver_new();
+CamUnitDriver * cam_v4l2_driver_new (void);
 
 
 // =========================================================================
@@ -83,6 +83,8 @@ struct _CamV4L2 {
     uint8_t ** buffers;
     int buffer_length;
     int buffers_outstanding;
+
+    CamUnitControl *standard_ctl;
 };
 
 struct _CamV4L2Class {
@@ -97,7 +99,7 @@ GType cam_v4l2_get_type (void);
  * Constructor.  don't call this function manually.  Instead, let the
  * CamV4L2Driver call it.
  */
-CamV4L2 * cam_v4l2_new();
+CamV4L2 * cam_v4l2_new (const char *path);
 
 G_END_DECLS
 

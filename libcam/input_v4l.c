@@ -18,7 +18,7 @@
 
 #define V4L_BASE   "/dev/video"
 
-#define V4L_DRIVER_NAME "v4l"
+#define V4L_PACKAGE "input.v4l"
 
 static int
 open_v4l_device (int num, struct video_capability * cap)
@@ -104,7 +104,7 @@ cam_v4l_driver_init (CamV4LDriver * self)
 {
     dbg (DBG_DRIVER, "v4l driver constructor\n");
     CamUnitDriver * super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_package (super, V4L_DRIVER_NAME);
+    cam_unit_driver_set_package (super, V4L_PACKAGE);
 }
 
 static void
@@ -137,7 +137,7 @@ driver_start (CamUnitDriver * super)
             continue;
 
         snprintf (name, sizeof (name), "%s (V4L)", cap.name);
-        snprintf (unit_id, sizeof (unit_id), "%s:%d", V4L_DRIVER_NAME, j);
+        snprintf (unit_id, sizeof (unit_id), "%s:%d", V4L_PACKAGE, j);
 
         CamUnitDescription *udesc = 
             cam_unit_driver_add_unit_description (super, name, unit_id, 
@@ -271,19 +271,19 @@ cam_v4l_new (int videonum)
     // some may not be supported, but V4L doesn't provide the ability to detect
     // support.
     self->brightness_ctl = cam_unit_add_control_int (super, 
-        CAM_V4L_CONTROL_BRIGHTNESS_ID, "brightness", 0, 65535, 1,
+        "brightness", "Brightness", 0, 65535, 1,
         vpic.brightness, 1);
     self->hue_ctl = cam_unit_add_control_int (super, 
-        CAM_V4L_CONTROL_HUE_ID, "hue", 0, 65535, 1,
+        "hue", "Hue", 0, 65535, 1,
         vpic.hue, 1);
     self->color_ctl = cam_unit_add_control_int (super, 
-        CAM_V4L_CONTROL_COLOR_ID, "color", 0, 65535, 1,
+        "color", "Color", 0, 65535, 1,
         vpic.colour, 1);
     self->contrast_ctl = cam_unit_add_control_int (super, 
-        CAM_V4L_CONTROL_CONTRAST_ID, "contrast", 0, 65535, 1,
+        "contrast", "Contrast", 0, 65535, 1,
         vpic.contrast, 1);
     self->whiteness_ctl = cam_unit_add_control_int (super, 
-        CAM_V4L_CONTROL_WHITENESS_ID, "whiteness", 0, 65535, 1,
+        "whiteness", "Whiteness", 0, 65535, 1,
         vpic.whiteness, 1);
 
     // if the device has a tuner, then add a channel control
@@ -305,8 +305,11 @@ cam_v4l_new (int videonum)
             vtune.tuner++;
             continue;
         }
+
+        char ctl_id[40];
+        snprintf (ctl_id, sizeof (ctl_id), "tuner-%d", vtune.tuner);
         CamUnitControl *ctl = cam_unit_add_control_int (super,
-                CAM_V4L_CONTROL_TUNERS_START_ID + vtune.tuner,
+                ctl_id,
                 vtune.name, vtune.rangelow, vtune.rangehigh, 
                 1, freq, 1);
 
@@ -358,17 +361,17 @@ check_for_pwc (CamV4L *self)
                 };
                 int entries_enabled[] = { 1, 1, 1, 1, 1, 0 };
                 self->pwc_wb_mode_ctl = cam_unit_add_control_enum (super,
-                        CAM_V4L_CONTROL_PWC_WB_MODE, 
+                        "white-balance-mode", 
                         "White Balance", wb.mode,
                         1, wbmodes, entries_enabled);
                 int mwb = (wb.mode == PWC_WB_MANUAL);
                 int red  = (mwb) ? wb.manual_red  : wb.read_red;
                 int blue = (mwb) ? wb.manual_blue : wb.read_blue;
                 self->pwc_wb_manual_red_ctl = cam_unit_add_control_int (super,
-                        CAM_V4L_CONTROL_PWC_WB_MANUAL_RED, "WB Red",
+                        "white-balance-red", "WB Red",
                         0, 65535, 1, red, mwb);
                 self->pwc_wb_manual_blue_ctl = cam_unit_add_control_int (super,
-                        CAM_V4L_CONTROL_PWC_WB_MANUAL_BLUE, "WB Blue",
+                        "white-balance-blue", "WB Blue",
                         0, 65535, 1, blue, mwb);
             }
         }
