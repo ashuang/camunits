@@ -29,5 +29,3 @@ libcaminclude_HEADERS = \
 	unit_control_widget.h \
 	unit_manager_widget.h 
 
-
-LIBTOOL = @LIBTOOL@ --silent

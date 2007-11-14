@@ -21,13 +21,10 @@
 #include "capture_raw1394.h"
 #endif
 
+#include <libcam/dbg.h>
+#include <libcam/pixels.h>
+#include <libcam/plugin.h>
 #include "input_dc1394.h"
-#include "dbg.h"
-
-#include "pixels.h"
-
-#define FEATURE_HDR 0xf000
-#define FEATURE_LUT 0xf001
 
 #define NUM_BUFFERS 60
 
@@ -45,7 +42,7 @@ static int driver_start (CamUnitDriver * super);
 static int driver_stop (CamUnitDriver * super);
 static int add_all_camera_controls (CamUnit * super);
 
-G_DEFINE_TYPE (CamDC1394Driver, cam_dc1394_driver, CAM_TYPE_UNIT_DRIVER);
+CAM_PLUGIN_TYPE (CamDC1394Driver, cam_dc1394_driver, CAM_TYPE_UNIT_DRIVER);
 
 static void
 cam_dc1394_driver_init (CamDC1394Driver * self)
@@ -79,12 +76,6 @@ driver_finalize (GObject * obj)
         err ("Warning: dc1394 driver finalized before stopping\n");
 
     G_OBJECT_CLASS (cam_dc1394_driver_parent_class)->finalize (obj);
-}
-
-CamUnitDriver *
-cam_dc1394_driver_new ()
-{
-    return CAM_UNIT_DRIVER (g_object_new (CAM_DC1394_DRIVER_TYPE, NULL));
 }
 
 static int
@@ -167,7 +158,20 @@ driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
     return CAM_UNIT (result);
 }
 
-G_DEFINE_TYPE (CamDC1394, cam_dc1394, CAM_TYPE_UNIT);
+CAM_PLUGIN_TYPE (CamDC1394, cam_dc1394, CAM_TYPE_UNIT);
+
+void
+cam_plugin_initialize (GTypeModule * module)
+{
+    cam_dc1394_driver_register_type (module);
+    cam_dc1394_register_type (module);
+}
+
+CamUnitDriver *
+cam_plugin_create (GTypeModule * module)
+{
+    return CAM_UNIT_DRIVER (g_object_new (CAM_DC1394_DRIVER_TYPE, NULL));
+}
 
 #define CAM_DC1394_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_DC1394_TYPE, CamDC1394Private))
 typedef struct _CamDC1394Private CamDC1394Private;
@@ -409,8 +413,7 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     dc1394_format7_get_packet_para (self->cam, vidmode, &psize_unit,
             &psize_max);
 
-    CamUnitControl * ctl;
-    ctl = cam_unit_get_control_by_id (super, CAM_DC1394_CNTL_PACKET_SIZE);
+    CamUnitControl * ctl = cam_unit_find_control (super, "packet-size");
     int desired_packet = cam_unit_control_get_int (ctl);
 
     desired_packet = (desired_packet / psize_unit) * psize_unit;
@@ -865,7 +868,7 @@ add_all_camera_controls (CamUnit * super)
             /* Add trigger polarity selection */
             if (f->polarity_capable)
                 cam_unit_add_control_boolean (super,
-                        "polarity", "Polarity",
+                        "trigger-polarity", "Polarity",
                         f->trigger_polarity, aux_enabled);
 
             /* Add trigger source selection */
@@ -988,12 +991,10 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual)
 {
     CamDC1394 * self = CAM_DC1394 (super);
-    unsigned int flags = ctl->id & CAM_DC1394_CNTL_ID_FLAGS_MASK;
-    unsigned int id = ctl->id & CAM_DC1394_CNTL_ID_MASK;
     dc1394feature_info_t f;
     int val = 0;
 
-    if (id == CAM_DC1394_CNTL_PACKET_SIZE) {
+    if (!strcmp (ctl->id, "packet-size")) {
         g_value_copy (proposed, actual);
         return TRUE;
     }
@@ -1001,9 +1002,10 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     if (G_VALUE_TYPE (proposed) == G_TYPE_INT)
         val = g_value_get_int (proposed);
 
-    f.id = id;
+    f.id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (ctl),
+                "dc1394-control-id"));
 
-    if (id == CAM_DC1394_CNTL_TRIGGER_POLARITY) {
+    if (!strcmp (ctl->id, "trigger-polarity")) {
         dc1394_external_trigger_set_polarity (self->cam,
                 g_value_get_boolean (proposed));
         dc1394trigger_polarity_t newpol;
@@ -1012,7 +1014,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (id == CAM_DC1394_CNTL_TRIGGER_SOURCE) {
+    if (!strcmp (ctl->id, "trigger-source")) {
         dc1394_external_trigger_set_source (self->cam,
                 val + DC1394_TRIGGER_SOURCE_MIN);
         dc1394trigger_source_t source;
@@ -1021,7 +1023,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (id == CAM_DC1394_CNTL_TRIGGER_NOW) {
+    if (!strcmp (ctl->id, "trigger-now")) {
         dc1394_software_trigger_set_power (self->cam,
                 g_value_get_boolean (proposed));
         dc1394switch_t power;
@@ -1031,7 +1033,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (id == DC1394_FEATURE_TRIGGER) {
+    if (!strcmp (ctl->id, "trigger")) {
         if (val == 0)
             dc1394_external_trigger_set_power (self->cam, DC1394_OFF);
         else {
@@ -1048,29 +1050,29 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
         /* Enable or disable other trigger-related controls accordingly */
         CamUnitControl * ctl2;
-        ctl2 = cam_unit_get_control_by_id (super,
-                CAM_DC1394_CNTL_TRIGGER_POLARITY);
+        ctl2 = cam_unit_find_control (super, "trigger-polarity");
         if (ctl2)
             cam_unit_control_set_enabled (ctl2, f.is_on);
 
-        ctl2 = cam_unit_get_control_by_id (super,
-                CAM_DC1394_CNTL_TRIGGER_SOURCE);
+        ctl2 = cam_unit_find_control (super, "trigger-source");
         if (ctl2)
             cam_unit_control_set_enabled (ctl2, f.is_on);
 
-        ctl2 = cam_unit_get_control_by_id (super,
-                CAM_DC1394_CNTL_TRIGGER_NOW);
+        ctl2 = cam_unit_find_control (super, "trigger-now");
         if (ctl2)
             cam_unit_control_set_enabled (ctl2, f.is_on);
         return TRUE;
     }
 
-    if (flags & CAM_DC1394_CNTL_FLAG_STATE) {
+    char ctlid[64];
+    strncpy (ctlid, ctl->id, 64);
+    char * suffix = strstr (ctlid, "-mode");
+    if (suffix) {
         if (val == 0)
-            dc1394_feature_set_power (self->cam, id, DC1394_OFF);
+            dc1394_feature_set_power (self->cam, f.id, DC1394_OFF);
         else {
-            dc1394_feature_set_power (self->cam, id, DC1394_ON);
-            dc1394_feature_set_mode (self->cam, id, (val == 1) ?
+            dc1394_feature_set_power (self->cam, f.id, DC1394_ON);
+            dc1394_feature_set_mode (self->cam, f.id, (val == 1) ?
                     DC1394_FEATURE_MODE_AUTO : DC1394_FEATURE_MODE_MANUAL);
         }
         dc1394_get_camera_feature (self->cam, &f);
@@ -1081,20 +1083,25 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         else
             g_value_set_int (actual, CAM_DC1394_MENU_MANUAL);
 
-        CamUnitControl * ctl2 = cam_unit_get_control_by_id (super, id);
-        if (!ctl2) return TRUE;
-
-        if (id == DC1394_FEATURE_WHITE_BALANCE) {
+        *suffix = '\0';
+        if (!strcmp (ctlid, "white-balance")) {
+            CamUnitControl * ctl2 = cam_unit_find_control (super,
+                    "white-balance-red");
             cam_unit_control_modify_int (ctl2, f.min, f.max, 1,
                     f.is_on && !f.auto_active);
             cam_unit_control_force_set_int (ctl2, f.RV_value);
-            CamUnitControl * ctl3 = cam_unit_get_control_by_id (super,
-                    id | CAM_DC1394_CNTL_FLAG_ALT);
+            CamUnitControl * ctl3 = cam_unit_find_control (super,
+                    "white-balance-blue");
             cam_unit_control_modify_int (ctl3, f.min, f.max, 1,
                     f.is_on && !f.auto_active);
             cam_unit_control_force_set_int (ctl3, f.BU_value);
+            return TRUE;
         }
-        else if (ctl2->type == CAM_UNIT_CONTROL_TYPE_INT) {
+
+        CamUnitControl * ctl2 = cam_unit_find_control (super, ctlid);
+        if (!ctl2) return TRUE;
+
+        if (ctl2->type == CAM_UNIT_CONTROL_TYPE_INT) {
             cam_unit_control_modify_int (ctl2, f.min, f.max, 1,
                     f.is_on && !f.auto_active);
             cam_unit_control_force_set_int (ctl2, f.value);
@@ -1108,16 +1115,16 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (id == DC1394_FEATURE_WHITE_BALANCE) {
+    if (f.id == DC1394_FEATURE_WHITE_BALANCE) {
         dc1394_get_camera_feature (self->cam, &f);
-        if (flags & CAM_DC1394_CNTL_FLAG_ALT)
+        if (strstr (ctl->id, "blue"))
             dc1394_feature_whitebalance_set_value (self->cam,
                     val, f.RV_value);
         else
             dc1394_feature_whitebalance_set_value (self->cam,
                     f.BU_value, val);
         dc1394_get_camera_feature (self->cam, &f);
-        if (flags & CAM_DC1394_CNTL_FLAG_ALT)
+        if (strstr (ctl->id, "blue"))
             g_value_set_int (actual, f.BU_value);
         else
             g_value_set_int (actual, f.RV_value);
@@ -1126,7 +1133,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
     if (G_VALUE_TYPE (proposed) == G_TYPE_FLOAT) {
         float fval = g_value_get_float (proposed);
-        dc1394_feature_set_absolute_value (self->cam, id, fval);
+        dc1394_feature_set_absolute_value (self->cam, f.id, fval);
         dc1394_get_camera_feature (self->cam, &f);
         if (f.readout_capable)
             g_value_set_float (actual, f.abs_value);
@@ -1134,7 +1141,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
             g_value_copy (proposed, actual);
     }
     else {
-        dc1394_feature_set_value (self->cam, id, val);
+        dc1394_feature_set_value (self->cam, f.id, val);
         dc1394_get_camera_feature (self->cam, &f);
         if (f.readout_capable)
             g_value_set_int (actual, f.value);
