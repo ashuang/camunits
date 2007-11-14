@@ -114,7 +114,7 @@ static CamUnitControl *
 cam_unit_control_new_basic (const char *id, const char *name, 
         int type, int enabled)
 {
-    dbg (DBG_CONTROL, "new unit control [%s]\n", name);
+    dbg (DBG_CONTROL, "new unit control [%s][%s]\n", id, name);
     CamUnitControl *self = g_object_new (CAM_TYPE_UNIT_CONTROL, NULL);
     self->type = type;
     self->id = strdup (id);

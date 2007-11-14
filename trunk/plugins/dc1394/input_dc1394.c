@@ -28,7 +28,7 @@
 
 #define NUM_BUFFERS 60
 
-#define DC1394_DRIVER_NAME "dc1394"
+#define DC1394_PACKAGE "input.dc1394"
 
 #define VENDOR_ID_POINT_GREY 0xb09d
 
@@ -49,7 +49,7 @@ cam_dc1394_driver_init (CamDC1394Driver * self)
 {
     dbg (DBG_DRIVER, "dc1394 driver constructor\n");
     CamUnitDriver * super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_package (super, DC1394_DRIVER_NAME);
+    cam_unit_driver_set_package (super, DC1394_PACKAGE);
 
     self->cameras = NULL;
     self->num_cameras = 0;
@@ -100,12 +100,12 @@ driver_start (CamUnitDriver * super)
         char cam_name[256];
         if (0 == config_util_cam_uid_to_name (NULL, uid, cam_name, 
                     sizeof (cam_name))) {
-            snprintf (id, sizeof (id), "%s:%s", DC1394_DRIVER_NAME, cam_name);
+            snprintf (id, sizeof (id), "%s:%s", DC1394_PACKAGE, cam_name);
         } else {
-            snprintf (id, sizeof (id), "%s:%d", DC1394_DRIVER_NAME, id_num++);
+            snprintf (id, sizeof (id), "%s:%d", DC1394_PACKAGE, id_num++);
         }
 #else
-        snprintf (id, sizeof (id), "%s:%d", DC1394_DRIVER_NAME, id_num++);
+        snprintf (id, sizeof (id), "%s:%d", DC1394_PACKAGE, id_num++);
 #endif
 //        cam_unit_driver_add_unit_description (super, name, id, i,
         CamUnitDescription * udesc = 
