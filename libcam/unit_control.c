@@ -244,10 +244,12 @@ cam_unit_control_new_float (const char *id, const char *name,
 {
     dbg (DBG_CONTROL, "[%s] - <%f, %f> step %f initial %f enabled %d\n",
             name, min, max, step, initial_val, enabled);
+#if 0
     if (min >= max || initial_val < min || initial_val > max || step == 0) {
         dbg (DBG_CONTROL, "refusing to create integer control\n");
         return NULL;
     }
+#endif
     CamUnitControl *self = cam_unit_control_new_basic (id, name, 
             CAM_UNIT_CONTROL_TYPE_FLOAT, enabled);
 

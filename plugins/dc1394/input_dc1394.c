@@ -802,6 +802,7 @@ add_all_camera_controls (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
     dc1394featureset_t features;
+    CamUnitControl * ctl;
 
     dc1394_get_camera_feature_set (self->cam, &features);
 
@@ -925,11 +926,13 @@ add_all_camera_controls (CamUnit * super)
 
             char *ctl_id = g_strdup_printf ("%s-mode", feature_ids[i]);
 
-            cam_unit_add_control_enum (super, 
+            ctl = cam_unit_add_control_enum (super, 
                     ctl_id,
 //                    CAM_DC1394_CNTL_FLAG_STATE | f->id,
                     (char *) feature_desc[i], cur_val, 1,
                     feature_state_desc, entries_enabled);
+            g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
+                    GINT_TO_POINTER (f->id));
             free (ctl_id);
         }
 
@@ -942,12 +945,16 @@ add_all_camera_controls (CamUnit * super)
         }
 
         if (f->id == DC1394_FEATURE_WHITE_BALANCE) {
-            cam_unit_add_control_int (super, "white-balance-red",
+            ctl = cam_unit_add_control_int (super, "white-balance-red",
                     "W.B. Red", f->min, f->max, 1, f->RV_value,
                     enabled);
-            cam_unit_add_control_int (super, "white-balance-blue",
+            g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
+                    GINT_TO_POINTER (f->id));
+            ctl = cam_unit_add_control_int (super, "white-balance-blue",
                     "W.B. Blue", f->min, f->max, 1, f->BU_value,
                     enabled);
+            g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
+                    GINT_TO_POINTER (f->id));
             continue;
         }
 
@@ -961,10 +968,12 @@ add_all_camera_controls (CamUnit * super)
                         1, 0, 0);
                 continue;
             }
-            cam_unit_add_control_float (super, feature_ids[i],
+            ctl = cam_unit_add_control_float (super, feature_ids[i],
                     (char *) feature_desc[i], f->abs_min,
                     f->abs_max, (f->abs_max - f->abs_min) / NUM_FLOAT_STEPS,
                     f->abs_value, enabled);
+            g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
+                    GINT_TO_POINTER (f->id));
         }
         else {
             if (f->max <= f->min) {
@@ -977,9 +986,11 @@ add_all_camera_controls (CamUnit * super)
                 continue;
             }
 
-            cam_unit_add_control_int (super, feature_ids[i],
+            ctl = cam_unit_add_control_int (super, feature_ids[i],
                     (char *) feature_desc[i], f->min, f->max,
                     1, f->value, enabled);
+            g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
+                    GINT_TO_POINTER (f->id));
         }
     }
 
@@ -1001,9 +1012,6 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
     if (G_VALUE_TYPE (proposed) == G_TYPE_INT)
         val = g_value_get_int (proposed);
-
-    f.id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (ctl),
-                "dc1394-control-id"));
 
     if (!strcmp (ctl->id, "trigger-polarity")) {
         dc1394_external_trigger_set_polarity (self->cam,
@@ -1041,6 +1049,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
             dc1394_external_trigger_set_mode (self->cam, val - 1 +
                     DC1394_TRIGGER_MODE_0);
         }
+        f.id = DC1394_FEATURE_TRIGGER;
         dc1394_get_camera_feature (self->cam, &f);
         if (f.is_on)
             g_value_set_int (actual,
@@ -1063,6 +1072,9 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
             cam_unit_control_set_enabled (ctl2, f.is_on);
         return TRUE;
     }
+
+    f.id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (ctl),
+                "dc1394-control-id"));
 
     char ctlid[64];
     strncpy (ctlid, ctl->id, 64);
