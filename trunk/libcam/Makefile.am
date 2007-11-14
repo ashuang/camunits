@@ -60,5 +60,3 @@ libcaminclude_HEADERS = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libcam.pc
 EXTRA_DIST = libcam.pc.in
-
-LIBTOOL = @LIBTOOL@ --silent

@@ -69,6 +69,8 @@ if test "x$GCC" = "xyes"; then
     AC_SUBST(CFLAGS)
     AC_SUBST(LDFLAGS)
 fi
+LIBTOOL="$LIBTOOL --silent"
+AC_SUBST(LIBTOOL)
 
 AC_OUTPUT([
   Makefile
@@ -79,6 +81,8 @@ AC_OUTPUT([
   m4/Makefile
   libcam/libcam.pc
   po/Makefile.in
+  plugins/Makefile
+  plugins/dc1394/Makefile
 ])
 
 echo "

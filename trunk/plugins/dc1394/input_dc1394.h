@@ -4,8 +4,8 @@
 #include <glib-object.h>
 #include <dc1394/control.h>
 
-#include "unit.h"
-#include "unit_driver.h"
+#include <libcam/unit.h>
+#include <libcam/unit_driver.h>
 
 G_BEGIN_DECLS
 
@@ -50,7 +50,7 @@ GType cam_dc1394_driver_get_type (void);
 /**
  * Constructor
  */
-CamUnitDriver * cam_dc1394_driver_new();
+CamUnitDriver * cam_dc1394_driver_new(void);
 
 
 // =========================================================================
@@ -90,46 +90,6 @@ struct _CamDC1394Class {
 
 GType cam_dc1394_get_type (void);
 
-#define CAM_DC1394_CNTL_ID_MASK 0x0000ffff
-#define CAM_DC1394_CNTL_ID_FLAGS_MASK 0xffff0000
-#define CAM_DC1394_CNTL_FLAG_STATE (1<<16)
-#define CAM_DC1394_CNTL_FLAG_ALT (1<<17)
-
-/* This enum matches the libdc1394 enum exactly, and must stay that way. */
-enum {
-    CAM_DC1394_CNTL_BRIGHTNESS= 416,
-    CAM_DC1394_CNTL_EXPOSURE,
-    CAM_DC1394_CNTL_SHARPNESS,
-    CAM_DC1394_CNTL_WHITE_BALANCE,
-    CAM_DC1394_CNTL_HUE,
-    CAM_DC1394_CNTL_SATURATION,
-    CAM_DC1394_CNTL_GAMMA,
-    CAM_DC1394_CNTL_SHUTTER,
-    CAM_DC1394_CNTL_GAIN,
-    CAM_DC1394_CNTL_IRIS,
-    CAM_DC1394_CNTL_FOCUS,
-    CAM_DC1394_CNTL_TEMPERATURE,
-    CAM_DC1394_CNTL_TRIGGER,
-    CAM_DC1394_CNTL_TRIGGER_DELAY,
-    CAM_DC1394_CNTL_WHITE_SHADING,
-    CAM_DC1394_CNTL_FRAME_RATE,
-    /* 16 reserved features */
-    CAM_DC1394_CNTL_ZOOM,
-    CAM_DC1394_CNTL_PAN,
-    CAM_DC1394_CNTL_TILT,
-    CAM_DC1394_CNTL_OPTICAL_FILTER,
-    /* 12 reserved features */
-    CAM_DC1394_CNTL_CAPTURE_SIZE,
-    CAM_DC1394_CNTL_CAPTURE_QUALITY,
-    /* 14 reserved features */
-
-    /* libcam-only features */
-    CAM_DC1394_CNTL_TRIGGER_POLARITY=2000,
-    CAM_DC1394_CNTL_TRIGGER_SOURCE,
-    CAM_DC1394_CNTL_TRIGGER_NOW,
-    CAM_DC1394_CNTL_PACKET_SIZE,
-};
-
 enum {
     CAM_DC1394_MENU_OFF=0,
     CAM_DC1394_MENU_AUTO=1,
@@ -155,6 +115,9 @@ enum {
     CAM_DC1394_TRIGGER_SOURCE_3=3,
     CAM_DC1394_TRIGGER_SOURCE_SOFTWARE=4,
 };
+
+void cam_plugin_initialize (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
 /** 
  * cam_dc1394_new:
