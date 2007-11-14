@@ -348,6 +348,7 @@ cam_pixel_convert_8u_yuv420p_to_8u_rgb(uint8_t *dest, int dstride, int dwidth,
     }
     return 0;
 }
+
 int
 cam_pixel_convert_8u_yuv420p_to_8u_bgr(uint8_t *dest, int dstride, int dwidth,
         int dheight, const uint8_t *src, int sstride)
