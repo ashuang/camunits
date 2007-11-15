@@ -29,3 +29,7 @@ libcaminclude_HEADERS = \
 	unit_control_widget.h \
 	unit_manager_widget.h \
 	gl_drawing_area.h
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libcam-gtk.pc
+EXTRA_DIST = libcam-gtk.pc.in

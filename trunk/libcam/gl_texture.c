@@ -15,7 +15,7 @@
 
 #define err(args...) fprintf(stderr, args)
 
-struct _GLTexture {
+struct _CamGLTexture {
     int width, height;
     GLenum target;
     GLint int_format;
@@ -30,13 +30,13 @@ struct _GLTexture {
     int max_data_size;
 };
     
-GLTexture *
-gl_texture_new (int width, int height, int max_data_size)
+CamGLTexture *
+cam_gl_texture_new (int width, int height, int max_data_size)
 {
-    GLTexture * t;
+    CamGLTexture * t;
 
-    t = malloc (sizeof (GLTexture));
-    memset (t, 0, sizeof (GLTexture));
+    t = malloc (sizeof (CamGLTexture));
+    memset (t, 0, sizeof (CamGLTexture));
 
     int has_non_power_of_two = 0;
     int has_texture_rectangle = 0;
@@ -103,7 +103,7 @@ gl_texture_new (int width, int height, int max_data_size)
 }
 
 void
-gl_texture_free (GLTexture * t)
+cam_gl_texture_free (CamGLTexture * t)
 {
     glDeleteTextures (1, &t->texname);
     if (t->pbo) {
@@ -113,7 +113,7 @@ gl_texture_free (GLTexture * t)
 }
 
 void
-gl_texture_draw_alpha (GLTexture * t, double alpha)
+cam_gl_texture_draw_alpha (CamGLTexture * t, double alpha)
 {
     glPushAttrib (GL_ENABLE_BIT);
     glEnable (t->target);
@@ -136,7 +136,7 @@ gl_texture_draw_alpha (GLTexture * t, double alpha)
 }
 
 void
-gl_texture_draw (GLTexture * t)
+cam_gl_texture_draw (CamGLTexture * t)
 {
     glEnable (t->target);
     glBindTexture (t->target, t->texname);
@@ -156,7 +156,7 @@ gl_texture_draw (GLTexture * t)
 }
 
 void
-gl_texture_draw_partial (GLTexture * t, double x, double y, double w, double h)
+cam_gl_texture_draw_partial (CamGLTexture * t, double x, double y, double w, double h)
 {
     glEnable (t->target);
     glBindTexture (t->target, t->texname);
@@ -202,7 +202,7 @@ gl_util_draw_frame_at (GLUtil * gu, double x, double y,
 #endif
 
 int
-gl_texture_upload (GLTexture * t, CamPixelFormat pixelformat, int stride,
+cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
         void * data)
 {
     if (t->use_pbo && (stride * t->height) > t->max_data_size) {
@@ -296,7 +296,7 @@ gl_texture_upload (GLTexture * t, CamPixelFormat pixelformat, int stride,
 }
 
 void
-gl_texture_set_interp (GLTexture * t, GLint nearest_or_linear)
+cam_gl_texture_set_interp (CamGLTexture * t, GLint nearest_or_linear)
 {
     t->interp_mode = nearest_or_linear;
 }

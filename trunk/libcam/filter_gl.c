@@ -82,7 +82,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     }
 
     if( self->gl_texture ) {
-        gl_texture_upload (self->gl_texture, infmt->pixelformat, 
+        cam_gl_texture_upload (self->gl_texture, infmt->pixelformat, 
                 infmt->row_stride, inbuf->data);
     }
 
@@ -113,7 +113,7 @@ int cam_filter_gl_draw_gl_init (CamUnit *super)
     dbg(DBG_OUTPUT, "FilterGL draw_gl_init\n");
     if( ! self->gl_texture ) {
 
-        self->gl_texture = gl_texture_new (infmt->width, 
+        self->gl_texture = cam_gl_texture_new (infmt->width, 
                 infmt->height, infmt->height * infmt->row_stride);
     }
     if (!self->gl_texture) return -1;
@@ -133,7 +133,7 @@ int cam_filter_gl_draw_gl (CamUnit *super)
     glLoadIdentity ();
     glOrtho (0, super->fmt->width, super->fmt->height, 0, -1, 1);
 
-    gl_texture_draw (self->gl_texture);
+    cam_gl_texture_draw (self->gl_texture);
     return 0;
 }
 
@@ -142,7 +142,7 @@ int cam_filter_gl_draw_gl_shutdown (CamUnit *super)
 {
     CamFilterGL *self = CAM_FILTER_GL(super);
     if( self->gl_texture ) {
-        gl_texture_free( self->gl_texture );
+        cam_gl_texture_free( self->gl_texture );
         self->gl_texture = NULL;
     }
     self->gl_initialized = 0;
