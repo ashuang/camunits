@@ -12,6 +12,13 @@
  *
  * A CamFrameBuffer object contains a data buffer that typically stores a 
  * image.
+ *
+ * In addition to image data, each CamFrameBuffer object may contain a metadata
+ * dictionary that can be used to attach additional information to a frame
+ * buffer.  Keys and values of the metadata dictionary are both UTF8 strings,
+ * and their exact meaning is left up to the user.  Typical usages may include
+ * identifying the image source (e.g. the UID of a firewire camera), the
+ * exposure settings for the image, etc.
  */
 
 #ifdef __cplusplus
@@ -40,13 +47,6 @@ typedef struct _CamFrameBufferClass CamFrameBufferClass;
  * @bytesused: how many bytes of the data buffer are actually used to store
  *             meaningful data.
  * @timestamp: microseconds since the epoch at which the frame was generated.
- * @bus_timestamp:  If the frame's original source has some native timestamp
- *                  format (firewire, USB, frame grabber, etc.) put that raw
- *                  data here in case the "time of day"-style timestamps need
- *                  to be corrected later.
- * @source_uid:  Unique identifier for the frame's capture source.  For
- *               example, this might identify the camera from which the frame
- *               came.
  */
 struct _CamFrameBuffer {
     GObject parent;
@@ -56,10 +56,12 @@ struct _CamFrameBuffer {
     unsigned int length;
     unsigned int bytesused;
     int64_t timestamp;
-    uint64_t source_uid;
 
     /*< private >*/
     int owns_data;
+    GHashTable *metadata;
+
+    uint64_t source_uid; // deleteme
 };
 
 struct _CamFrameBufferClass {
@@ -93,11 +95,41 @@ CamFrameBuffer * cam_framebuffer_new_alloc (int length);
 /**
  * cam_framebuffer_copy_metadata:
  *
- * Convenience method to copy the @bytesused, @timestamp, and @source_uid)
- * fields from the @from buffer to @self.
+ * Convenience method to copy the metadata dictionary from the @from buffer to
+ * @self.  Also copies the %timestamp and %source_uid fields
  */
 void cam_framebuffer_copy_metadata (CamFrameBuffer *self, 
         const CamFrameBuffer *from);
+
+/**
+ * cam_framebuffer_metadata_get:
+ * @key: a UTF8 string
+ * @val: output parameter.  Should point to an unused char *.  On successful
+ *       return, points to a newly allocated UTF8 string, which must be freed
+ *       with free.  Result is undefined if %key is not in the metadata
+ *       dictionary.
+ * @int: output parameter.  If not NULL, then on return this stores the length
+ *       of val, in bytes.
+ * 
+ * Retrieves an entry from the metadata dictionary of the framebuffer.
+ *
+ * Returns: TRUE if the key was found, FALSE if not
+ */
+gboolean cam_framebuffer_metadata_get (const CamFrameBuffer *self,
+        const char *key, char **val, int *len);
+
+/**
+ * cam_framebuffer_metadata_set:
+ * @key: a UTF8 string.  A copy of this string is made internally.  Cannot be
+ *       NULL.
+ * @value: a UTF8 string.  A copy of this string is made internally.  Cannot be
+ *         NULL.
+ *
+ * Sets an entry in the metadata dictionary of the framebuffer.  Existing
+ * entries are overwritten.
+ */
+void cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
+        const char *value);
 
 #ifdef __cplusplus
 }
