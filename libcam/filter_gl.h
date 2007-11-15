@@ -41,7 +41,7 @@ typedef struct _CamFilterGLClass CamFilterGLClass;
 struct _CamFilterGL {
     CamUnit parent;
 
-    GLTexture * gl_texture;
+    CamGLTexture * gl_texture;
 //    int gl_refcount;
     int gl_initialized;
 };
