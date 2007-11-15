@@ -5,8 +5,6 @@
 #include "unit_driver.h"
 #include "unit_manager.h"
 #include "unit_chain.h"
-#include "filter_bayer.h"
-#include "convert_colorspace.h"
 
 /**
  * SECTION:cam

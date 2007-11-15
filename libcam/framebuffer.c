@@ -18,12 +18,12 @@ G_DEFINE_TYPE (CamFrameBuffer, cam_framebuffer, G_TYPE_OBJECT);
 
 typedef struct _CamMetadataPair {
     char * key;
-    char * value;
+    uint8_t * value;
     int len;
 } CamMetadataPair;
 
 static CamMetadataPair *
-cam_metadata_pair_new (const char * key, const char * value, int len)
+cam_metadata_pair_new (const char * key, const uint8_t * value, int len)
 {
     CamMetadataPair * p = calloc (1, sizeof (CamMetadataPair));
     p->key = strdup (key);
@@ -122,7 +122,7 @@ cam_framebuffer_copy_metadata (CamFrameBuffer * self,
     g_hash_table_foreach (from->metadata, _copy_keyval, self->metadata);
 }
 
-char *
+uint8_t *
 cam_framebuffer_metadata_get (const CamFrameBuffer * self,
         const char * key, int * len)
 {
@@ -137,7 +137,7 @@ cam_framebuffer_metadata_get (const CamFrameBuffer * self,
 
 void 
 cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
-        const char *value, int len)
+        const uint8_t *value, int len)
 {
     if (!value) {
         g_warning ("refusing to set NULL value in metadata dictionary");
@@ -149,11 +149,4 @@ cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
     }
     CamMetadataPair * p = cam_metadata_pair_new (key, value, len);
     g_hash_table_replace (self->metadata, p->key, p);
-}
-
-void
-cam_framebuffer_metadata_set_string (CamFrameBuffer *self,
-        const char *key, const char *value)
-{
-    cam_framebuffer_metadata_set (self, key, value, strlen (value));
 }

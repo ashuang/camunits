@@ -27,5 +27,5 @@ libcaminclude_HEADERS = \
 	unit_chain_gl_widget.h \
 	unit_chain_widget.h \
 	unit_control_widget.h \
-	unit_manager_widget.h 
-
+	unit_manager_widget.h \
+	gl_drawing_area.h
