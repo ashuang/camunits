@@ -114,12 +114,12 @@ void cam_framebuffer_copy_metadata (CamFrameBuffer *self,
  * will only be valid as long as the value is in the dictionary and the
  * CamFramebuffer is not destroyed.  Returns NULL if the key is not found.
  */
-char * cam_framebuffer_metadata_get (const CamFrameBuffer * self,
+uint8_t * cam_framebuffer_metadata_get (const CamFrameBuffer * self,
         const char * key, int * len);
 
 /**
  * cam_framebuffer_metadata_set:
- * @key: The dictionary key, must be ASCII.  A copy of this string is made
+ * @key: The dictionary key, must be UTF8.  A copy of this string is made
  *      internally.  Cannot be NULL.
  * @value: The dictionary value.  A copy of this data is made internally.
  *      Cannot be NULL.
@@ -129,21 +129,7 @@ char * cam_framebuffer_metadata_get (const CamFrameBuffer * self,
  * entries are overwritten.
  */
 void cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
-        const char *value, int len);
-
-/**
- * cam_framebuffer_metadata_set_string:
- * @key: The dictionary key, must be ASCII.  A copy of this string is made
- *      internally.  Cannot be NULL.
- * @value: The dictionary value.  A copy of this data is made internally.
- *      Cannot be NULL.
- * @len: The length of @value in bytes.
- *
- * Sets an entry in the metadata dictionary of the framebuffer, where value is
- * a NULL-terminated string (UTF8 suggested).  Existing entries are overwritten.
- */
-void cam_framebuffer_metadata_set_string (CamFrameBuffer *self,
-        const char *key, const char *value);
+        const uint8_t *value, int len);
 
 #ifdef __cplusplus
 }
