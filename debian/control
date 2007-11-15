@@ -3,13 +3,13 @@ Section: libs
 Priority: extra
 Maintainer: Albert Huang <ashuang@alum.mit.edu>
 Build-Depends: debhelper (>> 3.0.0), gcc (>= 3.0.0), linux-libc-dev, mesa-common-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.12.0), libdc1394-20-dev (>= 2.0.0)
-Standards-Version: 3.6.1
+Standards-Version: 3.7.1
 
-Package: libcam-0-dev
+Package: libcam0-dev
 Provides: libcam-dev
 Section: libdevel
 Architecture: amd64 i386 
-Depends: libcam-0 (= ${Source-Version}), libc6-dev
+Depends: libcam0 (= ${Source-Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
@@ -18,7 +18,7 @@ Description: device-independent image acquisition and processing API
  .
  This package contains development files.
 
-Package: libcam-0
+Package: libcam0
 Section: libs
 Architecture: amd64 i386 
 Depends: ${shlibs:Depends}
