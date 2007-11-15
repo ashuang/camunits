@@ -2,14 +2,16 @@ source: libcam
 Section: libs
 Priority: extra
 Maintainer: Albert Huang <ashuang@alum.mit.edu>
-Build-Depends: debhelper (>> 3.0.0), gcc (>= 3.0.0), linux-libc-dev, mesa-common-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.12.0), libdc1394-20-dev (>= 2.0.0)
+Build-Depends: debhelper (>> 4.2.0), gcc (>= 3.0.0), linux-libc-dev, mesa-common-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.12.0), libdc1394-20-dev (>= 2.0.0), cdbs
 Standards-Version: 3.7.2
+Xs-Vcs-Svn: https://libcam.googlecode.com/svn/debian/trunk
+Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
 
 Package: libcam0-dev
 Provides: libcam-dev
 Section: libdevel
 Architecture: amd64 i386 
-Depends: libcam0 (= ${Source-Version}), libc6-dev
+Depends: libcam0 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
