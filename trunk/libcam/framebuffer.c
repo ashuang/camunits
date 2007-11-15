@@ -16,6 +16,33 @@ static void cam_framebuffer_finalize (GObject *obj);
 
 G_DEFINE_TYPE (CamFrameBuffer, cam_framebuffer, G_TYPE_OBJECT);
 
+typedef struct _CamMetadataPair {
+    char * key;
+    char * value;
+    int len;
+} CamMetadataPair;
+
+static CamMetadataPair *
+cam_metadata_pair_new (const char * key, const char * value, int len)
+{
+    CamMetadataPair * p = calloc (1, sizeof (CamMetadataPair));
+    p->key = strdup (key);
+    p->len = len;
+    p->value = malloc (len + 1);
+    memcpy (p->value, value, len);
+    p->value[len] = '\0';
+    return p;
+}
+
+static void
+cam_metadata_pair_free (void * data)
+{
+    CamMetadataPair * p = data;
+    free (p->key);
+    free (p->value);
+    free (p);
+}
+
 static void
 cam_framebuffer_init (CamFrameBuffer *self)
 {
@@ -27,7 +54,7 @@ cam_framebuffer_init (CamFrameBuffer *self)
     self->owns_data = 0;
 
     self->metadata = g_hash_table_new_full (g_str_hash, g_str_equal,
-            free, free);
+            NULL, cam_metadata_pair_free);
 }
 
 static void
@@ -79,7 +106,10 @@ static void
 _copy_keyval (void *key, void *value, void *user_data)
 {
     GHashTable *dest_ht = user_data;
-    g_hash_table_replace (dest_ht, strdup (key), strdup (value));
+    CamMetadataPair * src = value;
+    CamMetadataPair * p = cam_metadata_pair_new (src->key, src->value,
+            src->len);
+    g_hash_table_replace (dest_ht, p->key, p);
 }
 
 void
@@ -92,24 +122,22 @@ cam_framebuffer_copy_metadata (CamFrameBuffer * self,
     g_hash_table_foreach (from->metadata, _copy_keyval, self->metadata);
 }
 
-gboolean 
-cam_framebuffer_metadata_get (const CamFrameBuffer *self,
-        const char *key, char **val, int *len)
+char *
+cam_framebuffer_metadata_get (const CamFrameBuffer * self,
+        const char * key, int * len)
 {
-    char *_val = g_hash_table_lookup (self->metadata, key);
-    if (!_val) {
-        if (val) *val = NULL;
-        if (len) *len = 0;
-        return FALSE;
-    }
-    if (len) *len = strlen (_val);
-    if (val) *val = strdup (_val);
-    return TRUE;
+    CamMetadataPair * p = g_hash_table_lookup (self->metadata, key);
+    if (!p)
+        return NULL;
+
+    if (len)
+        *len = p->len;
+    return p->value;
 }
 
 void 
 cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
-        const char *value)
+        const char *value, int len)
 {
     if (!value) {
         g_warning ("refusing to set NULL value in metadata dictionary");
@@ -119,5 +147,13 @@ cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
         g_warning ("refusing to set NULL key in metadata dictionary");
         return;
     }
-    g_hash_table_replace (self->metadata, strdup (key), strdup (value));
+    CamMetadataPair * p = cam_metadata_pair_new (key, value, len);
+    g_hash_table_replace (self->metadata, p->key, p);
+}
+
+void
+cam_framebuffer_metadata_set_string (CamFrameBuffer *self,
+        const char *key, const char *value)
+{
+    cam_framebuffer_metadata_set (self, key, value, strlen (value));
 }
