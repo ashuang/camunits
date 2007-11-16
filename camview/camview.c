@@ -234,7 +234,7 @@ int main (int argc, char **argv)
     state_t *self = g_self;
     self->cmdline_input_id = NULL;
 
-    char *optstring = "hi:C:";
+    char *optstring = "hi:";
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
