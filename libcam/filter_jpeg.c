@@ -188,7 +188,7 @@ term_source (j_decompress_ptr cinfo)
 {
 }
 
-int
+static int
 jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride)
 {

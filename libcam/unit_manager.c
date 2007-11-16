@@ -10,6 +10,7 @@
 #include "filter_gl.h"
 #include "filter_fast_bayer.h"
 #include "convert_colorspace.h"
+#include "convert_to_rgb8.h"
 #include "filter_jpeg.h"
 
 #ifdef USE_V4L2
@@ -309,7 +310,6 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     cam_unit_manager_add_driver (self, v4l_driver);
 #endif
 
-
 #ifdef ENABLE_DC1394
     CamUnitDriver *dc1394_driver = cam_dc1394_driver_new ();
     cam_unit_manager_add_driver (self, dc1394_driver);
@@ -324,6 +324,9 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
 
     CamUnitDriver *cconv_filter = cam_color_conversion_filter_driver_new ();
     cam_unit_manager_add_driver (self, cconv_filter);
+
+    CamUnitDriver *torgb8 = cam_convert_to_rgb8_driver_new ();
+    cam_unit_manager_add_driver (self, torgb8);
 
     CamUnitDriver *filter_gl_driver = cam_filter_gl_driver_new ();
     cam_unit_manager_add_driver (self, filter_gl_driver);

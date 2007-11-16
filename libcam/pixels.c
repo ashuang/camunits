@@ -592,6 +592,44 @@ cam_pixel_convert_8u_yuv422_to_8u_bgra(uint8_t *dest, int dstride, int dwidth,
     return 0;
 }
 
+int 
+cam_pixel_convert_8u_yuv422_to_8u_rgb(uint8_t *dest, int dstride, int dwidth,
+        int dheight, const uint8_t *src, int sstride)
+{
+    int i, j;
+
+    for (i = 0; i < dheight; i++) {
+        uint8_t * drow = dest + i * dstride;
+        const uint8_t * srow = src + i * sstride;
+        for (j = 0; j < dwidth / 2; j++) {
+            uint8_t y1 = srow[4*j+0];
+            uint8_t u  = srow[4*j+1];
+            uint8_t y2 = srow[4*j+2];
+            uint8_t v  = srow[4*j+3];
+
+            int cb = ((u-128) * 454)>>8;
+            int cr = ((v-128) * 359)>>8;
+            int cg = ((v-128) * 183 + (u-128) * 88)>>8;
+            int r, g, b;
+
+            r = y1 + cr;
+            b = y1 + cb;
+            g = y1 - cg;
+            drow[6*j+0] = MAX(0, MIN(255,r));
+            drow[6*j+1] = MAX(0, MIN(255,g));
+            drow[6*j+2] = MAX(0, MIN(255,b));
+
+            r = y2 + cr;
+            b = y2 + cb;
+            g = y2 - cg;
+            drow[6*j+3] = MAX(0, MIN(255,r));
+            drow[6*j+4] = MAX(0, MIN(255,g));
+            drow[6*j+5] = MAX(0, MIN(255,b));
+        }
+    }
+    return 0;
+}
+
 int
 cam_pixel_replicate_border_8u (uint8_t * src, int sstride, int width, int height)
 {
