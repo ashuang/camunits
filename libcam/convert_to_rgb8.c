@@ -133,6 +133,11 @@ cam_convert_to_rgb8_stream_init (CamUnit * super,
         return -1;
 
     const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
+    if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
+        self->cc_func = NULL;
+        return 0;
+    }
+
     for (GList *citer=self->conversions; citer; citer=citer->next) {
         conv_info_t *ci = (conv_info_t*) citer->data;
         if (ci->inpfmt  == infmt->pixelformat) {
@@ -140,8 +145,6 @@ cam_convert_to_rgb8_stream_init (CamUnit * super,
             return 0;
         }
     }
-    dbg (DBG_INPUT, 
-            "ColorConversion couldn't find appropriate conversion function\n");
     cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
     return -1;
 }
@@ -152,6 +155,10 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 {
     CamConvertToRgb8 * self = CAM_CONVERT_TO_RGB8 (super);
     dbg(DBG_FILTER, "[%s] iterate\n", cam_unit_get_name(super));
+
+    if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
+        cam_unit_produce_frame (super, inbuf, infmt);
+    }
 
     if (!self->cc_func) return;
 
@@ -178,6 +185,12 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     cam_unit_remove_all_output_formats (super);
     if (!infmt) return;
 
+    if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
+        cam_unit_add_output_format_full (super, infmt->pixelformat,
+                infmt->name, infmt->width, infmt->height, infmt->row_stride,
+                infmt->max_data_size);
+        return;
+    }
     for (GList *citer=self->conversions; citer; citer=citer->next) {
         conv_info_t *ci = (conv_info_t*) citer->data;
 
@@ -188,6 +201,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB,
                     NULL, infmt->width, infmt->height, 
                     stride, max_data_size);
+            return;
         }
     }
 }
