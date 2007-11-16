@@ -32,6 +32,8 @@ libcam_la_SOURCES = \
 	gl_texture.c \
 	convert_colorspace.c \
 	convert_colorspace.h \
+	convert_to_rgb8.c \
+	convert_to_rgb8.h \
 	filter_fast_bayer.c \
 	filter_fast_bayer.h \
 	filter_jpeg.c \
