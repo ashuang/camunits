@@ -1,0 +1,4 @@
+debian/tmp/usr/include/libcam/*
+debian/tmp/usr/lib/lib*.so
+debian/tmp/usr/lib/lib*.la
+debian/tmp/usr/lib/pkgconfig/*.pc

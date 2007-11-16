@@ -9,26 +9,46 @@ Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
 
 Package: libcam0-dev
 Provides: libcam-dev
-Section: libdevel
+Section: libs
 Architecture: amd64 i386 
 Depends: libcam0 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
- processing images.  Supported image acquisition methods are: V4L, V4L2, IEEE
- 1394.
+ processing images.
  .
  This package contains development files.
 
 Package: libcam0
 Section: libs
 Architecture: amd64 i386 
+Suggests: libcam0-plugins-dc1394, libcam0-utils
 Depends: ${shlibs:Depends}
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
- processing images.  Supported image acquisition methods are: V4L, V4L2, IEEE
- 1394.
+ processing images.
  .
  This package contains shared libraries. 
+
+Package: libcam0-plugins-dc1394
+Section: libs
+Architecture: amd64 i386 
+Depends: ${shlibs:Depends}
+Description: IEEE 1394 Digital Camera device input plugins for libcam
+ libcam is a library primarily intended for robotics and machine vision
+ researchers.  It provides a device-independent API for acquiring, logging, and
+ processing images.
+ .
+ This package contains plugins to provide libcam programs with access to
+ IEEE 1394 Digital Camera devices. 
+
+Package: libcam0-utils
+Section: utils
+Architecture: amd64 i386 
+Depends: ${shlibs:Depends}
+Description: utility programs for libcam
+ This package contains utility programs to support users of the libcam image
+ acquisition and processing API.  It provides camview, a program for viewing
+ image sources and testing image processing chains.
 

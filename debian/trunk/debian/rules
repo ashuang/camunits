@@ -2,5 +2,8 @@
 
 #DEB_DH_ALWAYS_EXCLUDE = README
 
+#DEB_SHLIBDEPS_INCLUDE = debian/libcam/usr/lib
+
 include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/buildcore.mk
 include /usr/share/cdbs/1/class/autotools.mk
