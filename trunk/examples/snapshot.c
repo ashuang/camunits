@@ -9,30 +9,21 @@
 
 typedef struct _state_t {
     GMainLoop *mainloop;
+    char filename[4096];
+    int write_count;
 } state_t;
 
-int pgm_write (FILE *fp, const uint8_t *pixels,
-        int width, int height, int rowstride)
+static void
+print_usage_and_inputs (const char *progname, CamUnitManager *manager)
 {
-    fprintf(fp, "P5\n%d\n%d\n%d\n", width, height, 255);
-    int i, count;
-    for (i=0; i<height; i++){
-        count = fwrite(pixels + i*rowstride, width, 1, fp);
-        if (1 != count) return -1;
+    fprintf (stderr, "usage: %s <input_id>\n\n", progname);
+    fprintf (stderr, "Available inputs:\n\n"); 
+    GList *udlist = cam_unit_manager_list_package (manager, "input", TRUE);
+    for (GList *uditer=udlist; uditer; uditer=uditer->next) {
+        CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION(uditer->data);
+        printf("  %s  (%s)\n", udesc->unit_id, udesc->name);
     }
-    return 0;
-}
-
-int ppm_write (FILE *fp, const uint8_t *pixels,
-        int width, int height, int rowstride)
-{
-    fprintf(fp, "P6 %d %d %d\n", width, height, 255);
-    int i, count;
-    for (i=0; i<height; i++){
-        count = fwrite(pixels + i*rowstride, width*3, 1, fp);
-        if (1 != count) return -1;
-    }
-    return 0;
+    g_list_free(udlist);
 }
 
 static void
@@ -40,18 +31,26 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit,
         const CamFrameBuffer *buf, void *user_data)
 {
     state_t *s = user_data;
-    FILE *fp = fopen ("snapshot-output.pgm", "wb");
+    if (s->write_count) return;
+    FILE *fp = fopen (s->filename, "wb");
     if (!fp) {
         perror ("fopen");
         g_main_loop_quit (s->mainloop);
         return;
     }
 
-    // write the image to disk
+    // write the image to disk as a PPM
     const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
-    pgm_write (fp, buf->data, fmt->width, fmt->height, fmt->row_stride);
-    
+    fprintf(fp, "P6 %d %d %d\n", fmt->width, fmt->height, 255);
+    for (int i=0; i<fmt->height; i++){
+        int count = fwrite(buf->data + i*fmt->row_stride, fmt->width*3, 1, fp);
+        if (1 != count) {
+            perror ("fwrite");
+        }
+    }
     fclose (fp);
+    printf ("wrote %s\n", s->filename);
+    s->write_count++;
     g_main_loop_quit (s->mainloop);
 }
 
@@ -61,26 +60,43 @@ int main(int argc, char **argv)
 
     state_t s;
     memset (&s, 0, sizeof (s));
+    sprintf (s.filename, "snapshot-output.ppm");
 
     // create the GLib mainloop
     s.mainloop = g_main_loop_new (NULL, FALSE);
 
     // create the image processing chain
-    CamUnitChain * chain = cam_unit_chain_new();
+    CamUnitChain * chain = cam_unit_chain_new ();
 
-    // create an input unit
-    cam_unit_chain_add_unit_by_id(chain, "input:example_input");
+    // abort if no input unit was specified
+    if (argc < 2) {
+        print_usage_and_inputs (argv[0], chain->manager);
+        goto failed;
+    }
+    const char *input_id = argv[1];
 
-    // create a colorspace converter
-    CamUnit *color_converter = cam_unit_chain_add_unit_by_id(chain, 
-                    "convert:colorspace");
+    // instantiate the input unit
+    if (! cam_unit_chain_add_unit_by_id (chain, input_id)) {
+        fprintf (stderr, "Oh no!  Couldn't create input unit [%s].\n\n", 
+                input_id);
+        print_usage_and_inputs (argv[0], chain->manager);
+        goto failed;
+    }
 
-    // example_input always generates RGB, so convert it to grayscale for kicks
-    cam_unit_set_preferred_format (color_converter,
-            CAM_PIXEL_FORMAT_GRAY, 0, 0);
+    // create a unit to convert the input data to 8-bit RGB
+    CamUnit *to_rgb8 = cam_unit_chain_add_unit_by_id (chain, "convert:to_rgb8");
 
     // start the image processing chain
     cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+
+    // did everything start up correctly?
+    CamUnit *faulty_unit = cam_unit_chain_check_status_all_units (chain, 
+                CAM_UNIT_STATUS_STREAMING);
+    if (faulty_unit) {
+        fprintf (stderr, "Unit [%s] is not streaming, aborting...\n",
+                cam_unit_get_name (faulty_unit));
+        goto failed;
+    }
 
     // attach the chain to the glib event loop.
     cam_unit_chain_attach_glib_mainloop (chain, 1000);
@@ -95,10 +111,13 @@ int main(int argc, char **argv)
 
     // cleanup
     g_main_loop_unref (s.mainloop);
-
     cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_IDLE);
-
     g_object_unref (chain);
-
     return 0;
+
+failed:
+    g_main_loop_unref (s.mainloop);
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_IDLE);
+    g_object_unref (chain);
+    return 1;
 }
