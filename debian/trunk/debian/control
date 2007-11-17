@@ -1,8 +1,8 @@
 source: libcam
 Section: libs
 Priority: extra
-Maintainer: Albert Huang <ashuang@alum.mit.edu>
-Build-Depends: debhelper (>> 4.2.0), gcc (>= 3.0.0), linux-libc-dev, mesa-common-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.12.0), libdc1394-20-dev (>= 2.0.0), cdbs
+Maintainer: Albert Huang <albert@csail.mit.edu>
+Build-Depends: debhelper (>> 4.2.0), cdbs, gcc (>= 3.0.0), linux-libc-dev, libgl1-mesa-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.10.0), libdc1394-20-dev, libjpeg62-dev
 Standards-Version: 3.7.2
 Xs-Vcs-Svn: https://libcam.googlecode.com/svn/debian/trunk
 Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk

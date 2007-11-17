@@ -1,5 +1,5 @@
-libcam (0.0.0.svn28-1) unstable; urgency=low
+libcam (0.0.0.svn29-1) unstable; urgency=low
 
   * Initial release.
 
- -- Albert Huang <ashuang@alum.mit.edu>  Wed, 14 Nov 2007 20:41:28 -0500
+ -- Albert Huang <albert@csail.mit.edu>  Wed, 14 Nov 2007 20:41:28 -0500
