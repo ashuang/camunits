@@ -699,6 +699,18 @@ do_seek_to_int64_param (CamLog *self, CamLogFrameInfo *low_frame,
     if (curr_val == desired_val)
         return 0;
 
+    /* Prevent getting stuck in an infinite loop of seeking backwards and
+     * then having to seek forwards to the high frame again. */
+    while (curr_val == high_val) {
+        offset_guess -= high_frame->offset - offset_guess;
+        if (offset_guess < low_frame->offset)
+            offset_guess = low_frame->offset;
+        cam_log_seek_to_offset (self, offset_guess);
+        curr_val = GET_VAL (&self->curr_info);
+    }
+    if (curr_val == desired_val)
+        return 0;
+
     CamLogFrameInfo info;
     memcpy (&info, &self->curr_info, sizeof (CamLogFrameInfo));
     if (curr_val > desired_val)
@@ -716,11 +728,27 @@ cam_log_seek_to_frame (CamLog *self, int frameno)
         return -1;
 
     frameno += self->first_frame_info.frameno;
+
     if (frameno < self->first_frame_info.frameno ||
             frameno > self->last_frame_info.frameno)
         return -1;
 
-    return do_seek_to_int64_param (self, &self->first_frame_info,
+    if (!self->curr_frame)
+        return do_seek_to_int64_param (self, &self->first_frame_info,
+                &self->last_frame_info, frameno,
+                offsetof (CamLogFrameInfo, frameno));
+
+    if (frameno == self->curr_info.frameno)
+        return 0;
+
+    CamLogFrameInfo info;
+    memcpy (&info, &self->curr_info, sizeof (CamLogFrameInfo));
+    if (self->curr_info.frameno > frameno)
+        return do_seek_to_int64_param (self, &self->first_frame_info,
+                &info, frameno,
+                offsetof (CamLogFrameInfo, frameno));
+
+    return do_seek_to_int64_param (self, &info,
             &self->last_frame_info, frameno,
             offsetof (CamLogFrameInfo, frameno));
 }
