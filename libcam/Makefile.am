@@ -37,7 +37,9 @@ libcam_la_SOURCES = \
 	filter_fast_bayer.c \
 	filter_fast_bayer.h \
 	filter_jpeg.c \
-	filter_jpeg.h
+	filter_jpeg.h \
+	output_logger.c \
+	output_logger.h
 
 if LINUX
 libcam_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h

@@ -114,7 +114,6 @@ cam_input_log_init (CamInputLog *self)
     self->next_frame_time = 0;
     self->nframes = 0;
     self->readone = 0;
-    memset (&self->next_frameinfo, 0, sizeof (self->next_frameinfo));
 }
 
 static void
@@ -160,30 +159,30 @@ cam_input_log_new (const char *fname)
 int 
 cam_log_set_file (CamInputLog *self, const char *fname)
 {
-    if (self->camlog) return -1;
+    if (self->camlog)
+        return -1;
 
     self->camlog = cam_log_new (fname, "r");
-    if (! self->camlog) return -1;
+    if (!self->camlog)
+        return -1;
 
-    cam_log_frame_info_t fmd;
-    if (0 != cam_log_peek_next_frame_info (self->camlog, &fmd)) {
+    CamLogFrameFormat format;
+    if (cam_log_get_frame_format (self->camlog, &format) < 0) {
         cam_log_destroy (self->camlog);
         self->camlog = NULL;
         return -1;
     }
 
     int max_data_size;
-    if (cam_pixel_format_stride_meaningful (fmd.pixelformat)) {
-        max_data_size = fmd.height * fmd.stride;
-    } else {
-        max_data_size = fmd.width * fmd.height * 4;
-    }
+    if (cam_pixel_format_stride_meaningful (format.pixelformat))
+        max_data_size = format.height * format.stride;
+    else
+        max_data_size = format.width * format.height * 4;
 
     CamUnit *super = CAM_UNIT (self);
-    cam_unit_add_output_format_full (super, fmd.pixelformat, NULL, 
-            fmd.width, fmd.height, fmd.stride, max_data_size);
+    cam_unit_add_output_format_full (super, format.pixelformat, NULL, 
+            format.width, format.height, format.stride, max_data_size);
 
-    self->first_frameinfo = fmd;
     self->filename = strdup (fname);
 
     self->nframes = cam_log_count_frames (self->camlog);
@@ -192,11 +191,13 @@ cam_log_set_file (CamInputLog *self, const char *fname)
     self->pause_ctl = cam_unit_add_control_boolean (super,
             "pause", "Pause", 0, 1);
 
+#if 0
     const char *adv_mode_options[] = { "Soft", "Hard", NULL };
     int adv_mode_options_enabled[] = { 1, 0, 0 };
 
     self->adv_mode_ctl = cam_unit_add_control_enum (super,
             "mode", "Mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
+#endif
 
     self->adv_speed_ctl = cam_unit_add_control_float (super,
             "speed", "Speed", 0.1, 20, 0.1, 1, 0);
@@ -217,8 +218,6 @@ log_stream_on (CamUnit *super)
     dbg (DBG_INPUT, "log stream on\n");
     CamInputLog *self = CAM_INPUT_LOG (super);
 
-    cam_log_peek_next_frame_info (self->camlog, &self->next_frameinfo);
-
     self->next_frame_time = _timestamp_now ();
 
     cam_unit_set_status (super, CAM_UNIT_STATUS_STREAMING);
@@ -235,11 +234,15 @@ log_try_produce_frame (CamUnit *super)
     dbg (DBG_INPUT, "InputLog iterate [%"PRId64", %"PRId64", %"PRId64"]\n",
             now, self->next_frame_time, late);
 
+#if 0
     int advance_mode = cam_unit_control_get_enum (self->adv_mode_ctl);
+#endif
     int paused = cam_unit_control_get_boolean (self->pause_ctl);
 
+#if 0
     switch (advance_mode) {
         case CAM_INPUT_LOG_ADVANCE_MODE_SOFT:
+#endif
             // paused?
             if (paused && ! self->readone) { 
                 dbg (DBG_INPUT, "InputLog paused\n");
@@ -249,6 +252,7 @@ log_try_produce_frame (CamUnit *super)
             if (paused && self->readone) {
                 dbg(DBG_INPUT, "InputLog paused, but reading one frame\n");
             }
+#if 0
             break;
         case CAM_INPUT_LOG_ADVANCE_MODE_HARD:
             err ("NYI");
@@ -256,39 +260,34 @@ log_try_produce_frame (CamUnit *super)
             return;
             break;
     }
+#endif
 
-    CamFrameBuffer *buf = cam_framebuffer_new_alloc (super->fmt->max_data_size);
-
-    cam_log_frame_info_t frameinfo;
-    if (0 != cam_log_read_next_frame (self->camlog, 
-                &frameinfo, buf->data, buf->length)) {
+    CamFrameBuffer * buf = cam_log_get_frame (self->camlog);
+    if (!buf) {
         dbg (DBG_INPUT, "InputLog EOF?\n");
         self->next_frame_time = now + 1000000;
-        g_object_unref (buf);
         return;
     }
-
-    buf->source_uid = frameinfo.source_uid;
-    buf->bytesused = frameinfo.datalen;
-    buf->timestamp = frameinfo.timestamp;
+    CamLogFrameInfo frameinfo;
+    cam_log_get_frame_info (self->camlog, &frameinfo);
 
     // what is the timestamp of the next frame?
-    if (0 != cam_log_peek_next_frame_info (self->camlog, 
-                &self->next_frameinfo)) {
+    if (cam_log_next_frame (self->camlog) < 0)
         self->next_frame_time = now + 300000;
         // TODO handle EOF properly
-    } else {
+    else {
         // diff log timestamp that with the timestamp of the current
         // frame to get the next frame event time
+        CamLogFrameInfo next_frameinfo;
+        cam_log_get_frame_info (self->camlog, &next_frameinfo);
         int64_t tdiff = 
-            self->next_frameinfo.timestamp - frameinfo.timestamp;
+            next_frameinfo.timestamp - frameinfo.timestamp;
 
         self->next_frame_time = now + tdiff;
         dbg (DBG_INPUT, "usec until next frame: %"PRId64"\n", tdiff);
     }
 
-    cam_unit_control_force_set_int (self->frame_ctl, 
-            self->next_frameinfo.frameno);
+    cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
 
     self->readone = 0;
     dbg (DBG_INPUT, "pushing buffer\n");
@@ -318,21 +317,21 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     } else if (ctl == self->frame_ctl) {
         int next_frameno = g_value_get_int (proposed);
-        g_value_set_int (actual, next_frameno);
-
         dbg (DBG_INPUT, "seeking to frame %d\n", next_frameno);
 
-        cam_log_seek_to_frame (self->camlog, next_frameno);
-        cam_log_peek_next_frame_info (self->camlog, &self->next_frameinfo);
-
-        self->next_frame_time = _timestamp_now ();
-
-        self->readone = 1;
+        if (cam_log_seek_to_frame (self->camlog, next_frameno) == 0) {
+            g_value_set_int (actual, next_frameno);
+            self->next_frame_time = _timestamp_now ();
+            self->readone = 1;
+        }
         return TRUE;
-    } else if (ctl == self->adv_mode_ctl) {
+    }
+#if 0
+    else if (ctl == self->adv_mode_ctl) {
         g_value_copy (proposed, actual);
 
         return TRUE;
     }
+#endif
     return FALSE;
 }

@@ -748,7 +748,6 @@ v4l2_try_produce_frame (CamUnit * super)
     fbuf->timestamp = buf.timestamp.tv_sec * 1000000 + buf.timestamp.tv_usec;
 //    fbuf->bus_timestamp = buf.sequence;
     fbuf->bytesused = buf.bytesused;
-    fbuf->source_uid = 0;
     cam_unit_produce_frame (super, fbuf, super->fmt);
     g_object_unref (fbuf);
 

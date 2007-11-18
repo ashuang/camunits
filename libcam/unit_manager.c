@@ -12,6 +12,7 @@
 #include "convert_colorspace.h"
 #include "convert_to_rgb8.h"
 #include "filter_jpeg.h"
+#include "output_logger.h"
 
 #ifdef USE_V4L2
 #include "input_v4l2.h"
@@ -333,6 +334,9 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
 
     CamUnitDriver *filter_jpeg_driver = cam_filter_jpeg_driver_new ();
     cam_unit_manager_add_driver (self, filter_jpeg_driver);
+
+    CamUnitDriver *logger_driver = cam_logger_unit_driver_new ();
+    cam_unit_manager_add_driver (self, logger_driver);
 
     cam_plugin_load_drivers (self, LIBCAM_PLUGINS_PATH);
 }
