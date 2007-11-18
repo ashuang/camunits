@@ -1097,6 +1097,7 @@ on_formats_combo_changed( GtkComboBox *combo, CamUnitControlWidget *self )
         if (orig_status == CAM_UNIT_STATUS_STREAMING)
             cam_unit_stream_on (self->unit);
     }
+    g_list_free (output_formats);
 }
 
 static void

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include <GL/gl.h>
 
@@ -48,8 +49,13 @@ cam_unit_chain_gl_widget_init (CamUnitChainGLWidget *self)
     gtk_widget_show (self->aspect);
 
     self->gl_area = cam_gl_drawing_area_new (FALSE);
-    gtk_container_add (GTK_CONTAINER (self->aspect), self->gl_area);
-    gtk_widget_show (self->gl_area);
+    g_object_ref_sink (G_OBJECT (self->gl_area));
+    self->msg_area = gtk_label_new ("No units in chain");
+    g_object_ref_sink (G_OBJECT (self->msg_area));
+
+//    gtk_widget_show (self->gl_area);
+    gtk_container_add (GTK_CONTAINER (self->aspect), self->msg_area);
+    gtk_widget_show (self->msg_area);
 
     g_signal_connect (G_OBJECT (self->gl_area), "expose-event",
             G_CALLBACK (on_gl_expose), self);
@@ -97,6 +103,8 @@ cam_unit_chain_gl_widget_finalize (GObject *obj)
         dbgl (DBG_REF, "unref chain [%p]\n", self->chain);
         g_object_unref (self->chain);
     }
+    g_object_unref (G_OBJECT (self->gl_area));
+    g_object_unref (G_OBJECT (self->msg_area));
 
     G_OBJECT_CLASS (cam_unit_chain_gl_widget_parent_class)->finalize (obj);
 }
@@ -238,9 +246,63 @@ blank:
 }
 
 static void
+_set_aspect_widget (CamUnitChainGLWidget *self)
+{
+    int can_render = 0;
+
+    if (self->chain) {
+        GList *units = cam_unit_chain_get_units (self->chain);
+        for (GList *uiter=units; uiter; uiter=uiter->next) {
+            CamUnit *unit = CAM_UNIT (uiter->data);
+            if (cam_unit_get_flags (unit) & CAM_UNIT_RENDERS_GL) {
+                can_render = 1;
+                break;
+            }
+        }
+        g_list_free (units);
+    } else {
+        can_render = 0;
+    }
+
+    GList *cur_wlist = 
+        gtk_container_get_children (GTK_CONTAINER (self->aspect));
+    GtkWidget *cur_child = cur_wlist->data;
+    assert (cur_child);
+    g_list_free (cur_wlist);
+
+    if (can_render) {
+        if (cur_child == self->msg_area) {
+            gtk_container_remove (GTK_CONTAINER (self->aspect), self->msg_area);
+            gtk_container_add (GTK_CONTAINER (self->aspect), self->gl_area);
+            gtk_widget_show (GTK_WIDGET (self->gl_area));
+        } else {
+            assert (cur_child == self->gl_area);
+        }
+    } else {
+        if (cur_child == self->gl_area) {
+            gtk_container_remove (GTK_CONTAINER (self->aspect), self->gl_area);
+            gtk_container_add (GTK_CONTAINER (self->aspect), self->msg_area);
+            gtk_widget_show (GTK_WIDGET (self->msg_area));
+        } else {
+            assert (cur_child == self->msg_area);
+        }
+        GList *units = cam_unit_chain_get_units (self->chain);
+        if (units) {
+            gtk_label_set_text (GTK_LABEL (self->msg_area),
+                    "No renderable units in chain.\nDo you need to add render:opengl?");
+        } else {
+            gtk_label_set_text (GTK_LABEL (self->msg_area),
+                    "No units in chain.");
+        }
+        g_list_free (units);
+    }
+}
+
+static void
 on_unit_added (CamUnitChain *chain, CamUnit *unit, void *user_data)
 {
     CamUnitChainGLWidget *self = CAM_UNIT_CHAIN_GL_WIDGET (user_data);
+    _set_aspect_widget (self);
     uint32_t flags = cam_unit_get_flags (unit);
     if (flags & CAM_UNIT_RENDERS_GL) {
         if (cam_unit_get_status (unit) != CAM_UNIT_STATUS_IDLE) {
@@ -260,6 +322,7 @@ static void
 on_unit_removed (CamUnitChain *chain, CamUnit *unit, void *user_data)
 {
     uint32_t flags = cam_unit_get_flags (unit);
+    _set_aspect_widget (CAM_UNIT_CHAIN_GL_WIDGET (user_data));
     if (flags & CAM_UNIT_RENDERS_GL) {
         dbg (DBG_GUI, "UnitChainGL:  shutting down GL for removed unit [%s]\n", 
                 cam_unit_get_name (unit));

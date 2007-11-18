@@ -31,6 +31,7 @@ struct _CamUnitChainGLWidget
     GtkWidget *vbox;
     GtkWidget *aspect;
     GtkWidget *gl_area;
+    GtkWidget *msg_area;
 
     double aspect_ratio;
 };
