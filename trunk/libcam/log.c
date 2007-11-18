@@ -11,23 +11,12 @@
 
 #include "log.h"
 #include "pixels.h"
+#include "dbg.h"
 
 #ifndef MAX
 #define MAX(a,b) ((a)>(b)?(a):(b))
 #endif
 
-#if 0
-#define dbg(args...) fprintf(stderr, args)
-#define dbgl(args...) { fprintf (stderr, "%s:%d ", __FILE__, __LINE__); \
-    fprintf (stderr, args); }
-#define USE_DBG
-#else
-#define dbg(args...)
-#define dbgl(args...)
-#endif
-#define errl(args...) { fprintf (stderr, "%s:%d ", __FILE__, __LINE__); \
-    fprintf (stderr, args); }
-#define err(args...) fprintf(stderr, args)
 
 typedef enum {
     CAMLOG_VERSION_INVALID,
@@ -35,8 +24,7 @@ typedef enum {
     CAMLOG_VERSION_0
 } cam_log_version_t;
 
-typedef enum 
-{
+typedef enum {
     CAMLOG_MODE_READ,
     CAMLOG_MODE_WRITE
 } cam_log_mode_t;
@@ -46,22 +34,16 @@ struct _CamLog {
     cam_log_mode_t mode;
     off_t file_size;
 
-    // read mode only
-    cam_log_version_t log_version;
+    CamLogFrameInfo first_frame_info;
+    CamLogFrameInfo last_frame_info;
 
-    cam_log_frame_info_t first_frame_info;
-    cam_log_frame_info_t last_frame_info;
+    CamLogFrameFormat curr_format;
+    CamLogFrameInfo   curr_info;
+    CamFrameBuffer * curr_frame;
+    int64_t curr_data_offset;
 
-    cam_log_frame_info_t next_frame_info;
-    cam_log_frame_info_t prev_frame_info;
-
-    // legacy read mode only
-    int computed_frame_spacing;
-    uint32_t frame_spacing;
-
-    // write mode only
-    uint64_t prev_frame_offset;
-    uint32_t frameno;
+    int64_t next_offset;
+    uint64_t prev_offset;
 };
 
 
@@ -72,10 +54,12 @@ struct _CamLog {
 typedef enum {
     LOG_TYPE_FRAME_DATA = 1,
     LOG_TYPE_FRAME_FORMAT = 2,
-    LOG_TYPE_FRAME_TIMESTAMP = 3,
-    LOG_TYPE_COMMENT = 4,
-    LOG_TYPE_SOURCE_UID = 6,
-    LOG_TYPE_FRAME_INFO_0 = 7,
+    LOG_TYPE_FRAME_TIMESTAMP = 3,   // legacy, from v1
+    LOG_TYPE_COMMENT = 4,           // legacy, from v1
+    LOG_TYPE_SOURCE_UID = 6,        // legacy, from v1
+    LOG_TYPE_FRAME_INFO_0 = 7,      // legacy, from v2
+    LOG_TYPE_FRAME_INFO_1 = 8,
+    LOG_TYPE_METADATA = 9,
     LOG_TYPE_MAX
 } LogType;
 
@@ -90,6 +74,32 @@ typedef enum {
 //    uint32_t frameno;
 //    uint64_t prev_frame_offset;
 #define LOG_FRAME_INFO_0_SIZE 42
+
+// LOG_TYPE_FRAME_FORMAT:
+//    uint16_t width;
+//    uint16_t height;
+//    uint16_t stride;
+//    uint32_t pixelformat;
+
+// LOG_TYPE_FRAME_INFO_1:
+//    uint64_t timestamp;
+//    uint64_t frameno;
+//    uint64_t prev_frame_offset;
+
+// LOG_TYPE_METADATA:
+//    uint16_t num_keys;
+//    num_keys *
+//       uint16_t key_len;
+//       key_len * uint8_t key;
+//       uint8_t reserved; (= 0)
+//       uint32_t value_len;
+//       data_len * uint8_t value;
+
+static inline void
+log_put_uint8 (uint8_t val, FILE * f)
+{
+    fwrite (&val, 1, 1, f);
+};
 
 static inline void
 log_put_uint16 (uint16_t val, FILE * f)
@@ -259,27 +269,25 @@ log_resync (FILE * f)
 }
 // =================================================
 
-static cam_log_version_t cam_log_detect_version (CamLog *self);
-static void legacy_compute_frame_spacing (CamLog *self); // legacy
-static void find_last_frame_info (CamLog *self);
-static int internal_peek_next_frame_info (CamLog *self, 
-        cam_log_frame_info_t *fmd);
+static int find_last_frame_info (CamLog *self);
+static int process_frame (CamLog * self);
 
 CamLog* 
 cam_log_new (const char *fname, const char *mode)
 {
     if (! strcmp (mode, "r") && ! strcmp (mode, "w")) {
-        errl ("mode must be either 'w' or 'r'!!\n");
+        g_warning ("mode must be either 'w' or 'r'");
         return NULL;
     }
 
     CamLog *self = (CamLog*) calloc(1, sizeof(CamLog));
+    dbg (DBG_LOG, "Opening %s...\n", fname);
 
     struct stat statbuf;
     if (mode[0] == 'r') {
         if (stat (fname, &statbuf) < 0) {
             perror ("stat");
-            errl ("Couldn't open [%s]\n", fname);
+            dbg (DBG_LOG, "Couldn't open [%s]\n", fname);
             cam_log_destroy (self);
             return NULL;
         }
@@ -291,41 +299,27 @@ cam_log_new (const char *fname, const char *mode)
     self->fp = fopen(fname, mode);
     if (! self->fp) {
         perror ("fopen");
-        errl ("Couldn't open [%s]\n", fname);
+        dbg (DBG_LOG, "Couldn't open [%s]\n", fname);
         cam_log_destroy (self);
         return NULL;
     }
 
-    self->prev_frame_offset = 0;
-    self->frameno = 0;
+    self->prev_offset = 0;
+    self->curr_info.frameno = 0;
     self->file_size = 0;
 
     if (self->mode == CAMLOG_MODE_READ) {
         self->file_size = statbuf.st_size;
+        dbg (DBG_LOG, "File size %"PRId64" bytes\n", self->file_size);
 
-        // determine the version of this logfile
-        self->log_version = cam_log_detect_version (self);
-        dbgl ("log version: %d\n", self->log_version);
-
-        if (self->log_version == CAMLOG_VERSION_INVALID) {
-            errl ("Not a valid camera logfile:\n");
-            errl ("      [%s]\n", fname);
+        if (find_last_frame_info (self) < 0) {
             cam_log_destroy (self);
             return NULL;
         }
-
-        if (self->log_version == CAMLOG_VERSION_LEGACY) {
-            legacy_compute_frame_spacing (self);
-        }
-
-        find_last_frame_info (self);
-        fseeko (self->fp, 0, SEEK_SET);
-
-        internal_peek_next_frame_info (self, &self->first_frame_info);
-        memcpy (&self->next_frame_info, &self->first_frame_info,
-                sizeof (cam_log_frame_info_t));
-
-        memset (&self->prev_frame_info, 0, sizeof (self->prev_frame_info));
+        rewind (self->fp);
+        process_frame (self);
+        memcpy (&self->first_frame_info, &self->curr_info,
+                sizeof (CamLogFrameInfo));
     }
 
     return self;
@@ -346,7 +340,200 @@ int64_t cam_log_get_file_size (const CamLog *self)
     return self->file_size;
 }
 
+int
+cam_log_next_frame (CamLog * self)
+{
+    return process_frame (self);
+}
+
+int
+cam_log_get_frame_format (CamLog * self, CamLogFrameFormat * format)
+{
+    if (!self->curr_frame)
+        return -1;
+    memcpy (format, &self->curr_format, sizeof (CamLogFrameFormat));
+    return 0;
+}
+
+int
+cam_log_get_frame_info (CamLog * self, CamLogFrameInfo * info)
+{
+    if (!self->curr_frame)
+        return -1;
+    memcpy (info, &self->curr_info, sizeof (CamLogFrameInfo));
+    return 0;
+}
+
+CamFrameBuffer *
+cam_log_get_frame (CamLog * self)
+{
+    if (!self->curr_frame)
+        return NULL;
+    int64_t offset = ftello (self->fp);
+    if (fseeko (self->fp, self->curr_info.data_offset, SEEK_SET) < 0)
+        return NULL;
+    CamFrameBuffer * framebuffer =
+        cam_framebuffer_new_alloc (self->curr_info.data_len);
+    cam_framebuffer_copy_metadata (framebuffer, self->curr_frame);
+    int ret = fread (framebuffer->data, 1, self->curr_info.data_len, self->fp);
+    if (ret != self->curr_info.data_len) {
+        g_object_unref (framebuffer);
+        return NULL;
+    }
+    framebuffer->bytesused = self->curr_info.data_len;
+    fseeko (self->fp, offset, SEEK_SET);
+    return framebuffer;
+}
+
 // =============
+
+static int
+process_frame (CamLog * self)
+{
+    int got_info = 0;
+    int got_data = 0;
+    if (self->curr_frame) {
+        g_object_unref (self->curr_frame);
+        self->curr_frame = NULL;
+    }
+    while (!(got_info && got_data)) {
+        uint16_t type;
+        uint32_t len;
+        FILE * f = self->fp;
+        uint64_t offset = ftello (f);
+        if (log_get_next_field (&type, &len, f) < 0) {
+            dbg (DBG_LOG, "Failed to parse next field at %"PRIu64"\n", offset);
+            return -1;
+        }
+
+        if ((type == LOG_TYPE_FRAME_FORMAT ||
+                type == LOG_TYPE_FRAME_INFO_0) && !self->curr_frame) {
+            self->curr_frame = cam_framebuffer_new_alloc (0);
+            self->curr_info.offset = offset;
+        }
+        else if (!self->curr_frame) {
+            fseeko (f, len, SEEK_CUR);
+            continue;
+        }
+
+        if (type == LOG_TYPE_FRAME_FORMAT) {
+            CamLogFrameFormat * cf = &self->curr_format;
+            if (len != 10) {
+                dbg (DBG_LOG, "Format field had wrong length\n");
+                return -1;
+            }
+            if (log_get_uint16 (&cf->width, f) != 0 ||
+                    log_get_uint16 (&cf->height, f) != 0 ||
+                    log_get_uint16 (&cf->stride, f) != 0 ||
+                    log_get_uint32 (&cf->pixelformat, f) != 0)  {
+                dbg (DBG_LOG, "Error parsing format\n");
+                return -1;
+            }
+        }
+        else if (type == LOG_TYPE_FRAME_INFO_0) {
+            CamLogFrameFormat * cf = &self->curr_format;
+            CamLogFrameInfo * ci = &self->curr_info;
+            uint32_t bus_timestamp, frameno;
+            uint64_t source_uid;
+            if (len != 42)
+                return -1;
+            if (log_get_uint16 (&cf->width, f) != 0 ||
+                    log_get_uint16 (&cf->height, f) != 0 ||
+                    log_get_uint16 (&cf->stride, f) != 0 ||
+                    log_get_uint32 (&cf->pixelformat, f) != 0 ||
+                    log_get_uint64 ((uint64_t*)&ci->timestamp, f) != 0 ||
+                    log_get_uint32 (&bus_timestamp, f) != 0 ||
+                    log_get_uint64 (&source_uid, f) != 0 ||
+                    log_get_uint32 (&frameno, f) != 0 ||
+                    log_get_uint64 (&self->prev_offset, f) != 0)
+                return -1;
+            ci->frameno = frameno;
+            self->curr_frame->timestamp = ci->timestamp;
+            char str[20];
+            sprintf (str, "0x%016"PRIx64, source_uid);
+            cam_framebuffer_metadata_set (self->curr_frame, "Source GUID",
+                    (uint8_t *) str, strlen (str));
+            sprintf (str, "%u", bus_timestamp);
+            cam_framebuffer_metadata_set (self->curr_frame, "Bus Timestamp",
+                    (uint8_t *) str, strlen (str));
+            got_info = 1;
+        }
+        else if (type == LOG_TYPE_FRAME_DATA) {
+            self->curr_info.data_len = len;
+            self->curr_info.data_offset = ftello (f);
+            fseeko (f, len, SEEK_CUR);
+            got_data = 1;
+        }
+        else if (type == LOG_TYPE_FRAME_TIMESTAMP) {
+            uint32_t sec, usec, bus_timestamp;
+            if (len != 12)
+                return -1;
+            if (log_get_uint32 (&sec, f) != 0 ||
+                    log_get_uint32 (&usec, f) != 0 ||
+                    log_get_uint32 (&bus_timestamp, f) != 0) 
+                return -1;
+            self->curr_info.timestamp = (uint64_t) sec * 1000000 + usec;
+            self->curr_frame->timestamp = self->curr_info.timestamp;
+            char str[20];
+            sprintf (str, "%u", bus_timestamp);
+            cam_framebuffer_metadata_set (self->curr_frame, "Bus Timestamp",
+                    (uint8_t *) str, strlen (str));
+            got_info = 1;
+        }
+        else if (type == LOG_TYPE_SOURCE_UID) {
+            uint64_t source_uid;
+            if (len != 8)
+                return -1;
+            if (log_get_uint64 (&source_uid, f) != 0)
+                return -1;
+            char str[20];
+            sprintf (str, "0x%016"PRIx64, source_uid);
+            cam_framebuffer_metadata_set (self->curr_frame, "Source GUID",
+                    (uint8_t *) str, strlen (str));
+        }
+        else if (type == LOG_TYPE_FRAME_INFO_1) {
+            CamLogFrameInfo * ci = &self->curr_info;
+            if (len != 24) {
+                dbg (DBG_LOG, "Info 1 field had wrong length\n");
+                return -1;
+            }
+            if (log_get_uint64 (&ci->timestamp, f) != 0 ||
+                    log_get_uint64 (&ci->frameno, f) != 0 ||
+                    log_get_uint64 (&self->prev_offset, f) != 0) {
+                dbg (DBG_LOG, "Error parsing Info 1 field\n");
+                return -1;
+            }
+            self->curr_frame->timestamp = ci->timestamp;
+            self->prev_offset = offset - self->prev_offset;
+            got_info = 1;
+        }
+        else if (type == LOG_TYPE_METADATA) {
+            int b = 2, i;
+            uint16_t num;
+            if (log_get_uint16 (&num, f) != 0)
+                return -1;
+            for (i = 0; i < num && b < len; i++) {
+                uint16_t key_len;
+                uint32_t value_len;
+                if (log_get_uint16 (&key_len, f) != 0)
+                    return -1;
+                char key[key_len + 1];
+                fread (key, 1, key_len, f);
+                key[key_len] = '\0';
+                fseeko (f, 1, SEEK_CUR);
+                if (log_get_uint32 (&value_len, f) != 0)
+                    return -1;
+                uint8_t value[value_len];
+                fread (value, 1, value_len, f);
+                b += 2 + key_len + 1 + 4 + value_len;
+                cam_framebuffer_metadata_set (self->curr_frame, key,
+                        value, value_len);
+            }
+            fseeko (f, len - b, SEEK_CUR);
+        }
+    }
+    return 0;
+}
 
 static inline double
 timestamp_to_offset_s (CamLog *self, int64_t timestamp)
@@ -354,338 +541,142 @@ timestamp_to_offset_s (CamLog *self, int64_t timestamp)
     return (timestamp - self->first_frame_info.timestamp) * 1e-6;
 }
 
-static cam_log_version_t
-cam_log_detect_version (CamLog *self)
-{
-    off_t fpos = ftello (self->fp);
-    cam_log_version_t version = CAMLOG_VERSION_INVALID;
-    uint16_t ftype;
-    uint32_t flen;
-    while (!log_get_next_field (&ftype, &flen, self->fp)) {
-        if (ftype == LOG_TYPE_FRAME_FORMAT) {
-            version = CAMLOG_VERSION_LEGACY;
-            break;
-        } else if (ftype == LOG_TYPE_FRAME_INFO_0) {
-            version = CAMLOG_VERSION_0;
-            break;
-        }
-        fseeko(self->fp, flen, SEEK_CUR);
-    }
-    fseeko (self->fp, fpos, SEEK_SET);
-    return version;
-}
-
-static int
-cam_log_get_frame_datalen (FILE *f, uint32_t *datalen)
-{
-    uint16_t type = 0;
-    if (log_get_next_field (&type, datalen, f) != 0) return -1;
-    if (type != LOG_TYPE_FRAME_DATA) return -1;
-
-    return 0;
-}
-
-static int
-cam_log_get_frame_info_0 (CamLog *self, cam_log_frame_info_t *fmd)
-{
-    uint16_t type = 0;
-    uint32_t length;
-
-    FILE *f = self->fp;
-    fmd->frame_offset = ftello (f);
-    if (log_get_next_field (&type, &length, f) != 0) goto fail;
-    if (type != LOG_TYPE_FRAME_INFO_0 || length != LOG_FRAME_INFO_0_SIZE) 
-        goto fail;
-
-    if (log_get_uint16 (&fmd->width, f) != 0 ||
-        log_get_uint16 (&fmd->height, f) != 0 ||
-        log_get_uint16 (&fmd->stride, f) != 0 ||
-        log_get_uint32 (&fmd->pixelformat, f) != 0 ||
-        log_get_uint64 ((uint64_t*)&fmd->timestamp, f) != 0 ||
-        log_get_uint32 (&fmd->bus_timestamp, f) != 0 ||
-        log_get_uint64 (&fmd->source_uid, f) != 0 ||
-        log_get_uint32 (&fmd->frameno, f) != 0 ||
-        log_get_uint64 (&fmd->prev_frame_offset, f) != 0)
-        goto fail;
-
-    // haven't yet filled in fmd->datalen.  That gets filled in by whatever
-    // function actually reads the frame data
-
-    dbgl ("     (%dx%d %d %s fn %d tso %.3f)\n",
-            fmd->width, fmd->height, fmd->stride,
-            pixel_format_str (fmd->pixelformat), fmd->frameno,
-            timestamp_to_offset_s (self, fmd->timestamp));
-//    dbgl ("       (off %"PRId64" prev %"PRId64" ts %"PRId64")\n",
-//            fmd->frame_offset, fmd->prev_frame_offset, fmd->timestamp);
-
-    return 0;
-fail:
-    fseeko (f, fmd->frame_offset, SEEK_SET);
-    return -1;
-}
-
-static int
-cam_log_get_legacy_frame_info (CamLog *self, cam_log_frame_info_t *fmd)
-{
-    dbgl ("get_legacy_frame_info\n");
-    FILE *f = self->fp;
-
-    // read frame format
-    if (0 != log_seek_to_field (f, LOG_TYPE_FRAME_FORMAT, 10)) return -1;
-    if (log_get_uint16 (&fmd->width, f) != 0 ||
-        log_get_uint16 (&fmd->height, f) != 0 ||
-        log_get_uint16 (&fmd->stride, f) != 0 ||
-        log_get_uint32 (&fmd->pixelformat, f) != 0) 
-        return -1;
-
-    int64_t frame_start_offset = ftello (f) - 18;
-
-    // read frame timestamp
-    if (0 != log_seek_to_field (f, LOG_TYPE_FRAME_TIMESTAMP, 12)) return -1;
-    uint32_t sec, usec;
-    if (log_get_uint32 (&sec, f) != 0 ||
-        log_get_uint32 (&usec, f) != 0 ||
-        log_get_uint32 (&fmd->bus_timestamp, f) != 0) 
-        return -1;
-    fmd->timestamp = (uint64_t) sec * 1000000 + usec;
-
-    // read frame source uid
-    uint16_t type = 0;
-    uint32_t length;
-    off_t fpos = ftello (f);
-    if (log_get_next_field (&type, &length, f) != 0 ||
-        type != LOG_TYPE_SOURCE_UID || length != 8 ||
-        log_get_uint64 (&fmd->source_uid, f) != 0) {
-
-        // it's okay if unable to read source_uid
-        fseeko (f, fpos, SEEK_SET);
-        fmd->source_uid = 0;
-    }
-
-    if (self->frame_spacing) {
-        fmd->frameno = frame_start_offset / self->frame_spacing;
-    } else {
-        fmd->frameno = 0;
-    }
-    fmd->prev_frame_offset = frame_start_offset - self->frame_spacing;
-
-    return 0;
-}
-
-static int
-read_next_frame_info (CamLog *self, 
-        cam_log_frame_info_t *fmd)
-{
-    memset (fmd, 0, sizeof (cam_log_frame_info_t));
-    off_t fpos = ftello (self->fp);
-
-    // try to read new format log files
-    int status = cam_log_get_frame_info_0 (self, fmd);
-    if (0 != status) {
-        // couldn't read new format log file.  try to read legacy log format
-        if (0 != cam_log_get_legacy_frame_info (self, fmd)) goto fail;
-    }
-
-    // both new and legacy log formats have the LOG_TYPE_FRAME_DATA field
-    // try to read that now.
-    if (0 != cam_log_get_frame_datalen (self->fp, &fmd->datalen)) 
-        goto fail;
-
-//    if (&self->next_frame_info != fmd && 
-//        self->next_frame_info.frameno != fmd->frameno) {
-//        memcpy (&self->next_frame_info, fmd, sizeof (cam_log_frame_info_t));
-//    }
-
-    // file pointer is now positioned at start of image data
-    return 0;
-
-fail:
-    // on failure, return the file pointer to where it was on function call
-    fseeko (self->fp, fpos, SEEK_SET);
-    return -1;
-}
-
-static int 
-internal_peek_next_frame_info (CamLog *self, cam_log_frame_info_t *fmd)
-{
-    if (self->mode != CAMLOG_MODE_READ) return -1;
-
-    off_t fpos = ftello (self->fp);
-    int status = read_next_frame_info (self, fmd);
-    fseeko (self->fp, fpos, SEEK_SET);
-    return status;
-}
-
-int 
-cam_log_peek_next_frame_info (CamLog *self, cam_log_frame_info_t *fmd)
-{
-    if (self->mode != CAMLOG_MODE_READ) return -1;
-    memcpy (fmd, &self->next_frame_info, sizeof (self->next_frame_info));
-    return (self->next_frame_info.timestamp > 0) ? 0 : -1;
-}
-
-int 
-cam_log_read_next_frame (CamLog *self, cam_log_frame_info_t *fmd,
-        uint8_t *buf, int buf_size)
-{
-    if (self->mode != CAMLOG_MODE_READ) return -1;
-
-    dbgl ("reading frame %d (%.3f)\n", self->next_frame_info.frameno,
-            timestamp_to_offset_s (self, self->next_frame_info.timestamp));
-
-    off_t fpos = ftello (self->fp);
-    int status = read_next_frame_info (self, fmd);
-    if (0 != status) goto fail;
-
-    if (fmd->datalen < buf_size)
-        buf_size = fmd->datalen;
-
-    if (1 != fread (buf, buf_size, 1, self->fp)) goto fail;
-
-    if (buf_size < fmd->datalen)
-        fseeko (self->fp, fmd->datalen - buf_size, SEEK_CUR);
-
-    self->prev_frame_info = self->next_frame_info;
-    internal_peek_next_frame_info (self, &self->next_frame_info);
-
-    return 0;
-
-fail:
-    fseeko (self->fp, fpos, SEEK_SET);
-    return -1;
-}
-
-int 
-cam_log_skip_next_frame (CamLog *self)
-{
-    if (self->mode != CAMLOG_MODE_READ) return -1;
-    off_t fpos = ftello (self->fp);
-
-    cam_log_frame_info_t fmd;
-    if (0 != read_next_frame_info (self, &fmd)) goto fail;
-    if (0 != fseeko (self->fp, fmd.datalen, SEEK_CUR)) goto fail;
-
-    self->prev_frame_info = self->next_frame_info;
-    internal_peek_next_frame_info (self, &self->next_frame_info);
-
-    return 0;
-fail:
-    fseeko (self->fp, fpos, SEEK_SET);
-    return -1;
-}
-
 int 
 cam_log_seek_to_offset (CamLog *self, int64_t offset)
 {
-    if (self->mode != CAMLOG_MODE_READ) return -1;
+    if (self->mode != CAMLOG_MODE_READ)
+        return -1;
 
     off_t fpos = ftello (self->fp);
-    if (0 != fseeko (self->fp, offset, SEEK_SET)) goto fail;
-    if (0 != log_resync (self->fp)) goto fail;
-
-    // advance to the next frame format field
-    uint16_t ftype;
-    uint32_t flen;
-    while (!log_get_next_field (&ftype, &flen, self->fp)) {
-        if (ftype == LOG_TYPE_FRAME_FORMAT ||
-            ftype == LOG_TYPE_FRAME_INFO_0) {
-            fseeko (self->fp, -LOG_HEADER_SIZE, SEEK_CUR);
-            off_t curpos = ftello (self->fp);
-            
-            internal_peek_next_frame_info (self, &self->next_frame_info);
-
-            fseeko (self->fp, self->next_frame_info.prev_frame_offset, 
-                    SEEK_SET);
-            internal_peek_next_frame_info (self, &self->prev_frame_info);
-
-            fseeko (self->fp, curpos, SEEK_SET);
-
-            return 0;
-        }
-        fseeko(self->fp, flen, SEEK_CUR);
+    if (fseeko (self->fp, offset, SEEK_SET) < 0) {
+        dbg (DBG_LOG, "Seek to offset %"PRId64" failed\n", offset);
+        goto fail;
     }
+
+    if (log_resync (self->fp) < 0) {
+        dbg (DBG_LOG, "Failed to resync after seek to %"PRId64"\n", offset);
+        goto fail;
+    }
+
+    if (process_frame (self) < 0) {
+        dbg (DBG_LOG, "Failed to process frame after seek to %"PRId64"\n",
+                offset);
+        goto fail;
+    }
+
+    return 0;
 
 fail:
     fseeko (self->fp, fpos, SEEK_SET);
     return -1;
 }
 
-int 
-cam_log_write_frame (CamLog *self, int width, int height, int stride,
-        int pixelformat, int64_t timestamp, 
-        uint64_t source_uid,
-        const uint8_t *data, int datalen, int64_t * file_offset)
+int
+cam_log_write_frame (CamLog * self, CamLogFrameFormat * format,
+        CamFrameBuffer * frame, int64_t * offset)
 {
-    if (self->mode != CAMLOG_MODE_WRITE) return -1;
-    int status;
+    if (self->mode != CAMLOG_MODE_WRITE)
+        return -1;
 
     int64_t frame_start_offset = ftello (self->fp);
-    if (file_offset) *file_offset = frame_start_offset;
+    if (offset)
+        *offset = frame_start_offset;
 
     // write frame info
-    log_put_field (LOG_TYPE_FRAME_INFO_0, LOG_FRAME_INFO_0_SIZE, 
-            self->fp);
-    log_put_uint16 (width, self->fp);
-    log_put_uint16 (height, self->fp);
-    log_put_uint16 (stride, self->fp);
-    log_put_uint32 (pixelformat, self->fp);
-    log_put_uint64 ((uint64_t) timestamp, self->fp);
-    log_put_uint32 (0, self->fp);
-    log_put_uint64 (source_uid, self->fp);
-    log_put_uint32 (self->frameno, self->fp);
-    log_put_uint64 (self->prev_frame_offset, self->fp);
+    log_put_field (LOG_TYPE_FRAME_FORMAT, 10, self->fp);
+    log_put_uint16 (format->width, self->fp);
+    log_put_uint16 (format->height, self->fp);
+    log_put_uint16 (format->stride, self->fp);
+    log_put_uint32 (format->pixelformat, self->fp);
 
-    self->frameno ++;
-    self->prev_frame_offset = frame_start_offset;
+    uint64_t info_offset = ftello (self->fp);
+    log_put_field (LOG_TYPE_FRAME_INFO_1, 24, self->fp);
+    log_put_uint64 ((uint64_t) frame->timestamp, self->fp);
+    log_put_uint64 (self->curr_info.frameno, self->fp);
+    if (self->curr_info.frameno == 0)
+        log_put_uint64 (0, self->fp);
+    else
+        log_put_uint64 (info_offset - self->prev_offset, self->fp);
+
+    self->curr_info.frameno++;
+    self->prev_offset = frame_start_offset;
+
+    GList * list = cam_framebuffer_metadata_list_keys (frame);
+    if (list) {
+        int size = 2;
+        for (GList * iter = list; iter; iter = iter->next) {
+            size += 2 + strlen (iter->data) + 1 + 4;
+            int value_len;
+            cam_framebuffer_metadata_get (frame, iter->data, &value_len);
+            size += value_len;
+        }
+
+        log_put_field (LOG_TYPE_METADATA, size, self->fp);
+        log_put_uint16 (g_list_length (list), self->fp);
+        for (GList * iter = list; iter; iter = iter->next) {
+            uint16_t key_len = strlen (iter->data);
+            log_put_uint16 (key_len, self->fp);
+            fwrite (iter->data, 1, key_len, self->fp);
+            log_put_uint8 (0, self->fp);
+            int value_len;
+            uint8_t * value = cam_framebuffer_metadata_get (frame,
+                    iter->data, &value_len);
+            log_put_uint32 (value_len, self->fp);
+            fwrite (value, 1, value_len, self->fp);
+        }
+        g_list_free (list);
+    }
 
     // write frame data
-    log_put_field (LOG_TYPE_FRAME_DATA, datalen, self->fp);
-    status = fwrite (data, 1, datalen, self->fp);
+    log_put_field (LOG_TYPE_FRAME_DATA, frame->bytesused, self->fp);
+    int status = fwrite (frame->data, 1, frame->bytesused, self->fp);
     self->file_size = ftello (self->fp);
 
-    return status != datalen;
+    if (status != frame->bytesused)
+        return -1;
+    return 0;
 }
 
 int 
 cam_log_count_frames (CamLog *self)
 {
-    if (self->mode != CAMLOG_MODE_READ || 
-        self->log_version == CAMLOG_VERSION_INVALID) return -1;
+    if (self->mode != CAMLOG_MODE_READ)
+        return -1;
 
-    if (self->log_version == CAMLOG_VERSION_LEGACY) {
-        if (self->frame_spacing == 0) return -1;
-        return self->file_size / self->frame_spacing;
-    } else {
-        assert (self->log_version == CAMLOG_VERSION_0);
-
-        return self->last_frame_info.frameno;
-    }
+    return self->last_frame_info.frameno - self->first_frame_info.frameno + 1;
 }
 
 static int
-do_seek_to_frame (CamLog *self, cam_log_frame_info_t *low_frame,
-        cam_log_frame_info_t *high_frame, int desired_frameno)
+do_seek_to_int64_param (CamLog *self, CamLogFrameInfo *low_frame,
+        CamLogFrameInfo *high_frame, int64_t desired_val, int val_offset)
 {
-    dbgl (" --- %d, %d, %d (%d) ---\n", 
-            low_frame->frameno, desired_frameno, high_frame->frameno,
-            self->next_frame_info.frameno);
+#define GET_VAL(s) (*(int64_t *)((void *)(s) + val_offset))
+    int64_t low_val = GET_VAL (low_frame);
+    int64_t high_val = GET_VAL (high_frame);
+    int64_t curr_val = GET_VAL (&self->curr_info);
+    dbg (DBG_LOG, " --- %"PRId64", %"PRId64", %"PRId64" (%"PRId64") ---\n",
+            low_val, desired_val, high_val, curr_val);
 
-    assert (low_frame->frame_offset >= 0 && 
-            low_frame->frame_offset <= high_frame->frame_offset && 
-            low_frame->frameno <= high_frame->frameno &&
-            desired_frameno <= high_frame->frameno &&
-            desired_frameno >= low_frame->frameno &&
-            high_frame->frame_offset <= self->last_frame_info.frame_offset &&
-            low_frame->frameno >= self->first_frame_info.frameno &&
-            high_frame->frameno <= self->last_frame_info.frameno);
+    assert (low_frame->offset >= 0 && 
+            low_frame->offset <= high_frame->offset && 
+            low_val <= high_val &&
+            desired_val <= high_val && desired_val >= low_val &&
+            high_frame->offset <= self->last_frame_info.offset);
 
-    // if we're within a few frames, just manually iterate to avoid the
+    int64_t val_spanned = high_val - low_val;
+    int64_t nbytes_spanned = high_frame->offset - low_frame->offset;
+    double average_bytes_per_val = nbytes_spanned / (double)val_spanned;
+
+    // if we're within 3MB, just manually iterate to avoid the
     // resyncing process.
-    while (desired_frameno > self->next_frame_info.frameno &&
-           desired_frameno - self->next_frame_info.frameno < 20) {
-        dbgl ("skip fwd\n");
-        if (0 != cam_log_skip_next_frame (self)) return -1;
+    while (desired_val > curr_val &&
+           (desired_val - curr_val) * average_bytes_per_val < 3000000) {
+        dbg (DBG_LOG, "skip fwd\n");
+        if (cam_log_next_frame (self) < 0)
+            return -1;
+        curr_val = GET_VAL (&self->curr_info);
     }
+#if 0
     while (self->next_frame_info.frameno > desired_frameno &&
            self->next_frame_info.frameno - desired_frameno < 20) {
         dbgl ("skip back\n");
@@ -693,178 +684,63 @@ do_seek_to_frame (CamLog *self, cam_log_frame_info_t *low_frame,
                     self->next_frame_info.prev_frame_offset))
             return -1;
     }
-    if (self->next_frame_info.frameno == desired_frameno) return 0;
+#endif
+    if (curr_val == desired_val)
+        return 0;
 
     // make a best guess as to where the frame starts
-    int nframes_spanned = high_frame->frameno - low_frame->frameno;
-    int64_t nbytes_spanned = high_frame->frame_offset - low_frame->frame_offset;
-    int64_t average_bytes_per_frame = nbytes_spanned / (int64_t)nframes_spanned;
     int64_t offset_guess = 
-        (desired_frameno - low_frame->frameno) * average_bytes_per_frame + 
-        low_frame->frame_offset;
+        (desired_val - low_val) * average_bytes_per_val + 0.5 +
+        low_frame->offset;
 
-    cam_log_frame_info_t seeked_frame_info;
     cam_log_seek_to_offset (self, offset_guess);
-    internal_peek_next_frame_info (self, &seeked_frame_info);
 
-    if (seeked_frame_info.frameno == desired_frameno) {
+    curr_val = GET_VAL (&self->curr_info);
+    if (curr_val == desired_val)
         return 0;
-    }
 
-    if (seeked_frame_info.frameno > desired_frameno) {
-        return do_seek_to_frame (self, 
-                low_frame, &seeked_frame_info, desired_frameno);
-    } else if (desired_frameno > seeked_frame_info.frameno) {
-        return do_seek_to_frame (self, 
-                &seeked_frame_info, high_frame, desired_frameno);
-    } 
-   
-    return 0;
+    CamLogFrameInfo info;
+    memcpy (&info, &self->curr_info, sizeof (CamLogFrameInfo));
+    if (curr_val > desired_val)
+        return do_seek_to_int64_param (self, low_frame, &info,
+                desired_val, val_offset);
+
+    return do_seek_to_int64_param (self, &info, high_frame,
+            desired_val, val_offset);
 }
 
 int 
 cam_log_seek_to_frame (CamLog *self, int frameno)
 {
-    if (self->mode != CAMLOG_MODE_READ) return -1;
+    if (self->mode != CAMLOG_MODE_READ)
+        return -1;
 
-    if (self->log_version == CAMLOG_VERSION_LEGACY) {
-        int64_t offset = (int64_t)self->frame_spacing * frameno;
-        dbgl ("seeking to %"PRId64"\n", offset);
-        return cam_log_seek_to_offset (self, offset);
-    } else {
-        if (frameno < 0 || frameno > self->last_frame_info.frameno)
-            return -1;
+    frameno += self->first_frame_info.frameno;
+    if (frameno < self->first_frame_info.frameno ||
+            frameno > self->last_frame_info.frameno)
+        return -1;
 
-        return do_seek_to_frame (self, 
-                &self->first_frame_info, &self->last_frame_info, frameno);
-    }
-}
-
-static int
-do_seek_to_timestamp (CamLog *self, cam_log_frame_info_t *low_frame,
-        cam_log_frame_info_t *high_frame, int64_t desired_timestamp)
-{
-    if (self->next_frame_info.timestamp == desired_timestamp) return 0;
-
-#ifdef USE_DBG
-    double low_ts = timestamp_to_offset_s (self, low_frame->timestamp);
-    double high_ts = timestamp_to_offset_s (self, high_frame->timestamp);
-    double des_ts = timestamp_to_offset_s (self, desired_timestamp);
-    double cur_ts = timestamp_to_offset_s (self, 
-            self->next_frame_info.timestamp);
-#endif
-
-    dbgl (" --- %.3f, %.3f, %.3f (%.3f) ---\n", low_ts, des_ts, high_ts, 
-            cur_ts);
-
-    assert (low_frame->frame_offset >= 0 && 
-            low_frame->frame_offset <= high_frame->frame_offset && 
-            low_frame->timestamp <= high_frame->timestamp &&
-            desired_timestamp <= high_frame->timestamp &&
-            desired_timestamp >= low_frame->timestamp &&
-            high_frame->frame_offset <= self->last_frame_info.frame_offset &&
-            low_frame->timestamp >= self->first_frame_info.timestamp &&
-            high_frame->timestamp <= self->last_frame_info.timestamp);
-
-    int64_t spanned_usec = high_frame->timestamp - low_frame->timestamp;
-    int spanned_frames = high_frame->frameno - low_frame->frameno;
-    double average_usec_per_frame = spanned_usec / (double)spanned_frames;
-    double usec_20frames = 20 * average_usec_per_frame;
-
-    // if we're within a few frames, just manually iterate to avoid the
-    // resyncing process.
-    if (llabs (self->next_frame_info.timestamp - desired_timestamp) < 
-            usec_20frames) {
-        while (self->next_frame_info.timestamp > desired_timestamp) {
-            dbgl ("skip back\n");
-            if (0 != cam_log_seek_to_offset (self, 
-                        self->next_frame_info.prev_frame_offset))
-                return -1;
-        }
-        dbgl ("  %.3f %.3f %.3f\n", 
-                timestamp_to_offset_s (self, self->prev_frame_info.timestamp),
-                timestamp_to_offset_s (self, desired_timestamp), 
-                timestamp_to_offset_s (self, self->next_frame_info.timestamp));
-
-        while (self->next_frame_info.timestamp < desired_timestamp) {
-            dbgl ("skip fwd\n");
-            if (0 != cam_log_skip_next_frame (self)) return -1;
-        }
-        dbgl ("  %.3f %.3f %.3f\n", 
-                timestamp_to_offset_s (self, self->prev_frame_info.timestamp),
-                timestamp_to_offset_s (self, desired_timestamp), 
-                timestamp_to_offset_s (self, self->next_frame_info.timestamp));
-
-        assert (desired_timestamp > self->prev_frame_info.timestamp &&
-                desired_timestamp <= self->next_frame_info.timestamp);
-        return 0;
-    }
-    if (self->next_frame_info.timestamp == desired_timestamp) return 0;
-
-    // make a best guess as to where the frame starts
-    int64_t spanned_nbytes = high_frame->frame_offset - low_frame->frame_offset;
-    double average_bytes_per_usec = spanned_nbytes / (double)spanned_usec;
-    int64_t offset_guess = 
-        (desired_timestamp - low_frame->timestamp) * average_bytes_per_usec + 
-        low_frame->frame_offset;
-
-    cam_log_frame_info_t seeked_frame_info;
-    cam_log_seek_to_offset (self, offset_guess);
-    internal_peek_next_frame_info (self, &seeked_frame_info);
-
-    if (seeked_frame_info.timestamp == desired_timestamp) {
-        return 0;
-    }
-
-    if (seeked_frame_info.timestamp > desired_timestamp) {
-        return do_seek_to_timestamp (self, 
-                low_frame, &seeked_frame_info, desired_timestamp);
-    } else if (desired_timestamp > seeked_frame_info.timestamp) {
-        return do_seek_to_timestamp (self, 
-                &seeked_frame_info, high_frame, desired_timestamp);
-    } 
-   
-    return 0;
+    return do_seek_to_int64_param (self, &self->first_frame_info,
+            &self->last_frame_info, frameno,
+            offsetof (CamLogFrameInfo, frameno));
 }
 
 int 
 cam_log_seek_to_timestamp (CamLog *self, int64_t timestamp)
 {
-    if (self->mode != CAMLOG_MODE_READ) return -1;
+    if (self->mode != CAMLOG_MODE_READ)
+        return -1;
 
     if (timestamp < self->first_frame_info.timestamp || 
         timestamp > self->last_frame_info.timestamp)
         return -1;
 
-    if (timestamp < self->next_frame_info.timestamp &&
-        timestamp > self->prev_frame_info.timestamp) {
-        dbgl ("already at %.3f (%"PRId64")\n", 
-                timestamp_to_offset_s (self, timestamp), timestamp);
-        return 0;
-    } else {
-        dbgl ("seek to %.3f (was %.3f, %3f)\n", 
-                timestamp_to_offset_s (self, timestamp), 
-                timestamp_to_offset_s (self, self->prev_frame_info.timestamp), 
-                timestamp_to_offset_s (self, self->next_frame_info.timestamp)
-                );
-    }
-
-    int status = do_seek_to_timestamp (self, 
-            &self->first_frame_info, &self->last_frame_info, timestamp);
-
-    if (0 == status) {
-        dbgl ("seeked to frame %d time offset %.3f\n",
-                self->next_frame_info.frameno,
-                timestamp_to_offset_s (self, self->next_frame_info.timestamp));
-    } else {
-        dbgl ("couldn't seek to %.3f\n",
-                timestamp_to_offset_s (self, self->next_frame_info.timestamp));
-    }
-
-    return status;
+    return do_seek_to_int64_param (self, &self->first_frame_info,
+            &self->last_frame_info, timestamp,
+            offsetof (CamLogFrameInfo, timestamp));
 }
 
-static void
+static int
 find_last_frame_info (CamLog *self)
 {
     int64_t search_inc = 5000000;
@@ -873,47 +749,18 @@ find_last_frame_info (CamLog *self)
         off_t offset = MAX (0, self->file_size - i * search_inc);
 
         if (0 == cam_log_seek_to_offset (self, offset)) {
-            cam_log_frame_info_t fmd;
-            while (0 == internal_peek_next_frame_info (self, &fmd)) {
-                memcpy (&self->last_frame_info, &fmd, sizeof (fmd));
-                cam_log_skip_next_frame (self);
-            }
+            do {
+                cam_log_get_frame_info (self, &self->last_frame_info);
+            } while (cam_log_next_frame (self) == 0);
             break;
         }
-        if (0 == offset) break;
+        if (0 == offset)
+            return -1;
     }
-    dbgl ("last frame offset: %"PRId64" timestamp: %"PRId64"\n",
-            self->last_frame_info.frame_offset, 
+    dbg (DBG_LOG, "last frame offset: %"PRId64" timestamp: %"PRId64"\n",
+            self->last_frame_info.offset, 
             self->last_frame_info.timestamp);
-    dbgl ("total frames: %d\n", self->last_frame_info.frameno);
+    dbg (DBG_LOG, "total frameno: %"PRId64"\n", self->last_frame_info.frameno);
+    return 0;
 }
 
-// ========== legacy methods ==========
-
-static void
-legacy_compute_frame_spacing (CamLog *self)
-{
-    self->computed_frame_spacing = 1;
-    self->frame_spacing = -1;
-    off_t fpos = ftello (self->fp);
-    fseeko (self->fp, 0, SEEK_SET);
-    cam_log_skip_next_frame (self);
-
-    cam_log_frame_info_t fmd;
-    if (0 != internal_peek_next_frame_info (self, &fmd)) goto done;
-
-    off_t fpos_first_frame = ftello (self->fp);
-
-    if (! cam_pixel_format_stride_meaningful (fmd.pixelformat)) {
-        goto done;
-    } else {
-        cam_log_skip_next_frame (self);
-        if (0 != internal_peek_next_frame_info (self, &fmd)) goto done;
-
-        off_t fpos_second_frame = ftello (self->fp);
-        self->frame_spacing = fpos_second_frame - fpos_first_frame;
-    }
-
-done:
-    fseeko (self->fp, fpos, SEEK_SET);
-}

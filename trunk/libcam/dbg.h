@@ -47,7 +47,7 @@ extern "C" {
 #define DBG_CONTROL         DBG_MODE(9)
 #define DBG_REF             DBG_MODE(10)
 #define DBG_PLUGIN          DBG_MODE(11)
-#define DBG_12              DBG_MODE(12)
+#define DBG_LOG             DBG_MODE(12)
 #define DBG_13              DBG_MODE(13)
 #define DBG_14              DBG_MODE(14)
 #define DBG_15              DBG_MODE(15)
@@ -69,7 +69,7 @@ extern "C" {
 { "control",  DBG_CONTROL }, \
 { "ref", DBG_REF }, \
 { "plugin", DBG_PLUGIN }, \
-{ "12", DBG_12 }, \
+{ "log", DBG_LOG }, \
 { "13", DBG_13 }, \
 { "14", DBG_14 }, \
 { "15", DBG_15 }, \
@@ -88,7 +88,7 @@ extern "C" {
 { DBG_CONTROL, _BYELLOW_ "UnitControl: " }, \
 { DBG_REF, _BGREEN_ "RefCount: " }, \
 { DBG_PLUGIN, _BMAGENTA_ "Plugin:" }, \
-{ DBG_12, _BYELLOW_ }, \
+{ DBG_LOG, _BYELLOW_ "Log:" }, \
 { DBG_13, _CYAN_ }, \
 { DBG_14, _BBLUE_ }, \
 { DBG_15, _BMAGENTA_ }, \

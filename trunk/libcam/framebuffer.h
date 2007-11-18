@@ -60,8 +60,6 @@ struct _CamFrameBuffer {
     /*< private >*/
     int owns_data;
     GHashTable *metadata;
-
-    uint64_t source_uid; // deleteme
 };
 
 struct _CamFrameBufferClass {
@@ -96,7 +94,7 @@ CamFrameBuffer * cam_framebuffer_new_alloc (int length);
  * cam_framebuffer_copy_metadata:
  *
  * Convenience method to copy the metadata dictionary from the @from buffer to
- * @self.  Also copies the %timestamp and %source_uid fields
+ * @self.  Also copies the %timestamp field.
  */
 void cam_framebuffer_copy_metadata (CamFrameBuffer *self, 
         const CamFrameBuffer *from);
@@ -130,6 +128,16 @@ uint8_t * cam_framebuffer_metadata_get (const CamFrameBuffer * self,
  */
 void cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
         const uint8_t *value, int len);
+
+/**
+ * cam_framebuffer_metadata_list_keys:
+ *
+ * Returns a GList of keys, each a string, that reference entries in the
+ * metadata dictionary.  The list should be freed with g_list_free().  Note
+ * that the pointers to the keys themselves reference the dictionary and
+ * are only valid as long as the dictionary is not modified.
+ */
+GList * cam_framebuffer_metadata_list_keys (CamFrameBuffer * self);
 
 #ifdef __cplusplus
 }

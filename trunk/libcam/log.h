@@ -5,30 +5,28 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 
+#include "framebuffer.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef struct _CamLog CamLog;
 
-typedef struct _cam_log_frame_info {
+typedef struct _CamLogFrameFormat {
     uint16_t width;
     uint16_t height;
     uint16_t stride;
     uint32_t pixelformat;
+} CamLogFrameFormat;
 
-    int64_t timestamp;
-    uint32_t bus_timestamp;
-
-    uint64_t source_uid;
-
-    uint32_t datalen;
-
-    uint32_t frameno;
-
-    uint64_t frame_offset;
-    uint64_t prev_frame_offset;
-} cam_log_frame_info_t;
+typedef struct _CamLogFrameInfo {
+    uint64_t timestamp;
+    uint64_t frameno;
+    uint64_t offset;
+    uint64_t data_len;
+    uint64_t data_offset;
+} CamLogFrameInfo;
 
 /**
  * cam_log_new:
@@ -41,66 +39,15 @@ CamLog* cam_log_new (const char *fname, const char *mode);
 
 void cam_log_destroy (CamLog *self);
 
-/**
- * cam_log_peek_next_frame_info:
- *
- * Retrieves the metadata associated with the next frame, without actually
- * advancing the current position within the log.
- *
- * Read-mode only.
- *
- * Returns: 0 on success, -1 on failure.  In either case, the file pointer of
- * the log file is not changed.
- */
-int cam_log_peek_next_frame_info (CamLog *self, 
-        cam_log_frame_info_t *frame_info);
+int cam_log_next_frame (CamLog * self);
+int cam_log_prev_frame (CamLog * self);
 
-/**
- * cam_log_read_next_frame:
- *
- * Retrieves the next frame and associated metadata.  Advances the file pointer
- * of the logfile.
- *
- * Read-mode only.
- *
- * Returns: 0 on success, -1 on file error, EOF, or if the buffer %buf is not
- * large enough to hold the entire frame.
- */
-int cam_log_read_next_frame (CamLog *self, cam_log_frame_info_t *frame_info,
-        uint8_t *buf, int buf_size);
+int cam_log_get_frame_format (CamLog * self, CamLogFrameFormat * format);
+int cam_log_get_frame_info (CamLog * self, CamLogFrameInfo * info);
+CamFrameBuffer * cam_log_get_frame (CamLog * self);
 
-/**
- * cam_log_skip_next_frame:
- *
- * Advances the file pointer past the next frame.
- *
- * Read-mode only.
- *
- * Returns: 0 on success, -1 on file error or EOF.
- */
-int cam_log_skip_next_frame (CamLog *self);
-
-/**
- * cam_log_write_frame:
- * @width:          width of the image
- * @height:         size of the image
- * @stride:         distance, in bytes, between rows of the image
- * @pixelformat:    see pixels.h
- * @timestamp:      time, in microseconds since the epoch, of the frame
- * @source_uid:     identifier for the source of the image
- * @data:           pointer to the actual image data
- * @datalen:        size, in bytes, of the image data
- * @file_offset:    output parameter.  The file offset of the start of the
- *                  frame is stored here.
- *
- * Writes a frame to disk.
- *
- * Returns: 0 on success, -1 on failure
- */
-int cam_log_write_frame (CamLog *self, int width, int height, int stride,
-        int pixelformat, int64_t timestamp, 
-        uint64_t source_uid,
-        const uint8_t *data, int datalen, int64_t * file_offset);
+int cam_log_write_frame (CamLog * self, CamLogFrameFormat * format,
+        CamFrameBuffer * frame, int64_t * offset);
 
 /**
  * cam_log_count_frames:

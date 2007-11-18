@@ -25,8 +25,6 @@ typedef struct _state_t {
     GtkWidget *chain_frame;
 } state_t;
 
-state_t *g_self;
-
 // ==================== signal handlers =====================
 
 static void
@@ -38,11 +36,10 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit, const CamFrameBuffer *buf,
     cam_unit_chain_gl_widget_request_redraw (self->chain_gl_widget);
 }
 
-#if 0
-void
-on_open_menu_item_activate (GtkWidget *widget, void *nil)
+static void
+on_open_menu_item_activate (GtkWidget *widget, void * user)
 {
-    state_t *self = g_self;
+    state_t *self = user;
 
     GtkWidget *dialog;
     dialog = gtk_file_chooser_dialog_new ("Log File",
@@ -62,7 +59,6 @@ on_open_menu_item_activate (GtkWidget *widget, void *nil)
 
     gtk_widget_hide (dialog);
 }
-#endif
 
 static void
 on_show_manager_mi_toggled (GtkCheckMenuItem *mi, void *user_data)
@@ -119,6 +115,12 @@ setup_gtk (state_t *self)
     GtkWidget *file_menu = gtk_menu_new ();
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (file_menu_item), file_menu);
     
+    GtkWidget *open_mi = 
+        gtk_image_menu_item_new_from_stock (GTK_STOCK_OPEN, NULL);
+    gtk_menu_append (GTK_MENU (file_menu), open_mi);
+    gtk_signal_connect (GTK_OBJECT (open_mi), "activate", 
+            GTK_SIGNAL_FUNC (on_open_menu_item_activate), self);
+
     GtkWidget *quit_mi = 
         gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
     gtk_menu_append (GTK_MENU (file_menu), quit_mi);
@@ -230,8 +232,7 @@ usage (const char *progname)
 
 int main (int argc, char **argv)
 {
-    g_self = (state_t*) calloc (1, sizeof (state_t));
-    state_t *self = g_self;
+    state_t * self = (state_t*) calloc (1, sizeof (state_t));
     self->cmdline_input_id = NULL;
 
     char *optstring = "hi:";

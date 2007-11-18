@@ -465,7 +465,10 @@ dc1394_try_produce_frame (CamUnit * super)
     buf->length = frame->image_bytes;
     buf->bytesused = frame->image_bytes;
     buf->timestamp = frame->timestamp;
-    buf->source_uid = self->cam->euid_64;
+    char str[20];
+    sprintf (str, "0x%016"PRIx64, self->cam->euid_64);
+    cam_framebuffer_metadata_set (buf, "Source GUID", (uint8_t *) str,
+            strlen (str));
 
     cam_unit_produce_frame (super, buf, super->fmt);
 

@@ -87,11 +87,6 @@ struct _CamInputLog {
     CamUnitControl *adv_mode_ctl;
     CamUnitControl *adv_speed_ctl;
 
-    cam_log_frame_info_t first_frameinfo;
-
-    // info on the next unread frame
-    cam_log_frame_info_t next_frameinfo;
-
     int readone;
 };
 

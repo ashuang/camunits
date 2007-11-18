@@ -50,7 +50,6 @@ cam_framebuffer_init (CamFrameBuffer *self)
     self->length = 0;
     self->bytesused = 0;
     self->timestamp = 0;
-    self->source_uid = 0;
     self->owns_data = 0;
 
     self->metadata = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -117,8 +116,6 @@ cam_framebuffer_copy_metadata (CamFrameBuffer * self,
         const CamFrameBuffer *from)
 {
     self->timestamp = from->timestamp;
-    self->source_uid = from->source_uid;
-    //g_hash_table_remove_all (self->metadata);
     g_hash_table_foreach (from->metadata, _copy_keyval, self->metadata);
 }
 
@@ -149,4 +146,19 @@ cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
     }
     CamMetadataPair * p = cam_metadata_pair_new (key, value, len);
     g_hash_table_replace (self->metadata, p->key, p);
+}
+
+static void
+append_key (void * key, void * value, void * user)
+{
+    GList ** list = user;
+    *list = g_list_prepend (*list, key);
+}
+
+GList *
+cam_framebuffer_metadata_list_keys (CamFrameBuffer * self)
+{
+    GList * list = NULL;
+    g_hash_table_foreach (self->metadata, append_key, &list);
+    return list;
 }
