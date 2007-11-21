@@ -56,6 +56,7 @@ DECL_STANDARD_CONV (yuv422_to_gray, cam_pixel_convert_8u_yuv422_to_8u_gray)
 DECL_STANDARD_CONV (yuv422_to_rgb, cam_pixel_convert_8u_yuv422_to_8u_rgb)
 DECL_STANDARD_CONV (bgra_to_rgb, cam_pixel_convert_8u_bgra_to_8u_rgb)
 DECL_STANDARD_CONV (bgra_to_bgr, cam_pixel_convert_8u_bgra_to_8u_bgr)
+DECL_STANDARD_CONV (bgr_to_rgb, cam_pixel_convert_8u_bgr_to_8u_rgb)
 #undef DECL_STANDARD_CONV
 
 G_DEFINE_TYPE (CamColorConversionFilter, cam_color_conversion_filter, 
@@ -100,6 +101,7 @@ cam_color_conversion_filter_init( CamColorConversionFilter *self )
 
     add_conv (self, CAM_PIXEL_FORMAT_BGRA, CAM_PIXEL_FORMAT_RGB, bgra_to_rgb);
     add_conv (self, CAM_PIXEL_FORMAT_BGRA, CAM_PIXEL_FORMAT_BGR, bgra_to_bgr);
+    add_conv (self, CAM_PIXEL_FORMAT_BGR, CAM_PIXEL_FORMAT_RGB, bgr_to_rgb);
 
     self->cc_func = NULL;
 

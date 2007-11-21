@@ -40,10 +40,7 @@ typedef struct _CamConvertToRgb8Class CamConvertToRgb8Class;
 struct _CamConvertToRgb8 {
     CamUnit parent;
 
-    int (*cc_func)(CamConvertToRgb8 *self, 
-        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf,
-        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf);
-    GList *conversions;
+    CamUnit *worker;
 };
 
 struct _CamConvertToRgb8Class {

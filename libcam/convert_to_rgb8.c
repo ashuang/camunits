@@ -1,12 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#include <jpeglib.h>
-#include <jerror.h>
-
+#include "convert_colorspace.h"
+#include "filter_jpeg.h"
+#include "filter_fast_bayer.h"
 #include "convert_to_rgb8.h"
-#include "dbg.h"
 
 #define err(args...) fprintf(stderr, args)
 
@@ -19,248 +16,224 @@ cam_convert_to_rgb8_driver_new()
 }
 
 // ============== CamConvertToRgb8 ===============
-static int cam_convert_to_rgb8_stream_init (CamUnit * super, 
-        const CamUnitFormat * format);
-static void cam_convert_to_rgb8_finalize (GObject * obj);
-static void on_input_format_changed (CamUnit *super, 
-        const CamUnitFormat *infmt);
+static int _stream_init (CamUnit * super, const CamUnitFormat * format);
+static int _stream_on (CamUnit * super);
+static int _stream_off (CamUnit * super);
+static int _stream_shutdown (CamUnit * super);
+static void _finalize (GObject * obj);
+
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 static void on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
+static void on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf,
+        const CamUnitFormat *infmt, void *user_data);
 
-typedef int (*cc_func_t)(CamConvertToRgb8 *self, 
-        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf,
-        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf);
-
-#define DECL_STANDARD_CONV(name, conversion_func) \
-    static inline int name (CamConvertToRgb8 *self, \
-        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf, \
-        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf) \
-    { \
-        return conversion_func (outbuf->data, outfmt->row_stride, \
-            outfmt->width, outfmt->height, inbuf->data, infmt->row_stride); \
-    }
-
-DECL_STANDARD_CONV (gray_to_rgb, cam_pixel_convert_8u_gray_to_8u_RGB)
-DECL_STANDARD_CONV (yuv420p_to_rgb, cam_pixel_convert_8u_yuv420p_to_8u_rgb)
-DECL_STANDARD_CONV (yuv422_to_rgb, cam_pixel_convert_8u_yuv422_to_8u_rgb)
-DECL_STANDARD_CONV (bgra_to_rgb, cam_pixel_convert_8u_bgra_to_8u_rgb)
-#undef DECL_STANDARD_CONV
-
-static int mjpeg_to_rgb (CamConvertToRgb8 *self, 
-        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf,
-        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf);
-
-G_DEFINE_TYPE (CamConvertToRgb8, cam_convert_to_rgb8, 
-        CAM_TYPE_UNIT);
-
-typedef struct _conv_info_t {
-    CamPixelFormat inpfmt;
-    cc_func_t func;
-} conv_info_t;
-
-static void
-add_conv (CamConvertToRgb8 *self,
-        CamPixelFormat inpfmt, cc_func_t func)
-{
-    conv_info_t *ci = (conv_info_t*)malloc (sizeof(conv_info_t));
-    ci->inpfmt = inpfmt;
-    ci->func = func;
-    self->conversions = g_list_append (self->conversions, ci);
-}
-
-static void
-cam_convert_to_rgb8_init( CamConvertToRgb8 *self )
-{
-    dbg(DBG_FILTER, "color_conv filter constructor\n");
-    add_conv (self, CAM_PIXEL_FORMAT_GRAY, gray_to_rgb);
-    add_conv (self, CAM_PIXEL_FORMAT_I420, yuv420p_to_rgb);
-    add_conv (self, CAM_PIXEL_FORMAT_YUYV, yuv422_to_rgb);
-    add_conv (self, CAM_PIXEL_FORMAT_BGRA, bgra_to_rgb);
-    add_conv (self, CAM_PIXEL_FORMAT_MJPEG, mjpeg_to_rgb);
-
-    self->cc_func = NULL;
-
-    g_signal_connect( G_OBJECT(self), "input-format-changed",
-            G_CALLBACK(on_input_format_changed), NULL );
-}
+G_DEFINE_TYPE (CamConvertToRgb8, cam_convert_to_rgb8, CAM_TYPE_UNIT);
 
 static void
 cam_convert_to_rgb8_class_init( CamConvertToRgb8Class *klass )
 {
-    dbg(DBG_FILTER, "color_conversion filter class initializer\n");
     GObjectClass * gobject_class = G_OBJECT_CLASS (klass);
-    gobject_class->finalize = cam_convert_to_rgb8_finalize;
+    gobject_class->finalize = _finalize;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
-    klass->parent_class.stream_init = cam_convert_to_rgb8_stream_init;
+    klass->parent_class.stream_init = _stream_init;
+    klass->parent_class.stream_on = _stream_on;
+    klass->parent_class.stream_off = _stream_off;
+    klass->parent_class.stream_shutdown = _stream_shutdown;
+}
+
+static void
+cam_convert_to_rgb8_init (CamConvertToRgb8 *self)
+{
+    cam_unit_set_preferred_format (CAM_UNIT (self), CAM_PIXEL_FORMAT_RGB, 0, 0);
+    self->worker = NULL;
+    g_signal_connect (G_OBJECT(self), "input-format-changed",
+            G_CALLBACK(on_input_format_changed), NULL);
 }
 
 CamConvertToRgb8 * 
 cam_convert_to_rgb8_new()
 {
-    return CAM_CONVERT_TO_RGB8(
-            g_object_new(CAM_TYPE_CONVERT_TO_RGB8, NULL));
+    return CAM_CONVERT_TO_RGB8(g_object_new(CAM_TYPE_CONVERT_TO_RGB8, NULL));
 }
 
 static void
-cam_convert_to_rgb8_finalize (GObject * obj)
+_finalize (GObject * obj)
 {
-    dbg (DBG_INPUT, "color conversion finalize\n");
     CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (obj);
-    for (GList *citer=self->conversions; citer; citer=citer->next) {
-        free (citer->data);
+    if (self->worker) {
+        g_signal_handlers_disconnect_by_func (self->worker, 
+                on_worker_frame_ready, self);
+        g_object_unref (self->worker);
     }
-    g_list_free (self->conversions);
-    self->conversions = NULL;
-    self->cc_func = 0;
 
     G_OBJECT_CLASS (cam_convert_to_rgb8_parent_class)->finalize (obj);
 }
 
 static int
-cam_convert_to_rgb8_stream_init (CamUnit * super, 
-        const CamUnitFormat * outfmt)
+_stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 {
     CamConvertToRgb8 * self = CAM_CONVERT_TO_RGB8 (super);
-    dbg (DBG_INPUT, "Initializing color conversion filter\n");
-
-    const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
-    if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
-        self->cc_func = NULL;
+    if (outfmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         return 0;
     }
-
-    for (GList *citer=self->conversions; citer; citer=citer->next) {
-        conv_info_t *ci = (conv_info_t*) citer->data;
-        if (ci->inpfmt  == infmt->pixelformat) {
-            self->cc_func = ci->func;
-            return 0;
-        }
+    if (self->worker) {
+        CamUnitFormat *wfmt = 
+            CAM_UNIT_FORMAT (g_object_get_data (G_OBJECT (outfmt), 
+                "convert_to_rgb8:wfmt"));
+        if (!wfmt) return -1;
+        return cam_unit_stream_init (self->worker, wfmt);
+    } else {
+        return -1;
     }
-    return -1;
+}
+
+static int
+_stream_on (CamUnit *super)
+{
+    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
+    if (self->worker) {
+        return cam_unit_stream_on (self->worker);
+    } else {
+        return 0;
+    }
+}
+
+static int
+_stream_off (CamUnit * super)
+{
+    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
+    if (self->worker) {
+        return cam_unit_stream_off (self->worker);
+    } else {
+        return 0;
+    }
+}
+
+static int
+_stream_shutdown (CamUnit * super)
+{
+    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
+    if (self->worker) {
+        return cam_unit_stream_shutdown (self->worker);
+    } else {
+        return 0;
+    }
 }
 
 static void 
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamConvertToRgb8 * self = CAM_CONVERT_TO_RGB8 (super);
-    dbg(DBG_FILTER, "[%s] iterate\n", cam_unit_get_name(super));
+    if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB)
+        cam_unit_produce_frame (super, inbuf, infmt);
+}
 
+static void 
+on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf, 
+        const CamUnitFormat *infmt, void *user_data)
+{
+    CamUnit *super = CAM_UNIT (user_data);
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         cam_unit_produce_frame (super, inbuf, infmt);
-    }
+        return;
+    } else if (infmt->pixelformat == CAM_PIXEL_FORMAT_BGRA) {
+        CamFrameBuffer *outbuf = 
+            cam_framebuffer_new_alloc (infmt->width*infmt->height*3);
+        cam_pixel_convert_8u_bgra_to_8u_rgb(outbuf->data, 
+                super->fmt->row_stride, infmt->width, infmt->height,
+                inbuf->data, infmt->row_stride);
 
-    if (!self->cc_func) return;
-
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
-
-    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
-
-    int status = self->cc_func (self, infmt, inbuf, outfmt, outbuf);
-
-    if (0 == status) {
-        cam_framebuffer_copy_metadata(outbuf, inbuf);
+        cam_framebuffer_copy_metadata (outbuf, inbuf);
         outbuf->bytesused = super->fmt->height * super->fmt->row_stride;
-        cam_unit_produce_frame (super, outbuf, outfmt);
+        cam_unit_produce_frame (super, outbuf, super->fmt);
+        g_object_unref (outbuf);
+        return;
     }
-
-    g_object_unref (outbuf);
 }
 
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
     CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
+    CamUnitStatus desired_status = cam_unit_get_status (super);
+    cam_unit_stream_shutdown (super);
+
+    if (self->worker) {
+        g_signal_handlers_disconnect_by_func (self->worker, 
+                on_worker_frame_ready, self);
+        g_object_unref (self->worker);
+        self->worker = NULL;
+    }
     cam_unit_remove_all_output_formats (super);
     if (!infmt) return;
-
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         cam_unit_add_output_format_full (super, infmt->pixelformat,
-                infmt->name, infmt->width, infmt->height, infmt->row_stride,
-                infmt->max_data_size);
-        return;
-    }
-    for (GList *citer=self->conversions; citer; citer=citer->next) {
-        conv_info_t *ci = (conv_info_t*) citer->data;
-
-        if (ci->inpfmt == infmt->pixelformat) {
-            int stride = infmt->width * 3;
-            int max_data_size = stride * infmt->height;
-
-            cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB,
-                    NULL, infmt->width, infmt->height, 
-                    stride, max_data_size);
-            return;
+                infmt->name, infmt->width, infmt->height, 
+                infmt->row_stride, infmt->max_data_size);
+    } else {
+        switch (infmt->pixelformat) {
+            case CAM_PIXEL_FORMAT_I420:
+            case CAM_PIXEL_FORMAT_GRAY:
+            case CAM_PIXEL_FORMAT_YUYV:
+            case CAM_PIXEL_FORMAT_BGRA:
+            case CAM_PIXEL_FORMAT_BGR:
+                self->worker = CAM_UNIT (cam_color_conversion_filter_new());
+                break;
+            case CAM_PIXEL_FORMAT_MJPEG:
+                self->worker = CAM_UNIT (cam_filter_jpeg_new ());
+                break;
+            case CAM_PIXEL_FORMAT_BAYER_BGGR:
+            case CAM_PIXEL_FORMAT_BAYER_RGGB:
+            case CAM_PIXEL_FORMAT_BAYER_GBRG:
+            case CAM_PIXEL_FORMAT_BAYER_GRBG:
+                self->worker = CAM_UNIT (cam_fast_bayer_filter_new ());
+                break;
+            default:
+                return;
         }
-    }
-}
 
-// conversions
+        g_object_ref_sink (self->worker);
 
-static void init_source (j_decompress_ptr cinfo) { }
+        g_signal_connect (G_OBJECT (self->worker), "frame-ready",
+                G_CALLBACK (on_worker_frame_ready), self);
+        cam_unit_set_input (self->worker, super->input_unit);
 
-static boolean fill_input_buffer (j_decompress_ptr cinfo) {
-//    fprintf (stderr, "Error: JPEG decompressor ran out of buffer space\n");
-    return TRUE;
-}
+        GList * worker_formats = cam_unit_get_output_formats (self->worker);
+        for (GList *witer=worker_formats; witer; witer=witer->next) {
+            CamUnitFormat *wfmt = CAM_UNIT_FORMAT (witer->data);
+            if (wfmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
+                CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
+                        wfmt->pixelformat, wfmt->name, wfmt->width, 
+                        wfmt->height, wfmt->row_stride, wfmt->max_data_size);
+                g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 
+                        wfmt);
 
-static void
-skip_input_data (j_decompress_ptr cinfo, long num_bytes)
-{
-    cinfo->src->next_input_byte += num_bytes;
-    cinfo->src->bytes_in_buffer -= num_bytes;
-}
-
-static void term_source (j_decompress_ptr cinfo) { }
-
-static int
-jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
-        uint8_t * dest, int width, int height, int stride)
-{
-    struct jpeg_decompress_struct cinfo;
-    struct jpeg_error_mgr jerr;
-    struct jpeg_source_mgr jsrc;
-
-    cinfo.err = jpeg_std_error (&jerr);
-    jpeg_create_decompress (&cinfo);
-
-    jsrc.next_input_byte = src;
-    jsrc.bytes_in_buffer = src_size;
-    jsrc.init_source = init_source;
-    jsrc.fill_input_buffer = fill_input_buffer;
-    jsrc.skip_input_data = skip_input_data;
-    jsrc.resync_to_restart = jpeg_resync_to_restart;
-    jsrc.term_source = term_source;
-    cinfo.src = &jsrc;
-
-    jpeg_read_header (&cinfo, TRUE);
-    cinfo.out_color_space = JCS_RGB;
-    jpeg_start_decompress (&cinfo);
-
-    if (cinfo.output_height != height || cinfo.output_width != width) {
-        fprintf (stderr, "Error: Buffer was %dx%d but JPEG image is %dx%d\n",
-                width, height, cinfo.output_width, cinfo.output_height);
-        jpeg_destroy_decompress (&cinfo);
-        return -1;
+            } else if (CAM_IS_FAST_BAYER_FILTER (self->worker) &&
+                    wfmt->pixelformat == CAM_PIXEL_FORMAT_BGRA) {
+                // hack.  fast debayer filter only produces BGRA, so just do an
+                // internal conversion to RGB later on
+                CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
+                        CAM_PIXEL_FORMAT_RGB, wfmt->name, wfmt->width, 
+                        wfmt->height, wfmt->width*3, wfmt->max_data_size);
+                g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 
+                        wfmt);
+            }
+        }
+        g_list_free (worker_formats);
     }
 
-    while (cinfo.output_scanline < height) {
-        uint8_t * row = dest + cinfo.output_scanline * stride;
-        jpeg_read_scanlines (&cinfo, &row, 1);
+    switch (desired_status) {
+        case CAM_UNIT_STATUS_READY:
+            cam_unit_stream_init_any_format (super);
+            break;
+        case CAM_UNIT_STATUS_STREAMING:
+            if (0 == cam_unit_stream_init_any_format (super)) {
+                cam_unit_stream_on (super);
+            }
+            break;
+        default:
+            break;
     }
-    jpeg_finish_decompress (&cinfo);
-    jpeg_destroy_decompress (&cinfo);
-    return 0;
-}
-
-static int 
-mjpeg_to_rgb (CamConvertToRgb8 *self, 
-        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf,
-        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf)
-{
-    return jpeg_decompress_to_8u_rgb (inbuf->data, inbuf->bytesused,
-            outbuf->data, outfmt->width, outfmt->height, outfmt->row_stride);
 }
