@@ -72,7 +72,7 @@ dnl ---------------------------------------------------------------------------
 dnl Warnings
 dnl ---------------------------------------------------------------------------
 if test "x$GCC" = "xyes"; then
-    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes"
+    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
     LDFLAGS="$LDFLAGS -g -Wall"
     AC_SUBST(CFLAGS)
     AC_SUBST(LDFLAGS)
