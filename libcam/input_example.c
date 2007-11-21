@@ -185,7 +185,6 @@ cam_input_example_stream_on (CamUnit *super)
     self->next_frame_time = _timestamp_now();
     self->cur_row = 0;
     
-    cam_unit_set_status (super, CAM_UNIT_STATUS_STREAMING);
     return 0;
 }
 

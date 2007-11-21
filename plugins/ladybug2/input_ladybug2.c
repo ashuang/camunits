@@ -252,15 +252,6 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "Initializing Ladybug2 stream (pxlfmt 0x%x %dx%d)\n",
             format->pixelformat, format->width, format->height);
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (lb2_ladybug2_parent_class)->stream_init (super,
-                format) < 0)
-        return -1;
-
-    /* The parent set our status to READY, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
-
 #if 1
     // initialize this camera
     dc1394camera_t *cam = self->cam;
@@ -370,9 +361,7 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     self->fd = dc1394_capture_get_fileno (self->cam);
     dbg(DBG_INPUT, "dc1394 capture fileno: %d\n", self->fd);
 
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
     return 0;
-
 fail:
     return -1;
 }
@@ -380,76 +369,38 @@ fail:
 static int
 dc1394_stream_shutdown (CamUnit * super)
 {
-    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
-
-    if (super->status != CAM_UNIT_STATUS_READY &&
-            super->status != CAM_UNIT_STATUS_STREAMING) {
-        err ("Ladybug2: cannot shut down an IDLE unit\n");
-        return -1;
-    }
-
-    if (super->status == CAM_UNIT_STATUS_STREAMING) {
-        if (dc1394_stream_off (super) < 0)
-            return -1;
-    }
-
     dbg (DBG_INPUT, "Shutting down Ladybug2 stream\n");
-
+    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
     dc1394_capture_stop (self->cam);
-
-    /* chain up to parent, which handles some of the work */
-    return CAM_UNIT_CLASS (lb2_ladybug2_parent_class)->stream_shutdown (super);
+    return 0;
 }
 
 static int
 dc1394_stream_on (CamUnit * super)
 {
-    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
-
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (lb2_ladybug2_parent_class)->stream_on (super) < 0)
-        return -1;
-
     dbg (DBG_INPUT, "Ladybug2 stream on\n");
-
-    /* The parent set our status to READY, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
-
-    if (dc1394_video_set_transmission (self->cam, DC1394_ON) !=
-            DC1394_SUCCESS)
+    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
+    if (dc1394_video_set_transmission (self->cam, DC1394_ON) != DC1394_SUCCESS)
         return -1;
-
-    cam_unit_set_status (super, CAM_UNIT_STATUS_STREAMING);
     return 0;
 }
 
 static int
 dc1394_stream_off (CamUnit * super)
 {
-    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
-
     dbg (DBG_INPUT, "Ladybug2 stream off\n");
-
-    if (super->status != CAM_UNIT_STATUS_STREAMING) {
-        err ("Unit: unit must be STREAMING to stop streaming\n");
-        return -1;
-    }
-
+    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
     dc1394_video_set_transmission (self->cam, DC1394_OFF);
-
-    return CAM_UNIT_CLASS (lb2_ladybug2_parent_class)->stream_off (super);
+    return 0;
 }
 
 static void
 dc1394_try_produce_frame (CamUnit * super)
 {
+    dbg (DBG_INPUT, "Ladybug2 stream iterate\n");
     LB2Ladybug2 * self = LB2_LADYBUG2 (super);
 
-    dbg (DBG_INPUT, "Ladybug2 stream iterate\n");
-
-    if (super->status != CAM_UNIT_STATUS_STREAMING)
-        return;
+    if (super->status != CAM_UNIT_STATUS_STREAMING) return;
 
     dc1394video_frame_t * frame;
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)

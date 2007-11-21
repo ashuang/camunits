@@ -93,8 +93,7 @@ cam_convert_to_rgb8_class_init( CamConvertToRgb8Class *klass )
     GObjectClass * gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = cam_convert_to_rgb8_finalize;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
-    klass->parent_class.stream_init = 
-        cam_convert_to_rgb8_stream_init;
+    klass->parent_class.stream_init = cam_convert_to_rgb8_stream_init;
 }
 
 CamConvertToRgb8 * 
@@ -126,12 +125,6 @@ cam_convert_to_rgb8_stream_init (CamUnit * super,
     CamConvertToRgb8 * self = CAM_CONVERT_TO_RGB8 (super);
     dbg (DBG_INPUT, "Initializing color conversion filter\n");
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (
-                cam_convert_to_rgb8_parent_class)->stream_init (super,
-                outfmt) < 0)
-        return -1;
-
     const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         self->cc_func = NULL;
@@ -145,7 +138,6 @@ cam_convert_to_rgb8_stream_init (CamUnit * super,
             return 0;
         }
     }
-    cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
     return -1;
 }
 

@@ -123,10 +123,6 @@ get_bayer_tile( CamBayerFilter *self )
 static int
 cam_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 {
-    if (CAM_UNIT_CLASS (cam_bayer_filter_parent_class)->stream_init (super,
-                fmt) < 0)
-        return -1;
-
     CamBayerFilter * self = CAM_BAYER_FILTER (super);
 
     switch (super->input_unit->fmt->pixelformat) {
@@ -143,7 +139,7 @@ cam_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
             cam_unit_control_force_set_enum (self->bayer_tile_ctl, 3);
             break;
         default:
-            break;
+            return -1;
     }
 
     return 0;

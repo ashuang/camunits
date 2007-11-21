@@ -385,15 +385,6 @@ v4l_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "Initializing v4l stream (pxlfmt 0x%x %dx%d)\n",
             format->pixelformat, format->width, format->height);
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (cam_v4l_parent_class)->stream_init (super,
-                format) < 0)
-        return -1;
-
-    /* The parent set our status to READY, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
-
     struct video_window vwin;
     memset (&vwin, 0, sizeof (vwin));
     if (ioctl (self->fd, VIDIOCGWIN, &vwin) < 0) {
@@ -422,7 +413,6 @@ v4l_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "v4l: new window <%d, %d> <%dx%d>\n", 
             vwin.x, vwin.y, vwin.width, vwin.height);
 
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
     return 0;
 }
 
