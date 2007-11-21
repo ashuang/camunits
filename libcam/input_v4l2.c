@@ -487,15 +487,6 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "Initializing v4l2 stream (pxlfmt 0x%x %dx%d)\n",
             format->pixelformat, format->width, format->height);
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (cam_v4l2_parent_class)->stream_init (super,
-                format) < 0)
-        return -1;
-
-    /* The parent set our status to READY, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
-
     struct v4l2_format *fmt = g_object_get_data (G_OBJECT (format),
             "input_v4l2:v4l2_format");
     if (-1 == ioctl (self->fd, VIDIOC_S_FMT, fmt)) {
@@ -597,7 +588,6 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "v4l2 mapped %d buffers of size %d\n", 
             self->num_buffers, self->buffer_length);
 
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
     return 0;
 }
 
@@ -605,19 +595,6 @@ static int
 v4l2_stream_shutdown (CamUnit * super)
 {
     CamV4L2 * self = CAM_V4L2 (super);
-
-    if (super->status != CAM_UNIT_STATUS_READY &&
-            super->status != CAM_UNIT_STATUS_STREAMING) {
-        err ("V4L2: cannot shut down an IDLE unit\n");
-        return -1;
-    }
-
-    if (super->status == CAM_UNIT_STATUS_STREAMING) {
-        if (v4l2_stream_off (super) < 0)
-            return -1;
-    }
-
-    dbg (DBG_INPUT, "Shutting down v4l2 stream\n");
 
     int i;
     for (i = 0; i < self->num_buffers; i++) {
@@ -661,8 +638,7 @@ v4l2_stream_shutdown (CamUnit * super)
                 "for cleanup\n");
     }
 
-    /* chain up to parent, which handles some of the work */
-    return CAM_UNIT_CLASS (cam_v4l2_parent_class)->stream_shutdown (super);
+    return 0;
 }
 
 static int
@@ -670,47 +646,30 @@ v4l2_stream_on (CamUnit * super)
 {
     CamV4L2 * self = CAM_V4L2 (super);
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (cam_v4l2_parent_class)->stream_on (super) < 0)
-        return -1;
-
-    dbg (DBG_INPUT, "v4l2 stream on\n");
-
-    /* The parent set our status to STREAMING, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
-
     int streamontype = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if ( -1 == ioctl (self->fd, VIDIOC_STREAMON, &streamontype)) {
+    if (-1 == ioctl (self->fd, VIDIOC_STREAMON, &streamontype)) {
         perror ("VIDIOC_STREAMON");
         err ("v4l2: couldn't start streaming images\n");
         return -1;
     }
 
-    cam_unit_set_status (super, CAM_UNIT_STATUS_STREAMING);
     return 0;
 }
 
 static int
 v4l2_stream_off (CamUnit * super)
 {
+    dbg (DBG_INPUT, "v4l2 stream off\n");
     CamV4L2 * self = CAM_V4L2 (super);
 
-    dbg (DBG_INPUT, "v4l2 stream off\n");
-
-    if (super->status != CAM_UNIT_STATUS_STREAMING) {
-        err ("Unit: unit must be STREAMING to stop streaming\n");
-        return -1;
-    }
-
     int type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if ( -1 == ioctl (self->fd, VIDIOC_STREAMOFF, &type)) {
+    if (-1 == ioctl (self->fd, VIDIOC_STREAMOFF, &type)) {
         perror ("VIDIOC_STREAMOFF");
         err ("v4l2: couldn't start streaming images\n");
         return -1;
     }
 
-    return CAM_UNIT_CLASS (cam_v4l2_parent_class)->stream_off (super);
+    return 0;
 }
 
 static void
