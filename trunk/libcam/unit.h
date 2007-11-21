@@ -282,7 +282,7 @@ int cam_unit_set_preferred_format (CamUnit *self,
  * Releases buffers and system resources reserved for image
  * acquisition/processing
  */
-void cam_unit_stream_shutdown (CamUnit * self);
+int cam_unit_stream_shutdown (CamUnit * self);
 
 /**
  * cam_unit_stream_on:

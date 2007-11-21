@@ -370,15 +370,6 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "Initializing DC1394 stream (pxlfmt 0x%x %dx%d)\n",
             format->pixelformat, format->width, format->height);
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (cam_dc1394_parent_class)->stream_init (super,
-                format) < 0)
-        return -1;
-
-    /* The parent set our status to READY, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
-
     dc1394format7modeset_t info;
     dc1394_format7_get_modeset (self->cam, &info);
 
@@ -470,7 +461,6 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     self->fd = dc1394_capture_get_fileno (self->cam);
 #endif
 
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
     return 0;
 
 fail:
@@ -485,17 +475,6 @@ static int
 dc1394_stream_shutdown (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
-
-    if (super->status != CAM_UNIT_STATUS_READY &&
-            super->status != CAM_UNIT_STATUS_STREAMING) {
-        err ("DC1394: cannot shut down an IDLE unit\n");
-        return -1;
-    }
-
-    if (super->status == CAM_UNIT_STATUS_STREAMING) {
-        if (dc1394_stream_off (super) < 0)
-            return -1;
-    }
 
     dbg (DBG_INPUT, "Shutting down DC1394 stream\n");
 
@@ -516,15 +495,7 @@ dc1394_stream_on (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (cam_dc1394_parent_class)->stream_on (super) < 0)
-        return -1;
-
     dbg (DBG_INPUT, "DC1394 stream on\n");
-
-    /* The parent set our status to STREAMING, so undo that until it's
-     * really true. */
-    cam_unit_set_status (super, CAM_UNIT_STATUS_READY);
 
     if (dc1394_video_set_transmission (self->cam, DC1394_ON) !=
             DC1394_SUCCESS)
@@ -535,7 +506,6 @@ dc1394_stream_on (CamUnit * super)
     raw1394_set_port (priv->raw1394_handle, 0);
     priv->raw1394_fd = raw1394_get_fd (priv->raw1394_handle);
 
-    cam_unit_set_status (super, CAM_UNIT_STATUS_STREAMING);
     return 0;
 }
 
@@ -546,17 +516,12 @@ dc1394_stream_off (CamUnit * super)
 
     dbg (DBG_INPUT, "DC1394 stream off\n");
 
-    if (super->status != CAM_UNIT_STATUS_STREAMING) {
-        err ("Unit: unit must be STREAMING to stop streaming\n");
-        return -1;
-    }
-
     dc1394_video_set_transmission (self->cam, DC1394_OFF);
 
     CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
     raw1394_destroy_handle (priv->raw1394_handle);
 
-    return CAM_UNIT_CLASS (cam_dc1394_parent_class)->stream_off (super);
+    return 0;
 }
 
 #define CYCLE_TIMER_TO_USEC(cycle,secmask) (\

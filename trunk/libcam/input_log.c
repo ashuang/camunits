@@ -219,8 +219,6 @@ log_stream_on (CamUnit *super)
     CamInputLog *self = CAM_INPUT_LOG (super);
 
     self->next_frame_time = _timestamp_now ();
-
-    cam_unit_set_status (super, CAM_UNIT_STATUS_STREAMING);
     return 0;
 }
 

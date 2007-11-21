@@ -66,19 +66,13 @@ cam_fast_bayer_filter_class_init( CamFastBayerFilterClass *klass )
 {
     dbg(DBG_FILTER, "fast_bayer filter class initializer\n");
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
-    klass->parent_class.stream_init =
-        cam_fast_bayer_filter_stream_init;
-    klass->parent_class.stream_shutdown =
-        cam_fast_bayer_filter_stream_shutdown;
+    klass->parent_class.stream_init = cam_fast_bayer_filter_stream_init;
+    klass->parent_class.stream_shutdown = cam_fast_bayer_filter_stream_shutdown;
 }
 
 static int
 cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 {
-    if (CAM_UNIT_CLASS (cam_fast_bayer_filter_parent_class)->stream_init (super,
-                fmt) < 0)
-        return -1;
-
     CamFastBayerFilter * self = CAM_FAST_BAYER_FILTER (super);
 
     switch (super->input_unit->fmt->pixelformat) {
@@ -95,7 +89,7 @@ cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
             cam_unit_control_force_set_enum (self->bayer_tile_ctl, 3);
             break;
         default:
-            break;
+            return -1;
     }
 
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
@@ -133,9 +127,7 @@ cam_fast_bayer_filter_stream_shutdown (CamUnit * super)
         self->planes[i] = NULL;
     }
 
-    /* chain up to parent, which handles some of the work */
-    return CAM_UNIT_CLASS (
-            cam_fast_bayer_filter_parent_class)->stream_shutdown (super);
+    return 0;
 }
 
 CamFastBayerFilter * 

@@ -224,6 +224,8 @@ cam_unit_class_init (CamUnitClass *klass)
     /**
      * CamUnit::frame-ready
      * @unit: the CamUnit emitting the signal
+     * @fbuf: the FrameBuffer containing the actual frame data
+     * @fmt:  the CamUnitFormat describing the frame data
      *
      * The frame-ready signal is emitted when the unit generates a new frame
      * (i.e. when the unit calls cam_unit_produce_frame) .
@@ -355,21 +357,100 @@ on_input_frame_ready (CamUnit *input_unit, const CamFrameBuffer *inbuf,
     }
 }
 
+static CamUnitFormat *
+find_output_format (CamUnit *self, const CamUnitFormat *format)
+{
+    GList *fiter;
+    for (fiter=self->output_formats; fiter; fiter=fiter->next) {
+        CamUnitFormat *mfmt = CAM_UNIT_FORMAT(fiter->data);
+        if (cam_unit_format_equals (format, mfmt)) return mfmt;
+    }
+    return NULL;
+}
+
 int
 cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
-{ return CAM_UNIT_GET_CLASS (self)->stream_init (self, format); }
+{ 
+    if (self->status != CAM_UNIT_STATUS_IDLE) {
+        err("Unit: refusing to init non idle unit %s (%d)\n",
+                self->unit_id, self->status);
+        return -1;
+    }
+
+    if (! format) {
+        err("Unit: [%s] cannot initialize without a format\n", self->unit_id);
+        return -1;
+    }
+
+    // check that the format belongs to this unit
+    self->fmt = find_output_format (self, format);
+    if (! self->fmt) {
+        err("Unit: [%s] refusing to init with an unrecognized format\n",
+                self->unit_id);
+        return -1;
+    }
+    dbg(DBG_UNIT, "[%s] default stream init [%s]\n",
+            self->unit_id, self->fmt->name);
+    int status = CAM_UNIT_GET_CLASS (self)->stream_init (self, format); 
+
+    if (0 == status) {
+        cam_unit_set_status (self, CAM_UNIT_STATUS_READY);
+        return 0;
+    } else {
+        return -1;
+    }
+}
 
 int
 cam_unit_stream_on (CamUnit * self)
-{ return CAM_UNIT_GET_CLASS (self)->stream_on (self); }
+{ 
+    if (self->status != CAM_UNIT_STATUS_READY) {
+        err("Unit: cannot stream_on.  status is not READY\n");
+        return -1;
+    }
+    if (0 == CAM_UNIT_GET_CLASS (self)->stream_on (self)) {
+        cam_unit_set_status (self, CAM_UNIT_STATUS_STREAMING);
+        return 0;
+    } else {
+        return -1;
+    }
+}
 
 int
 cam_unit_stream_off (CamUnit * self)
-{ return CAM_UNIT_GET_CLASS (self)->stream_off (self); }
+{ 
+    if (self->status != CAM_UNIT_STATUS_STREAMING) {
+        err("Unit: cannot stream_off.  status is not STREAMING\n");
+        return -1;
+    }
+    if (0 == CAM_UNIT_GET_CLASS (self)->stream_off (self)) {
+        cam_unit_set_status (self, CAM_UNIT_STATUS_READY);
+        return 0;
+    } else { 
+        return -1;
+    }
+}
 
-void
+int
 cam_unit_stream_shutdown (CamUnit * self)
-{ CAM_UNIT_GET_CLASS (self)->stream_shutdown (self); }
+{ 
+    if (self->status == CAM_UNIT_STATUS_STREAMING) {
+        if (0 != cam_unit_stream_off (self)) {
+            return -1;
+        }
+    }
+    if (self->status != CAM_UNIT_STATUS_READY) {
+        err("Unit: cannot shut down a unit that is not READY\n");
+        return -1;
+    }
+    if (0 == CAM_UNIT_GET_CLASS (self)->stream_shutdown (self)) {
+        cam_unit_set_status (self, CAM_UNIT_STATUS_IDLE);
+        self->fmt = NULL;
+        return 0;
+    } else {
+        return -1;
+    }
+}
 
 int 
 cam_unit_get_fileno(CamUnit *self)
@@ -398,79 +479,11 @@ cam_unit_try_produce_frame (CamUnit *self)
     if (klass->try_produce_frame) { klass->try_produce_frame (self); }
 }
 
-static CamUnitFormat *
-find_output_format (CamUnit *self, const CamUnitFormat *format)
-{
-    GList *fiter;
-    for (fiter=self->output_formats; fiter; fiter=fiter->next) {
-        CamUnitFormat *mfmt = CAM_UNIT_FORMAT(fiter->data);
-        if (cam_unit_format_equals (format, mfmt)) return mfmt;
-    }
-    return NULL;
-}
-
-static int
-cam_unit_default_stream_init (CamUnit *self, 
-        const CamUnitFormat *format)
-{
-    if (self->status != CAM_UNIT_STATUS_IDLE) {
-        err("Unit: refusing to init non idle unit %s (%d)\n",
-                self->unit_id, self->status);
-        return -1;
-    }
-
-    if (! format) {
-        err("Unit: [%s] cannot initialize without a format\n", self->unit_id);
-        return -1;
-    }
-
-    // check that the format belongs to this unit
-    self->fmt = find_output_format (self, format);
-    if (! self->fmt) {
-        err("Unit: [%s] refusing to init with an unrecognized format\n",
-                self->unit_id);
-        return -1;
-    }
-    dbg(DBG_UNIT, "[%s] default stream init [%s]\n",
-            self->unit_id, self->fmt->name);
-    cam_unit_set_status (self, CAM_UNIT_STATUS_READY);
-    return 0;
-}
-
-static int
-cam_unit_default_stream_shutdown (CamUnit *self)
-{
-    if (self->status != CAM_UNIT_STATUS_READY && 
-        self->status != CAM_UNIT_STATUS_STREAMING) {
-        err("Unit: cannot shut down a unit that is not READY or STREAMING\n");
-        return -1;
-    }
-    self->fmt = NULL;
-    cam_unit_set_status (self, CAM_UNIT_STATUS_IDLE);
-    return 0;
-}
-
-static int
-cam_unit_default_stream_on (CamUnit *self)
-{
-    if (self->status != CAM_UNIT_STATUS_READY) {
-        err("Unit: cannot stream_on.  status is not READY\n");
-        return -1;
-    }
-    cam_unit_set_status (self, CAM_UNIT_STATUS_STREAMING);
-    return 0;
-}
-
-static int
-cam_unit_default_stream_off (CamUnit *self)
-{
-    if (self->status != CAM_UNIT_STATUS_STREAMING) {
-        err("Unit: cannot stream_off.  status is not STREAMING\n");
-        return -1;
-    }
-    cam_unit_set_status (self, CAM_UNIT_STATUS_READY);
-    return 0;
-}
+static int cam_unit_default_stream_init (CamUnit *self, 
+        const CamUnitFormat *format) { return 0; }
+static int cam_unit_default_stream_shutdown (CamUnit *self) { return 0; }
+static int cam_unit_default_stream_on (CamUnit *self) { return 0; }
+static int cam_unit_default_stream_off (CamUnit *self) { return 0; }
 
 static int cam_unit_default_get_fileno (CamUnit *self) { return -1; }
 

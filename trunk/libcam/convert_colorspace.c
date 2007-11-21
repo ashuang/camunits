@@ -147,12 +147,6 @@ cam_color_conversion_filter_stream_init (CamUnit * super,
     CamColorConversionFilter * self = CAM_COLOR_CONVERSION_FILTER (super);
     dbg (DBG_INPUT, "Initializing color conversion filter\n");
 
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (
-                cam_color_conversion_filter_parent_class)->stream_init (super,
-                outfmt) < 0)
-        return -1;
-
     const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
     for (GList *citer=self->conversions; citer; citer=citer->next) {
         conv_info_t *ci = (conv_info_t*) citer->data;
@@ -164,7 +158,6 @@ cam_color_conversion_filter_stream_init (CamUnit * super,
     }
     dbg (DBG_INPUT, 
             "ColorConversion couldn't find appropriate conversion function\n");
-    cam_unit_set_status (super, CAM_UNIT_STATUS_IDLE);
     return -1;
 }
 
