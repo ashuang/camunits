@@ -261,12 +261,17 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
             COL_TEXT, desc->name,
             COL_DESC_PTR, desc,
             -1);
+    GtkTreePath * path =
+        gtk_tree_model_get_path (GTK_TREE_MODEL (self->tree_store), &iter);
+    gtk_tree_view_expand_to_path (GTK_TREE_VIEW (self), path);
+    gtk_tree_path_free (path);
 
 //    gtk_tree_store_append (self->tree_store, &iter2, &iter);
 //    sprintf (str, "<small><tt><b>Driver:  </b>%s</tt></small>", 
 //            desc->driver->package);
 //    gtk_tree_store_set (self->tree_store, &iter2, COL_TEXT, str, -1);
 //
+#if 0
     gtk_tree_store_append (self->tree_store, &iter2, &iter);
     char *idstr = g_strdup_printf ("<small><tt><b>ID:      </b>%s</tt></small>",
             desc->unit_id);
@@ -275,6 +280,7 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
             COL_DESC_PTR, desc,
             -1);
     free (idstr);
+#endif
     return 0;
 }
 
