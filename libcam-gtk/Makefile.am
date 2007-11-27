@@ -1,3 +1,8 @@
+SUBDIRS = pixmaps
+
+AM_CFLAGS = \
+	-DLIBCAM_PIXMAP_PATH=\""$(libcampixmapdir)"\"
+
 INCLUDES = \
 	-I$(top_srcdir) \
 	$(GTK_CFLAGS)

@@ -1,4 +1,4 @@
-libcamplugin_LTLIBRARIES = input_ladybug2.la
+EXTRA_LTLIBRARIES = input_ladybug2.la
 
 INCLUDES = \
 	-I$(top_srcdir) \
