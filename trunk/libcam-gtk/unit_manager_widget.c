@@ -38,6 +38,7 @@ G_DEFINE_TYPE (CamUnitManagerWidget, cam_unit_manager_widget, GTK_TYPE_TREE_VIEW
 enum {
     COL_TEXT,
     COL_DESC_PTR,
+    COL_IS_RENDERABLE,
     N_COLUMNS,
 };
 
@@ -47,13 +48,40 @@ GtkTargetEntry cam_unit_manager_widget_target_entry = {
     .info = CAM_UNIT_MANAGER_WIDGET_DND_ID,
 };
 
+typedef struct _PixbufQuery {
+    GdkPixbuf * pixbuf;
+    int column;
+} PixbufQuery;
+
+static void
+pixbuf_query_free (gpointer data)
+{
+    PixbufQuery * pq = data;
+    if (pq->pixbuf)
+        g_object_unref (G_OBJECT (pq->pixbuf));
+    free (pq);
+}
+
+static void
+get_pixbuf_data (GtkTreeViewColumn * column, GtkCellRenderer * cell,
+        GtkTreeModel * model, GtkTreeIter * iter, gpointer data)
+{
+    PixbufQuery * pq = data;
+    gint val = 0;
+    gtk_tree_model_get (model, iter, pq->column, &val, -1);
+    if (val)
+        g_object_set (G_OBJECT (cell), "pixbuf", pq->pixbuf, NULL);
+    else
+        g_object_set (G_OBJECT (cell), "pixbuf", NULL, NULL);
+}
+
 static void
 cam_unit_manager_widget_init( CamUnitManagerWidget *self )
 {
     dbg(DBG_GUI, "unit manager widget constructor\n");
 
     self->tree_store = gtk_tree_store_new (N_COLUMNS,
-            G_TYPE_STRING, G_TYPE_POINTER);
+            G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
     gtk_tree_view_set_model (GTK_TREE_VIEW (self),
             GTK_TREE_MODEL (self->tree_store));
     GtkCellRenderer * renderer = gtk_cell_renderer_text_new ();
@@ -61,6 +89,19 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
         gtk_tree_view_column_new_with_attributes ("Avail. Units",
             renderer, "markup", COL_TEXT, NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (self), column);
+    gtk_tree_view_column_set_expand (column, TRUE);
+    g_object_set (G_OBJECT (renderer), "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+
+    PixbufQuery * pq = malloc (sizeof (PixbufQuery));
+    pq->pixbuf = gdk_pixbuf_new_from_file (LIBCAM_PIXMAP_PATH "/renderable.png",
+            NULL);
+    pq->column = COL_IS_RENDERABLE;
+    renderer = gtk_cell_renderer_pixbuf_new ();
+    column = gtk_tree_view_column_new_with_attributes (NULL, renderer, NULL);
+    gtk_tree_view_column_set_cell_data_func (column, renderer,
+            get_pixbuf_data, pq, pixbuf_query_free);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (self), column);
+
 #if 0
     gtk_tree_selection_set_select_function (
             gtk_tree_view_get_selection (GTK_TREE_VIEW (self)),
@@ -235,6 +276,7 @@ find_or_make_parent_iter (CamUnitManagerWidget * self,
     gtk_tree_store_set (self->tree_store, result, 
             COL_TEXT, levels[i], 
             COL_DESC_PTR, NULL, 
+            COL_IS_RENDERABLE, 0,
             -1);
     find_or_make_parent_iter (self, levels, i+1, result, result);
     return 1;
@@ -243,7 +285,7 @@ find_or_make_parent_iter (CamUnitManagerWidget * self,
 static int
 add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
 {
-    GtkTreeIter iter, iter2, parent_iter;
+    GtkTreeIter iter, parent_iter;
 
     char **driver_and_id = g_strsplit (desc->unit_id, ":", 2);
     char **levels = g_strsplit (driver_and_id[0], ".", 0);
@@ -260,6 +302,7 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
     gtk_tree_store_set (self->tree_store, &iter,
             COL_TEXT, desc->name,
             COL_DESC_PTR, desc,
+            COL_IS_RENDERABLE, desc->flags & CAM_UNIT_RENDERS_GL,
             -1);
     GtkTreePath * path =
         gtk_tree_model_get_path (GTK_TREE_MODEL (self->tree_store), &iter);
