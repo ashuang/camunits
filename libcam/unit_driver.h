@@ -123,15 +123,15 @@ typedef struct _CamUnitDriverClass CamUnitDriverClass;
 
 struct _CamUnitDriver {
     GInitiallyUnowned parent;
+    char *package;
+    char *name;
 
     /*< private >*/
-    char *package;
     GList *udescs;
 
     CamUnitConstructor stock_constructor;
     uint32_t stock_flags;
     char *stock_unit_name;
-    char *stock_unit_id;
     GTypeModule * stock_module;
 };
 
@@ -150,7 +150,8 @@ GType cam_unit_driver_get_type (void);
 
 /**
  * cam_unit_driver_new_stock:
- * @unit_id: 
+ * @package:
+ * @driver_name:
  * @unit_name:   the name to assign #CamUnit objects instantiated by the
  *               driver.
  * @flags: a bitwise OR of #CamUnitFlags
@@ -166,11 +167,13 @@ GType cam_unit_driver_get_type (void);
  *
  * Returns: a stock #CamUnitDriver
  */
-CamUnitDriver * cam_unit_driver_new_stock (const char *unit_id, 
+CamUnitDriver * cam_unit_driver_new_stock (const char *package,
+        const char *driver_name,
         const char *unit_name, uint32_t flags, 
         CamUnitConstructor constructor);
 
-CamUnitDriver * cam_unit_driver_new_stock_full (const char *unit_id, 
+CamUnitDriver * cam_unit_driver_new_stock_full (const char *package,
+        const char *driver_name,
         const char *unit_name, uint32_t flags, 
         CamUnitConstructor constructor,
         GTypeModule * module);
@@ -262,11 +265,15 @@ int cam_unit_driver_remove_unit_description (CamUnitDriver *self,
         const char *unit_id);
 
 /**
- * cam_unit_driver_set_package:
+ * cam_unit_driver_set_name:
  *
- * Protected method.  Sets the package of the driver.
+ * @package:  The name of the package.  Can be NULL.
+ * @name:     The name of the driver.  Must not be NULL.
+ *
+ * Protected method.  Sets the package and name of the driver.
  */
-void cam_unit_driver_set_package (CamUnitDriver *self, const char *package);
+void cam_unit_driver_set_name (CamUnitDriver *self, const char *package,
+        const char * name);
 
 #ifdef __cplusplus
 }

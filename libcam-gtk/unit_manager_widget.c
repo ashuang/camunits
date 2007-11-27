@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
 
 #include <libcam/dbg.h>
 #include "unit_control_widget.h"
@@ -86,7 +87,7 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
             GTK_TREE_MODEL (self->tree_store));
     GtkCellRenderer * renderer = gtk_cell_renderer_text_new ();
     GtkTreeViewColumn * column = 
-        gtk_tree_view_column_new_with_attributes ("Avail. Units",
+        gtk_tree_view_column_new_with_attributes ("Available Units",
             renderer, "markup", COL_TEXT, NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (self), column);
     gtk_tree_view_column_set_expand (column, TRUE);
@@ -174,78 +175,34 @@ cam_unit_manager_widget_new( CamUnitManager *manager )
     return self;
 }
 
-static int
-find_udesc_parent_iter (CamUnitManagerWidget *self, 
-        char **levels, int i, GtkTreeIter *parent, GtkTreeIter *result)
+static gboolean
+remove_udesc (GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter,
+        gpointer udesc)
 {
-    GtkTreeModel *model = GTK_TREE_MODEL (self->tree_store);
-    if (!levels[i]) {
-        *result = *parent;
-        return 1;
-    }
-
-    GtkTreeIter child;
-    gboolean more_children = gtk_tree_model_iter_children (model,
-            &child, parent);
-    while (more_children) {
-        char *child_name = NULL;
-        gtk_tree_model_get (model, &child, COL_TEXT, &child_name, -1);
-        int is_match = !strcmp (child_name, levels[i]);
-        free (child_name);
-        if (is_match) {
-            return find_udesc_parent_iter (self, levels, i+1, &child, result);
+    CamUnitDescription *qdesc = NULL;
+    gtk_tree_model_get (model, iter, COL_DESC_PTR, &qdesc, -1);
+    if (udesc == qdesc) {
+        GtkTreeIter parent = *iter;
+        while (!gtk_tree_model_iter_has_child (model, &parent)) {
+            GtkTreeIter parent_parent;
+            gboolean has_parent = gtk_tree_model_iter_parent (model,
+                    &parent_parent, &parent);
+            gtk_tree_store_remove (GTK_TREE_STORE (model), &parent);
+            if (!has_parent)
+                break;
+            parent = parent_parent;
         }
-        more_children = gtk_tree_model_iter_next (model, &child);
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 static int
 remove_description (CamUnitManagerWidget *self, CamUnitDescription *desc)
 {
-    // find the parent node
-    GtkTreeIter parent;
-    char **driver_and_id = g_strsplit (desc->unit_id, ":", 2);
-    char **levels = g_strsplit (driver_and_id[0], ".", 0);
-    g_strfreev (driver_and_id);
-    int found_parent = find_udesc_parent_iter (self, levels, 0, NULL, &parent);
-    g_strfreev (levels);
-
-    assert (found_parent);
-
-    // find and remove the child node corresponding to the unit description
-    GtkTreeModel *model = GTK_TREE_MODEL (self->tree_store);
-    GtkTreeIter iter;
-    int found_iter = 0;
-    for (gboolean more_children = 
-            gtk_tree_model_iter_children (model, &iter, &parent);
-            more_children;
-            more_children = gtk_tree_model_iter_next (model, &iter)) {
-        CamUnitDescription *qdesc = NULL;
-        gtk_tree_model_get (model, &iter, COL_DESC_PTR, &qdesc, -1);
-
-        if (qdesc == desc) {
-            gtk_tree_store_remove (self->tree_store, &iter);
-            found_iter = 1;
-            break;
-        }
-    }
-
-    // if the removal of the description resulted in a childless parent, then 
-    // remove the parent from the tree store.
-    while (! gtk_tree_model_iter_has_child (model, &parent)) {
-        GtkTreeIter parent_parent;
-        gboolean has_parent = gtk_tree_model_iter_parent (model, &parent_parent,
-                &parent);
-        gtk_tree_store_remove (self->tree_store, &parent);
-        if (has_parent) {
-            parent = parent_parent;
-        } else {
-            break;
-        }
-    }
-
-    return -1;
+    gtk_tree_model_foreach (GTK_TREE_MODEL (self->tree_store),
+            remove_udesc, desc);
+    return 0;
 }
 
 static int
@@ -287,12 +244,15 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
 {
     GtkTreeIter iter, parent_iter;
 
-    char **driver_and_id = g_strsplit (desc->unit_id, ":", 2);
-    char **levels = g_strsplit (driver_and_id[0], ".", 0);
-    g_strfreev (driver_and_id);
-    int found_parent = 
-        find_or_make_parent_iter (self, levels, 0, NULL, &parent_iter);
-    g_strfreev (levels);
+    int found_parent = 0;
+    if (desc->driver->package) {
+        char **levels = g_strsplit (desc->driver->package, ".", 0);
+        for (int i = 0; levels[i]; i++)
+            levels[i][0] = toupper (levels[i][0]);
+        found_parent = find_or_make_parent_iter (self, levels, 0,
+                NULL, &parent_iter);
+        g_strfreev (levels);
+    }
 
     if (found_parent) {
         gtk_tree_store_append (self->tree_store, &iter, &parent_iter);

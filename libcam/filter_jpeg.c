@@ -9,10 +9,6 @@
 
 #define err(args...) fprintf(stderr, args)
 
-#ifndef FILTER_JPEG_NAME
-#define FILTER_JPEG_NAME "convert:jpeg"
-#endif
-
 #ifndef FILTER_JPEG_LABEL
 #define FILTER_JPEG_LABEL "JPEG"
 #endif
@@ -29,7 +25,7 @@ static int jpeg_compress_8u_bgra (const uint8_t * src, int width, int height, in
 CamUnitDriver *
 cam_filter_jpeg_driver_new()
 {
-    return cam_unit_driver_new_stock (FILTER_JPEG_NAME,
+    return cam_unit_driver_new_stock ("convert", "jpeg",
             FILTER_JPEG_LABEL, 0,
             (CamUnitConstructor)cam_filter_jpeg_new);
 }
@@ -56,7 +52,7 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full (FILTER_JPEG_NAME,
+    return cam_unit_driver_new_stock_full ("convert", "jpeg",
             FILTER_JPEG_LABEL, 0,
             (CamUnitConstructor)cam_filter_jpeg_new, module);
 }

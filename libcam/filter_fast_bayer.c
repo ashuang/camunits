@@ -17,7 +17,7 @@
 CamUnitDriver *
 cam_fast_bayer_filter_driver_new()
 {
-    return cam_unit_driver_new_stock( "convert:fast_debayer",
+    return cam_unit_driver_new_stock( "convert", "fast_debayer",
             "Fast Debayer", 0,
             (CamUnitConstructor)cam_fast_bayer_filter_new );
 }

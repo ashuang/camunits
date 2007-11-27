@@ -10,7 +10,7 @@
 CamUnitDriver *
 cam_convert_to_rgb8_driver_new()
 {
-    return cam_unit_driver_new_stock ("convert:to_rgb8",
+    return cam_unit_driver_new_stock ("convert", "to_rgb8",
             "Convert to 8-bit RGB", 0,
             (CamUnitConstructor)cam_convert_to_rgb8_new);
 }

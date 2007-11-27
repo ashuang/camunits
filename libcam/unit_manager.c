@@ -112,7 +112,7 @@ cam_unit_manager_finalize (GObject *obj)
     GList *iter;
     for (iter=self->drivers; iter; iter=iter->next) {
         CamUnitDriver *driver = CAM_UNIT_DRIVER (iter->data);
-        dbgl (DBG_REF, "unref driver [%s]\n", driver->package);
+        dbgl (DBG_REF, "unref driver [%s]\n", driver->name);
         g_object_unref (driver);
     }
     g_list_free (self->drivers);
@@ -161,7 +161,7 @@ on_unit_description_removed (CamUnitDriver *driver, CamUnitDescription *udesc,
 void 
 cam_unit_manager_add_driver (CamUnitManager *self, CamUnitDriver *driver)
 {
-    dbg (DBG_MANAGER, "add driver %s\n", driver->package);
+    dbg (DBG_MANAGER, "add driver %s\n", driver->name);
     self->drivers = g_list_append (self->drivers, driver);
 
     dbgl (DBG_REF, "ref_sink driver\n");
@@ -255,15 +255,16 @@ cam_unit_manager_list_package (CamUnitManager *self,
     GList *diter;
     for (diter=self->drivers; diter; diter=diter->next) {
         CamUnitDriver *driver = CAM_UNIT_DRIVER (diter->data);
-        const char *driver_package = cam_unit_driver_get_package (driver);
+        if (!driver->package)
+            continue;
 
         int match = 0;
         if (recurse) {
-            match = (!strncmp (query_package, driver_package,
+            match = (!strncmp (query_package, driver->package,
                         query_len));
             // FIXME query of "input.foo" will match package "input.foobar"
         } else {
-            match = (!strcmp (query_package, driver_package));
+            match = (!strcmp (query_package, driver->package));
         }
         if (!match) continue;
 

@@ -35,12 +35,15 @@ cam_unit_description_class_init (CamUnitDescriptionClass *klass)
 
 CamUnitDescription *
 cam_unit_description_new (CamUnitDriver *driver, const char *name, 
-        const char *unit_id, uint32_t flags)
+        const char *id, uint32_t flags)
 {
     CamUnitDescription *self = g_object_new (CAM_TYPE_UNIT_DESCRIPTION, NULL);
     self->driver = driver;
     self->name = strdup (name);
-    self->unit_id = strdup (unit_id);
+    self->unit_id = g_strdup_printf ("%s%s%s%s%s",
+            driver->package ? driver->package : "",
+            driver->package ? "." : "",
+            driver->name, id ? ":" : "", id ? id : "");
     self->flags = flags;
     return self;
 }
@@ -52,7 +55,7 @@ cam_unit_description_finalize (GObject *obj)
     dbg (DBG_DRIVER, "finalize unit description [%s]\n", self->unit_id);
 
     if (self->name) free (self->name);
-    if (self->unit_id) free (self->unit_id);
+    if (self->unit_id) g_free (self->unit_id);
 
     G_OBJECT_CLASS (cam_unit_description_parent_class)->finalize (obj);
 }
@@ -81,7 +84,6 @@ cam_unit_driver_init (CamUnitDriver *self)
     self->package = NULL;
     self->udescs = NULL;
     self->stock_unit_name = NULL;
-    self->stock_unit_id = NULL;
     self->stock_flags = 0;
     self->stock_constructor = NULL;
 }
@@ -127,8 +129,8 @@ cam_unit_driver_finalize (GObject *obj)
     dbg (DBG_DRIVER, "CamUnitDriver finalize [%s]\n", self->package);
 
     if (self->stock_unit_name) free (self->stock_unit_name);
-    if (self->stock_unit_id) free (self->stock_unit_id);
     if (self->package) free (self->package);
+    if (self->name) free (self->name);
     GList *ucopy = g_list_copy (self->udescs);
     GList *uditer;
     for (uditer=ucopy; uditer; uditer=uditer->next) {
@@ -145,7 +147,7 @@ cam_unit_driver_finalize (GObject *obj)
 }
 
 CamUnitDriver * 
-cam_unit_driver_new_stock_full (const char *unit_id, 
+cam_unit_driver_new_stock_full (const char *package, const char * driver_name,
         const char *unit_name, uint32_t flags, 
         CamUnitConstructor constructor,
         GTypeModule * module)
@@ -153,14 +155,11 @@ cam_unit_driver_new_stock_full (const char *unit_id,
     CamUnitDriver *self = 
         CAM_UNIT_DRIVER (g_object_new (CAM_TYPE_UNIT_DRIVER, NULL));
 
-    char **parts = g_strsplit (unit_id, ":", 2);
-    cam_unit_driver_set_package (self, parts[0]);
-    g_strfreev (parts);
+    cam_unit_driver_set_name (self, package, driver_name);
 
     self->stock_constructor = constructor;
     self->stock_flags = flags;
     self->stock_unit_name = strdup (unit_name);
-    self->stock_unit_id = strdup (unit_id);
     if (module) {
         self->stock_module = module;
         g_type_module_use (module);
@@ -170,11 +169,11 @@ cam_unit_driver_new_stock_full (const char *unit_id,
 }
 
 CamUnitDriver * 
-cam_unit_driver_new_stock (const char *unit_id, 
+cam_unit_driver_new_stock (const char *package, const char * driver_name,
         const char *unit_name, uint32_t flags, 
         CamUnitConstructor constructor)
 {
-    return cam_unit_driver_new_stock_full (unit_id, unit_name,
+    return cam_unit_driver_new_stock_full (package, driver_name, unit_name,
             flags, constructor, NULL);
 }
 
@@ -240,8 +239,6 @@ cam_unit_driver_default_create_unit (CamUnitDriver *self,
 {
     if (! self->stock_constructor || !self->stock_unit_name) return NULL;
 
-    if (strcmp (udesc->unit_id, self->stock_unit_id)) return NULL;
-
     return self->stock_constructor ();
 }
 
@@ -251,7 +248,7 @@ cam_unit_driver_default_start (CamUnitDriver *self)
     if (! self->stock_constructor) return 0;
 
     cam_unit_driver_add_unit_description (self, self->stock_unit_name,
-            self->stock_unit_id, self->stock_flags);
+            NULL, self->stock_flags);
     return 0;
 }
 
@@ -281,10 +278,10 @@ cam_unit_driver_default_search_unit_description (CamUnitDriver *self,
 
 CamUnitDescription *
 cam_unit_driver_add_unit_description (CamUnitDriver *self,
-        const char *name, const char *unit_id, uint32_t flags)
+        const char *name, const char *id, uint32_t flags)
 {
     CamUnitDescription *udesc = cam_unit_description_new (self,
-            name, unit_id, flags);
+            name, id, flags);
     g_object_ref_sink (udesc);
 
     // check for dupes
@@ -330,9 +327,18 @@ cam_unit_driver_remove_unit_description (CamUnitDriver *self,
 }
 
 void 
-cam_unit_driver_set_package (CamUnitDriver *self, const char *package)
+cam_unit_driver_set_name (CamUnitDriver *self, const char *package,
+        const char *name)
 {
-    if (self->package) free (self->package);
-    self->package = strdup (package);
-    dbg (DBG_DRIVER, "setting package to %s\n", self->package);
+    if (self->package)
+        free (self->package);
+    self->package = NULL;
+    if (package)
+        self->package = strdup (package);
+    if (self->name)
+        free (self->name);
+    self->name = strdup (name);
+    dbg (DBG_DRIVER, "setting package to %s%s%s\n",
+            self->package ? self->package : "",
+            self->package ? "." : "", self->name);
 }

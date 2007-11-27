@@ -12,7 +12,7 @@
 CamUnitDriver *
 cam_filter_gl_driver_new()
 {
-    return cam_unit_driver_new_stock( "render:opengl",
+    return cam_unit_driver_new_stock( "output", "opengl",
             "OpenGL", CAM_UNIT_RENDERS_GL,
             (CamUnitConstructor)cam_filter_gl_new );
 }

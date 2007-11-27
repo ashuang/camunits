@@ -12,7 +12,7 @@
 CamUnitDriver *
 cam_bayer_filter_driver_new()
 {
-    return cam_unit_driver_new_stock( "convert:debayer",
+    return cam_unit_driver_new_stock( "convert", "debayer",
             "Bayer Demosaic", 0,
             (CamUnitConstructor)cam_bayer_filter_new );
 }

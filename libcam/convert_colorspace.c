@@ -10,7 +10,7 @@
 CamUnitDriver *
 cam_color_conversion_filter_driver_new()
 {
-    return cam_unit_driver_new_stock( "convert:colorspace",
+    return cam_unit_driver_new_stock( "convert", "colorspace",
             "Colorspace Conversion", 0,
             (CamUnitConstructor)cam_color_conversion_filter_new );
 }

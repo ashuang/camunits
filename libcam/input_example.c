@@ -24,9 +24,6 @@ static int fps_numer_options[] = { 1, 5, 15, 30 };
 
 static CamUnit * cam_input_example_driver_create_unit(CamUnitDriver *super,
         const CamUnitDescription * udesc);
-static CamUnitDescription * 
-cam_input_example_driver_search_unit_description (CamUnitDriver *driver, 
-        const char *id);
 static void cam_input_example_driver_finalize (GObject *obj);
 static int cam_input_example_driver_start (CamUnitDriver *self);
 
@@ -40,7 +37,7 @@ cam_input_example_driver_init (CamInputExampleDriver *self)
     // CamInputExampleDriver constructor
  
     CamUnitDriver *super = CAM_UNIT_DRIVER(self);
-    cam_unit_driver_set_package (super, "input");
+    cam_unit_driver_set_name (super, "input", "example");
 }
 
 static void
@@ -55,8 +52,6 @@ cam_input_example_driver_class_init (CamInputExampleDriverClass *klass)
 
     // override methods
     klass->parent_class.create_unit = cam_input_example_driver_create_unit;
-    klass->parent_class.search_unit_description = 
-        cam_input_example_driver_search_unit_description;
     klass->parent_class.start = cam_input_example_driver_start;
 //    klass->parent_class.stop = cam_input_example_driver_stop;
 }
@@ -81,8 +76,7 @@ cam_input_example_driver_new()
 static int 
 cam_input_example_driver_start (CamUnitDriver *super)
 {
-    cam_unit_driver_add_unit_description (super, 
-            "Example Input", "input:input_example",
+    cam_unit_driver_add_unit_description (super, "Example Input", NULL,
             CAM_UNIT_EVENT_METHOD_TIMEOUT);
     return 0;
 }
@@ -95,21 +89,6 @@ cam_input_example_driver_create_unit(CamUnitDriver *super,
     CamInputExample *result = cam_input_example_new();
 
     return CAM_UNIT (result);
-}
-
-static CamUnitDescription * 
-cam_input_example_driver_search_unit_description (CamUnitDriver *super, 
-        const char *id)
-{
-    const char *expected_id = "input_example:1";
-    if (! strcmp (id, expected_id)) {
-        CamUnitDescription *udesc = 
-            cam_unit_driver_add_unit_description (super,
-                    "CamExample Unit", id, 
-                    CAM_UNIT_EVENT_METHOD_TIMEOUT);
-        return udesc;
-    }
-    return NULL;
 }
 
 // ============== CamInputExample ===============
