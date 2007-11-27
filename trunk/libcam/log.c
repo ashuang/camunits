@@ -272,6 +272,8 @@ log_resync (FILE * f)
 static int find_last_frame_info (CamLog *self);
 static int process_frame (CamLog * self);
 
+#define MAX64 ((uint64_t)-1)
+
 CamLog* 
 cam_log_new (const char *fname, const char *mode)
 {
@@ -307,10 +309,15 @@ cam_log_new (const char *fname, const char *mode)
     self->prev_offset = 0;
     self->curr_info.frameno = 0;
     self->file_size = 0;
+    self->first_frame_info.frameno = MAX64;
 
     if (self->mode == CAMLOG_MODE_READ) {
         self->file_size = statbuf.st_size;
         dbg (DBG_LOG, "File size %"PRId64" bytes\n", self->file_size);
+
+        process_frame (self);
+        memcpy (&self->first_frame_info, &self->curr_info,
+                sizeof (CamLogFrameInfo));
 
         if (find_last_frame_info (self) < 0) {
             cam_log_destroy (self);
@@ -318,8 +325,6 @@ cam_log_new (const char *fname, const char *mode)
         }
         rewind (self->fp);
         process_frame (self);
-        memcpy (&self->first_frame_info, &self->curr_info,
-                sizeof (CamLogFrameInfo));
     }
 
     return self;
@@ -410,6 +415,7 @@ process_frame (CamLog * self)
                 type == LOG_TYPE_FRAME_INFO_0) && !self->curr_frame) {
             self->curr_frame = cam_framebuffer_new_alloc (0);
             self->curr_info.offset = offset;
+            self->curr_info.frameno = MAX64;
         }
         else if (!self->curr_frame) {
             fseeko (f, len, SEEK_CUR);
@@ -461,7 +467,8 @@ process_frame (CamLog * self)
         else if (type == LOG_TYPE_FRAME_DATA) {
             self->curr_info.data_len = len;
             self->curr_info.data_offset = ftello (f);
-            fseeko (f, len, SEEK_CUR);
+            if (fseeko (f, len, SEEK_CUR) < 0)
+                return -1;
             got_data = 1;
         }
         else if (type == LOG_TYPE_FRAME_TIMESTAMP) {
@@ -531,6 +538,14 @@ process_frame (CamLog * self)
             }
             fseeko (f, len - b, SEEK_CUR);
         }
+    }
+    if (self->curr_info.frameno == MAX64) {
+        if (self->first_frame_info.frameno == MAX64)
+            self->curr_info.frameno = 0;
+        else
+            self->curr_info.frameno =
+                (self->curr_info.offset - self->first_frame_info.offset) /
+                (ftello (self->fp) - self->curr_info.offset);
     }
     return 0;
 }
