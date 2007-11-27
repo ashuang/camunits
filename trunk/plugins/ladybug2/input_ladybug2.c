@@ -23,8 +23,6 @@
 
 #define NUM_BUFFERS 2
 
-#define LADYBUG2_PACKAGE "input.ladybug2"
-
 #define err(args...) fprintf (stderr, args)
 
 #define s2s(status) ((status)==DC1394_SUCCESS?"OK":"FAILURE")
@@ -71,7 +69,7 @@ lb2_ladybug2_driver_init (LB2Ladybug2Driver * self)
 {
     dbg (DBG_DRIVER, "Ladybug2 driver constructor\n");
     CamUnitDriver * super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_package (super, LADYBUG2_PACKAGE);
+    cam_unit_driver_set_name (super, "input", "ladybug2");
 
     self->cameras = NULL;
     self->num_cameras = 0;
@@ -122,7 +120,7 @@ driver_start (CamUnitDriver * super)
         snprintf (name, sizeof (name), "%s %s",
                 self->cameras[i]->vendor,
                 self->cameras[i]->model);
-        snprintf (id, sizeof (id), "%s:%d", LADYBUG2_PACKAGE, i);
+        snprintf (id, sizeof (id), "%d", i);
         cam_unit_driver_add_unit_description (super, name, id, 
                 CAM_UNIT_EVENT_METHOD_FD);
     }

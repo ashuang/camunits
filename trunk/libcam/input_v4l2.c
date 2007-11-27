@@ -18,8 +18,6 @@
 
 #define V4L2_BASE   "/dev/video"
 
-#define V4L2_PACKAGE "input.v4l2"
-
 #define NUM_BUFFERS 5
 
 static CamUnit * driver_create_unit (CamUnitDriver * super,
@@ -45,7 +43,7 @@ cam_v4l2_driver_init (CamV4L2Driver * self)
 {
     dbg (DBG_DRIVER, "v4l2 driver constructor\n");
     CamUnitDriver * super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_package (super, V4L2_PACKAGE);
+    cam_unit_driver_set_name (super, "input", "v4l2");
 }
 
 static void
@@ -132,7 +130,7 @@ driver_start (CamUnitDriver * super)
             continue;
 
         snprintf (name, sizeof (name), "%s (V4L2)", cap.card);
-        snprintf (unit_id, sizeof (unit_id), "%s:%d", V4L2_PACKAGE, j);
+        snprintf (unit_id, sizeof (unit_id), "%d", j);
 
         CamUnitDescription *udesc = 
             cam_unit_driver_add_unit_description (super, name, unit_id, 

@@ -26,7 +26,7 @@ enum {
 CamUnitDriver *
 cam_logger_unit_driver_new (void)
 {
-    return cam_unit_driver_new_stock ("output:logger",
+    return cam_unit_driver_new_stock ("output", "logger",
             "Logger", 0,
             (CamUnitConstructor)cam_logger_unit_new);
 }

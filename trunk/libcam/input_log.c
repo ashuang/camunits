@@ -13,8 +13,6 @@
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
 
-#define LOG_DRIVER_NAME "input.log"
-
 // ============== CamInputLogDriver ===============
 
 static CamUnit * driver_create_unit (CamUnitDriver *super,
@@ -29,7 +27,7 @@ cam_input_log_driver_init (CamInputLogDriver *self)
 {
     dbg (DBG_DRIVER, "log driver constructor\n");
     CamUnitDriver *super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_package (super, LOG_DRIVER_NAME);
+    cam_unit_driver_set_name (super, "input", "log");
 }
 
 static void
@@ -54,14 +52,10 @@ driver_create_unit (CamUnitDriver *super,
 {
     dbg (DBG_DRIVER, "log driver creating new Log unit\n");
 
-    char **words = g_strsplit (udesc->unit_id, ":", 2);
-    if (strcmp (words[0], LOG_DRIVER_NAME)) {
-        dbg (DBG_DRIVER, "driver name [%s] did not match expected [%s]\n",
-                words[0], LOG_DRIVER_NAME);
-        g_strfreev (words);
+    if (udesc->driver != super)
         return NULL;
-    }
 
+    char **words = g_strsplit (udesc->unit_id, ":", 2);
     CamInputLog *result = cam_input_log_new (words[1]);
     g_strfreev (words);
 
@@ -74,17 +68,19 @@ driver_search_unit_description (CamUnitDriver *super,
 {
 //    CamInputLogDriver *self = CAM_INPUT_LOG_DRIVER (super);
     char **words = g_strsplit (id, ":", 2);
-    if (strcmp (words[0], LOG_DRIVER_NAME)) {
+    if (strcmp (words[0], "input.log")) {
         dbg (DBG_DRIVER, "driver name [%s] did not match expected [%s]\n",
-                words[0], LOG_DRIVER_NAME);
+                words[0], "input.log");
         g_strfreev (words);
         return NULL;
     }
     if (g_file_test (words[1], G_FILE_TEST_EXISTS)) {
+        gchar * basename = g_path_get_basename (words[1]);
         CamUnitDescription *desc = 
             cam_unit_driver_add_unit_description (super,
-                words[1], id, 
+                basename, words[1], 
                 CAM_UNIT_EVENT_METHOD_TIMEOUT);
+        g_free (basename);
         g_strfreev (words);
         return desc;
     }
