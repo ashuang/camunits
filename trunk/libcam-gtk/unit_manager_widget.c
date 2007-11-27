@@ -49,33 +49,6 @@ GtkTargetEntry cam_unit_manager_widget_target_entry = {
     .info = CAM_UNIT_MANAGER_WIDGET_DND_ID,
 };
 
-typedef struct _PixbufQuery {
-    GdkPixbuf * pixbuf;
-    int column;
-} PixbufQuery;
-
-static void
-pixbuf_query_free (gpointer data)
-{
-    PixbufQuery * pq = data;
-    if (pq->pixbuf)
-        g_object_unref (G_OBJECT (pq->pixbuf));
-    free (pq);
-}
-
-static void
-get_pixbuf_data (GtkTreeViewColumn * column, GtkCellRenderer * cell,
-        GtkTreeModel * model, GtkTreeIter * iter, gpointer data)
-{
-    PixbufQuery * pq = data;
-    gint val = 0;
-    gtk_tree_model_get (model, iter, pq->column, &val, -1);
-    if (val)
-        g_object_set (G_OBJECT (cell), "pixbuf", pq->pixbuf, NULL);
-    else
-        g_object_set (G_OBJECT (cell), "pixbuf", NULL, NULL);
-}
-
 static void
 cam_unit_manager_widget_init( CamUnitManagerWidget *self )
 {
@@ -85,23 +58,26 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
             G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
     gtk_tree_view_set_model (GTK_TREE_VIEW (self),
             GTK_TREE_MODEL (self->tree_store));
+    GtkTreeViewColumn * column = gtk_tree_view_column_new ();
+    gtk_tree_view_column_set_title (column, "Available Units");
+
     GtkCellRenderer * renderer = gtk_cell_renderer_text_new ();
-    GtkTreeViewColumn * column = 
-        gtk_tree_view_column_new_with_attributes ("Available Units",
-            renderer, "markup", COL_TEXT, NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (self), column);
-    gtk_tree_view_column_set_expand (column, TRUE);
+    gtk_tree_view_column_pack_start (column, renderer, TRUE);
+    gtk_tree_view_column_add_attribute (column, renderer,
+            "markup", COL_TEXT);
     g_object_set (G_OBJECT (renderer), "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
-    PixbufQuery * pq = malloc (sizeof (PixbufQuery));
-    pq->pixbuf = gdk_pixbuf_new_from_file (LIBCAM_PIXMAP_PATH "/renderable.png",
-            NULL);
-    pq->column = COL_IS_RENDERABLE;
     renderer = gtk_cell_renderer_pixbuf_new ();
-    column = gtk_tree_view_column_new_with_attributes (NULL, renderer, NULL);
-    gtk_tree_view_column_set_cell_data_func (column, renderer,
-            get_pixbuf_data, pq, pixbuf_query_free);
+    gtk_tree_view_column_pack_start (column, renderer, FALSE);
+    GdkPixbuf * pb =
+        gdk_pixbuf_new_from_file (LIBCAM_PIXMAP_PATH "/renderable.png", NULL);
+    g_object_set (G_OBJECT (renderer), "pixbuf", pb, NULL);
+    g_object_unref (pb);
+    gtk_tree_view_column_add_attribute (column, renderer,
+            "visible", COL_IS_RENDERABLE);
+
     gtk_tree_view_append_column (GTK_TREE_VIEW (self), column);
+    gtk_tree_view_column_set_expand (column, TRUE);
 
 #if 0
     gtk_tree_selection_set_select_function (
