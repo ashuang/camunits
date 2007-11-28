@@ -6,7 +6,7 @@ AM_INIT_AUTOMAKE(libcam, 0.0.1)
 AM_MAINTAINER_MODE
 
 AC_PROG_CC
-AM_PATH_GLIB_2_0(,,,gthread)
+AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
 AM_PATH_GTK_2_0
 
 case "$target_os" in
@@ -89,6 +89,7 @@ AC_OUTPUT([
   libcam/Makefile
   libcam-gtk/Makefile
   camview/Makefile
+  camlog/Makefile
   m4/Makefile
   libcam/libcam.pc
   libcam-gtk/libcam-gtk.pc
