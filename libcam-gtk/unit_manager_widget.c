@@ -7,6 +7,7 @@
 #include <libcam/dbg.h>
 #include "unit_control_widget.h"
 #include "unit_manager_widget.h"
+#include "cam_tree_store.h"
 
 #define err(args...) fprintf(stderr, args)
 
@@ -40,6 +41,7 @@ enum {
     COL_TEXT,
     COL_DESC_PTR,
     COL_IS_RENDERABLE,
+    COL_IS_DRAGGABLE,
     N_COLUMNS,
 };
 
@@ -54,8 +56,11 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
 {
     dbg(DBG_GUI, "unit manager widget constructor\n");
 
-    self->tree_store = gtk_tree_store_new (N_COLUMNS,
-            G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
+    self->tree_store = GTK_TREE_STORE (cam_tree_store_new (N_COLUMNS,
+            G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN));
+    cam_tree_store_set_draggable_col (CAM_TREE_STORE (self->tree_store),
+            COL_IS_DRAGGABLE);
+
     gtk_tree_view_set_model (GTK_TREE_VIEW (self),
             GTK_TREE_MODEL (self->tree_store));
     GtkTreeViewColumn * column = gtk_tree_view_column_new ();
@@ -84,7 +89,10 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
             gtk_tree_view_get_selection (GTK_TREE_VIEW (self)),
             selection_func, NULL, NULL);
 #endif
-    gtk_drag_source_set (GTK_WIDGET (self), GDK_BUTTON1_MASK,
+//    gtk_drag_source_set (GTK_WIDGET (self), GDK_BUTTON1_MASK,
+//            &cam_unit_manager_widget_target_entry, 1, GDK_ACTION_PRIVATE);
+    gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (self),
+            GDK_BUTTON1_MASK,
             &cam_unit_manager_widget_target_entry, 1, GDK_ACTION_PRIVATE);
     g_signal_connect (G_OBJECT (self), "row-activated", 
             G_CALLBACK (on_row_selected), self);
@@ -209,7 +217,8 @@ find_or_make_parent_iter (CamUnitManagerWidget * self,
     gtk_tree_store_set (self->tree_store, result, 
             COL_TEXT, levels[i], 
             COL_DESC_PTR, NULL, 
-            COL_IS_RENDERABLE, 0,
+            COL_IS_RENDERABLE, FALSE,
+            COL_IS_DRAGGABLE, FALSE,
             -1);
     find_or_make_parent_iter (self, levels, i+1, result, result);
     return 1;
@@ -239,6 +248,7 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
             COL_TEXT, desc->name,
             COL_DESC_PTR, desc,
             COL_IS_RENDERABLE, desc->flags & CAM_UNIT_RENDERS_GL,
+            COL_IS_DRAGGABLE, TRUE,
             -1);
     GtkTreePath * path =
         gtk_tree_model_get_path (GTK_TREE_MODEL (self->tree_store), &iter);
