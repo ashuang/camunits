@@ -21,7 +21,9 @@ libcam_gtk_la_SOURCES = \
 	unit_control_widget.c \
 	unit_control_widget.h \
 	unit_manager_widget.c \
-	unit_manager_widget.h 
+	unit_manager_widget.h \
+	cam_tree_store.c \
+	cam_tree_store.h
 
 libcam_gtk_la_LIBADD = \
 	$(GTK_LIBS)
