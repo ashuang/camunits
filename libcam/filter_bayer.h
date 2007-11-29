@@ -53,32 +53,36 @@ CamUnitDriver * cam_bayer_filter_driver_new();
 
 
 /**
+ * CamBayerFilterTiling:
+ *
  * If you're using a bayer filter directly in your application, you can use
  * these values to set the tiling pattern with the "Tiling" control.  e.g.
  *
- * cam_unit_set_control( unit, 
+ * cam_unit_set_control_enum (unit, "tiling", CAM_FILTER_BAYER_TILING_GBRG);
  */
-enum {
+typedef enum _CamBayerFilterTiling {
     CAM_FILTER_BAYER_TILING_GBRG = 0,
     CAM_FILTER_BAYER_TILING_GRBG = 1,
     CAM_FILTER_BAYER_TILING_BGGR = 2,
     CAM_FILTER_BAYER_TILING_RGGB = 3,
-};
+} CamBayerFilterTiling;
 
 /**
+ * CamBayerFilterMethod:
+ *
  * If you're using a bayer filter directly in your application, you can use
  * these values to set the tiling pattern with the "Method" control.  e.g.
  *
- * cam_unit_set_control( unit, 
+ * cam_unit_set_control_enum (unit, "method", CAM_FILTER_BAYER_METHOD_NEAREST);
  */
-enum {
+typedef enum _CamBayerFilterMethod {
     CAM_FILTER_BAYER_METHOD_NEAREST = 0,
-    CAM_FILTER_BAYER_METHOD_SMIPLE = 1,
+    CAM_FILTER_BAYER_METHOD_SIMPLE = 1,
     CAM_FILTER_BAYER_METHOD_BILINEAR = 2,
     CAM_FILTER_BAYER_METHOD_HQLINEAR = 3,
     CAM_FILTER_BAYER_METHOD_EDGE_SENSE = 4,
     CAM_FILTER_BAYER_METHOD_VNG = 5
-};
+} CamBayerFilterMethod;
 
 G_END_DECLS
 

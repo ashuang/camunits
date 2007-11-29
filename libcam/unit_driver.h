@@ -70,11 +70,10 @@ typedef struct _CamUnitDriver CamUnitDriver;
  * @driver:  the #CamUnitDriver providing this description
  * @name:    a nickname / human-understandable name for the available unit
  * @unit_id: a string identifying the unit
- * @num:     an integer unique per driver that identifies the description
  * @flags:   a bitwise OR of #CamUnitFlags
  *
- * Provides a brief description of an available unit.  No actual system
- * resources are required to maintain a CamUnitDescription.
+ * Provides a brief description of an available unit, before that unit
+ * is actually instantiated.
  */
 struct _CamUnitDescription {
     GInitiallyUnowned parent;
@@ -266,7 +265,6 @@ int cam_unit_driver_remove_unit_description (CamUnitDriver *self,
 
 /**
  * cam_unit_driver_set_name:
- *
  * @package:  The name of the package.  Can be NULL.
  * @name:     The name of the driver.  Must not be NULL.
  *

@@ -384,6 +384,8 @@ CAM_COLOR_CONVERSION_FILTER_GET_CLASS
 CamBayerFilter
 cam_bayer_filter_new
 cam_bayer_filter_driver_new
+CamBayerFilterMethod
+CamBayerFilterTiling
 <SUBSECTION Standard>
 CAM_BAYER_FILTER
 CAM_IS_BAYER_FILTER

@@ -1,4 +1,14 @@
 #include <libcam/cam.h>
+#include <libcam/input_v4l.h>
+#include <libcam/input_v4l2.h>
+#include <libcam/input_example.h>
+#include <libcam/input_log.h>
+#include <libcam/filter_gl.h>
+#include <libcam/convert_colorspace.h>
+#include <libcam/convert_to_rgb8.h>
+#include <libcam/filter_fast_bayer.h>
+#include <libcam/filter_jpeg.h>
+#include <libcam/output_logger.h>
 
 cam_unit_get_type
 cam_unit_driver_get_type

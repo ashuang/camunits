@@ -102,7 +102,7 @@ void cam_framebuffer_copy_metadata (CamFrameBuffer *self,
 /**
  * cam_framebuffer_metadata_get:
  * @key: the string key of the metadata
- * @int: output parameter.  If not NULL, then on return this stores the length
+ * @len: output parameter.  If not NULL, then on return this stores the length
  *       of the dictionary value, in bytes.
  * 
  * Retrieves an entry from the metadata dictionary of the framebuffer.
