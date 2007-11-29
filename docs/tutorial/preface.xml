@@ -1,0 +1,38 @@
+<preface id="ch-preface">
+<title>Preface</title>
+
+<!-- ======================================================== -->
+<!-- ================= About this book ====================== -->
+<!-- ======================================================== -->
+<sect1 id="preface-about">
+<title>About this tutorial</title>
+
+<para>
+    This tutorial serves as an introduction to libcam.
+</para>
+
+</sect1>
+<sect1 id="preface-audience">
+    <title>Audience</title>
+
+    <para>
+        TODO
+    </para>
+</sect1>
+
+<sect1 id="preface-organization">
+    <title>Organization</title>
+
+    <para>
+        TODO
+    </para>
+</sect1>
+
+<sect1 id="preface-license">
+    <title>License</title>
+    <para>
+        TODO
+    </para>
+</sect1>
+
+</preface>

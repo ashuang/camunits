@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" [
+    <!ENTITY bookinfo SYSTEM "bookinfo.xml">
+    <!ENTITY preface SYSTEM "preface.xml">
+    <!ENTITY quickstart SYSTEM "quickstart.xml">
+]>
+ 
+<book>
+ 
+&bookinfo;
+&preface;
+&quickstart;
+ 
+</book>
