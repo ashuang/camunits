@@ -623,8 +623,10 @@ cam_unit_set_id (CamUnit *self, const char *unit_id)
     self->unit_id = strdup (unit_id);
 }
 
-/**
- * when the user tries to set a control value, this function will be invoked.
+/*
+ * control_callback:
+ *
+ * When the user tries to set a control value, this function will be invoked.
  * If the implementing unit has overriden the try_set_control method, then
  * that will be invoked to see if the proposed value is acceptable.  Otherwise, 
  * the default action is to simply say that proposed value is acceptable.

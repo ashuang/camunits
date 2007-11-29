@@ -93,8 +93,10 @@ struct _CamInputExampleClass {
 GType cam_input_example_get_type (void);
 
 /** 
+ * cam_input_example_new:
+ *
  * Constructor.
- * don't call this function manually.  Instead, let the CamInputExampleDriver
+ * Don't call this function manually.  Instead, let the CamInputExampleDriver
  * call it.
  */
 CamInputExample * cam_input_example_new(void);

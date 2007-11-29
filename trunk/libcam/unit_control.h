@@ -47,26 +47,26 @@ extern "C" {
 /**
  * CamUnitControlType:
  *
- * enumerates the different types of controls available
+ * Enumerates the different types of controls available
  */
 typedef enum {
-    // no valid control should every have this type
+    /* no valid control should every have this type */
     CAM_UNIT_CONTROL_TYPE_INVALID = 0,
 
-    // Represents an integer control with a minimum value, maximum value, and
-    // a step size.
+    /* Represents an integer control with a minimum value, maximum value, and
+     * a step size. */
     CAM_UNIT_CONTROL_TYPE_INT = 1,
 
-    // Represents a boolean control that can be either True or False
+    /* Represents a boolean control that can be either True or False */
     CAM_UNIT_CONTROL_TYPE_BOOLEAN = 2,
 
-    // Represents an enumeration of choices from which one can be selected.
+    /* Represents an enumeration of choices from which one can be selected. */
     CAM_UNIT_CONTROL_TYPE_ENUM = 3,
 
-    // Represents a string-valued control
+    /* Represents a string-valued control */
     CAM_UNIT_CONTROL_TYPE_STRING = 4,
 
-    // Represents a floating point control
+    /* Represents a floating point control */
     CAM_UNIT_CONTROL_TYPE_FLOAT = 5,
 } CamUnitControlType;
 
