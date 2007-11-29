@@ -95,7 +95,7 @@ cam_input_example_driver_create_unit(CamUnitDriver *super,
 
 static void cam_input_example_finalize (GObject *obj);
 static int cam_input_example_stream_on (CamUnit *super);
-static void cam_input_example_try_produce_frame (CamUnit * super);
+static gboolean cam_input_example_try_produce_frame (CamUnit * super);
 static int64_t cam_input_example_get_next_event_time (CamUnit *super);
 static gboolean cam_example_try_set_control(CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
@@ -167,11 +167,14 @@ cam_input_example_stream_on (CamUnit *super)
     return 0;
 }
 
-static void 
+static gboolean 
 cam_input_example_try_produce_frame (CamUnit *super)
 {
     dbg(DBG_INPUT, "iterate\n");
     CamInputExample *self = CAM_INPUT_EXAMPLE (super);
+
+    int64_t now = _timestamp_now ();
+    if (now < self->next_frame_time) return FALSE;
 
     int64_t frame_delay_usec = 1000000. / self->fps;
     self->next_frame_time += frame_delay_usec;
@@ -188,6 +191,7 @@ cam_input_example_try_produce_frame (CamUnit *super)
 
     cam_unit_produce_frame (super, outbuf, super->fmt);
     g_object_unref (outbuf);
+    return TRUE;
 }
 
 static int64_t

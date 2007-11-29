@@ -75,7 +75,8 @@ static int
 _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 {
     CamConvertToRgb8 * self = CAM_CONVERT_TO_RGB8 (super);
-    if (outfmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
+    if (super->input_unit && super->input_unit->fmt &&
+            super->input_unit->fmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         return 0;
     }
     if (self->worker) {

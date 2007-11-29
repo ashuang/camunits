@@ -580,7 +580,7 @@ try_produce_frame (CamUnitChain *self, GList *unit_link)
     CamUnit *unit = CAM_UNIT (unit_link->data);
 
     if (cam_unit_get_status (unit) == CAM_UNIT_STATUS_STREAMING) {
-        cam_unit_try_produce_frame (unit);
+        cam_unit_try_produce_frame (unit, 0);
     }
 
     return;

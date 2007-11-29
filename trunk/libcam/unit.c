@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <poll.h>
+#include <errno.h>
 
 #include "libcam-gmarshal.h"
 #include "unit.h"
@@ -371,6 +373,7 @@ find_output_format (CamUnit *self, const CamUnitFormat *format)
 int
 cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
 { 
+    if (self->status == CAM_UNIT_STATUS_READY) return 0;
     if (self->status != CAM_UNIT_STATUS_IDLE) {
         err("Unit: refusing to init non idle unit %s (%d)\n",
                 self->unit_id, self->status);
@@ -404,6 +407,7 @@ cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
 int
 cam_unit_stream_on (CamUnit * self)
 { 
+    if (self->status == CAM_UNIT_STATUS_STREAMING) return 0;
     if (self->status != CAM_UNIT_STATUS_READY) {
         err("Unit: cannot stream_on.  status is not READY\n");
         return -1;
@@ -419,6 +423,7 @@ cam_unit_stream_on (CamUnit * self)
 int
 cam_unit_stream_off (CamUnit * self)
 { 
+    if (self->status == CAM_UNIT_STATUS_READY) return 0;
     if (self->status != CAM_UNIT_STATUS_STREAMING) {
         err("Unit: cannot stream_off.  status is not STREAMING\n");
         return -1;
@@ -434,6 +439,7 @@ cam_unit_stream_off (CamUnit * self)
 int
 cam_unit_stream_shutdown (CamUnit * self)
 { 
+    if (self->status == CAM_UNIT_STATUS_IDLE) return 0;
     if (self->status == CAM_UNIT_STATUS_STREAMING) {
         if (0 != cam_unit_stream_off (self)) {
             return -1;
@@ -472,11 +478,70 @@ int
 cam_unit_draw_gl_shutdown (CamUnit * self)
 { return CAM_UNIT_GET_CLASS (self)->draw_gl_shutdown(self); }
 
-void
-cam_unit_try_produce_frame (CamUnit *self)
+static int64_t _timestamp_now()
+{
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    return (int64_t) tv.tv_sec * 1000000 + tv.tv_usec;
+}
+
+gboolean
+cam_unit_try_produce_frame (CamUnit *self, int timeout_ms)
 { 
     CamUnitClass *klass = CAM_UNIT_GET_CLASS (self);
-    if (klass->try_produce_frame) { klass->try_produce_frame (self); }
+    if (!klass->try_produce_frame) {
+        g_warning ("Unit does not provide try_produce_frame\n");
+        return FALSE;
+    }
+    if (self->status != CAM_UNIT_STATUS_STREAMING) {
+        g_warning ("Unit is not streaming!");
+        return FALSE;
+    }
+
+    if (self->flags & CAM_UNIT_EVENT_METHOD_FD) {
+        // special case: don't call poll if no timeout
+        if (0 == timeout_ms) return klass->try_produce_frame (self); 
+
+        int fd = cam_unit_get_fileno  (self);
+        struct pollfd pfd = { fd, POLLIN, 0 };
+        int status = 0;
+        do {
+            status = poll (&pfd, 1, timeout_ms);
+        } while (status < 0 && errno == EINTR);
+
+        if (status == 1 && pfd.revents & POLLIN) {
+            return klass->try_produce_frame (self); 
+        }
+
+        return FALSE;
+    } else if (self->flags & CAM_UNIT_EVENT_METHOD_TIMEOUT) {
+        int64_t next_evt_time = cam_unit_get_next_event_time (self);
+        int64_t now = _timestamp_now ();
+
+        if (now >= next_evt_time || timeout_ms == 0) {
+            // unit reports that it's ready, or we're not willing to wait.
+            return klass->try_produce_frame (self); 
+        }
+
+        int64_t wait_usec = next_evt_time - now;
+        if (wait_usec > timeout_ms * 1000) wait_usec = timeout_ms * 1000;
+
+        // sleep until the time that the unit reports
+        struct timespec ts = { wait_usec / 1000000, wait_usec % 1000000 };
+        struct timespec rem;
+        int status = 0;
+        do {
+            status = nanosleep (&ts, &rem);
+            ts = rem;
+        } while (status == -1 && EINTR == errno);
+        if (0 != status) {
+            return FALSE;
+        }
+        return klass->try_produce_frame (self);
+    } else {
+        g_warning ("Badly configured unit!  invalid flags!");
+        return FALSE;
+    }
 }
 
 static int cam_unit_default_stream_init (CamUnit *self, 

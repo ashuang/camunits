@@ -93,7 +93,7 @@ driver_search_unit_description (CamUnitDriver *super,
 // ============== CamInputLog ===============
 static void log_finalize (GObject *obj);
 static int log_stream_on (CamUnit *super);
-static void log_try_produce_frame (CamUnit * super);
+static gboolean log_try_produce_frame (CamUnit * super);
 static int64_t log_get_next_event_time (CamUnit *super);
 static gboolean log_try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual);
@@ -201,7 +201,7 @@ cam_log_set_file (CamInputLog *self, const char *fname)
     return 0;
 }
 
-static int64_t _timestamp_now()
+static inline int64_t _timestamp_now()
 {
     struct timeval tv;
     gettimeofday (&tv, NULL);
@@ -218,11 +218,13 @@ log_stream_on (CamUnit *super)
     return 0;
 }
 
-static void 
+static gboolean 
 log_try_produce_frame (CamUnit *super)
 {
     CamInputLog *self = CAM_INPUT_LOG (super);
     int64_t now = _timestamp_now ();
+    if (now < self->next_frame_time) return FALSE;
+
     int64_t late = now - self->next_frame_time;
 
     dbg (DBG_INPUT, "InputLog iterate [%"PRId64", %"PRId64", %"PRId64"]\n",
@@ -241,7 +243,7 @@ log_try_produce_frame (CamUnit *super)
             if (paused && ! self->readone) { 
                 dbg (DBG_INPUT, "InputLog paused\n");
                 self->next_frame_time = now + 300000;
-                return; 
+                return FALSE; 
             }
             if (paused && self->readone) {
                 dbg(DBG_INPUT, "InputLog paused, but reading one frame\n");
@@ -260,7 +262,7 @@ log_try_produce_frame (CamUnit *super)
     if (!buf) {
         dbg (DBG_INPUT, "InputLog EOF?\n");
         self->next_frame_time = now + 1000000;
-        return;
+        return FALSE;
     }
     CamLogFrameInfo frameinfo;
     cam_log_get_frame_info (self->camlog, &frameinfo);
@@ -287,7 +289,7 @@ log_try_produce_frame (CamUnit *super)
     dbg (DBG_INPUT, "pushing buffer\n");
     cam_unit_produce_frame (super, buf, super->fmt);
     g_object_unref (buf);
-    return;
+    return TRUE;
 }
 
 static int64_t
