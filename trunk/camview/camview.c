@@ -17,6 +17,7 @@ typedef struct _state_t {
     CamUnitChainWidget *chain_widget;
     CamUnitManagerWidget *manager_widget;
     CamUnitChainGLWidget *chain_gl_widget;
+    CamUnitDescriptionWidget * desc_widget;
 
     char *cmdline_input_id;
 
@@ -165,17 +166,35 @@ setup_gtk (state_t *self)
     gtk_paned_set_position (GTK_PANED (hpane1), 200);
     gtk_paned_set_position (GTK_PANED (hpane2), 400);
 
+
     // manager widget
     self->manager_widget = cam_unit_manager_widget_new (self->chain->manager);
-    GtkWidget *sw = gtk_scrolled_window_new (NULL, NULL);
-    gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (self->manager_widget));
-    gtk_container_add (GTK_CONTAINER (self->manager_frame), sw);
-    gtk_paned_pack1 (GTK_PANED (hpane1), sw, FALSE, TRUE);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
+    GtkWidget *sw1 = gtk_scrolled_window_new (NULL, NULL);
+    gtk_container_add (GTK_CONTAINER (sw1), GTK_WIDGET (self->manager_widget));
+    //gtk_paned_pack1 (GTK_PANED (hpane1), sw, FALSE, TRUE);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw1), 
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     g_signal_connect (G_OBJECT (self->manager_widget), 
             "unit-description-activated", 
             G_CALLBACK (on_unit_description_activated), self);
+
+    // description widget
+    self->desc_widget = cam_unit_description_widget_new ();
+    cam_unit_description_widget_set_manager (
+            CAM_UNIT_DESCRIPTION_WIDGET (self->desc_widget),
+            self->manager_widget);
+    GtkWidget *sw2 = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw2), 
+            GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_container_add (GTK_CONTAINER (sw2), GTK_WIDGET (self->desc_widget));
+
+    // vertical pane
+    GtkWidget * vpane = gtk_vpaned_new ();
+    gtk_paned_pack1 (GTK_PANED (vpane), sw1, TRUE, TRUE);
+    gtk_paned_pack2 (GTK_PANED (vpane), sw2, FALSE, TRUE);
+    gtk_paned_set_position (GTK_PANED (vpane), 350);
+    //gtk_paned_pack1 (GTK_PANED (hpane1), vpane, FALSE, TRUE);
+    gtk_container_add (GTK_CONTAINER (self->manager_frame), vpane);
 
     // chain gl widget
     self->chain_gl_widget = cam_unit_chain_gl_widget_new (self->chain);

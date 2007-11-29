@@ -273,6 +273,23 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
     return 0;
 }
 
+CamUnitDescription *
+cam_unit_manager_widget_get_selected_description (CamUnitManagerWidget * self)
+{
+    GtkTreePath * path;
+    gtk_tree_view_get_cursor (GTK_TREE_VIEW (self), &path, NULL);
+    if (!path)
+        return NULL;
+
+    GtkTreeIter iter;
+    gtk_tree_model_get_iter (GTK_TREE_MODEL (self->tree_store), &iter, path);
+
+    CamUnitDescription * desc;
+    gtk_tree_model_get (GTK_TREE_MODEL (self->tree_store), &iter,
+            COL_DESC_PTR, &desc, -1);
+    return desc;
+}
+
 static int
 add_driver (CamUnitManagerWidget * self, CamUnitDriver * driver)
 {
