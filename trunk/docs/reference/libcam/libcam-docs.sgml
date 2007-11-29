@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>libcam Reference Manual</title>
+  </bookinfo>
+
+  <chapter>
+    <title>Units</title>
+    <xi:include href="xml/unit.xml"/>
+    <xi:include href="xml/unit_format.xml"/>
+    <xi:include href="xml/unit_control.xml"/>
+    <xi:include href="xml/unit_driver.xml"/>
+    <xi:include href="xml/framebuffer.xml"/>
+  </chapter>
+  <chapter>
+    <title>Image Processing Chains</title>
+    <xi:include href="xml/unit_chain.xml"/>
+    <xi:include href="xml/unit_manager.xml"/>
+  </chapter>
+  <chapter>
+    <title>Built-in Units</title>
+    <xi:include href="xml/input_v4l2.xml"/>
+    <xi:include href="xml/input_v4l.xml"/>
+    <xi:include href="xml/input_example.xml"/>
+    <xi:include href="xml/input_log.xml"/>
+    <xi:include href="xml/convert_to_rgb8.xml"/>
+    <xi:include href="xml/filter_gl.xml"/>
+    <xi:include href="xml/filter_jpeg.xml"/>
+    <xi:include href="xml/filter_fast_bayer.xml"/>
+    <xi:include href="xml/convert_colorspace.xml"/>
+    <xi:include href="xml/filter_bayer.xml"/>
+    <xi:include href="xml/output_logger.xml"/>
+  </chapter>
+  <chapter>
+    <title>Other stuff</title>
+    <xi:include href="xml/dbg.xml"/>
+    <xi:include href="xml/pixels.xml"/>
+    <xi:include href="xml/libcam-gmarshal.xml"/>
+    <xi:include href="xml/log.xml"/>
+    <xi:include href="xml/plugin.xml"/>
+    <xi:include href="xml/gl_texture.xml"/>
+    <xi:include href="xml/pwc-ioctl.xml"/>
+  </chapter>
+</book>
