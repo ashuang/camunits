@@ -194,7 +194,7 @@ static int v4l2_stream_init (CamUnit * super, const CamUnitFormat * format);
 static int v4l2_stream_shutdown (CamUnit * super);
 static int v4l2_stream_on (CamUnit * super);
 static int v4l2_stream_off (CamUnit * super);
-static void v4l2_try_produce_frame (CamUnit * super);
+static gboolean v4l2_try_produce_frame (CamUnit * super);
 static int v4l2_get_fileno (CamUnit * super);
 static gboolean v4l2_try_set_control(CamUnit *super,
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
@@ -670,7 +670,7 @@ v4l2_stream_off (CamUnit * super)
     return 0;
 }
 
-static void
+static gboolean
 v4l2_try_produce_frame (CamUnit * super)
 {
     CamV4L2 * self = CAM_V4L2 (super);
@@ -681,7 +681,7 @@ v4l2_try_produce_frame (CamUnit * super)
     if (self->buffers_outstanding == self->num_buffers) {
         struct timespec st = { 0, 1000000 };
         nanosleep (&st, NULL);
-        return;
+        return FALSE;
     }
 
     struct v4l2_buffer buf;
@@ -696,7 +696,7 @@ v4l2_try_produce_frame (CamUnit * super)
         v4l2_stream_shutdown (super);
         v4l2_stream_init (super, fmt);
         v4l2_stream_on (super);
-        return;
+        return FALSE;
     }
 
     // TODO don't malloc
@@ -712,6 +712,7 @@ v4l2_try_produce_frame (CamUnit * super)
     if (-1 == ioctl (self->fd, VIDIOC_QBUF, &buf)) {
         fprintf (stderr, "Error: QBUF ioctl failed: %s\n", strerror (errno));
     }
+    return TRUE;
 }
 
 static int

@@ -133,7 +133,7 @@ struct _CamUnit {
  * @stream_shutdown:
  * @stream_on:
  * @stream_off:
- * @try_produce_frame:
+ * @try_produce_frame: return TRUE if a frame is produced, FALSE if not.
  * @get_fileno:
  * @get_next_event_time:
  * @on_input_frame_ready:
@@ -154,7 +154,7 @@ struct _CamUnitClass {
     int (*stream_off)(CamUnit *self);
 
     // Input units should override these methods
-    void (*try_produce_frame) (CamUnit *self);
+    gboolean (*try_produce_frame) (CamUnit *self);
     int (*get_fileno)(CamUnit *self);
     int64_t (*get_next_event_time)(CamUnit *self);
 
@@ -303,15 +303,21 @@ int cam_unit_stream_off (CamUnit * self);
 
 /**
  * cam_unit_try_produce_frame:
+ * @timeout_ms: timeout (milliseconds)  If set to 0, then this method will
+ * not block.  If set to a negative number, then this method blocks
+ * indefinitely.
  *
- * Only meaningful for input units.
- * 
- * When the unit is ready to produce outgoing buffers for consumption by the
- * user or another unit, this method should be called to actually produce the
- * outgoing buffers.  Generally, you will not call this method directly, it
- * will usually be invoked by a CamUnitChain.
+ * Only meaningful for input units.  Tries for at most %timeout_ms milliseconds
+ * to produce a frame.  If you use glib, attach a CamUnitChain to the glib
+ * mainloop instead of calling this directly.  This method may block, but
+ * should never spin.
+ *
+ * If the unit is misconfigured, not streaming, or otherwise not in a good
+ * state, then this method may return immediately.
+ *
+ * Returns: TRUE if a frame was produced, FALSE if not
  */
-void cam_unit_try_produce_frame (CamUnit * self);
+gboolean cam_unit_try_produce_frame (CamUnit * self, int timeout_ms);
 
 /**
  * cam_unit_get_fileno:

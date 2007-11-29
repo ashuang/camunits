@@ -188,7 +188,7 @@ static int dc1394_stream_init (CamUnit * super, const CamUnitFormat * format);
 static int dc1394_stream_shutdown (CamUnit * super);
 static int dc1394_stream_on (CamUnit * super);
 static int dc1394_stream_off (CamUnit * super);
-static void dc1394_try_produce_frame (CamUnit * super);
+static gboolean dc1394_try_produce_frame (CamUnit * super);
 static int dc1394_get_fileno (CamUnit * super);
 static gboolean dc1394_try_set_control(CamUnit *super,
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
@@ -538,14 +538,14 @@ struct raw1394_cycle_timer {
 	_IOR ('#', 0x30, struct raw1394_cycle_timer)
 #endif
 
-static void
+static gboolean
 dc1394_try_produce_frame (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
 
     dbg (DBG_INPUT, "DC1394 stream iterate\n");
 
-    if (super->status != CAM_UNIT_STATUS_STREAMING) return;
+    if (super->status != CAM_UNIT_STATUS_STREAMING) return FALSE;
 
 #ifdef USE_RAW1394
     capture_raw1394_iterate (priv->raw1394);
@@ -554,7 +554,7 @@ dc1394_try_produce_frame (CamUnit * super)
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)
             != DC1394_SUCCESS) {
         err ("DC1394 dequeue failed\n");
-        return;
+        return FALSE;
     }
 
     // TODO don't malloc
@@ -656,7 +656,7 @@ dc1394_try_produce_frame (CamUnit * super)
 //#endif
 //    }
 
-    return;
+    return TRUE;
 }
 
 static int

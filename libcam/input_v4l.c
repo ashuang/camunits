@@ -185,7 +185,7 @@ cam_v4l_init (CamV4L * self)
 
 static void v4l_finalize (GObject * obj);
 static int v4l_stream_init (CamUnit * super, const CamUnitFormat * format);
-static void v4l_try_produce_frame (CamUnit * super);
+static gboolean v4l_try_produce_frame (CamUnit * super);
 static int v4l_get_fileno (CamUnit * super);
 static gboolean v4l_try_set_control(CamUnit *super,
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
@@ -414,7 +414,7 @@ v4l_stream_init (CamUnit * super, const CamUnitFormat * format)
     return 0;
 }
 
-static void
+static gboolean
 v4l_try_produce_frame (CamUnit * super)
 {
     CamV4L * self = CAM_V4L (super);
@@ -423,11 +423,13 @@ v4l_try_produce_frame (CamUnit * super)
     int status = read (self->fd, buf->data, buf->length);
     if (status <= 0) {
         perror ("read");
-    } else {
-        cam_unit_produce_frame (super, buf, super->fmt);
-    }
+        g_object_unref (buf);
+        return FALSE;
+    } 
 
+    cam_unit_produce_frame (super, buf, super->fmt);
     g_object_unref (buf);
+    return TRUE;
 }
 
 static int

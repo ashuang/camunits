@@ -183,7 +183,7 @@ static int dc1394_stream_init (CamUnit * super, const CamUnitFormat * format);
 static int dc1394_stream_shutdown (CamUnit * super);
 static int dc1394_stream_on (CamUnit * super);
 static int dc1394_stream_off (CamUnit * super);
-static void dc1394_try_produce_frame (CamUnit * super);
+static gboolean dc1394_try_produce_frame (CamUnit * super);
 static int dc1394_get_fileno (CamUnit * super);
 //static gboolean dc1394_try_set_control(CamUnit *super,
 //        const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
@@ -392,19 +392,19 @@ dc1394_stream_off (CamUnit * super)
     return 0;
 }
 
-static void
+static gboolean
 dc1394_try_produce_frame (CamUnit * super)
 {
     dbg (DBG_INPUT, "Ladybug2 stream iterate\n");
     LB2Ladybug2 * self = LB2_LADYBUG2 (super);
 
-    if (super->status != CAM_UNIT_STATUS_STREAMING) return;
+    if (super->status != CAM_UNIT_STATUS_STREAMING) return FALSE;
 
     dc1394video_frame_t * frame;
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)
             != DC1394_SUCCESS) {
         err ("Ladybug2 dequeue failed\n");
-        return;
+        return FALSE;
     }
 
     CamFrameBuffer * buf =
@@ -424,7 +424,7 @@ dc1394_try_produce_frame (CamUnit * super)
     dc1394_capture_enqueue (self->cam, frame);
     g_object_unref (buf);
 
-    return;
+    return TRUE;
 }
 
 static int
