@@ -62,7 +62,7 @@ AM_GNU_GETTEXT_VERSION(0.13.1)
 AM_ICONV()
 
 
-GTK_DOC_CHECK([1.0])
+GTK_DOC_CHECK([1.4])
 
 libcamplugindir="$libdir/$PACKAGE"
 AC_SUBST(libcamplugindir)
@@ -98,6 +98,9 @@ AC_OUTPUT([
   plugins/Makefile
   plugins/dc1394/Makefile
   plugins/ladybug2/Makefile
+  docs/Makefile
+  docs/reference/Makefile
+  docs/reference/libcam/Makefile
 ])
 
 echo "
