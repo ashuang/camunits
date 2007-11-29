@@ -7,6 +7,7 @@
 #include "unit_chain_widget.h"
 #include "unit_manager_widget.h"
 #include "unit_chain_gl_widget.h"
+#include "unit_description_widget.h"
 #include "gl_drawing_area.h"
 
 #endif

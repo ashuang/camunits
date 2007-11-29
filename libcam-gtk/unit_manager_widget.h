@@ -45,6 +45,8 @@ CamUnitManagerWidget *cam_unit_manager_widget_new( CamUnitManager *manager );
 
 int cam_unit_manager_widget_set_manager( CamUnitManagerWidget* self, 
         CamUnitManager *manager );
+CamUnitDescription * cam_unit_manager_widget_get_selected_description (
+        CamUnitManagerWidget * self);
 
 extern GtkTargetEntry cam_unit_manager_widget_target_entry;
 

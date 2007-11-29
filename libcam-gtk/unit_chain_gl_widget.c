@@ -289,7 +289,7 @@ _set_aspect_widget (CamUnitChainGLWidget *self)
         GList *units = cam_unit_chain_get_units (self->chain);
         if (units) {
             gtk_label_set_text (GTK_LABEL (self->msg_area),
-                    "No renderable units in chain.\nDo you need to add render:opengl?");
+                    "No renderable units in chain.\nDo you need to add an OpenGL unit?");
         } else {
             gtk_label_set_text (GTK_LABEL (self->msg_area),
                     "No units in chain.");
