@@ -81,7 +81,11 @@ struct _CamInputExample {
     CamUnitControl *int2_ctl;
 
     int64_t next_frame_time;
-    int cur_row;
+
+    int x;
+    int y;
+    int dx;
+    int dy;
 
     int fps;
 };
