@@ -5,10 +5,47 @@
 <!-- ================= About this book ====================== -->
 <!-- ======================================================== -->
 <sect1 id="preface-about">
-<title>About this tutorial</title>
+<title>Introduction to libcam</title>
 
 <para>
-    This tutorial serves as an introduction to libcam.
+    libcam is a device independent library for image acquisition and
+    processing.  A major design point of libcam is to provide a very simple
+    API that allows an image processing routine to operate without any code
+    modifications on any image source, whether it be a Firewire camera, USB
+    camera, or logged data.  A second design point is to provide a framework
+    (i.e. set of classes and utilities) to assist rapid development of image
+    processing and machine vision algorithms.  This framework includes
+    colorspace conversion and image compression routines, UI widgets, and
+    visualization tools.
+</para>
+
+<para>
+    libcam is motivated by the current state of image acquisition libraries.
+    To date, writing a program to process and work with images is a much
+    more complicated procedure than it needs to be.  Camera manufacturers
+    often distribute proprietary development kits for working with their
+    cameras, which means a program written for one camera is not likely to
+    work with a camera from a different manufacturer.  Standards have been
+    developed to alleviate this problem, such as the IEEE 1394 Digital Camera
+    and USB Video Class specifications.  While these standards help on the
+    driver side, there is still no standard device-independent API for image
+    sources.  Finally, for machine vision researchers, recording a single
+    dataset and being able to re-run their algorithms on that same data set
+    over and over again is a desirable feature that is not supported in any
+    major API.
+</para>
+
+<para>
+    libcam addresses these problems by providing a simple, general, and useful
+    abstraction for image sources.  It was developed and used by Team MIT in
+    the 2007 DARPA Urban Challenge<footnote><para><ulink
+                url="http://www.darpa.mil/grandchallenge">http://www.darpa.mil/grandchallenge</ulink></para></footnote>.
+    In that context, libcam provided a
+    framework for processing high resolution images (5 cameras, 752x480 Bayer
+    @ 22.8 fps) to achieve real time vision-based lane detection and tracking
+    on an autonomous vehicle in an urban setting.  This tutorial provides an
+    introduction to programming with libcam, and describes the various ways
+    that libcam can be used in an image processing application.
 </para>
 
 </sect1>
@@ -16,8 +53,64 @@
     <title>Audience</title>
 
     <para>
-        TODO
+        The primary audience for libcam is other machine vision researchers
+        and people who actively develop and use image processing algorithms.
+        Currently, libcam is supported on GNU/Linux and OS X.  There are no
+        immediate plans to support Windows XP.  libcam is written in C, and so
+        can be used in C or C++ applications.
     </para>
+
+    <para>
+        Throughout this tutorial, we will address two different types of
+        libcam users.  The first type of libcam user is the programmer who
+        simply wants a device-independent image acquisition procedure, and is
+        not interested in the various other utilities and tools provided by
+        libcam.  This user likely already has a well established environment
+        for doing image processing, and is only looking for a simple way to
+        acquire images.
+    </para>
+    <para>
+        The second type of user we will address is the programmer who
+        <emphasis>is</emphasis> interested in leveraging the entire libcam
+        framework for developing, testing, and debugging image processing
+        algorithms.  The API for this task is, by design and by necessity,
+        more complex than the API for simply acquiring images.
+    </para>
+</sect1>
+
+<sect1 id="preface-requirements">
+    <title>Development Requirements</title>
+
+    <itemizedlist>
+        <listitem><para>GNU/Linux or OS X</para></listitem>
+        <listitem><para>OpenGL<footnote><para>OpenGL is a linkage requirement,
+                        but libcam itself can be run without an OpenGL
+                        context.</para></footnote></para></listitem>
+        <listitem><para>GLib</para></listitem>
+    </itemizedlist>
+
+    <para>
+        The following are optional:
+    </para>
+    <itemizedlist>
+        <listitem><para>GTK+ 2.0</para></listitem>
+    </itemizedlist>
+</sect1>
+
+<sect1 id="preface-obtaining">
+    <title>Downloading and Installing libcam</title>
+    <para>
+        <emphasis>TODO</emphasis>
+    </para>
+    <sect2 id="preface-obtaining-svn">
+        <title>Subversion</title>
+        <para>
+            libcam is developed in a publicly accessible subversion
+            repository on Google Code.  Instructions for accessing the
+            repository are available at <ulink
+                url="http://code.google.com/p/libcam/source">http://code.google.com/p/libcam/source</ulink>
+        </para>
+    </sect2>
 </sect1>
 
 <sect1 id="preface-organization">
