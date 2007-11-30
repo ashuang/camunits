@@ -88,6 +88,8 @@ cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
         case CAM_PIXEL_FORMAT_BAYER_RGGB:
             cam_unit_control_force_set_enum (self->bayer_tile_ctl, 3);
             break;
+        case CAM_PIXEL_FORMAT_GRAY:
+            break;
         default:
             return -1;
     }
