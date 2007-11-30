@@ -4,16 +4,13 @@
 <author>
     <firstname>Albert</firstname>
     <surname>Huang</surname>
-    <affiliation>
-        <address><email>ashuang@alum.mit.edu</email></address>
-    </affiliation>
 </author>
 </authorgroup>
 
 <abstract>
 <para>
-    <!-- TODO -->
-    TODO
+    This tutorial provides an introduction to developing image processing and
+    machine vision applications with libcam.
 </para>
 </abstract>
 
