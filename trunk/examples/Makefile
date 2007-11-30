@@ -8,19 +8,26 @@ LDFLAGS_LIBCAM := `pkg-config --libs libcam`
 LDFLAGS_LIBCAM_GTK := `pkg-config --libs libcam-gtk`
 
 CFLAGS := -std=gnu99 -g $(CFLAGS_GLIB) -I..
-LDFLAGS := $(LDFLAGS_LIBCAM) $(LDFLAGS_GLIB) -lGL -lGLU -lglut -ljpeg
+LDFLAGS := $(LDFLAGS_LIBCAM) $(LDFLAGS_GLIB) -lGL -ljpeg
 
 snapshot := $(BIN_PATH)/snapshot
 obj_snapshot := snapshot.o 
 
-targets := snapshot
-objects := $(obj_snapshot)
+trivial_acquire := $(BIN_PATH)/trivial_acquire
+obj_trivial_acquire := trivial-acquire.o 
+
+targets := $(snapshot) $(trivial_acquire)
+objects := $(obj_snapshot) $(obj_trivial_acquire)
 
 all: $(targets)
 
 $(snapshot): $(obj_snapshot) 
 	@echo "    [$@]"
 	$(CC) -o $@ $(obj_snapshot) $(LDFLAGS_LIBCAM) $(LDFLAGS) 
+
+$(trivial_acquire): $(obj_trivial_acquire) 
+	@echo "    [$@]"
+	$(CC) -o $@ $(obj_trivial_acquire) $(LDFLAGS_LIBCAM) $(LDFLAGS) 
 
 %.o: %.c %.h
 	@echo "    [$@]"

@@ -1,8 +1,330 @@
-<chapter id="ch-fundamentals">
-<title>libcam Fundamentals</title>
+<chapter id="ch-acquiring">
+<title>Acquiring images</title>
 
 <para>
-    TODO
+    The fundamental class in libcam is the <classname>CamUnit</classname> class.
+    Conceptually, an instance of a <classname>CamUnit</classname> represents an
+    object that can produce frames.  Units are typically connected in series,
+    or in a tree-like fashion, to form an image processing application.
+    Because units connected in series are very common, the convenience class
+    <classname>CamUnitChain</classname> for managing units connected this way
+    is provided.
 </para>
+<para>
+    <xref linkend="trivial-acquire.c"/> provides a basic example on how to
+    acquire an image and write it to disk.  It uses the builtin
+    <literal>input.example</literal> CamUnit, which periodically generates a test
+    image.  
+</para>
+
+<example id="trivial-acquire.c">
+    <title>Basic Image Acquisition</title>
+<programlisting>
+<![CDATA[
+#include <stdio.h>
+
+#include <glib.h>
+#include <libcam/cam.h>
+
+static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
+        const CamFrameBuffer *buf, void *user_data)
+{
+    GMainLoop *mainloop = (GMainLoop*) user_data;
+    const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
+    FILE *fp = fopen ("trivial-acquire.ppm", "wb");
+    if (fp) {
+        fprintf(fp, "P6 %d %d %d\n", fmt->width, fmt->height, 255);
+        for (int i=0; i<fmt->height; i++){
+            int count = fwrite(buf->data + i*fmt->row_stride, 
+                    fmt->width*3, 1, fp);
+            if (1 != count) {
+                perror ("fwrite");
+                break;
+            }
+        }
+        fclose (fp);
+    }
+    printf ("wrote to trivial-acquire.ppm\n");
+    g_main_quit (mainloop);
+}
+
+int main(int argc, char **argv)
+{
+    g_type_init();
+
+    // create the GLib event handling loop
+    GMainLoop *mainloop = g_main_loop_new (NULL, FALSE);
+
+    // create an image processing chain and add a single example unit
+    CamUnitChain * chain = cam_unit_chain_new ();
+    cam_unit_chain_add_unit_by_id (chain, "input.example");
+
+    // start the chain streaming
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+
+    // attach the chain to the glib event loop.
+    cam_unit_chain_attach_glib (chain, G_PRIORITY_DEFAULT, NULL);
+
+    // subscribe to be notified when an image has made its way through the
+    // chain
+    g_signal_connect (G_OBJECT (chain), "frame-ready",
+            G_CALLBACK (on_frame_ready), mainloop);
+
+    // run 
+    g_main_loop_run (mainloop);
+
+    // cleanup
+    g_main_loop_unref (mainloop);
+    g_object_unref (chain);
+    return 0;
+}
+]]>
+</programlisting>
+</example>
+
+<sect1 id="acquiring-glib">
+    <title>Using libcam with GLib</title>
+
+    <para>
+        libcam uses the <classname>GObject</classname> type
+        system, which must be initialized before any libcam classes are
+        instantiated.
+        <programlisting>
+    g_type_init ();
+        </programlisting>
+
+        libcam was designed for easy integration into a GLib event loop.
+        While libcam does not require the GLib event loop, and can be used
+        with other event loops such as Qt, libcam does provide convenience
+        functions for working with the GLib mainloop, and the tutorials all
+        assume the use of a <classname>GMainLoop</classname>.  To create a
+        <classname>GMainLoop</classname>, use
+        <function>g_main_loop_new</function>.
+        <programlisting>
+    GMainLoop * mainloop = g_main_loop_new (NULL, FALSE);
+        </programlisting>
+        
+    </para>
+    <para>
+        For more details on event driven programming with GLib, see the GLib
+        documentation and tutorials.
+    </para>
+</sect1>
+
+<sect1 id="acquiring-unit-chain">
+    <title>Using a <classname>CamUnitChain</classname></title>
+
+    <para>
+        Constructing a <classname>CamUnitChain</classname> is straightforward:
+<programlisting>
+    CamUnitChain * chain = cam_unit_chain_new ();
+</programlisting>
+
+        Since a <classname>CamUnitChain</classname>, along with every other
+        libcam class, is a reference-counted GObject, memory management is
+        handled using <function>g_object_ref</function> and
+        <function>g_object_unref</function>.  A
+        <classname>CamUnitChain</classname> is created with a reference count
+        of one.  When the reference count reaches zero, the
+        <classname>CamUnitChain</classname> is destroyed.  Thus, we should
+        decrement the reference count of the chain when it's no longer needed.
+<programlisting>
+    g_object_unref (chain);
+</programlisting>
+    </para>
+
+    <sect2 id="acquiring-unit-ids">
+        <title>Unit IDs</title>
+        <para>
+            each <classname>CamUnitChain</classname> maintains a central
+            registry of the different <classname>CamUnit</classname> objects
+            that can be instantiated.  A <classname>CamUnit</classname> is
+            identified by a <emphasis>unit id</emphasis>.  The exact details
+            of how this registry is managed and how the units are provided to
+            the <classname>CamUnitChain</classname> is described later on, but
+            for now it's sufficient to say that in order to create a unit, you
+            must first know its unit ID.
+        </para>
+        <para>
+            The easiest way to find out what sort of units are available on
+            your system is to use the program <command>camview</command>,
+            which comes with libcam.  When first loaded,
+            <command>camview</command> displays a list of units available to
+            libcam.  Clicking on a unit listed in <command>camview</command>
+            will reveal its unit ID.
+        </para>
+        <para>
+            TODO screenshot of camview showing the CamUnitChainWidget
+        </para>
+        <para>
+            The <literal>input.example</literal> unit is a sample
+            <classname>CamUnit</classname> that periodically generates a test
+            image.  It can often be useful for testing when no other units
+            area available.
+        </para>
+        <para>
+            Once you have the unit id of a desired unit, add it to the
+            <classname>CamUnitChain</classname> with the
+            <methodname>cam_unit_chain_add_unit_by_id</methodname> method.
+<programlisting>
+    cam_unit_chain_add_unit_by_id (chain, "input.example");
+</programlisting>
+            The <classname>CamUnitChain</classname> then takes care of
+            instantiating the desired <classname>CamUnit</classname> and
+            appending it to the image processing chain.
+        </para>
+    </sect2>
+    <sect2 id="acqruigin-statuses">
+        <title>Unit states - IDLE, READY, STREAMING</title>
+        <para>
+            A <classname>CamUnit</classname> can be in one of three general
+            states: <literal>CAM_UNIT_STATUS_IDLE</literal>,
+            <literal>CAM_UNIT_STATUS_READY</literal>, or
+            <literal>CAM_UNIT_STATUS_STREAMING</literal>.  This distinction is
+            made mostly for units that consume hardware resources.  Roughly
+            speaking, an <emphasis>idle</emphasis> unit is one that is not
+            consuming system
+            resources and is not able to produce any frames.  A
+            <emphasis>ready</emphasis> unit is
+            one that has been initialized and is holding all the resources it
+            needs to produce frames, but is simply not doing so.  Finally, a
+            <emphasis>streaming</emphasis> unit is one that has been
+            initialized and is actively
+            producing or processing image frames.
+        </para>
+        <para>
+            <classname>CamUnit</classname> exposes methods for changing the
+            state of an individual unit, and
+            <classname>CamUnitChain</classname> provides a convenience method
+            that attempts to set every unit in the chain to the
+            desired status.
+<programlisting>
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+</programlisting>
+            This causes the <classname>CamUnitChain</classname> to iterate
+            through each unit in the chain and adjust the unit accordingly.
+        </para>
+    </sect2>
+    <sect2 id="acquiring-chain-glib">
+        <title>Attaching to GMainContext</title>
+        <para>
+            <classname>CamUnitChain</classname> provides a convenience
+            method, <methodname>cam_unit_chain_attach_glib</methodname> for
+            attaching to a GLib event loop.  Once attached, the units in the
+            chain will begin producing frames when the event loop is running.
+
+<programlisting>
+    cam_unit_chain_attach_glib (chain, G_PRIORITY_DEFAULT, NULL);
+</programlisting>
+
+            This method allows the user to specify the priority of the
+            <classname>CamUnitChain</classname>, as well as a pointer to the
+            desired <classname>GMainContext</classname>.  If
+            <literal>NULL</literal> is given as the
+            <classname>GMainContext</classname>, then the default context is
+            used.
+        </para>
+    </sect2>
+    <sect2 id="acquiring-frame-ready">
+        <title>The "frame-ready" event</title>
+        <para>
+            Image frames are delivered via the GObject signalling framework.
+            Each <classname>CamUnit</classname> emits a "frame-ready" signal
+            when it produces a frame, and a
+            <classname>CamUnitChain</classname> emits a separate "frame-ready"
+            signal when the last unit in the chain produces a frame.  For
+            simple applications, we recommend connecting to the
+            <classname>CamUnitChain</classname> "frame-ready" signal.
+<programlisting>
+    g_signal_connect (G_OBJECT (chain), "frame-ready",
+            G_CALLBACK (on_frame_ready), mainloop);
+</programlisting>
+            By connecting to the "frame-ready" signal of the
+            <classname>CamUnitChain</classname> in this manner, the function
+            <function>on_frame_ready</function> is called every time an image
+            frame makes it all the way through the image processing chain.
+<programlisting>
+static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
+        const CamFrameBuffer *buf, void *user_data)
+{
+    .
+    .
+    .
+}
+</programlisting>
+            The "frame-ready" signal is emitted with two arguments: a pointer
+            to the last <classname>CamUnit</classname> in the chain, and the 
+            <classname>CamFrameBuffer</classname> corresponding to the actual
+            image data produced.
+        </para>
+    </sect2>
+    <sect2 id="acquiring-buffer-format">
+        <title><classname>CamFrameBuffer</classname> and
+            <classname>CamUnitFormat</classname></title>
+        <para>
+            Image frames are delivered using the
+            <classname>CamFrameBuffer</classname> object.  The most important
+            field of the <classname>CamFrameBuffer</classname> object is the
+            <literal>data</literal> field, which contains the actual image
+            data.
+        </para>
+        <para>
+            Since there is a wide range of binary representations for images,
+            such as sRGB, YUV422, Bayer, JPEG, etc., libcam provides a way to
+            describe the actual format of the image data via the
+            <classname>CamUnitFormat</classname> class.  The format of the
+            images produced by a <classname>CamUnit</classname> can be
+            determined using the
+            <methodname>cam_unit_get_output_format</methodname> method.
+<programlisting>
+    const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
+</programlisting>
+            The most useful fields of a <classname>CamUnitFormat</classname>
+            object are:
+
+    <variablelist>
+        <varlistentry>
+            <term><literal>pixelformat</literal></term>
+            <listitem>
+                <para>A magic number identifying the pixel format of
+                    the data.  Typical values are
+                    <literal>CAM_PIXEL_FORMAT_RGB</literal>,
+                    <literal>CAM_PIXEL_FORMAT_YUYV</literal>,
+                    <literal>CAM_PIXEL_FORMAT_GRAY</literal>, etc.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term><literal>width</literal>, <literal>height</literal></term>
+            <listitem>
+                <para>The dimensions, in pixels, of the image.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term><literal>row_stride</literal></term>
+            <listitem>
+                <para>Only meaningful for image formats with a fixed number of
+                    bytes per pixel.  This stores the number of bytes
+                    separating the first pixel of successive rows in the
+                    image.  For compressed (e.g.
+                    <literal>CAM_PIXEL_FORMAT_MJPEG</literal>) and planar
+                    pixelformats (e.g.
+                    <literal>CAM_PIXEL_FORMAT_YUYV</literal>) this value is
+                    not useful.
+                </para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
+            
+            The example unit <literal>input.example</literal> always produces
+            8-bit RGB frames (pixelformat
+            <literal>CAM_PIXEL_FORMAT_RGB</literal>) and so the example
+            program is able to write the data directly to disk using the PPM
+            image file format.
+        </para>
+    </sect2>
+
+</sect1>
 
 </chapter>
