@@ -45,7 +45,6 @@ CamTreeStore *cam_tree_store_new (gint n_columns, ...);
 
 /**
  * cam_tree_store_set_draggable_col:
- *
  * @col: The column number of the CamTreeStore which is used to decide
  *       whether or not a row is draggable.
  *
