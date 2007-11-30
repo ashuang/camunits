@@ -27,8 +27,7 @@ libcam_gtk_la_SOURCES = \
 	unit_description_widget.c \
 	unit_description_widget.h
 
-libcam_gtk_la_LIBADD = \
-	$(GTK_LIBS)
+libcam_gtk_la_LIBADD = $(GTK_LIBS) ../libcam/libcam.la
 
 libcamincludedir = $(includedir)/libcam
 libcaminclude_HEADERS = \

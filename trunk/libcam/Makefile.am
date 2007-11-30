@@ -46,8 +46,7 @@ libcam_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h
 AM_CFLAGS += -DUSE_V4L -DUSE_V4L2
 endif
 
-libcam_la_LIBADD = \
-	$(GLIB_LIBS)
+libcam_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS)
 
 libcamincludedir = $(includedir)/libcam
 libcaminclude_HEADERS = \

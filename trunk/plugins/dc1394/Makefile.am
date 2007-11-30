@@ -1,4 +1,6 @@
+if HAVE_DC1394
 libcamplugin_LTLIBRARIES = input_dc1394.la
+endif
 
 INCLUDES = \
 	-I$(top_srcdir) \
@@ -9,4 +11,4 @@ input_dc1394_la_SOURCES = \
 	input_dc1394.h
 
 input_dc1394_la_LDFLAGS = -avoid-version -module
-input_dc1394_la_LIBADD = -ldc1394
+input_dc1394_la_LIBADD = $(DC1394_LIBS)
