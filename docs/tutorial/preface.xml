@@ -61,20 +61,19 @@
     </para>
 
     <para>
-        Throughout this tutorial, we will address two different types of
-        libcam users.  The first type of libcam user is the programmer who
-        simply wants a device-independent image acquisition procedure, and is
-        not interested in the various other utilities and tools provided by
-        libcam.  This user likely already has a well established environment
-        for doing image processing, and is only looking for a simple way to
-        acquire images.
+        libcam is written in C using the GObject framework for object-oriented
+        programming.  All classes in libcam are derived from
+        <classname>GObject</classname>, and memory management is handled via 
+        <classname>GObject</classname> reference counting.  Additionally,
+        libcam objects make heavy use of the GLib signalling framework to
+        deliver information.
     </para>
     <para>
-        The second type of user we will address is the programmer who
-        <emphasis>is</emphasis> interested in leveraging the entire libcam
-        framework for developing, testing, and debugging image processing
-        algorithms.  The API for this task is, by design and by necessity,
-        more complex than the API for simply acquiring images.
+        It is not necessary to have a deep understanding of
+        <classname>GObject</classname> in order to understand libcam.
+        However, familiarity with object-oriented programming techniques and
+        the publish/subscribe method (also known as signals/slots or the
+        Observer design pattern) is assumed.
     </para>
 </sect1>
 

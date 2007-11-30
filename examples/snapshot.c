@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     }
 
     // create a unit to convert the input data to 8-bit RGB
-    CamUnit *to_rgb8 = cam_unit_chain_add_unit_by_id (chain, "convert:to_rgb8");
+    CamUnit *to_rgb8 = cam_unit_chain_add_unit_by_id (chain, "convert.to_rgb8");
 
     // start the image processing chain
     cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     }
 
     // attach the chain to the glib event loop.
-    cam_unit_chain_attach_glib_mainloop (chain, 1000);
+    cam_unit_chain_attach_glib (chain, 1000, NULL);
 
     // subscribe to be notified when an image has made its way through the
     // chain
