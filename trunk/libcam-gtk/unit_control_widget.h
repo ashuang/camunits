@@ -36,6 +36,7 @@ struct _CamUnitControlWidget
     GtkTable *table;
     GtkWidget * arrow_bin;
     GtkWidget * exp_label;
+    GtkTooltips * tooltips;
 
     GtkComboBox *formats_combo;
     int formats_combo_nentries;
