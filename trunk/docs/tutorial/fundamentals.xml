@@ -1,20 +1,19 @@
 <chapter id="ch-acquiring">
-<title>Acquiring images</title>
+<title>Acquiring images (Quickstart guide)</title>
 
 <para>
     The fundamental class in libcam is the <classname>CamUnit</classname> class.
     Conceptually, an instance of a <classname>CamUnit</classname> represents an
     object that can produce frames.  Units are typically connected in series,
     or in a tree-like fashion, to form an image processing application.
-    Because units connected in series are very common, the convenience class
-    <classname>CamUnitChain</classname> for managing units connected this way
-    is provided.
+    Because units connected in series are very common, libcam provides the
+    convenience class <classname>CamUnitChain</classname> for managing units.
 </para>
 <para>
     <xref linkend="trivial-acquire.c"/> provides a basic example on how to
-    acquire an image and write it to disk.  It uses the builtin
-    <literal>input.example</literal> CamUnit, which periodically generates a test
-    image.  
+    acquire a test image and write it to disk.  It uses the builtin
+    <literal>input.example</literal> CamUnit, which periodically generates a
+    test image.  
 </para>
 
 <example id="trivial-acquire.c">
@@ -136,12 +135,12 @@ int main(int argc, char **argv)
     <sect2 id="acquiring-unit-ids">
         <title>Unit IDs</title>
         <para>
-            each <classname>CamUnitChain</classname> maintains a central
+            Each <classname>CamUnitChain</classname> maintains a central
             registry of the different <classname>CamUnit</classname> objects
             that can be instantiated.  A <classname>CamUnit</classname> is
-            identified by a <emphasis>unit id</emphasis>.  The exact details
+            identified by a <emphasis>unit ID</emphasis>.  The exact details
             of how this registry is managed and how the units are provided to
-            the <classname>CamUnitChain</classname> is described later on, but
+            the <classname>CamUnitChain</classname> is not described here, but
             for now it's sufficient to say that in order to create a unit, you
             must first know its unit ID.
         </para>
@@ -151,16 +150,29 @@ int main(int argc, char **argv)
             which comes with libcam.  When first loaded,
             <command>camview</command> displays a list of units available to
             libcam.  Clicking on a unit listed in <command>camview</command>
-            will reveal its unit ID.
+            will reveal its unit ID.  <xref 
+                linkend="acquiring-camview-unit-id"/> illustrates this.
         </para>
-        <para>
-            TODO screenshot of camview showing the CamUnitChainWidget
-        </para>
+<figure id="acquiring-camview-unit-id">
+    <title>Looking up Unit IDs in <command>camview</command></title>
+    <mediaobject>
+        <imageobject>
+            <imagedata fileref="images/camview-unit-id.png" format="PNG"/>
+        </imageobject>
+        <caption>
+            <para>
+                The easiest way to determine which units are available on a
+                system and their unit IDs is to run <command>camview</command>
+                and inspect the list of units displayed in the "Manager" frame.
+            </para>
+        </caption>
+    </mediaobject>
+</figure>
         <para>
             The <literal>input.example</literal> unit is a sample
-            <classname>CamUnit</classname> that periodically generates a test
-            image.  It can often be useful for testing when no other units
-            area available.
+            <classname>CamUnit</classname> that is distributed with libcam and
+            periodically generates a test image.  It can often be useful for
+            testing when no other units area available.
         </para>
         <para>
             Once you have the unit id of a desired unit, add it to the
@@ -321,7 +333,12 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
             8-bit RGB frames (pixelformat
             <literal>CAM_PIXEL_FORMAT_RGB</literal>) and so the example
             program is able to write the data directly to disk using the PPM
-            image file format.
+            image file format<footnote><para><ulink
+                        url="http://en.wikipedia.org/wiki/Portable_pixmap">http://en.wikipedia.org/wiki/Portable_pixmap</ulink></para></footnote>.
+            If you decide to try this example with other units available on
+            your system, you must ensure that they either output RGB directly,
+            or you must insert a colorspace conversion unit (described in the
+            next chapter).
         </para>
     </sect2>
 

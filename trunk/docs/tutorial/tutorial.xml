@@ -3,7 +3,7 @@
     <!ENTITY bookinfo SYSTEM "bookinfo.xml">
     <!ENTITY preface SYSTEM "preface.xml">
     <!ENTITY fundamentals SYSTEM "fundamentals.xml">
-    <!ENTITY quickstart SYSTEM "quickstart.xml">
+    <!ENTITY camunit SYSTEM "camunit.xml">
     <!ENTITY otherenvs SYSTEM "otherenvs.xml">
     <!ENTITY fdl SYSTEM "fdl.xml">
 ]>
@@ -13,7 +13,7 @@
 &bookinfo;
 &preface;
 &fundamentals;
-&quickstart;
+&camunit;
 &otherenvs;
 &fdl;
  
