@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Unit Controls</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="libcam Tutorial"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Conversion Units and Unit Controls"
+HREF="c186.html"><LINK
+REL="PREVIOUS"
+TITLE="Conversion Units"
+HREF="x205.html"><LINK
+REL="NEXT"
+TITLE="Other Environments"
+HREF="c277.html"></HEAD
+><BODY
+CLASS="sect1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>libcam Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x205.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Conversion Units and Unit Controls</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c277.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="sect1"
+><H1
+CLASS="sect1"
+><A
+NAME="camunit-controls"
+>2.3. Unit Controls</A
+></H1
+><P
+>&#13;        Image producing units often have controls and parameters that can be
+        used to adjust the output.  For example, cameras will typically might
+        have exposure, white balance, or gamma controls.  Alternately, a
+        conversion unit may expose controls for affecting the exact
+        conversion.  For example, <TT
+CLASS="literal"
+>input.jpeg</TT
+> provides a
+        parameter to control the compression quality.
+    </P
+><P
+>&#13;        Each <CODE
+CLASS="classname"
+>CamUnit</CODE
+> provides a list of controls that
+        it exposes, which can be enumerated and accessed programmatically.
+        To see which controls are available in a unit, it is probably fastest
+        to examine the unit in <B
+CLASS="command"
+>camview</B
+>, which enumerates
+        all the controls for a unit and provides GUI widgets for adjusting
+        them.  <A
+HREF="x255.html#camunit-controls-fig"
+>Figure 2-1</A
+> shows an example of
+        this.
+
+<DIV
+CLASS="figure"
+><A
+NAME="camunit-controls-fig"
+></A
+><P
+><B
+>Figure 2-1. Using <B
+CLASS="command"
+>camview</B
+> to inspect available Unit controls
+    and formats</B
+></P
+><DIV
+CLASS="mediaobject"
+><P
+><IMG
+SRC="images/camunit-controls.png"><DIV
+CLASS="caption"
+>&#13;            <P
+>&#13;                Often, the easiest way to determine which controls and output
+                formats are available for a given unit is to inspect it in
+                <B
+CLASS="command"
+>camview</B
+>.
+            </P
+>
+        </DIV
+></P
+></DIV
+></DIV
+>
+    </P
+><P
+>&#13;        Controls are strongly typed, and it is important to know the data type
+        of a actual control before setting it.  Five different types are
+        supported, integers, booleans, double-precision floating point,
+        strings, and enumerations.  Additionally, numerical controls can also
+        have a minimum and maximum value as well as a step size.  For example,
+        the quality control in the JPEG unit is an integer control that ranges
+        from 0-100.  To set this control, we could do:
+<PRE
+CLASS="programlisting"
+>&#13;    cam_unit_set_control_int (jpeg_unit, "quality", 50);
+</PRE
+>
+
+        In addition to <CODE
+CLASS="methodname"
+>cam_unit_set_control_int</CODE
+>,
+        there are <CODE
+CLASS="methodname"
+>cam_unit_set_control_string</CODE
+>,
+        <CODE
+CLASS="methodname"
+>cam_unit_set_control_float</CODE
+>, etc.
+        Additionally, there are methods for retrieving the current value of a
+        control, all of which are described in the reference documentation.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x205.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c277.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Conversion Units</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c186.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Other Environments</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

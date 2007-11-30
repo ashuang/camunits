@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Preface</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="libcam Tutorial"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="libcam Tutorial"
+HREF="index.html"><LINK
+REL="NEXT"
+TITLE="Audience"
+HREF="x31.html"></HEAD
+><BODY
+CLASS="preface"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>libcam Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="index.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x31.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="preface"
+><H1
+><A
+NAME="ch-preface"
+></A
+>Preface</H1
+><DIV
+CLASS="sect1"
+><H1
+CLASS="sect1"
+><A
+NAME="preface-about"
+>1. Introduction to libcam</A
+></H1
+><P
+>&#13;    libcam is a device independent library for image acquisition and
+    processing.  A major design point of libcam is to provide a very simple
+    API that allows an image processing routine to operate without any code
+    modifications on any image source, whether it be a Firewire camera, USB
+    camera, or logged data.  A second design point is to provide a framework
+    (i.e. set of classes and utilities) to assist rapid development of image
+    processing and machine vision algorithms.  This framework includes
+    colorspace conversion and image compression routines, UI widgets, and
+    visualization tools.
+</P
+><P
+>&#13;    libcam is motivated by the current state of image acquisition libraries.
+    To date, writing a program to process and work with images is a much
+    more complicated procedure than it needs to be.  Camera manufacturers
+    often distribute proprietary development kits for working with their
+    cameras, which means a program written for one camera is not likely to
+    work with a camera from a different manufacturer.  Standards have been
+    developed to alleviate this problem, such as the IEEE 1394 Digital Camera
+    and USB Video Class specifications.  While these standards help on the
+    driver side, there is still no standard device-independent API for image
+    sources.  Finally, for machine vision researchers, recording a single
+    dataset and being able to re-run their algorithms on that same data set
+    over and over again is a desirable feature that is not supported in any
+    major API.
+</P
+><P
+>&#13;    libcam addresses these problems by providing a simple, general, and useful
+    abstraction for image sources.  It was developed and used by Team MIT in
+    the 2007 DARPA Urban Challenge<A
+NAME="AEN28"
+HREF="#FTN.AEN28"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>.
+    In that context, libcam provided a
+    framework for processing high resolution images (5 cameras, 752x480 Bayer
+    @ 22.8 fps) to achieve real time vision-based lane detection and tracking
+    on an autonomous vehicle in an urban setting.  This tutorial provides an
+    introduction to programming with libcam, and describes the various ways
+    that libcam can be used in an image processing application.
+</P
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN28"
+HREF="f21.html#AEN28"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+><A
+HREF="http://www.darpa.mil/grandchallenge"
+TARGET="_top"
+>http://www.darpa.mil/grandchallenge</A
+></P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x31.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>libcam Tutorial</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Audience</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

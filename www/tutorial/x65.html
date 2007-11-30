@@ -1,0 +1,684 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Using a CamUnitChain</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="libcam Tutorial"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Acquiring images (Quickstart guide)"
+HREF="c43.html"><LINK
+REL="PREVIOUS"
+TITLE="Acquiring images (Quickstart guide)"
+HREF="c43.html"><LINK
+REL="NEXT"
+TITLE="Conversion Units and Unit Controls"
+HREF="c186.html"></HEAD
+><BODY
+CLASS="sect1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>libcam Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c43.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Acquiring images (Quickstart guide)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c186.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="sect1"
+><H1
+CLASS="sect1"
+><A
+NAME="acquiring-unit-chain"
+>1.2. Using a <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+></A
+></H1
+><P
+>&#13;        Constructing a <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> is straightforward:
+<PRE
+CLASS="programlisting"
+>&#13;    CamUnitChain * chain = cam_unit_chain_new ();
+</PRE
+>
+
+        Since a <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+>, along with every other
+        libcam class, is a reference-counted GObject, memory management is
+        handled using <CODE
+CLASS="function"
+>g_object_ref</CODE
+> and
+        <CODE
+CLASS="function"
+>g_object_unref</CODE
+>.  A
+        <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> is created with a reference count
+        of one.  When the reference count reaches zero, the
+        <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> is destroyed.  Thus, we should
+        decrement the reference count of the chain when it's no longer needed.
+<PRE
+CLASS="programlisting"
+>&#13;    g_object_unref (chain);
+</PRE
+>
+    </P
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="acquiring-unit-ids"
+>1.2.1. Unit IDs</A
+></H2
+><P
+>&#13;            Each <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> maintains a central
+            registry of the different <CODE
+CLASS="classname"
+>CamUnit</CODE
+> objects
+            that can be instantiated.  A <CODE
+CLASS="classname"
+>CamUnit</CODE
+> is
+            identified by a <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>unit ID</I
+></SPAN
+>.  The exact details
+            of how this registry is managed and how the units are provided to
+            the <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> is not described here, but
+            for now it's sufficient to say that in order to create a unit, you
+            must first know its unit ID.
+        </P
+><P
+>&#13;            The easiest way to find out what sort of units are available on
+            your system is to use the program <B
+CLASS="command"
+>camview</B
+>,
+            which comes with libcam.  When first loaded,
+            <B
+CLASS="command"
+>camview</B
+> displays a list of units available to
+            libcam.  Clicking on a unit listed in <B
+CLASS="command"
+>camview</B
+>
+            will reveal its unit ID.  <A
+HREF="x65.html#acquiring-camview-unit-id"
+>Figure 1-1</A
+> illustrates this.
+        </P
+><DIV
+CLASS="figure"
+><A
+NAME="acquiring-camview-unit-id"
+></A
+><P
+><B
+>Figure 1-1. Looking up Unit IDs in <B
+CLASS="command"
+>camview</B
+></B
+></P
+><DIV
+CLASS="mediaobject"
+><P
+><IMG
+SRC="images/camview-unit-id.png"><DIV
+CLASS="caption"
+>&#13;            <P
+>&#13;                The easiest way to determine which units are available on a
+                system and their unit IDs is to run <B
+CLASS="command"
+>camview</B
+>
+                and inspect the list of units displayed in the "Manager" frame.
+            </P
+>
+        </DIV
+></P
+></DIV
+></DIV
+><P
+>&#13;            The <TT
+CLASS="literal"
+>input.example</TT
+> unit is a sample
+            <CODE
+CLASS="classname"
+>CamUnit</CODE
+> that is distributed with libcam and
+            periodically generates a test image.  It can often be useful for
+            testing when no other units area available.
+        </P
+><P
+>&#13;            Once you have the unit id of a desired unit, add it to the
+            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> with the
+            <CODE
+CLASS="methodname"
+>cam_unit_chain_add_unit_by_id</CODE
+> method.
+<PRE
+CLASS="programlisting"
+>&#13;    cam_unit_chain_add_unit_by_id (chain, "input.example");
+</PRE
+>
+            The <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> then takes care of
+            instantiating the desired <CODE
+CLASS="classname"
+>CamUnit</CODE
+> and
+            appending it to the image processing chain.
+        </P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="acqruigin-statuses"
+>1.2.2. Unit states - IDLE, READY, STREAMING</A
+></H2
+><P
+>&#13;            A <CODE
+CLASS="classname"
+>CamUnit</CODE
+> can be in one of three general
+            states: <TT
+CLASS="literal"
+>CAM_UNIT_STATUS_IDLE</TT
+>,
+            <TT
+CLASS="literal"
+>CAM_UNIT_STATUS_READY</TT
+>, or
+            <TT
+CLASS="literal"
+>CAM_UNIT_STATUS_STREAMING</TT
+>.  This distinction is
+            made mostly for units that consume hardware resources.  Roughly
+            speaking, an <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>idle</I
+></SPAN
+> unit is one that is not
+            consuming system
+            resources and is not able to produce any frames.  A
+            <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>ready</I
+></SPAN
+> unit is
+            one that has been initialized and is holding all the resources it
+            needs to produce frames, but is simply not doing so.  Finally, a
+            <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>streaming</I
+></SPAN
+> unit is one that has been
+            initialized and is actively
+            producing or processing image frames.
+        </P
+><P
+>&#13;            <CODE
+CLASS="classname"
+>CamUnit</CODE
+> exposes methods for changing the
+            state of an individual unit, and
+            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> provides a convenience method
+            that attempts to set every unit in the chain to the
+            desired status.
+<PRE
+CLASS="programlisting"
+>&#13;    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+</PRE
+>
+            This causes the <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> to iterate
+            through each unit in the chain and adjust the unit accordingly.
+        </P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="acquiring-chain-glib"
+>1.2.3. Attaching to GMainContext</A
+></H2
+><P
+>&#13;            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> provides a convenience
+            method, <CODE
+CLASS="methodname"
+>cam_unit_chain_attach_glib</CODE
+> for
+            attaching to a GLib event loop.  Once attached, the units in the
+            chain will begin producing frames when the event loop is running.
+
+<PRE
+CLASS="programlisting"
+>&#13;    cam_unit_chain_attach_glib (chain, G_PRIORITY_DEFAULT, NULL);
+</PRE
+>
+
+            This method allows the user to specify the priority of the
+            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+>, as well as a pointer to the
+            desired <CODE
+CLASS="classname"
+>GMainContext</CODE
+>.  If
+            <TT
+CLASS="literal"
+>NULL</TT
+> is given as the
+            <CODE
+CLASS="classname"
+>GMainContext</CODE
+>, then the default context is
+            used.
+        </P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="acquiring-frame-ready"
+>1.2.4. The "frame-ready" event</A
+></H2
+><P
+>&#13;            Image frames are delivered via the GObject signalling framework.
+            Each <CODE
+CLASS="classname"
+>CamUnit</CODE
+> emits a "frame-ready" signal
+            when it produces a frame, and a
+            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> emits a separate "frame-ready"
+            signal when the last unit in the chain produces a frame.  For
+            simple applications, we recommend connecting to the
+            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> "frame-ready" signal.
+<PRE
+CLASS="programlisting"
+>&#13;    g_signal_connect (G_OBJECT (chain), "frame-ready",
+            G_CALLBACK (on_frame_ready), mainloop);
+</PRE
+>
+            By connecting to the "frame-ready" signal of the
+            <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+> in this manner, the function
+            <CODE
+CLASS="function"
+>on_frame_ready</CODE
+> is called every time an image
+            frame makes it all the way through the image processing chain.
+<PRE
+CLASS="programlisting"
+>&#13;static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
+        const CamFrameBuffer *buf, void *user_data)
+{
+    .
+    .
+    .
+}
+</PRE
+>
+            The "frame-ready" signal is emitted with two arguments: a pointer
+            to the last <CODE
+CLASS="classname"
+>CamUnit</CODE
+> in the chain, and the 
+            <CODE
+CLASS="classname"
+>CamFrameBuffer</CODE
+> corresponding to the actual
+            image data produced.
+        </P
+></DIV
+><DIV
+CLASS="sect2"
+><H2
+CLASS="sect2"
+><A
+NAME="acquiring-buffer-format"
+>1.2.5. <CODE
+CLASS="classname"
+>CamFrameBuffer</CODE
+> and
+            <CODE
+CLASS="classname"
+>CamUnitFormat</CODE
+></A
+></H2
+><P
+>&#13;            Image frames are delivered using the
+            <CODE
+CLASS="classname"
+>CamFrameBuffer</CODE
+> object.  The most important
+            field of the <CODE
+CLASS="classname"
+>CamFrameBuffer</CODE
+> object is the
+            <TT
+CLASS="literal"
+>data</TT
+> field, which contains the actual image
+            data.
+        </P
+><P
+>&#13;            Since there is a wide range of binary representations for images,
+            such as sRGB, YUV422, Bayer, JPEG, etc., libcam provides a way to
+            describe the actual format of the image data via the
+            <CODE
+CLASS="classname"
+>CamUnitFormat</CODE
+> class.  The format of the
+            images produced by a <CODE
+CLASS="classname"
+>CamUnit</CODE
+> can be
+            determined using the
+            <CODE
+CLASS="methodname"
+>cam_unit_get_output_format</CODE
+> method.
+<PRE
+CLASS="programlisting"
+>&#13;    const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
+</PRE
+>
+            The most useful fields of a <CODE
+CLASS="classname"
+>CamUnitFormat</CODE
+>
+            object are:
+
+    <P
+></P
+><DIV
+CLASS="variablelist"
+><DL
+><DT
+><TT
+CLASS="literal"
+>pixelformat</TT
+></DT
+><DD
+><P
+>A magic number identifying the pixel format of
+                    the data.  Typical values are
+                    <TT
+CLASS="literal"
+>CAM_PIXEL_FORMAT_RGB</TT
+>,
+                    <TT
+CLASS="literal"
+>CAM_PIXEL_FORMAT_YUYV</TT
+>,
+                    <TT
+CLASS="literal"
+>CAM_PIXEL_FORMAT_GRAY</TT
+>, etc.
+                </P
+></DD
+><DT
+><TT
+CLASS="literal"
+>width</TT
+>, <TT
+CLASS="literal"
+>height</TT
+></DT
+><DD
+><P
+>The dimensions, in pixels, of the image.
+                </P
+></DD
+><DT
+><TT
+CLASS="literal"
+>row_stride</TT
+></DT
+><DD
+><P
+>Only meaningful for image formats with a fixed number of
+                    bytes per pixel.  This stores the number of bytes
+                    separating the first pixel of successive rows in the
+                    image.  For compressed (e.g.
+                    <TT
+CLASS="literal"
+>CAM_PIXEL_FORMAT_MJPEG</TT
+>) and planar
+                    pixelformats (e.g.
+                    <TT
+CLASS="literal"
+>CAM_PIXEL_FORMAT_YUYV</TT
+>) this value is
+                    not useful.
+                </P
+></DD
+></DL
+></DIV
+>
+            
+            The example unit <TT
+CLASS="literal"
+>input.example</TT
+> always produces
+            8-bit RGB frames (pixelformat
+            <TT
+CLASS="literal"
+>CAM_PIXEL_FORMAT_RGB</TT
+>) and so the example
+            program is able to write the data directly to disk using the PPM
+            image file format<A
+NAME="AEN183"
+HREF="#FTN.AEN183"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>.
+            If you decide to try this example with other units available on
+            your system, you must ensure that they either output RGB directly,
+            or you must insert a colorspace conversion unit (described in the
+            next chapter).
+        </P
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN183"
+HREF="x65.html#AEN183"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+><A
+HREF="http://en.wikipedia.org/wiki/Portable_pixmap"
+TARGET="_top"
+>http://en.wikipedia.org/wiki/Portable_pixmap</A
+></P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c43.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c186.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Acquiring images (Quickstart guide)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c43.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Conversion Units and Unit Controls</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

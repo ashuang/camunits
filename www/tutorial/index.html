@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>libcam Tutorial</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="NEXT"
+TITLE="Preface"
+HREF="f21.html"><META
+NAME="KEYWORD"
+CONTENT="libcam"><META
+NAME="KEYWORD"
+CONTENT="dc1394"><META
+NAME="KEYWORD"
+CONTENT="v4l"><META
+NAME="KEYWORD"
+CONTENT="v4l2"><META
+NAME="KEYWORD"
+CONTENT="camera"><META
+NAME="KEYWORD"
+CONTENT="machine vision"><META
+NAME="KEYWORD"
+CONTENT="image processing"></HEAD
+><BODY
+CLASS="book"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="AEN1"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="title"
+><A
+NAME="AEN2"
+>libcam Tutorial</A
+></H1
+><H3
+CLASS="author"
+><A
+NAME="AEN5"
+></A
+>Albert Huang</H3
+><P
+CLASS="copyright"
+>Copyright &copy; 2007 Albert Huang, David Moore</P
+><DIV
+><DIV
+CLASS="abstract"
+><P
+></P
+><A
+NAME="AEN8"
+></A
+><P
+>&#13;    This tutorial provides an introduction to developing image processing and
+    machine vision applications with libcam.
+</P
+><P
+></P
+></DIV
+></DIV
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="f21.html"
+>Preface</A
+></DT
+><DD
+><DL
+><DT
+>1. <A
+HREF="f21.html#preface-about"
+>Introduction to libcam</A
+></DT
+><DT
+>2. <A
+HREF="x31.html"
+>Audience</A
+></DT
+><DT
+>3. <A
+HREF="x39.html"
+>License</A
+></DT
+></DL
+></DD
+><DT
+>1. <A
+HREF="c43.html"
+>Acquiring images (Quickstart guide)</A
+></DT
+><DD
+><DL
+><DT
+>1.1. <A
+HREF="c43.html#acquiring-glib"
+>Using libcam with GLib</A
+></DT
+><DT
+>1.2. <A
+HREF="x65.html"
+>Using a <CODE
+CLASS="classname"
+>CamUnitChain</CODE
+></A
+></DT
+><DD
+><DL
+><DT
+>1.2.1. <A
+HREF="x65.html#acquiring-unit-ids"
+>Unit IDs</A
+></DT
+><DT
+>1.2.2. <A
+HREF="x65.html#acqruigin-statuses"
+>Unit states - IDLE, READY, STREAMING</A
+></DT
+><DT
+>1.2.3. <A
+HREF="x65.html#acquiring-chain-glib"
+>Attaching to GMainContext</A
+></DT
+><DT
+>1.2.4. <A
+HREF="x65.html#acquiring-frame-ready"
+>The "frame-ready" event</A
+></DT
+><DT
+>1.2.5. <A
+HREF="x65.html#acquiring-buffer-format"
+><CODE
+CLASS="classname"
+>CamFrameBuffer</CODE
+> and
+            <CODE
+CLASS="classname"
+>CamUnitFormat</CODE
+></A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>2. <A
+HREF="c186.html"
+>Conversion Units and Unit Controls</A
+></DT
+><DD
+><DL
+><DT
+>2.1. <A
+HREF="c186.html#camunit-specify-output"
+>Specifying the output format of a Unit</A
+></DT
+><DT
+>2.2. <A
+HREF="x205.html"
+>Conversion Units</A
+></DT
+><DT
+>2.3. <A
+HREF="x255.html"
+>Unit Controls</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="c277.html"
+>Other Environments</A
+></DT
+><DD
+><DL
+><DT
+>3.1. <A
+HREF="c277.html#otherenvs-eventloops"
+>Using non GLib event loops</A
+></DT
+></DL
+></DD
+><DT
+>A. <A
+HREF="a283.html"
+>GNU Free Documentation License</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Figures</B
+></DT
+><DT
+>1-1. <A
+HREF="x65.html#acquiring-camview-unit-id"
+>Looking up Unit IDs in <B
+CLASS="command"
+>camview</B
+></A
+></DT
+><DT
+>2-1. <A
+HREF="x255.html#camunit-controls-fig"
+>Using <B
+CLASS="command"
+>camview</B
+> to inspect available Unit controls
+    and formats</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Examples</B
+></DT
+><DT
+>1-1. <A
+HREF="c43.html#trivial-acquire.c"
+>Basic Image Acquisition</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="f21.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Preface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
