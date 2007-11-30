@@ -8,6 +8,19 @@ AM_MAINTAINER_MODE
 AC_PROG_CC
 AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
 AM_PATH_GTK_2_0
+AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
+             [AC_MSG_ERROR([GL not found, but is required by libcam.])])
+AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, JPEG_LIBS='-ljpeg',
+             [AC_MSG_ERROR([libjpeg not found, but is required by libcam.])])
+PKG_PROG_PKG_CONFIG
+PKG_CHECK_MODULES(DC1394, [libdc1394-2 = 2.0.0-rc7],,
+                  [AC_MSG_WARN([libdc1394 not found, firewire camera support will be disabled])])
+
+AC_SUBST(GL_LIBS)
+AC_SUBST(JPEG_LIBS)
+AM_CONDITIONAL(HAVE_GL, test "x$GL_LIBS" != x)
+AM_CONDITIONAL(HAVE_JPEG, test "x$JPEG_LIBS" != x)
+AM_CONDITIONAL(HAVE_DC1394, test "x$DC1394_LIBS" != x)
 
 case "$target_os" in
 	linux*) arch=linux;;
@@ -104,10 +117,16 @@ AC_OUTPUT([
   docs/reference/libcam-gtk/Makefile
 ])
 
-echo "
+echo -n "
 
 Configuration (libcam):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
-"
+        DC1394 plugin:         "
+
+if test "x$DC1394_LIBS" = x; then
+    echo "Disabled (libdc1394 not found)"
+else
+    echo "Enabled"
+fi
