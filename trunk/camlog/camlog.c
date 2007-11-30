@@ -196,7 +196,7 @@ int main(int argc, char **argv)
         goto done;
     }
 
-    cam_unit_chain_attach_glib_mainloop (chain, 1000);
+    cam_unit_chain_attach_glib (chain, 1000, NULL);
     g_signal_connect (G_OBJECT (chain), "frame-ready",
             G_CALLBACK (on_frame_ready), self);
     printf ("verbose: %d\n", self->verbose);

@@ -56,10 +56,6 @@ cam_unit_chain_init (CamUnitChain *self)
     self->source_funcs.check    = cam_unit_chain_source_check;
     self->source_funcs.dispatch = cam_unit_chain_source_dispatch;
     self->source_funcs.finalize = cam_unit_chain_source_finalize;
-    self->event_source = (CamUnitChainSource*) g_source_new (
-            &self->source_funcs,
-            sizeof (CamUnitChainSource));
-    self->event_source->chain = self;
     self->desired_unit_status = CAM_UNIT_STATUS_IDLE;
 }
 
@@ -178,12 +174,14 @@ cam_unit_chain_finalize (GObject *obj)
     dbg (DBG_CHAIN, "finalize\n");
     CamUnitChain *self = CAM_UNIT_CHAIN (obj);
 
+    if (self->event_source)
+        cam_unit_chain_detach_glib (self);
+
     // unref the CamUnitManager
     if (self->manager) {
         dbgl (DBG_REF, "unref manager\n");
         g_object_unref (self->manager);
     }
-    g_source_unref ( (GSource*) self->event_source);
 
     // if units are not all idle, then it's not terrible, but it is poor form.
     if (! are_all_units_status (self, CAM_UNIT_STATUS_IDLE)) {
@@ -537,7 +535,8 @@ stream_on (CamUnitChain *self, CamUnit *unit)
 
         // if the unit provides a file descriptor, then attach it to the
         // chain event source
-        if (cam_unit_get_flags (unit) & CAM_UNIT_EVENT_METHOD_FD) {
+        if ((cam_unit_get_flags (unit) & CAM_UNIT_EVENT_METHOD_FD) &&
+                self->event_source) {
             GPollFD *pfd = (GPollFD*) malloc (sizeof (GPollFD));
 
             pfd->fd = cam_unit_get_fileno (unit);
@@ -567,7 +566,8 @@ stream_off (CamUnitChain *self, CamUnit *unit)
     // remove a GPollFD if it was setup by stream_on
     GPollFD *pfd = (GPollFD*) g_object_get_data (G_OBJECT (unit), "ChainPollFD");
     if (pfd) {
-        g_source_remove_poll ( (GSource*)self->event_source, pfd);
+        if (self->event_source)
+            g_source_remove_poll ( (GSource*)self->event_source, pfd);
         g_object_set_data (G_OBJECT (unit), "ChainPollFD", NULL);
         free (pfd);
     }
@@ -753,17 +753,31 @@ cam_unit_chain_source_finalize (GSource *source)
     // TODO
 }
 
-void 
-cam_unit_chain_attach_glib_mainloop (CamUnitChain *self, int priority)
+int
+cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
+        GMainContext * context)
 {
-    g_source_attach ( (GSource*) self->event_source, NULL);
-    g_source_set_priority ( (GSource*) self->event_source, 1000);
+    if (self->event_source) {
+        g_warning ("UnitChain is already attached\n");
+        return -1;
+    }
+    self->event_source = (CamUnitChainSource*) g_source_new (
+            &self->source_funcs,
+            sizeof (CamUnitChainSource));
+    self->event_source->chain = self;
+    if (!self->event_source)
+        return -1;
+    g_source_attach ( (GSource*) self->event_source, context);
+    g_source_set_priority ( (GSource*) self->event_source, priority);
+    return 0;
 }
 
 void 
-cam_unit_chain_detach_glib_mainloop (CamUnitChain *self)
+cam_unit_chain_detach_glib (CamUnitChain *self)
 {
-    g_source_destroy ( (GSource*) self->event_source);
+    if (!self->event_source)
+        return;
+    g_source_destroy ((GSource *) self->event_source);
     self->event_source = NULL;
 }
 
