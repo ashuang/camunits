@@ -42,8 +42,8 @@ struct _CamFilterGL {
     CamUnit parent;
 
     CamGLTexture * gl_texture;
-//    int gl_refcount;
     int gl_initialized;
+    int texture_valid;
 };
 
 struct _CamFilterGLClass {
