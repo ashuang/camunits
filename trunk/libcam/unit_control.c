@@ -575,3 +575,18 @@ cam_unit_control_get_ui_hints (const CamUnitControl *self)
 {
     return self->ui_hints;
 }
+
+static char * type_str[] = {
+    "Invalid",
+    "Integer",
+    "Boolean",
+    "Enumeration",
+    "String",
+    "Float",
+};
+
+const char *
+cam_unit_control_get_type_str (CamUnitControl * ctl)
+{
+    return type_str[ctl->type];
+}
