@@ -170,11 +170,15 @@
     <para>
         Each <classname>CamUnit</classname> provides a list of controls that
         it exposes, which can be enumerated and accessed programmatically.
+        Each control has a string identifier, the <emphasis>control
+            ID</emphasis> unique to the unit that can be
+        used for access.
         To see which controls are available in a unit, it is probably fastest
         to examine the unit in <command>camview</command>, which enumerates
         all the controls for a unit and provides GUI widgets for adjusting
-        them.  <xref linkend="camunit-controls-fig"/> shows an example of
-        this.
+        them.  The control ID can be found by hovering the mouse over the
+        actual control and waiting for a tooltip to appear.  <xref
+            linkend="camunit-controls-fig"/> shows an example of this.
 
 <figure id="camunit-controls-fig">
     <title>Using <command>camview</command> to inspect available Unit controls
