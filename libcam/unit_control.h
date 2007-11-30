@@ -302,6 +302,8 @@ void cam_unit_control_set_ui_hints (CamUnitControl *self, int flags);
  */
 int cam_unit_control_get_ui_hints (const CamUnitControl *self);
 
+const char * cam_unit_control_get_type_str (CamUnitControl * ctl);
+
 #ifdef __cplusplus
 }
 #endif

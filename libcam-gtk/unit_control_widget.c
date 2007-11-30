@@ -299,6 +299,16 @@ control_set_sensitive (ControlWidgetInfo * ci)
 }
 
 static void
+set_tooltip (CamUnitControlWidget * self, GtkWidget * widget,
+        CamUnitControl * ctl)
+{
+    char str[256];
+    snprintf (str, sizeof (str), "ID: %s\nType: %s", ctl->id,
+            cam_unit_control_get_type_str (ctl));
+    gtk_tooltips_set_tip (self->tooltips, widget, str, str);
+}
+
+static void
 add_slider (CamUnitControlWidget * self,
         float min, float max, float step, float initial_value,
         int use_int, CamUnitControl * ctl)
@@ -314,7 +324,7 @@ add_slider (CamUnitControlWidget * self,
     gtk_widget_show (label);
     GtkWidget *range = gtk_hscale_new_with_range(min, max, step);
     gtk_scale_set_draw_value(GTK_SCALE(range), FALSE);
-    gtk_tooltips_set_tip (self->tooltips, range, ctl->id, NULL);
+    set_tooltip (self, range, ctl);
 
     // slider widget
 
@@ -420,7 +430,7 @@ add_spinbutton (CamUnitControlWidget * self,
     // spinbutton widget
 
     GtkWidget *spinb = gtk_spin_button_new_with_range (min, max, step);
-    gtk_tooltips_set_tip (self->tooltips, spinb, ctl->id, NULL);
+    set_tooltip (self, spinb, ctl);
 
     gtk_table_attach (self->table, spinb, 1, 3,
             self->trows, self->trows+1,
@@ -564,7 +574,7 @@ add_boolean_control( CamUnitControlWidget *self, CamUnitControl *ctl )
     else
         widget = gtk_check_button_new_with_label (ctl->name);
 
-    gtk_tooltips_set_tip (self->tooltips, widget, ctl->id, NULL);
+    set_tooltip (self, widget, ctl);
     add_boolean_ctl_helper( self, ctl, widget );
 }
 
@@ -622,7 +632,7 @@ add_menu_control( CamUnitControlWidget *self, CamUnitControl *ctl )
     GtkWidget *eb = gtk_event_box_new ();
     GtkWidget *mb = gtk_combo_box_new_with_model (GTK_TREE_MODEL (store));
     gtk_container_add (GTK_CONTAINER (eb), mb);
-    gtk_tooltips_set_tip (self->tooltips, eb, ctl->id, NULL);
+    set_tooltip (self, eb, ctl);
     GtkCellRenderer * renderer = gtk_cell_renderer_text_new ();
     g_object_set (G_OBJECT (renderer), "ellipsize", PANGO_ELLIPSIZE_END, NULL);
     gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mb), renderer, TRUE);
@@ -727,7 +737,7 @@ add_string_control_filename( CamUnitControlWidget *self, CamUnitControl *ctl )
 
     // text entry
     GtkWidget *entry = gtk_entry_new();
-    gtk_tooltips_set_tip (self->tooltips, entry, ctl->id, NULL);
+    set_tooltip (self, entry, ctl);
     gtk_entry_set_text( GTK_ENTRY(entry), cam_unit_control_get_string(ctl) );
     gtk_box_pack_start( GTK_BOX(hbox), entry, FALSE, FALSE, 0 );
     gtk_entry_set_editable( GTK_ENTRY(entry), FALSE );
@@ -816,7 +826,7 @@ add_string_control_entry( CamUnitControlWidget *self, CamUnitControl *ctl )
     GtkWidget *hbox = gtk_hbox_new (FALSE, 1);
     // text entry
     GtkWidget *entry = gtk_entry_new();
-    gtk_tooltips_set_tip (self->tooltips, entry, ctl->id, NULL);
+    set_tooltip (self, entry, ctl);
     gtk_entry_set_text( GTK_ENTRY(entry), cam_unit_control_get_string(ctl) );
     gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
     //gtk_entry_set_editable( GTK_ENTRY(entry), FALSE );
