@@ -231,9 +231,10 @@ CamUnitStatus cam_unit_chain_get_desired_status(const CamUnitChain *self);
 CamUnit * cam_unit_chain_check_status_all_units (const CamUnitChain *self,
         CamUnitStatus status);
 
-void cam_unit_chain_attach_glib_mainloop (CamUnitChain *self, int priority);
+int cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
+        GMainContext * context);
 
-void cam_unit_chain_detach_glib_mainloop (CamUnitChain *self);
+void cam_unit_chain_detach_glib (CamUnitChain *self);
 
 #ifdef __cplusplus
 }

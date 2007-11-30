@@ -216,7 +216,7 @@ state_setup (state_t *self)
     // create the image processing chain
     self->chain = cam_unit_chain_new ();
     cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_STREAMING);
-    cam_unit_chain_attach_glib_mainloop (self->chain, 1000);
+    cam_unit_chain_attach_glib (self->chain, 1000, NULL);
     g_signal_connect (G_OBJECT (self->chain), "frame-ready",
             G_CALLBACK (on_frame_ready), self);
 
