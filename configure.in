@@ -101,6 +101,7 @@ AC_OUTPUT([
   docs/Makefile
   docs/reference/Makefile
   docs/reference/libcam/Makefile
+  docs/reference/libcam-gtk/Makefile
 ])
 
 echo "
