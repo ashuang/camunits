@@ -1,1 +1,1 @@
-SUBDIRS = libcam
+SUBDIRS = libcam libcam-gtk
