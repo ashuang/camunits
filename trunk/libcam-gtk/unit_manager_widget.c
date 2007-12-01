@@ -76,8 +76,12 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
     gtk_tree_view_column_pack_start (column, renderer, FALSE);
     GdkPixbuf * pb =
         gdk_pixbuf_new_from_file (LIBCAM_PIXMAP_PATH "/renderable.png", NULL);
-    g_object_set (G_OBJECT (renderer), "pixbuf", pb, NULL);
-    g_object_unref (pb);
+    if (pb) {
+        g_object_set (G_OBJECT (renderer), "pixbuf", pb, NULL);
+        g_object_unref (pb);
+    }
+    else
+        g_warning ("Unable to load pixbuf\n");
     gtk_tree_view_column_add_attribute (column, renderer,
             "visible", COL_IS_RENDERABLE);
 
