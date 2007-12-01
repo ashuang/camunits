@@ -322,12 +322,13 @@ static void
 on_unit_removed (CamUnitChain *chain, CamUnit *unit, void *user_data)
 {
     uint32_t flags = cam_unit_get_flags (unit);
-    _set_aspect_widget (CAM_UNIT_CHAIN_GL_WIDGET (user_data));
-    if (flags & CAM_UNIT_RENDERS_GL) {
+    if ((flags & CAM_UNIT_RENDERS_GL) &&
+            cam_unit_get_status (unit) != CAM_UNIT_STATUS_IDLE) {
         dbg (DBG_GUI, "UnitChainGL:  shutting down GL for removed unit [%s]\n", 
                 cam_unit_get_name (unit));
         cam_unit_draw_gl_shutdown (unit);
     }
+    _set_aspect_widget (CAM_UNIT_CHAIN_GL_WIDGET (user_data));
     return;
 }
 
