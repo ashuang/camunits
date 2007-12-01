@@ -201,7 +201,7 @@ cam_input_example_try_produce_frame (CamUnit *super)
 
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (super->fmt->max_data_size);
-
+    memset (outbuf->data, 0, super->fmt->max_data_size);
     
     self->x += self->dx;
     int w = cam_unit_control_get_int (self->int1_ctl);
