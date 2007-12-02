@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>CamGLDrawingArea</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="libcam-gtk Reference Manual">
+<link rel="up" href="ch02.html" title="Subclasses of GTK Widgets">
+<link rel="prev" href="ch02.html" title="Subclasses of GTK Widgets">
+<link rel="next" href="CamTreeStore.html" title="CamTreeStore">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="GTK Widgets for libcam Types">
+<link rel="chapter" href="ch02.html" title="Subclasses of GTK Widgets">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam-gtk Reference Manual</th>
+<td><a accesskey="n" href="CamTreeStore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id359969" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id351426" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#id351358" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#id351404" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="CamGLDrawingArea"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2>
+<a name="id359969"></a><span class="refentrytitle">CamGLDrawingArea</span>
+</h2>
+<p>CamGLDrawingArea</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+                    <a class="link" href="CamGLDrawingArea.html#CamGLDrawingArea-struct">CamGLDrawingArea</a>;
+<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="CamGLDrawingArea.html#cam-gl-drawing-area-new">cam_gl_drawing_area_new</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> vblank_sync);
+void                <a class="link" href="CamGLDrawingArea.html#cam-gl-drawing-area-set-vblank-sync">cam_gl_drawing_area_set_vblank_sync</a> (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> vblank_sync);
+void                <a class="link" href="CamGLDrawingArea.html#cam-gl-drawing-area-swap-buffers">cam_gl_drawing_area_swap_buffers</a>    (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea);
+int                 <a class="link" href="CamGLDrawingArea.html#cam-gl-drawing-area-set-context">cam_gl_drawing_area_set_context</a>     (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea);
+void                <a class="link" href="CamGLDrawingArea.html#cam-gl-drawing-area-invalidate">cam_gl_drawing_area_invalidate</a>      (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea);
+
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id351358"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkDrawingArea.html"
+>GtkDrawingArea</a>
+                           +----CamGLDrawingArea
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id351404"></a><h2>Implemented Interfaces</h2>
+<p>
+CamGLDrawingArea implements
+ AtkImplementorIface.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id351426"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id359185"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id359195"></a><h3>
+<a name="CamGLDrawingArea-struct"></a>CamGLDrawingArea</h3>
+<a class="indexterm" name="id359207"></a><pre class="programlisting">typedef struct _CamGLDrawingArea CamGLDrawingArea;</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id359223"></a><h3>
+<a name="cam-gl-drawing-area-new"></a>cam_gl_drawing_area_new ()</h3>
+<a class="indexterm" name="id359234"></a><pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          cam_gl_drawing_area_new             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> vblank_sync);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vblank_sync</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id359290"></a><h3>
+<a name="cam-gl-drawing-area-set-vblank-sync"></a>cam_gl_drawing_area_set_vblank_sync ()</h3>
+<a class="indexterm" name="id359301"></a><pre class="programlisting">void                cam_gl_drawing_area_set_vblank_sync (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> vblank_sync);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>glarea</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vblank_sync</code></em>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id344498"></a><h3>
+<a name="cam-gl-drawing-area-swap-buffers"></a>cam_gl_drawing_area_swap_buffers ()</h3>
+<a class="indexterm" name="id344509"></a><pre class="programlisting">void                cam_gl_drawing_area_swap_buffers    (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>glarea</code></em>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id344553"></a><h3>
+<a name="cam-gl-drawing-area-set-context"></a>cam_gl_drawing_area_set_context ()</h3>
+<a class="indexterm" name="id344565"></a><pre class="programlisting">int                 cam_gl_drawing_area_set_context     (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>glarea</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id344620"></a><h3>
+<a name="cam-gl-drawing-area-invalidate"></a>cam_gl_drawing_area_invalidate ()</h3>
+<a class="indexterm" name="id344633"></a><pre class="programlisting">void                cam_gl_drawing_area_invalidate      (<a class="link" href="CamGLDrawingArea.html" title="CamGLDrawingArea">CamGLDrawingArea</a> *glarea);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>glarea</code></em>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+</body>
+</html>

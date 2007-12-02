@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>CamColorConversionFilter</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="libcam Reference Manual">
+<link rel="up" href="ch03.html" title="Built-in Units">
+<link rel="prev" href="CamFastBayerFilter.html" title="CamFastBayerFilter">
+<link rel="next" href="libcam-CamBayerFilter.html" title="CamBayerFilter">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Units">
+<link rel="chapter" href="ch02.html" title="Image Processing Chains">
+<link rel="chapter" href="ch03.html" title="Built-in Units">
+<link rel="chapter" href="ch04.html" title="Other stuff">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="CamFastBayerFilter.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Reference Manual</th>
+<td><a accesskey="n" href="libcam-CamBayerFilter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id348346" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id400834" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#id380215" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="CamColorConversionFilter"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2>
+<a name="id348346"></a><span class="refentrytitle">CamColorConversionFilter</span>
+</h2>
+<p>CamColorConversionFilter</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+                    <a class="link" href="CamColorConversionFilter.html#CamColorConversionFilter-struct">CamColorConversionFilter</a>;
+<a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>* <a class="link" href="CamColorConversionFilter.html#cam-color-conversion-filter-new">cam_color_conversion_filter_new</a>
+                                                        (void);
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new">cam_color_conversion_filter_driver_new</a>
+                                                        (void);
+
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id380215"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+               +----CamColorConversionFilter
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id400834"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id400849"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id400860"></a><h3>
+<a name="CamColorConversionFilter-struct"></a>CamColorConversionFilter</h3>
+<a class="indexterm" name="id345976"></a><pre class="programlisting">typedef struct _CamColorConversionFilter CamColorConversionFilter;</pre>
+<p>
+This demonstrates how to create a simple filter</p>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id345995"></a><h3>
+<a name="cam-color-conversion-filter-new"></a>cam_color_conversion_filter_new ()</h3>
+<a class="indexterm" name="id346006"></a><pre class="programlisting"><a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>* cam_color_conversion_filter_new
+                                                        (void);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id400911"></a><h3>
+<a name="cam-color-conversion-filter-driver-new"></a>cam_color_conversion_filter_driver_new ()</h3>
+<a class="indexterm" name="id400922"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_color_conversion_filter_driver_new
+                                                        (void);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+</body>
+</html>

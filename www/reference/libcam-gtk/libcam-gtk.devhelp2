@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="libcam-gtk Reference Manual" link="index.html" author="" name="libcam-gtk" version="2">
+  <chapters>
+    <sub name="GTK Widgets for libcam Types" link="ch01.html">
+      <sub name="CamUnitControlWidget" link="CamUnitControlWidget.html"/>
+      <sub name="CamUnitChainWidget" link="CamUnitChainWidget.html"/>
+      <sub name="CamUnitChainGLWidget" link="CamUnitChainGLWidget.html"/>
+      <sub name="CamUnitManagerWidget" link="CamUnitManagerWidget.html"/>
+      <sub name="CamUnitDescriptionWidget" link="CamUnitDescriptionWidget.html"/>
+    </sub>
+    <sub name="Subclasses of GTK Widgets" link="ch02.html">
+      <sub name="CamGLDrawingArea" link="CamGLDrawingArea.html"/>
+      <sub name="CamTreeStore" link="CamTreeStore.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <keyword type="macro" name="CAM_TYPE_UNIT_CONTROL_WIDGET" link="CamUnitControlWidget.html#CAM-TYPE-UNIT-CONTROL-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_CONTROL_WIDGET()" link="CamUnitControlWidget.html#CAM-UNIT-CONTROL-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_CONTROL_WIDGET_CLASS()" link="CamUnitControlWidget.html#CAM-UNIT-CONTROL-WIDGET-CLASS:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_CONTROL_WIDGET()" link="CamUnitControlWidget.html#IS-CAM-UNIT-CONTROL-WIDGET:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_CONTROL_WIDGET_CLASS()" link="CamUnitControlWidget.html#IS-CAM-UNIT-CONTROL-WIDGET-CLASS:CAPS"/>
+    <keyword type="struct" name="CamUnitControlWidget" link="CamUnitControlWidget.html#CamUnitControlWidget-struct"/>
+    <keyword type="function" name="cam_unit_control_widget_get_type ()" link="CamUnitControlWidget.html#cam-unit-control-widget-get-type"/>
+    <keyword type="function" name="cam_unit_control_widget_new ()" link="CamUnitControlWidget.html#cam-unit-control-widget-new"/>
+    <keyword type="function" name="cam_unit_control_widget_set_unit ()" link="CamUnitControlWidget.html#cam-unit-control-widget-set-unit"/>
+    <keyword type="function" name="cam_unit_control_widget_set_expanded ()" link="CamUnitControlWidget.html#cam-unit-control-widget-set-expanded"/>
+    <keyword type="variable" name="cam_unit_control_widget_target_entry" link="CamUnitControlWidget.html#cam-unit-control-widget-target-entry"/>
+    <keyword type="function" name="cam_unit_control_widget_detach ()" link="CamUnitControlWidget.html#cam-unit-control-widget-detach"/>
+    <keyword type="macro" name="CAM_UNIT_CONTROL_WIDGET_DND_ID" link="CamUnitControlWidget.html#CAM-UNIT-CONTROL-WIDGET-DND-ID:CAPS"/>
+    <keyword type="" name="The &quot;close-button-clicked&quot; signal" link="CamUnitControlWidget.html#CamUnitControlWidget-close-button-clicked"/>
+    <keyword type="macro" name="CAM_TYPE_UNIT_CHAIN_WIDGET" link="CamUnitChainWidget.html#CAM-TYPE-UNIT-CHAIN-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_CHAIN_WIDGET()" link="CamUnitChainWidget.html#CAM-UNIT-CHAIN-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_CHAIN_WIDGET_CLASS()" link="CamUnitChainWidget.html#CAM-UNIT-CHAIN-WIDGET-CLASS:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_CHAIN_WIDGET()" link="CamUnitChainWidget.html#IS-CAM-UNIT-CHAIN-WIDGET:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_CHAIN_WIDGET_CLASS()" link="CamUnitChainWidget.html#IS-CAM-UNIT-CHAIN-WIDGET-CLASS:CAPS"/>
+    <keyword type="struct" name="CamUnitChainWidget" link="CamUnitChainWidget.html#CamUnitChainWidget-struct"/>
+    <keyword type="function" name="cam_unit_chain_widget_get_type ()" link="CamUnitChainWidget.html#cam-unit-chain-widget-get-type"/>
+    <keyword type="function" name="cam_unit_chain_widget_new ()" link="CamUnitChainWidget.html#cam-unit-chain-widget-new"/>
+    <keyword type="function" name="cam_unit_chain_widget_set_chain ()" link="CamUnitChainWidget.html#cam-unit-chain-widget-set-chain"/>
+    <keyword type="function" name="cam_unit_chain_widget_set_orientation ()" link="CamUnitChainWidget.html#cam-unit-chain-widget-set-orientation"/>
+    <keyword type="function" name="cam_unit_chain_widget_find_unit_by_id ()" link="CamUnitChainWidget.html#cam-unit-chain-widget-find-unit-by-id"/>
+    <keyword type="macro" name="CAM_TYPE_UNIT_CHAIN_GL_WIDGET" link="CamUnitChainGLWidget.html#CAM-TYPE-UNIT-CHAIN-GL-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_CHAIN_GL_WIDGET()" link="CamUnitChainGLWidget.html#CAM-UNIT-CHAIN-GL-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_CHAIN_GL_WIDGET_CLASS()" link="CamUnitChainGLWidget.html#CAM-UNIT-CHAIN-GL-WIDGET-CLASS:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_CHAIN_GL_WIDGET()" link="CamUnitChainGLWidget.html#IS-CAM-UNIT-CHAIN-GL-WIDGET:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_CHAIN_GL_WIDGET_CLASS()" link="CamUnitChainGLWidget.html#IS-CAM-UNIT-CHAIN-GL-WIDGET-CLASS:CAPS"/>
+    <keyword type="struct" name="CamUnitChainGLWidget" link="CamUnitChainGLWidget.html#CamUnitChainGLWidget-struct"/>
+    <keyword type="function" name="cam_unit_chain_gl_widget_get_type ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-type"/>
+    <keyword type="function" name="cam_unit_chain_gl_widget_new ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-new"/>
+    <keyword type="function" name="cam_unit_chain_gl_widget_set_chain ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-set-chain"/>
+    <keyword type="function" name="cam_unit_chain_gl_widget_request_redraw ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-request-redraw"/>
+    <keyword type="function" name="cam_unit_chain_gl_widget_get_gl_area ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area"/>
+    <keyword type="macro" name="CAM_TYPE_UNIT_MANAGER_WIDGET" link="CamUnitManagerWidget.html#CAM-TYPE-UNIT-MANAGER-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_MANAGER_WIDGET()" link="CamUnitManagerWidget.html#CAM-UNIT-MANAGER-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_MANAGER_WIDGET_CLASS()" link="CamUnitManagerWidget.html#CAM-UNIT-MANAGER-WIDGET-CLASS:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_MANAGER_WIDGET()" link="CamUnitManagerWidget.html#IS-CAM-UNIT-MANAGER-WIDGET:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_MANAGER_WIDGET_CLASS()" link="CamUnitManagerWidget.html#IS-CAM-UNIT-MANAGER-WIDGET-CLASS:CAPS"/>
+    <keyword type="struct" name="CamUnitManagerWidget" link="CamUnitManagerWidget.html#CamUnitManagerWidget-struct"/>
+    <keyword type="function" name="cam_unit_manager_widget_get_type ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-get-type"/>
+    <keyword type="function" name="cam_unit_manager_widget_new ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-new"/>
+    <keyword type="function" name="cam_unit_manager_widget_set_manager ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-set-manager"/>
+    <keyword type="function" name="cam_unit_manager_widget_get_selected_description ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-get-selected-description"/>
+    <keyword type="variable" name="cam_unit_manager_widget_target_entry" link="CamUnitManagerWidget.html#cam-unit-manager-widget-target-entry"/>
+    <keyword type="macro" name="CAM_UNIT_MANAGER_WIDGET_DND_ID" link="CamUnitManagerWidget.html#CAM-UNIT-MANAGER-WIDGET-DND-ID:CAPS"/>
+    <keyword type="" name="The &quot;unit-description-activated&quot; signal" link="CamUnitManagerWidget.html#CamUnitManagerWidget-unit-description-activated"/>
+    <keyword type="macro" name="CAM_TYPE_UNIT_DESCRIPTION_WIDGET" link="CamUnitDescriptionWidget.html#CAM-TYPE-UNIT-DESCRIPTION-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_DESCRIPTION_WIDGET()" link="CamUnitDescriptionWidget.html#CAM-UNIT-DESCRIPTION-WIDGET:CAPS"/>
+    <keyword type="macro" name="CAM_UNIT_DESCRIPTION_WIDGET_CLASS()" link="CamUnitDescriptionWidget.html#CAM-UNIT-DESCRIPTION-WIDGET-CLASS:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_DESCRIPTION_WIDGET()" link="CamUnitDescriptionWidget.html#IS-CAM-UNIT-DESCRIPTION-WIDGET:CAPS"/>
+    <keyword type="macro" name="IS_CAM_UNIT_DESCRIPTION_WIDGET_CLASS()" link="CamUnitDescriptionWidget.html#IS-CAM-UNIT-DESCRIPTION-WIDGET-CLASS:CAPS"/>
+    <keyword type="struct" name="CamUnitDescriptionWidget" link="CamUnitDescriptionWidget.html#CamUnitDescriptionWidget-struct"/>
+    <keyword type="function" name="cam_unit_description_widget_get_type ()" link="CamUnitDescriptionWidget.html#cam-unit-description-widget-get-type"/>
+    <keyword type="function" name="cam_unit_description_widget_new ()" link="CamUnitDescriptionWidget.html#cam-unit-description-widget-new"/>
+    <keyword type="function" name="cam_unit_description_widget_set_manager ()" link="CamUnitDescriptionWidget.html#cam-unit-description-widget-set-manager"/>
+    <keyword type="struct" name="CamGLDrawingArea" link="CamGLDrawingArea.html#CamGLDrawingArea-struct"/>
+    <keyword type="function" name="cam_gl_drawing_area_new ()" link="CamGLDrawingArea.html#cam-gl-drawing-area-new"/>
+    <keyword type="function" name="cam_gl_drawing_area_set_vblank_sync ()" link="CamGLDrawingArea.html#cam-gl-drawing-area-set-vblank-sync"/>
+    <keyword type="function" name="cam_gl_drawing_area_swap_buffers ()" link="CamGLDrawingArea.html#cam-gl-drawing-area-swap-buffers"/>
+    <keyword type="function" name="cam_gl_drawing_area_set_context ()" link="CamGLDrawingArea.html#cam-gl-drawing-area-set-context"/>
+    <keyword type="function" name="cam_gl_drawing_area_invalidate ()" link="CamGLDrawingArea.html#cam-gl-drawing-area-invalidate"/>
+    <keyword type="macro" name="CAM_TYPE_TREE_STORE" link="CamTreeStore.html#CAM-TYPE-TREE-STORE:CAPS"/>
+    <keyword type="macro" name="CAM_TREE_STORE()" link="CamTreeStore.html#CAM-TREE-STORE:CAPS"/>
+    <keyword type="macro" name="CAM_TREE_STORE_CLASS()" link="CamTreeStore.html#CAM-TREE-STORE-CLASS:CAPS"/>
+    <keyword type="macro" name="IS_CAM_TREE_STORE()" link="CamTreeStore.html#IS-CAM-TREE-STORE:CAPS"/>
+    <keyword type="macro" name="IS_CAM_TREE_STORE_CLASS()" link="CamTreeStore.html#IS-CAM-TREE-STORE-CLASS:CAPS"/>
+    <keyword type="struct" name="CamTreeStore" link="CamTreeStore.html#CamTreeStore-struct"/>
+    <keyword type="function" name="cam_tree_store_get_type ()" link="CamTreeStore.html#cam-tree-store-get-type"/>
+    <keyword type="function" name="cam_tree_store_new ()" link="CamTreeStore.html#cam-tree-store-new"/>
+    <keyword type="function" name="cam_tree_store_set_draggable_col ()" link="CamTreeStore.html#cam-tree-store-set-draggable-col"/>
+  </functions>
+</book>

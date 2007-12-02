@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>CamFrameBuffer</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="libcam Reference Manual">
+<link rel="up" href="ch01.html" title="Units">
+<link rel="prev" href="CamUnitDriver.html" title="CamUnitDriver">
+<link rel="next" href="ch02.html" title="Image Processing Chains">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Units">
+<link rel="chapter" href="ch02.html" title="Image Processing Chains">
+<link rel="chapter" href="ch03.html" title="Built-in Units">
+<link rel="chapter" href="ch04.html" title="Other stuff">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="CamUnitDriver.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Reference Manual</th>
+<td><a accesskey="n" href="ch02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id346692" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id348731" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#id380854" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="CamFrameBuffer"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2>
+<a name="id346692"></a><span class="refentrytitle">CamFrameBuffer</span>
+</h2>
+<p>CamFrameBuffer &#8212; Container class for a raw data buffer.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+                    <a class="link" href="CamFrameBuffer.html#CamFrameBuffer-struct">CamFrameBuffer</a>;
+<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     <a class="link" href="CamFrameBuffer.html#cam-framebuffer-new">cam_framebuffer_new</a>                 (uint8_t *data,
+                                                         int length);
+<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     <a class="link" href="CamFrameBuffer.html#cam-framebuffer-new-alloc">cam_framebuffer_new_alloc</a>           (int length);
+void                <a class="link" href="CamFrameBuffer.html#cam-framebuffer-copy-metadata">cam_framebuffer_copy_metadata</a>       (<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+                                                         const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *from);
+uint8_t*            <a class="link" href="CamFrameBuffer.html#cam-framebuffer-metadata-get">cam_framebuffer_metadata_get</a>        (const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+                                                         const char *key,
+                                                         int *len);
+void                <a class="link" href="CamFrameBuffer.html#cam-framebuffer-metadata-set">cam_framebuffer_metadata_set</a>        (<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+                                                         const char *key,
+                                                         const uint8_t *value,
+                                                         int len);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamFrameBuffer.html#cam-framebuffer-metadata-list-keys">cam_framebuffer_metadata_list_keys</a>  (<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);
+
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id380854"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----CamFrameBuffer
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id348731"></a><h2>Description</h2>
+<p>
+A CamFrameBuffer object contains a data buffer that typically stores a 
+image.
+</p>
+<p>
+In addition to image data, each CamFrameBuffer object may contain a metadata
+dictionary that can be used to attach additional information to a frame
+buffer.  Keys are ASCII strings and values are suggested to be UTF8 strings,
+but their exact meaning is left up to the user.  Typical usages may include
+identifying the image source (e.g. the UID of a firewire camera), the
+exposure settings for the image, etc.</p>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id348757"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id348768"></a><h3>
+<a name="CamFrameBuffer-struct"></a>CamFrameBuffer</h3>
+<a class="indexterm" name="id348780"></a><pre class="programlisting">typedef struct {
+    uint8_t * data;
+    unsigned int length;
+    unsigned int bytesused;
+    int64_t timestamp;
+} CamFrameBuffer;
+</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">uint8_t&#160;*<em class="structfield"><code>data</code></em>;</span></p></td>
+<td>      the data buffer.
+</td>
+</tr>
+<tr>
+<td><p><span class="term">unsigned&#160;int&#160;<em class="structfield"><code>length</code></em>;</span></p></td>
+<td>    the capacity of allocated the data buffer in bytes.
+</td>
+</tr>
+<tr>
+<td><p><span class="term">unsigned&#160;int&#160;<em class="structfield"><code>bytesused</code></em>;</span></p></td>
+<td> how many bytes of the data buffer are actually used to store
+            meaningful data.
+</td>
+</tr>
+<tr>
+<td><p><span class="term">int64_t&#160;<em class="structfield"><code>timestamp</code></em>;</span></p></td>
+<td> microseconds since the epoch at which the frame was generated.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id343433"></a><h3>
+<a name="cam-framebuffer-new"></a>cam_framebuffer_new ()</h3>
+<a class="indexterm" name="id343445"></a><pre class="programlisting"><a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_framebuffer_new                 (uint8_t *data,
+                                                         int length);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
+<td> the data buffer to use.  The returned <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer"><span class="type">CamFrameBuffer</span></a> does not take
+ownership of the data buffer, and memory management of <em class="parameter"><code>data</code></em> is left to the
+user.  
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></p></td>
+<td> the size, in bytes, of <em class="parameter"><code>data</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a newly allocated <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer"><span class="type">CamFrameBuffer</span></a> that does not assume ownership
+of <em class="parameter"><code>data</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id342868"></a><h3>
+<a name="cam-framebuffer-new-alloc"></a>cam_framebuffer_new_alloc ()</h3>
+<a class="indexterm" name="id342879"></a><pre class="programlisting"><a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_framebuffer_new_alloc           (int length);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></p></td>
+<td> the size, in bytes, of the data buffer to allocate.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a newly allocated <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer"><span class="type">CamFrameBuffer</span></a> that has a data buffer of
+capacity <em class="parameter"><code>length</code></em> bytes.  When the <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer"><span class="type">CamFrameBuffer</span></a> is destroyed, the data
+buffer is also destroyed.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id342958"></a><h3>
+<a name="cam-framebuffer-copy-metadata"></a>cam_framebuffer_copy_metadata ()</h3>
+<a class="indexterm" name="id342970"></a><pre class="programlisting">void                cam_framebuffer_copy_metadata       (<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+                                                         const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *from);</pre>
+<p>
+Convenience method to copy the metadata dictionary from the <em class="parameter"><code>from</code></em> buffer to
+<em class="parameter"><code>self</code></em>.  Also copies the <code class="literal">timestamp</code> field.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>from</code></em>&#160;:</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id343061"></a><h3>
+<a name="cam-framebuffer-metadata-get"></a>cam_framebuffer_metadata_get ()</h3>
+<a class="indexterm" name="id343073"></a><pre class="programlisting">uint8_t*            cam_framebuffer_metadata_get        (const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+                                                         const char *key,
+                                                         int *len);</pre>
+<p>
+Retrieves an entry from the metadata dictionary of the framebuffer.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>key</code></em>&#160;:</span></p></td>
+<td> the string key of the metadata
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></p></td>
+<td> output parameter.  If not NULL, then on return this stores the length
+      of the dictionary value, in bytes.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> A pointer to the dictionary value.  The pointer is owned by
+the dictionary and should _not_ be freed by the application.  The pointer
+will only be valid as long as the value is in the dictionary and the
+CamFramebuffer is not destroyed.  Returns NULL if the key is not found.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id341919"></a><h3>
+<a name="cam-framebuffer-metadata-set"></a>cam_framebuffer_metadata_set ()</h3>
+<a class="indexterm" name="id341931"></a><pre class="programlisting">void                cam_framebuffer_metadata_set        (<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+                                                         const char *key,
+                                                         const uint8_t *value,
+                                                         int len);</pre>
+<p>
+Sets an entry in the metadata dictionary of the framebuffer.  Existing
+entries are overwritten.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>key</code></em>&#160;:</span></p></td>
+<td> The dictionary key, must be UTF8.  A copy of this string is made
+     internally.  Cannot be NULL.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td> The dictionary value.  A copy of this data is made internally.
+     Cannot be NULL.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></p></td>
+<td> The length of <em class="parameter"><code>value</code></em> in bytes.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id342049"></a><h3>
+<a name="cam-framebuffer-metadata-list-keys"></a>cam_framebuffer_metadata_list_keys ()</h3>
+<a class="indexterm" name="id342062"></a><pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_framebuffer_metadata_list_keys  (<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td>a GList of keys, each a string, that reference entries in the
+metadata dictionary.  The list should be freed with <a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#g-list-free"
+><code class="function">g_list_free()</code></a>.  Note
+that the pointers to the keys themselves reference the dictionary and
+are only valid as long as the dictionary is not modified.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</body>
+</html>
