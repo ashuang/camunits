@@ -11,7 +11,7 @@
 #include <errno.h>
 
 #include "input_v4l.h"
-#include "vendor/pwc-ioctl.h"
+#include "pwc-ioctl.h"
 #include "dbg.h"
 
 #define err(args...) fprintf(stderr, args)
