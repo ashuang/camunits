@@ -2,7 +2,6 @@
 #define __input_v4l2_h__
 
 #include <glib-object.h>
-//#include <linux/videodev2.h>
 
 #include "unit.h"
 #include "unit_driver.h"
@@ -15,7 +14,8 @@ G_BEGIN_DECLS
 
 
 /*
- * CamV4L2Driver
+ * SECTION:input_v4l2
+ * @short_description: input unit for Video 4 Linux 2 (V4L2) devices
  */
 
 typedef struct _CamV4L2Driver CamV4L2Driver;

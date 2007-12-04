@@ -14,7 +14,8 @@ G_BEGIN_DECLS
 
 
 /*
- * CamV4LDriver
+ * SECTION:input_v4l
+ * @short_description: input unit for Video 4 Linux (V4L) devices
  */
 
 typedef struct _CamV4LDriver CamV4LDriver;

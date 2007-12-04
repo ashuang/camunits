@@ -14,7 +14,6 @@
 #define DEFAULT_NBUFFERS 60
 
 enum {
-    BUFFERS_READY_SIGNAL,
     CONTROL_VALUE_CHANGED_SIGNAL,
     CONTROL_PARAMETERS_CHANGED_SIGNAL,
     OUTPUT_FORMATS_CHANGED_SIGNAL,
@@ -128,18 +127,6 @@ cam_unit_class_init (CamUnitClass *klass)
 
     // signals
 
-    /**
-     * CamUnit::buffer-ready
-     * @unit: the CamUnit emitting the signal
-     *
-     * The buffer-ready signal is emitted when the unit has new buffers in its
-     * outgoing queue
-     */
-    cam_unit_signals[BUFFERS_READY_SIGNAL] = g_signal_new("buffer-ready",
-            G_TYPE_FROM_CLASS(klass),
-            G_SIGNAL_RUN_FIRST,
-            0, NULL, NULL, g_cclosure_marshal_VOID__VOID,
-            G_TYPE_NONE, 0);
     /**
      * CamUnit::control-value-changed
      * @unit: the CamUnit emitting the signal

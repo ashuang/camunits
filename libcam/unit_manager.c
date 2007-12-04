@@ -40,7 +40,6 @@ enum {
     UNIT_DESCRIPTION_ADDED_SIGNAL,
     UNIT_DESCRIPTION_REMOVED_SIGNAL,
     UNIT_DRIVER_ADDED_SIGNAL,
-    UNIT_DRIVER_REMOVED_SIGNAL,
     LAST_SIGNAL
 };
 
@@ -67,6 +66,15 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = cam_unit_manager_finalize;
 
+    /**
+     * CamUnitManager::unit-description-added
+     * @manager: the CamUnitManager emitting the signal
+     * @udesc: the CamUnitDescription just added
+     *
+     * The unit-description-addede signal is emitted when the CamUnitManager
+     * detects that a driver has added a CamUnitDescription to its list of
+     * available units.
+     */
     cam_unit_manager_signals[UNIT_DESCRIPTION_ADDED_SIGNAL] = 
         g_signal_new ("unit-description-added",
                 G_TYPE_FROM_CLASS (klass),
@@ -74,7 +82,20 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
                 0, NULL, NULL,
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
-                G_TYPE_OBJECT);
+                CAM_TYPE_UNIT_DESCRIPTION);
+
+    /**
+     * CamUnitManager::unit-description-removed
+     * @driver: the CamUnitManager emitting the signal
+     * @udesc: the CamUnitDescription being removed
+     *
+     * The unit-description-removed signal is emitted when a CamUnitDriver
+     * removes a CamUnitDescription from its list of available units.
+     *
+     * %udesc is guaranteed to be valid through the duration of the signal
+     * handlers, but is not guaranteed to be valid afterwards.  Thus, signal
+     * handlers should not retain references to %udesc.
+     */
     cam_unit_manager_signals[UNIT_DESCRIPTION_REMOVED_SIGNAL] = 
         g_signal_new ("unit-description-removed",
                 G_TYPE_FROM_CLASS (klass),
@@ -83,6 +104,15 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
                 G_TYPE_OBJECT);
+
+    /**
+     * CamUnitManager::unit-driver-added
+     * @manager: the CamUnitManager emitting the signal
+     * @driver: the CamUnitDriver just added
+     *
+     * The unit-driver-added signal is emitted when the CamUnitManager adds
+     * a new CamUnitDriver to its list of managed drivers.
+     */
     cam_unit_manager_signals[UNIT_DRIVER_ADDED_SIGNAL] = 
         g_signal_new ("unit-driver-added",
                 G_TYPE_FROM_CLASS (klass),
@@ -90,15 +120,7 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
                 0, NULL, NULL,
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
-                G_TYPE_OBJECT);
-    cam_unit_manager_signals[UNIT_DRIVER_REMOVED_SIGNAL] = 
-        g_signal_new ("unit-driver-removed",
-                G_TYPE_FROM_CLASS (klass),
-                G_SIGNAL_RUN_FIRST,
-                0, NULL, NULL,
-                g_cclosure_marshal_VOID__STRING,
-                G_TYPE_NONE, 1,
-                G_TYPE_STRING);
+                CAM_TYPE_UNIT_DRIVER);
 }
 
 static void
