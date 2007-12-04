@@ -7,18 +7,6 @@ Standards-Version: 3.7.2
 Xs-Vcs-Svn: https://libcam.googlecode.com/svn/debian/trunk
 Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
 
-Package: libcam0-dev
-Provides: libcam-dev
-Section: libs
-Architecture: amd64 i386 
-Depends: libcam0 (= ${binary:Version}), libc6-dev
-Description: device-independent image acquisition and processing API
- libcam is a library primarily intended for robotics and machine vision
- researchers.  It provides a device-independent API for acquiring, logging, and
- processing images.
- .
- This package contains development files.
-
 Package: libcam0
 Section: libs
 Architecture: amd64 i386 
@@ -31,6 +19,61 @@ Description: device-independent image acquisition and processing API
  .
  This package contains shared libraries. 
 
+Package: libcam0-dev
+Provides: libcam-dev
+Section: libs
+Architecture: amd64 i386 
+Depends: libcam0 (= ${binary:Version}), libc6-dev
+Description: device-independent image acquisition and processing API
+ libcam is a library primarily intended for robotics and machine vision
+ researchers.  It provides a device-independent API for acquiring, logging, and
+ processing images.
+ .
+ This package contains development files.
+
+Package: libcam-utils
+Section: utils
+Architecture: amd64 i386 
+Depends: ${shlibs:Depends}
+Description: utility programs for libcam
+ This package contains utility programs to support users of the libcam image
+ acquisition and processing API.  It currently provides camlog, a program for 
+ logging image streams to disk using the libcam log format.
+
+Package: libcam-gtk0
+Section: libs
+Architecture: amd64 i386 
+Suggests: libcam0-plugins-dc1394, libcam0-utils
+Depends: ${shlibs:Depends}
+Description: GTK+ widgets for libcam
+ libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
+ intended to provide an easy, consistent, and uniform way to include libcam GUI
+ elements in a GTK+ application.
+ .
+ This package contains shared libraries. 
+
+Package: libcam-gtk0-dev
+Provides: libcam-gtk-dev
+Section: libs
+Architecture: amd64 i386 
+Depends: libcam-gtk0 (= ${binary:Version}), libcam0-dev, libc6-dev
+Description: GTK+ widgets for libcam
+ libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
+ intended to provide an easy, consistent, and uniform way to include GUI
+ elements in a libcam application.
+ .
+ This package contains development files.
+
+Package: libcam-gtk-utils
+Section: utils
+Architecture: amd64 i386 
+Depends: ${shlibs:Depends}
+Suggests: libcam-utils
+Description: utility programs for libcam-gtk 
+ This package contains utility programs to support users of the libcam image
+ acquisition and processing API.  It provides camview, a program for viewing
+ image sources and testing image processing chains.
+
 Package: libcam0-plugins-dc1394
 Section: libs
 Architecture: amd64 i386 
@@ -42,13 +85,4 @@ Description: IEEE 1394 Digital Camera device input plugins for libcam
  .
  This package contains plugins to provide libcam programs with access to
  IEEE 1394 Digital Camera devices. 
-
-Package: libcam0-utils
-Section: utils
-Architecture: amd64 i386 
-Depends: ${shlibs:Depends}
-Description: utility programs for libcam
- This package contains utility programs to support users of the libcam image
- acquisition and processing API.  It provides camview, a program for viewing
- image sources and testing image processing chains.
 
