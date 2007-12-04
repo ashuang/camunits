@@ -18,7 +18,6 @@ struct _CamUnitChainSource {
 };
 
 enum {
-    BUFFERS_READY_SIGNAL,
     UNIT_ADDED_SIGNAL,
     UNIT_REMOVED_SIGNAL,
     UNIT_REORDERED_SIGNAL,
@@ -67,20 +66,6 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
     gobject_class->finalize = cam_unit_chain_finalize;
 
     /**
-     * CamUnitChain::buffer-ready
-     *
-     * The buffer-ready signal is emitted when the last unit in the chain has
-     * new buffers in its outgoing queue
-     */
-    chain_signals[BUFFERS_READY_SIGNAL] = g_signal_new ("buffer-ready",
-            G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-            0,
-            NULL,
-            NULL,
-            g_cclosure_marshal_VOID__VOID,
-            G_TYPE_NONE, 0);
-    /**
      * CamUnitChain::unit-added
      * @chain: the CamUnitChain emitting the signal
      * @unit: the CamUnit being added.
@@ -89,7 +74,7 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
      */
     chain_signals[UNIT_ADDED_SIGNAL] = g_signal_new ("unit-added",
             G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+            G_SIGNAL_RUN_FIRST,
             0,
             NULL,
             NULL,
@@ -105,7 +90,7 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
      */
     chain_signals[UNIT_REMOVED_SIGNAL] = g_signal_new ("unit-removed",
             G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+            G_SIGNAL_RUN_FIRST,
             0,
             NULL,
             NULL,
@@ -118,12 +103,12 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
      * 
      * The desired-status-changed signal is emitted when the desired status of
      * every unit in the chain changes.
-     * See also cam_unit_chain_set_desired_status
+     * See also #cam_unit_chain_set_desired_status
      */
     chain_signals[DESIRED_STATUS_CHANGED_SIGNAL] = 
         g_signal_new ("desired-status-changed",
             G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+            G_SIGNAL_RUN_FIRST,
             0,
             NULL,
             NULL,
@@ -140,7 +125,7 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
     chain_signals[UNIT_REORDERED_SIGNAL] = 
         g_signal_new ("unit-reordered",
             G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+            G_SIGNAL_RUN_FIRST,
             0,
             NULL,
             NULL,
@@ -158,7 +143,7 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
     chain_signals[FRAME_READY_SIGNAL] = 
         g_signal_new ("frame-ready",
             G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+            G_SIGNAL_RUN_FIRST,
             0,
             NULL,
             NULL,

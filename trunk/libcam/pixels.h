@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-// XXX this is not endian-friendly!!!
 #define cam_pf_fourcc(a,b,c,d)\
    (((uint32_t)(a))     | \
     ((uint32_t)(b)<<8)  | \

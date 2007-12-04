@@ -103,6 +103,14 @@ cam_unit_driver_class_init (CamUnitDriverClass *klass)
     // pure virtual
     klass->create_unit = cam_unit_driver_default_create_unit;
 
+    /**
+     * CamUnitDriver::unit-description-added
+     * @driver: the CamUnitDriver emitting the signal
+     * @udesc: the CamUnitDescription just added
+     *
+     * The unit-description-added signal is emitted when a CamUnitDriver
+     * adds a CamUnitDescription to its list of available units.
+     */
     cam_unit_driver_signals[UNIT_DESCRIPTION_ADDED_SIGNAL] = 
         g_signal_new ("unit-description-added",
                 G_TYPE_FROM_CLASS (klass),
@@ -110,7 +118,20 @@ cam_unit_driver_class_init (CamUnitDriverClass *klass)
                 0, NULL, NULL,
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
-                G_TYPE_OBJECT);
+                CAM_TYPE_UNIT_DESCRIPTION);
+
+    /**
+     * CamUnitDriver::unit-description-removed
+     * @driver: the CamUnitDriver emitting the signal
+     * @udesc: the CamUnitDescription being removed
+     *
+     * The unit-description-removed signal is emitted when a CamUnitDriver
+     * removes a CamUnitDescription from its list of available units.
+     *
+     * %udesc is guaranteed to be valid through the duration of the signal
+     * handlers, but is not guaranteed to be valid afterwards.  Thus, signal
+     * handlers should not retain references to %udesc.
+     */
     cam_unit_driver_signals[UNIT_DESCRIPTION_REMOVED_SIGNAL] = 
         g_signal_new ("unit-description-removed",
                 G_TYPE_FROM_CLASS (klass),
@@ -118,7 +139,7 @@ cam_unit_driver_class_init (CamUnitDriverClass *klass)
                 0, NULL, NULL,
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
-                G_TYPE_OBJECT);
+                CAM_TYPE_UNIT_DESCRIPTION);
 }
 
 static void
