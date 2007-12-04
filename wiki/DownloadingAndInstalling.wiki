@@ -55,3 +55,36 @@ libcam has been split into the following packages.  If you just want to run camv
 || `libcam-gtk0-dev` || development files ||
 || `libcam-gtk-utils` || camview and other utilities ||
 || `libcam0-plugins-dc1394` || libcam plugin to use IEEE DC1394 cameras ||
+
+== Subversion ==
+
+To stay on the bleeding edge of libcam development, you'll want to work from our subversion repositories hosted on Google Code.
+
+You will want at least the following:
+ * libjpeg62 development files
+ * OpenGL development files
+ * GLIB/GTK+ development files
+ * autotools (autoconf, automake, libtool, m4)
+ * gtk-doc
+ * docbook
+
+ # Checkout the repository
+{{{
+$ svn checkout http://libcam.googlecode.com/svn/trunk/ libcam-read-only
+}}}
+ # setup the build scripts
+{{{
+$ cd libcam-read-only
+$ gtkdocize --copy
+$ autoreconf -i
+$ ./configure
+}}}
+ # (Optionally) mess with the source code
+ # Build
+{{{
+make
+}}}
+ # Install (requires superuser privileges)
+{{{
+make install
+}}}
