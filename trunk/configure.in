@@ -3,7 +3,6 @@ AC_INIT(libcam/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(libcam, 0.0.1)
-AM_MAINTAINER_MODE
 
 AC_PROG_CC
 AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)

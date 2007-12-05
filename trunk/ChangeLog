@@ -1,3 +1,6 @@
+2007-12-05  David Moore  <dcm@acm.org>
+	* Detect SSE2 and SSE3 at runtime and act accordingly
+
 2007-12-02  David Moore  <dcm@acm.org>
 
 	* === Released 0.0.1 ===
