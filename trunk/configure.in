@@ -4,6 +4,15 @@ AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(libcam, 0.0.1)
 
+case "$target_os" in
+	linux*) arch=linux;;
+	darwin*)
+		CFLAGS="$CFLAGS -I/usr/X11R6/include -I/opt/local/include"
+		LDFLAGS="$LDFLAGS -L/usr/X11R6/lib -L/opt/local/lib -Wl,-dylib_file,/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib"
+		;;
+	*) arch=unknown;;
+esac
+
 AC_PROG_CC
 AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
 AM_PATH_GTK_2_0
@@ -20,11 +29,6 @@ AC_SUBST(JPEG_LIBS)
 AM_CONDITIONAL(HAVE_GL, test "x$GL_LIBS" != x)
 AM_CONDITIONAL(HAVE_JPEG, test "x$JPEG_LIBS" != x)
 AM_CONDITIONAL(HAVE_DC1394, test "x$DC1394_LIBS" != x)
-
-case "$target_os" in
-	linux*) arch=linux;;
-	*) arch=unknown;;
-esac
 
 AM_CONDITIONAL([LINUX], [test x$arch = xlinux])
 
