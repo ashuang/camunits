@@ -9,7 +9,17 @@
 G_BEGIN_DECLS
 
 /**
- * This demonstrates how to create a CamUnit and a CamUnitDriver.
+ * SECTION:input_example
+ * @short_description: Debugging class, and also demonstration of how to create
+ * a simple CamUnitDriver and CamUnit
+ *
+ * CamInputExample serves as an always-present input unit (unit id:
+ * "input.example") that can be used for debugging when no other units are
+ * available.  Additionally, it serves as an example of how to create a simple
+ * unit driver and unit with basic controls.
+ *
+ * Programmers writing their first units are advised to look at the source code
+ * for CamInputExampleDriver and CamInputExample (see libcam/input_example.h)
  */
 
 
@@ -99,9 +109,8 @@ GType cam_input_example_get_type (void);
 /** 
  * cam_input_example_new:
  *
- * Constructor.
- * Don't call this function manually.  Instead, let the CamInputExampleDriver
- * call it.
+ * Constructor.  Don't call this function manually.  Instead, let the
+ * CamInputExampleDriver call it.
  */
 CamInputExample * cam_input_example_new(void);
 

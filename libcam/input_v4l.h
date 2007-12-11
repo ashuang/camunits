@@ -8,11 +8,6 @@
 
 G_BEGIN_DECLS
 
-/**
- * A Video for Linux 1 driver.
- */
-
-
 /*
  * SECTION:input_v4l
  * @short_description: input unit for Video 4 Linux (V4L) devices
