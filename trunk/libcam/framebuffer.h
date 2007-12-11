@@ -11,14 +11,22 @@
  * @short_description: Container class for a raw data buffer.
  *
  * A CamFrameBuffer object contains a data buffer that typically stores a 
- * image.
+ * image.  Images produced by #CamUnit objects are contained within a
+ * CamFrameBuffer object.
  *
  * In addition to image data, each CamFrameBuffer object may contain a metadata
  * dictionary that can be used to attach additional information to a frame
- * buffer.  Keys are ASCII strings and values are suggested to be UTF8 strings,
- * but their exact meaning is left up to the user.  Typical usages may include
- * identifying the image source (e.g. the UID of a firewire camera), the
- * exposure settings for the image, etc.
+ * buffer.  Keys are always UTF-8 strings and values are suggested to be UTF-8
+ * strings, but the exact meaning of the value is left up to the user.  Typical
+ * usages may include identifying the image source (e.g. the UID of a firewire
+ * camera), the exposure settings for the image, etc.
+ *
+ * When logging images with #CamLoggerUnit (unit id "output.logger"), the
+ * metadata dictionary is also logged to disk.  Additionally, when replaying
+ * logs with #CamInputLog (unit id typically "input.log:/path/to/file"), the
+ * metadata dictionary will be repopulated from the log file.  Thus, the
+ * metadata dictionary can be used to store metadata that persists in a log
+ * file.
  */
 
 #ifdef __cplusplus
@@ -71,12 +79,12 @@ GType cam_framebuffer_get_type (void);
 /**
  * cam_framebuffer_new:
  * @data: the data buffer to use.  The returned #CamFrameBuffer does not take
- * ownership of the data buffer, and memory management of @data is left to the
- * user.  
+ *        ownership of the data buffer, and memory management of @data is left
+ *        to the user.  
  * @length: the size, in bytes, of @data.
  *
  * Returns: a newly allocated #CamFrameBuffer that does not assume ownership
- * of @data.
+ *          of @data.
  */
 CamFrameBuffer * cam_framebuffer_new (uint8_t * data, int length);
 
@@ -85,13 +93,14 @@ CamFrameBuffer * cam_framebuffer_new (uint8_t * data, int length);
  * @length: the size, in bytes, of the data buffer to allocate.
  *
  * Returns: a newly allocated #CamFrameBuffer that has a data buffer of
- * capacity @length bytes.  When the #CamFrameBuffer is destroyed, the data
- * buffer is also destroyed.
+ *          capacity @length bytes.  When the #CamFrameBuffer is destroyed, the
+ *          data buffer is also destroyed.
  */
 CamFrameBuffer * cam_framebuffer_new_alloc (int length);
 
 /**
  * cam_framebuffer_copy_metadata:
+ * @from: the source #CamFrameBuffer
  *
  * Convenience method to copy the metadata dictionary from the @from buffer to
  * @self.  Also copies the %timestamp field.
@@ -101,7 +110,7 @@ void cam_framebuffer_copy_metadata (CamFrameBuffer *self,
 
 /**
  * cam_framebuffer_metadata_get:
- * @key: the string key of the metadata
+ * @key: the string key of the metadata.  key must be UTF-8
  * @len: output parameter.  If not NULL, then on return this stores the length
  *       of the dictionary value, in bytes.
  * 
@@ -117,7 +126,7 @@ uint8_t * cam_framebuffer_metadata_get (const CamFrameBuffer * self,
 
 /**
  * cam_framebuffer_metadata_set:
- * @key: The dictionary key, must be UTF8.  A copy of this string is made
+ * @key: The dictionary key, must be UTF-8.  A copy of this string is made
  *      internally.  Cannot be NULL.
  * @value: The dictionary value.  A copy of this data is made internally.
  *      Cannot be NULL.
