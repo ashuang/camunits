@@ -120,16 +120,17 @@ AC_OUTPUT([
   docs/reference/libcam-gtk/Makefile
 ])
 
-echo -n "
+if test "x$DC1394_LIBS" = x; then
+    DC1394MSG="Disabled (libdc1394 not found)"
+else
+    DC1394MSG="Enabled"
+fi
+
+echo "
 
 Configuration (libcam):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
-        DC1394 plugin:         "
+        DC1394 plugin:         ${DC1394MSG}"
 
-if test "x$DC1394_LIBS" = x; then
-    echo "Disabled (libdc1394 not found)"
-else
-    echo "Enabled"
-fi
