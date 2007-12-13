@@ -559,7 +559,6 @@ cam_unit_stream_init_any_format (CamUnit *self)
     const CamUnitFormat *fmt = NULL;
     int best_score = 0;
 
-    // check that the preferred format is still valid
     for (GList *fiter=self->output_formats; fiter; fiter=fiter->next) {
         CamUnitFormat *cfmt = CAM_UNIT_FORMAT(fiter->data);
         int score = 0;

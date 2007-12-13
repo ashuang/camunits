@@ -56,6 +56,10 @@ cam_unit_chain_init (CamUnitChain *self)
     self->source_funcs.dispatch = cam_unit_chain_source_dispatch;
     self->source_funcs.finalize = cam_unit_chain_source_finalize;
     self->desired_unit_status = CAM_UNIT_STATUS_IDLE;
+
+    self->event_source = (CamUnitChainSource*) g_source_new (
+            &self->source_funcs, sizeof (CamUnitChainSource));
+    self->event_source->chain = self;
 }
 
 static void
@@ -160,7 +164,7 @@ cam_unit_chain_finalize (GObject *obj)
     CamUnitChain *self = CAM_UNIT_CHAIN (obj);
 
     if (self->event_source)
-        cam_unit_chain_detach_glib (self);
+        g_source_destroy ((GSource *) self->event_source);
 
     // unref the CamUnitManager
     if (self->manager) {
@@ -742,18 +746,8 @@ int
 cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
         GMainContext * context)
 {
-    if (self->event_source) {
-        g_warning ("UnitChain is already attached\n");
-        return -1;
-    }
-    self->event_source = (CamUnitChainSource*) g_source_new (
-            &self->source_funcs,
-            sizeof (CamUnitChainSource));
-    self->event_source->chain = self;
-    if (!self->event_source)
-        return -1;
-    g_source_attach ( (GSource*) self->event_source, context);
-    g_source_set_priority ( (GSource*) self->event_source, priority);
+    g_source_attach ((GSource*) self->event_source, context);
+    g_source_set_priority ((GSource*) self->event_source, priority);
     return 0;
 }
 
@@ -763,7 +757,10 @@ cam_unit_chain_detach_glib (CamUnitChain *self)
     if (!self->event_source)
         return;
     g_source_destroy ((GSource *) self->event_source);
-    self->event_source = NULL;
+
+    self->event_source = (CamUnitChainSource*) g_source_new (
+            &self->source_funcs, sizeof (CamUnitChainSource));
+    self->event_source->chain = self;
 }
 
 static void

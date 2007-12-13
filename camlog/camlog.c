@@ -166,7 +166,6 @@ int main(int argc, char **argv)
 
     cam_unit_stream_init_any_format (input);
 
-    CamUnitControl * record_ctl;
     CamUnit *logger_unit = NULL;
     if (do_logging) {
         fprintf (stderr, "initializing logging unit\n");

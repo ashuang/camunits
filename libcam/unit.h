@@ -549,7 +549,7 @@ CamUnitControl* cam_unit_add_control_string (CamUnit *self, const char *id,
  * cam_unit_add_output_format_full:
  *
  * Protected method.  Subclasses of CamUnit should invoke this to configure the
- * acceptable output formats
+ * acceptable output formats.
  */
 CamUnitFormat * cam_unit_add_output_format_full (CamUnit *self, 
         CamPixelFormat pfmt, const char *name, 
@@ -558,20 +558,26 @@ CamUnitFormat * cam_unit_add_output_format_full (CamUnit *self,
 
 /**
  * cam_unit_remove_output_format:
+ * @fmt: a pointer to the CamUnitFormat to remove from the unit.
  *
- * Protected method.
+ * Protected method, should only be called by subclasses of CamUnit.  Removes
+ * the specified output format from the unit.  Calling this method will cause
+ * the "output-formats-changed" signal to be emitted.
  */
 void cam_unit_remove_output_format (CamUnit *self, CamUnitFormat *fmt);
 
 /**
  * cam_unit_remove_all_output_formats:
  *
- * Protected method.
+ * Protected method, should only be called by subclasses of CamUnit.  Removes
+ * all output formats from the unit.  Calling this method will cause the
+ * "output-formats-changed" signal to be emitted.
  */
 void cam_unit_remove_all_output_formats (CamUnit *self);
 
 /**
  * cam_unit_set_status:
+ * @newstatus: the new status of the Unit.
  *
  * Protected method.  Subclasses of CamUnit should invoke this to change the
  * status of the unit.  Invoking this methods emits the "status-changed"
