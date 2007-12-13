@@ -161,8 +161,8 @@
 
     <para>
         Image producing units often have controls and parameters that can be
-        used to adjust the output.  For example, cameras will typically might
-        have exposure, white balance, or gamma controls.  Alternately, a
+        used to adjust the output.  For example, cameras typically might
+        have exposure, white balance, or gamma controls.  Similarly, a
         conversion unit may expose controls for affecting the exact
         conversion.  For example, <literal>input.jpeg</literal> provides a
         parameter to control the compression quality.

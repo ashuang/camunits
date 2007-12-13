@@ -19,7 +19,11 @@ extern "C" {
  * to interact with the unit.  A control is strongly typed on construction, and
  * the following types of controls are currently supported:  Integer, Boolean,
  * Enum, String.  The current value of a control can be queried using
- * the cam_unit_control_get_* methods.  There are two ways to possibly set the
+ * the cam_unit_control_get_* methods.  
+ * 
+ * TODO
+ * 
+ * There are two ways to possibly set the
  * value of a control - the polite way, and the forceful way.
  *
  * The forceful way of setting a control involves using the
