@@ -22,6 +22,23 @@ extern "C" {
  * whereas a CamUnitManager attempts to aggregate all of the information
  * provided by all known #CamUnitDriver objects into a single object.
  *
+ * Before becoming available for use, a #CamUnitDriver must first be
+ * registered with a CamUnitManager.  There are three ways this can happen.
+ * First, libcam provides a set of "core" drivers that are always loaded when
+ * a CamUnitManager is created.  Second, a CamUnitManager searches the plugin
+ * directories (typically /usr/lib/libcam/ and the colon-separated list of
+ * directories in the "LIBCAM_PLUGIN_PATH" environment variable) for
+ * dynamically loadable plugins.  Finally, it is possible to subclass
+ * #CamUnitDriver and register drivers at runtime via 
+ * cam_unit_manager_add_driver().
+ *
+ * In a simple libcam application, there is no need to work directly with the
+ * CamUnitManager.  Instead, an simple libcam application may use a
+ * #CamUnitChain object, which itself contains a CamUnitManager.  Reasons for
+ * using a CamUnitManager directly could be sharing a manager across multiple
+ * chains, implementing new #CamUnit and #CamUnitDriver subclasses, or
+ * completely foregoing the #CamUnitChain for a non-standard arrangement of
+ * #CamUnitChain objects.
  */
 typedef struct _CamUnitManager CamUnitManager;
 typedef struct _CamUnitManagerClass CamUnitManagerClass;
@@ -93,7 +110,8 @@ int cam_unit_manager_remove_driver(CamUnitManager *self,
 /**
  * cam_unit_manager_start_drivers:
  *
- * TODO
+ * Invokes cam_unit_driver_start on each of the #CamUnitDriver objects
+ * registered with the manager.
  *
  * Returns: 0
  */
