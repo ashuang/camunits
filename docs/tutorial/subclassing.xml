@@ -1,0 +1,142 @@
+<chapter id="ch-subclassing">
+    <title>Creating Custom Units -- Subclassing <classname>CamUnit</classname> and <classname>CamUnitDriver</classname></title>
+
+    <para>
+        Productively using libcam in an image processing application does not
+        require one to build custom units.  It is perfectly possible, and
+        sometimes simpler to simply connect a signal handler to the
+        "frame-ready" signal of a <classname>CamUnitChain</classname> or
+        <classname>CamUnit</classname> and do all of the processing in that
+        signal handler.  So why bother creating custom units?
+    </para>
+    <para>
+        Building a custom unit provides three main features.  
+        <variablelist>
+            <varlistentry>
+                <term><emphasis>Controls</emphasis></term>
+                <listitem>
+                    <para>
+                        In our experience, most image processing 
+                        and image acquisition methods have some set of
+                        controls and parameters that can be adjusted to affect
+                        the output images. These parameters could be window
+                        sizes, thresholds, scale factors, etc.  Playing with
+                        hard-coded constants is often slow and tedious.
+                        Using a GUI toolkit to implement widgets that control
+                        the parameters is useful, but involves highly
+                        repetetive code and is often tedious.
+                    </para>
+                    <para>
+                        The <classname>CamUnit</classname> base class provides
+                        a control API that allows subclasses to easily add
+                        controls and parameters.  These controls can be
+                        accessed and modified programmatically just as easily
+                        as hard-coded parameters.  Additionally,
+                        when a <classname>CamUnit</classname> is used with
+                        the libcam GTK widgets (e.g.
+                        <classname>CamUnitControlWidget</classname> and
+                        <classname>CamUnitChain</classname>), 
+                        GUI elements are automatically created that allow
+                        users to adjust the exposed controls in real-time.
+                    </para>
+                    <para>
+                        In short, <classname>CamUnit</classname> 
+                        simplifies the process of exposing controls for an
+                        image processing element.  These controls are
+                        accessible programmatically for applications without a
+                        GUI, and they are also accessible in GUI form for
+                        applications that use the libcam GTK widgets.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><emphasis>Visualization via OpenGL</emphasis></term>
+                <listitem>
+                    <para>
+                        When developing an image processing application, a
+                        common and very useful debugging technique is to
+                        visualize the intermediate or final stages of an
+                        algorithm by rendering into the input image.  For
+                        example, a face detector might circle the detected
+                        faces, an optical flow algorithm might draw flow
+                        vectors, etc.  libcam provides a framework for
+                        integrating visualization routines into an image
+                        processing element.  Subclasses of
+                        <classname>CamUnit</classname> can override virtual
+                        methods that will be automatically invoked when the
+                        application uses a
+                        <classname>CamUnitChainGLWidget</classname>.  This
+                        widget takes care of setting up an OpenGL context, and
+                        instructs each unit in a chain to render whatever
+                        visualization it deems useful.  
+                    </para>
+                    <para>
+                        We have specifically
+                        chosen OpenGL because it is a widely used, stable
+                        API that is both easy to use and has been implemented
+                        on all major platforms.  Although OpenGL is typically
+                        used in the context of 3D applications, it does
+                        provide a highly developed and mature API for 2D
+                        rendering.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><emphasis>Portability</emphasis></term>
+                <listitem>
+                    <para>
+                        This last bit almost need not be mentioned, but I'll
+                        say it for emphasis.  By conforming to the
+                        <classname>CamUnit</classname> abstraction, which
+                        consists primarily of an object that is capable of
+                        producing or processing images, an image processing
+                        element becomes much more portable.  This is
+                        especially true for image processing elements that
+                        transform their input into another image, such as
+                        colorspace conversion units, convolution filters,
+                        radial undistortion, etc.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </para>
+
+    <sect1 id="subclassing-gobject-type-system">
+        <title>The GObject type system</title>
+
+        <para>
+            libcam is written in C, which was not designed specifically for
+            object-oriented programming techniques.  The GObject type system,
+            included with GLib, is essentially an object-oriented programming
+            framework designed in C.  It makes heavy use of C structs and
+            function pointers, provides run-time type-safety, virtual methods,
+            interfaces, single-inheritance, and most of the features one would
+            normally expect from an object-oriented framework.
+        </para>
+        <para>
+            While GObject is robust and mature, it can also be very awkward to
+            use in C.  We'll be completely honest here -- boilerplate code and
+            nested macros abound in GObject.  It does have a learning curve,
+            and it can be easy to become mired in the implementation details,
+            but once you've made it past the few dozen lines of boilerplate
+            needed to implement an object, everything else is pretty
+            straightforward.  For more information, see the <ulink
+                url="http://library.gnome.org/devel/gobject/">GObject
+                Reference Manual</ulink>.  There are also several tutorials on
+            GObject that can be found with some straightforward web searching.
+        </para>
+        <para>
+            This tutorial will not focus on trying to explain how GObject
+            works.  For the most part, when we have to deal with the GObject
+            type system in this tutorial, we'll say something like, "just do
+            it this way" and expect that if you really want to know why,
+            you'll go look at the GObject documentation.
+        </para>
+    </sect1>
+    <sect1 id="subclassing-example-filter">
+        <title>Example Filter</title>
+        <para>
+            TODO
+        </para>
+    </sect1>
+</chapter>

@@ -2,8 +2,9 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" [
     <!ENTITY bookinfo SYSTEM "bookinfo.xml">
     <!ENTITY preface SYSTEM "preface.xml">
-    <!ENTITY fundamentals SYSTEM "fundamentals.xml">
+    <!ENTITY acquiring SYSTEM "acquiring.xml">
     <!ENTITY camunit SYSTEM "camunit.xml">
+    <!ENTITY subclassing SYSTEM "subclassing.xml">
     <!ENTITY otherenvs SYSTEM "otherenvs.xml">
     <!ENTITY fdl SYSTEM "fdl.xml">
 ]>
@@ -12,8 +13,9 @@
  
 &bookinfo;
 &preface;
-&fundamentals;
+&acquiring;
 &camunit;
+&subclassing;
 &otherenvs;
 &fdl;
  

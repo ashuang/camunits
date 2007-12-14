@@ -36,7 +36,9 @@ libcaminclude_HEADERS = \
 	unit_chain_widget.h \
 	unit_control_widget.h \
 	unit_manager_widget.h \
-	gl_drawing_area.h
+	unit_description_widget.h \
+	gl_drawing_area.h \
+	cam_tree_store.h 
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libcam-gtk.pc
