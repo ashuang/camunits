@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamInputLog</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamInputExample.html" title="CamInputExample">
@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamConvertToRgb8.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id366663" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589801" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id341147" class="shortcut">Description</a>
+                  <a href="#id2621695" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id341087" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2621634" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamInputLog"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id366663"></a><span class="refentrytitle">CamInputLog</span>
+<a name="id2589801"></a><span class="refentrytitle">CamInputLog</span>
 </h2>
-<p>CamInputLog</p>
+<p>CamInputLog &#8212; input unit for libcam log files</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -47,69 +47,59 @@
 
 
 
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-DRIVER-TYPE:CAPS">CAM_INPUT_LOG_DRIVER_TYPE</a>
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-DRIVER:CAPS">CAM_INPUT_LOG_DRIVER</a>                (obj)
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-DRIVER-CLASS:CAPS">CAM_INPUT_LOG_DRIVER_CLASS</a>          (klass)
-#define             <a class="link" href="CamInputLog.html#IS-CAM-INPUT-LOG-DRIVER:CAPS">IS_CAM_INPUT_LOG_DRIVER</a>             (obj)
-#define             <a class="link" href="CamInputLog.html#IS-CAM-INPUT-LOG-DRIVER-CLASS:CAPS">IS_CAM_INPUT_LOG_DRIVER_CLASS</a>       (klass)
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-DRIVER-GET-CLASS:CAPS">CAM_INPUT_LOG_DRIVER_GET_CLASS</a>      (obj)
-                    <a class="link" href="CamInputLog.html#CamInputLogDriver-struct">CamInputLogDriver</a>;
-<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               <a class="link" href="CamInputLog.html#cam-input-log-driver-get-type">cam_input_log_driver_get_type</a>       (void);
-<a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  <a class="link" href="CamInputLog.html#cam-input-log-driver-new">cam_input_log_driver_new</a>            (void);
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-TYPE:CAPS">CAM_INPUT_LOG_TYPE</a>
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG:CAPS">CAM_INPUT_LOG</a>                       (obj)
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-CLASS:CAPS">CAM_INPUT_LOG_CLASS</a>                 (klass)
-#define             <a class="link" href="CamInputLog.html#IS-CAM-INPUT-LOG:CAPS">IS_CAM_INPUT_LOG</a>                    (obj)
-#define             <a class="link" href="CamInputLog.html#IS-CAM-INPUT-LOG-CLASS:CAPS">IS_CAM_INPUT_LOG_CLASS</a>              (klass)
-#define             <a class="link" href="CamInputLog.html#CAM-INPUT-LOG-GET-CLASS:CAPS">CAM_INPUT_LOG_GET_CLASS</a>             (obj)
-                    <a class="link" href="CamInputLog.html#CamInputLog-struct">CamInputLog</a>;
-<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               <a class="link" href="CamInputLog.html#cam-input-log-get-type">cam_input_log_get_type</a>              (void);
-<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        <a class="link" href="CamInputLog.html#cam-input-log-new">cam_input_log_new</a>                   (const char *fname);
-int                 <a class="link" href="CamInputLog.html#cam-log-set-file">cam_log_set_file</a>                    (<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-DRIVER-TYPE:CAPS">CAM_INPUT_LOG_DRIVER_TYPE</a>
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-DRIVER:CAPS">CAM_INPUT_LOG_DRIVER</a>                (obj)
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-DRIVER-CLASS:CAPS">CAM_INPUT_LOG_DRIVER_CLASS</a>          (klass)
+#define             <a href="CamInputLog.html#IS-CAM-INPUT-LOG-DRIVER:CAPS">IS_CAM_INPUT_LOG_DRIVER</a>             (obj)
+#define             <a href="CamInputLog.html#IS-CAM-INPUT-LOG-DRIVER-CLASS:CAPS">IS_CAM_INPUT_LOG_DRIVER_CLASS</a>       (klass)
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-DRIVER-GET-CLASS:CAPS">CAM_INPUT_LOG_DRIVER_GET_CLASS</a>      (obj)
+                    <a href="CamInputLog.html#CamInputLogDriver-struct">CamInputLogDriver</a>;
+GType               <a href="CamInputLog.html#cam-input-log-driver-get-type">cam_input_log_driver_get_type</a>       (void);
+<a href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  <a href="CamInputLog.html#cam-input-log-driver-new">cam_input_log_driver_new</a>            (void);
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-TYPE:CAPS">CAM_INPUT_LOG_TYPE</a>
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG:CAPS">CAM_INPUT_LOG</a>                       (obj)
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-CLASS:CAPS">CAM_INPUT_LOG_CLASS</a>                 (klass)
+#define             <a href="CamInputLog.html#IS-CAM-INPUT-LOG:CAPS">IS_CAM_INPUT_LOG</a>                    (obj)
+#define             <a href="CamInputLog.html#IS-CAM-INPUT-LOG-CLASS:CAPS">IS_CAM_INPUT_LOG_CLASS</a>              (klass)
+#define             <a href="CamInputLog.html#CAM-INPUT-LOG-GET-CLASS:CAPS">CAM_INPUT_LOG_GET_CLASS</a>             (obj)
+                    <a href="CamInputLog.html#CamInputLog-struct">CamInputLog</a>;
+GType               <a href="CamInputLog.html#cam-input-log-get-type">cam_input_log_get_type</a>              (void);
+<a href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        <a href="CamInputLog.html#cam-input-log-new">cam_input_log_new</a>                   (const char *fname);
+int                 <a href="CamInputLog.html#cam-log-set-file">cam_log_set_file</a>                    (<a href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
                                                          const char *fname);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id341087"></a><h2>Object Hierarchy</h2>
+<a name="id2621634"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
                +----CamInputLogDriver
 </pre>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamInputLog
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id341147"></a><h2>Description</h2>
+<a name="id2621695"></a><h2>Description</h2>
+<p>
+</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id341163"></a><h2>Details</h2>
+<a name="id2621715"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id341173"></a><h3>
+<a name="id2621725"></a><h3>
 <a name="CAM-INPUT-LOG-DRIVER-TYPE:CAPS"></a>CAM_INPUT_LOG_DRIVER_TYPE</h3>
-<a class="indexterm" name="id341186"></a><pre class="programlisting">#define CAM_INPUT_LOG_DRIVER_TYPE  cam_input_log_driver_get_type()
+<a class="indexterm" name="id2621737"></a><pre class="programlisting">#define CAM_INPUT_LOG_DRIVER_TYPE  cam_input_log_driver_get_type()
 </pre>
 <p>
 
@@ -117,16 +107,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341201"></a><h3>
+<a name="id2621752"></a><h3>
 <a name="CAM-INPUT-LOG-DRIVER:CAPS"></a>CAM_INPUT_LOG_DRIVER()</h3>
-<a class="indexterm" name="id341214"></a><pre class="programlisting">#define             CAM_INPUT_LOG_DRIVER(obj)</pre>
+<a class="indexterm" name="id2615472"></a><pre class="programlisting">#define             CAM_INPUT_LOG_DRIVER(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -136,16 +126,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399759"></a><h3>
+<a name="id2615507"></a><h3>
 <a name="CAM-INPUT-LOG-DRIVER-CLASS:CAPS"></a>CAM_INPUT_LOG_DRIVER_CLASS()</h3>
-<a class="indexterm" name="id399771"></a><pre class="programlisting">#define             CAM_INPUT_LOG_DRIVER_CLASS(klass)</pre>
+<a class="indexterm" name="id2615518"></a><pre class="programlisting">#define             CAM_INPUT_LOG_DRIVER_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -155,16 +145,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399805"></a><h3>
+<a name="id2615553"></a><h3>
 <a name="IS-CAM-INPUT-LOG-DRIVER:CAPS"></a>IS_CAM_INPUT_LOG_DRIVER()</h3>
-<a class="indexterm" name="id399817"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG_DRIVER(obj)</pre>
+<a class="indexterm" name="id2615564"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG_DRIVER(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -174,16 +164,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399852"></a><h3>
+<a name="id2615599"></a><h3>
 <a name="IS-CAM-INPUT-LOG-DRIVER-CLASS:CAPS"></a>IS_CAM_INPUT_LOG_DRIVER_CLASS()</h3>
-<a class="indexterm" name="id399864"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG_DRIVER_CLASS(klass)</pre>
+<a class="indexterm" name="id2615612"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG_DRIVER_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -193,16 +183,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399898"></a><h3>
+<a name="id2615647"></a><h3>
 <a name="CAM-INPUT-LOG-DRIVER-GET-CLASS:CAPS"></a>CAM_INPUT_LOG_DRIVER_GET_CLASS()</h3>
-<a class="indexterm" name="id399911"></a><pre class="programlisting">#define             CAM_INPUT_LOG_DRIVER_GET_CLASS(obj)</pre>
+<a class="indexterm" name="id2615661"></a><pre class="programlisting">#define             CAM_INPUT_LOG_DRIVER_GET_CLASS(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -212,29 +202,25 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399945"></a><h3>
+<a name="id2615696"></a><h3>
 <a name="CamInputLogDriver-struct"></a>CamInputLogDriver</h3>
-<a class="indexterm" name="id399958"></a><pre class="programlisting">typedef struct _CamInputLogDriver CamInputLogDriver;</pre>
-<p>
-</p>
+<a class="indexterm" name="id2615708"></a><pre class="programlisting">typedef struct _CamInputLogDriver CamInputLogDriver;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399976"></a><h3>
+<a name="id2615724"></a><h3>
 <a name="cam-input-log-driver-get-type"></a>cam_input_log_driver_get_type ()</h3>
-<a class="indexterm" name="id399988"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               cam_input_log_driver_get_type       (void);</pre>
+<a class="indexterm" name="id2615738"></a><pre class="programlisting">GType               cam_input_log_driver_get_type       (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -244,16 +230,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401505"></a><h3>
+<a name="id2615774"></a><h3>
 <a name="cam-input-log-driver-new"></a>cam_input_log_driver_new ()</h3>
-<a class="indexterm" name="id401516"></a><pre class="programlisting"><a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  cam_input_log_driver_new            (void);</pre>
+<a class="indexterm" name="id2615786"></a><pre class="programlisting"><a href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  cam_input_log_driver_new            (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -263,9 +249,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401547"></a><h3>
+<a name="id2615822"></a><h3>
 <a name="CAM-INPUT-LOG-TYPE:CAPS"></a>CAM_INPUT_LOG_TYPE</h3>
-<a class="indexterm" name="id401559"></a><pre class="programlisting">#define CAM_INPUT_LOG_TYPE  cam_input_log_get_type()
+<a class="indexterm" name="id2615834"></a><pre class="programlisting">#define CAM_INPUT_LOG_TYPE  cam_input_log_get_type()
 </pre>
 <p>
 
@@ -273,16 +259,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401574"></a><h3>
+<a name="id2615850"></a><h3>
 <a name="CAM-INPUT-LOG:CAPS"></a>CAM_INPUT_LOG()</h3>
-<a class="indexterm" name="id401586"></a><pre class="programlisting">#define             CAM_INPUT_LOG(obj)</pre>
+<a class="indexterm" name="id2615862"></a><pre class="programlisting">#define             CAM_INPUT_LOG(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -292,16 +278,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401621"></a><h3>
+<a name="id2615898"></a><h3>
 <a name="CAM-INPUT-LOG-CLASS:CAPS"></a>CAM_INPUT_LOG_CLASS()</h3>
-<a class="indexterm" name="id401633"></a><pre class="programlisting">#define             CAM_INPUT_LOG_CLASS(klass)</pre>
+<a class="indexterm" name="id2615909"></a><pre class="programlisting">#define             CAM_INPUT_LOG_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -311,16 +297,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401668"></a><h3>
+<a name="id2615944"></a><h3>
 <a name="IS-CAM-INPUT-LOG:CAPS"></a>IS_CAM_INPUT_LOG()</h3>
-<a class="indexterm" name="id401680"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG(obj)</pre>
+<a class="indexterm" name="id2615956"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -330,16 +316,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401714"></a><h3>
+<a name="id2615991"></a><h3>
 <a name="IS-CAM-INPUT-LOG-CLASS:CAPS"></a>IS_CAM_INPUT_LOG_CLASS()</h3>
-<a class="indexterm" name="id401726"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG_CLASS(klass)</pre>
+<a class="indexterm" name="id2616002"></a><pre class="programlisting">#define             IS_CAM_INPUT_LOG_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -349,16 +335,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401760"></a><h3>
+<a name="id2619673"></a><h3>
 <a name="CAM-INPUT-LOG-GET-CLASS:CAPS"></a>CAM_INPUT_LOG_GET_CLASS()</h3>
-<a class="indexterm" name="id401772"></a><pre class="programlisting">#define             CAM_INPUT_LOG_GET_CLASS(obj)</pre>
+<a class="indexterm" name="id2619685"></a><pre class="programlisting">#define             CAM_INPUT_LOG_GET_CLASS(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -368,27 +354,25 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401806"></a><h3>
+<a name="id2619720"></a><h3>
 <a name="CamInputLog-struct"></a>CamInputLog</h3>
-<a class="indexterm" name="id401818"></a><pre class="programlisting">typedef struct _CamInputLog CamInputLog;</pre>
+<a class="indexterm" name="id2619733"></a><pre class="programlisting">typedef struct _CamInputLog CamInputLog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401834"></a><h3>
+<a name="id2619748"></a><h3>
 <a name="cam-input-log-get-type"></a>cam_input_log_get_type ()</h3>
-<a class="indexterm" name="id401846"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               cam_input_log_get_type              (void);</pre>
+<a class="indexterm" name="id2619760"></a><pre class="programlisting">GType               cam_input_log_get_type              (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -398,9 +382,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401882"></a><h3>
+<a name="id2619796"></a><h3>
 <a name="cam-input-log-new"></a>cam_input_log_new ()</h3>
-<a class="indexterm" name="id401894"></a><pre class="programlisting"><a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        cam_input_log_new                   (const char *fname);</pre>
+<a class="indexterm" name="id2619808"></a><pre class="programlisting"><a href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        cam_input_log_new                   (const char *fname);</pre>
 <p>
 Constructor.  don't call this function manually.  Instead, let the
 CamInputLogDriver call it.</p>
@@ -411,12 +395,12 @@ CamInputLogDriver call it.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -427,9 +411,9 @@ CamInputLogDriver call it.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401953"></a><h3>
+<a name="id2619870"></a><h3>
 <a name="cam-log-set-file"></a>cam_log_set_file ()</h3>
-<a class="indexterm" name="id401965"></a><pre class="programlisting">int                 cam_log_set_file                    (<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
+<a class="indexterm" name="id2619882"></a><pre class="programlisting">int                 cam_log_set_file                    (<a href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
                                                          const char *fname);</pre>
 <p>
 
@@ -438,17 +422,17 @@ CamInputLogDriver call it.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

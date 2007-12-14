@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>pwc-ioctl</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch04.html" title="Other stuff">
 <link rel="prev" href="libcam-gl-texture.html" title="gl_texture">
@@ -23,16 +23,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td>&#160;</td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id373064" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582569" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id410546" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2632860" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-pwc-ioctl"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id373064"></a><span class="refentrytitle">pwc-ioctl</span>
+<a name="id2582569"></a><span class="refentrytitle">pwc-ioctl</span>
 </h2>
 <p>pwc-ioctl</p>
 </td>
@@ -44,85 +44,85 @@
 
 
 
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-SQCIF:CAPS">PSZ_SQCIF</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-QSIF:CAPS">PSZ_QSIF</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-QCIF:CAPS">PSZ_QCIF</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-SIF:CAPS">PSZ_SIF</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-CIF:CAPS">PSZ_CIF</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-VGA:CAPS">PSZ_VGA</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PSZ-MAX:CAPS">PSZ_MAX</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-FPS-SHIFT:CAPS">PWC_FPS_SHIFT</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-FPS-MASK:CAPS">PWC_FPS_MASK</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS">PWC_FPS_FRMASK</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS">PWC_FPS_SNAPSHOT</a>
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-coord">pwc_coord</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-probe">pwc_probe</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-serial">pwc_serial</a>;
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-WB-INDOOR:CAPS">PWC_WB_INDOOR</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS">PWC_WB_OUTDOOR</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-WB-FL:CAPS">PWC_WB_FL</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-WB-MANUAL:CAPS">PWC_WB_MANUAL</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-WB-AUTO:CAPS">PWC_WB_AUTO</a>
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-whitebalance">pwc_whitebalance</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-wb-speed">pwc_wb_speed</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-leds">pwc_leds</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-imagesize">pwc_imagesize</a>;
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-MPT-PAN:CAPS">PWC_MPT_PAN</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-MPT-TILT:CAPS">PWC_MPT_TILT</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS">PWC_MPT_TIMEOUT</a>
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-mpt-angles">pwc_mpt_angles</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-mpt-range">pwc_mpt_range</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-mpt-status">pwc_mpt_status</a>;
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-video-command">pwc_video_command</a>;
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS">PWCX_FLAG_PLANAR</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS">PWCX_FLAG_BAYER</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS">VIDIOCPWCRUSER</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSUSER:CAPS">VIDIOCPWCSUSER</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCFACTORY:CAPS">VIDIOCPWCFACTORY</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSCQUAL:CAPS">VIDIOCPWCSCQUAL</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGCQUAL:CAPS">VIDIOCPWCGCQUAL</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGSERIAL:CAPS">VIDIOCPWCGSERIAL</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCPROBE:CAPS">VIDIOCPWCPROBE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSAGC:CAPS">VIDIOCPWCSAGC</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGAGC:CAPS">VIDIOCPWCGAGC</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSSHUTTER:CAPS">VIDIOCPWCSSHUTTER</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSAWB:CAPS">VIDIOCPWCSAWB</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGAWB:CAPS">VIDIOCPWCGAWB</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSAWBSPEED:CAPS">VIDIOCPWCSAWBSPEED</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGAWBSPEED:CAPS">VIDIOCPWCGAWBSPEED</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSLED:CAPS">VIDIOCPWCSLED</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGLED:CAPS">VIDIOCPWCGLED</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSCONTOUR:CAPS">VIDIOCPWCSCONTOUR</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGCONTOUR:CAPS">VIDIOCPWCGCONTOUR</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSBACKLIGHT:CAPS">VIDIOCPWCSBACKLIGHT</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGBACKLIGHT:CAPS">VIDIOCPWCGBACKLIGHT</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSFLICKER:CAPS">VIDIOCPWCSFLICKER</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGFLICKER:CAPS">VIDIOCPWCGFLICKER</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCSDYNNOISE:CAPS">VIDIOCPWCSDYNNOISE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGDYNNOISE:CAPS">VIDIOCPWCGDYNNOISE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGREALSIZE:CAPS">VIDIOCPWCGREALSIZE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCMPTRESET:CAPS">VIDIOCPWCMPTRESET</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCMPTGRANGE:CAPS">VIDIOCPWCMPTGRANGE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCMPTSANGLE:CAPS">VIDIOCPWCMPTSANGLE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS">VIDIOCPWCMPTGANGLE</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS">VIDIOCPWCMPTSTATUS</a>
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS">VIDIOCPWCGVIDCMD</a>
-struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-buffer">pwc_table_init_buffer</a>;
-#define             <a class="link" href="libcam-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS">VIDIOCPWCGVIDTABLE</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-SQCIF:CAPS">PSZ_SQCIF</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-QSIF:CAPS">PSZ_QSIF</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-QCIF:CAPS">PSZ_QCIF</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-SIF:CAPS">PSZ_SIF</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-CIF:CAPS">PSZ_CIF</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-VGA:CAPS">PSZ_VGA</a>
+#define             <a href="libcam-pwc-ioctl.html#PSZ-MAX:CAPS">PSZ_MAX</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-FPS-SHIFT:CAPS">PWC_FPS_SHIFT</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-FPS-MASK:CAPS">PWC_FPS_MASK</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS">PWC_FPS_FRMASK</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS">PWC_FPS_SNAPSHOT</a>
+struct              <a href="libcam-pwc-ioctl.html#pwc-coord">pwc_coord</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-probe">pwc_probe</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-serial">pwc_serial</a>;
+#define             <a href="libcam-pwc-ioctl.html#PWC-WB-INDOOR:CAPS">PWC_WB_INDOOR</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS">PWC_WB_OUTDOOR</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-WB-FL:CAPS">PWC_WB_FL</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-WB-MANUAL:CAPS">PWC_WB_MANUAL</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-WB-AUTO:CAPS">PWC_WB_AUTO</a>
+struct              <a href="libcam-pwc-ioctl.html#pwc-whitebalance">pwc_whitebalance</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-wb-speed">pwc_wb_speed</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-leds">pwc_leds</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-imagesize">pwc_imagesize</a>;
+#define             <a href="libcam-pwc-ioctl.html#PWC-MPT-PAN:CAPS">PWC_MPT_PAN</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-MPT-TILT:CAPS">PWC_MPT_TILT</a>
+#define             <a href="libcam-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS">PWC_MPT_TIMEOUT</a>
+struct              <a href="libcam-pwc-ioctl.html#pwc-mpt-angles">pwc_mpt_angles</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-mpt-range">pwc_mpt_range</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-mpt-status">pwc_mpt_status</a>;
+struct              <a href="libcam-pwc-ioctl.html#pwc-video-command">pwc_video_command</a>;
+#define             <a href="libcam-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS">PWCX_FLAG_PLANAR</a>
+#define             <a href="libcam-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS">PWCX_FLAG_BAYER</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS">VIDIOCPWCRUSER</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSUSER:CAPS">VIDIOCPWCSUSER</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCFACTORY:CAPS">VIDIOCPWCFACTORY</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSCQUAL:CAPS">VIDIOCPWCSCQUAL</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGCQUAL:CAPS">VIDIOCPWCGCQUAL</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGSERIAL:CAPS">VIDIOCPWCGSERIAL</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCPROBE:CAPS">VIDIOCPWCPROBE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSAGC:CAPS">VIDIOCPWCSAGC</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGAGC:CAPS">VIDIOCPWCGAGC</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSSHUTTER:CAPS">VIDIOCPWCSSHUTTER</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSAWB:CAPS">VIDIOCPWCSAWB</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGAWB:CAPS">VIDIOCPWCGAWB</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSAWBSPEED:CAPS">VIDIOCPWCSAWBSPEED</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGAWBSPEED:CAPS">VIDIOCPWCGAWBSPEED</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSLED:CAPS">VIDIOCPWCSLED</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGLED:CAPS">VIDIOCPWCGLED</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSCONTOUR:CAPS">VIDIOCPWCSCONTOUR</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGCONTOUR:CAPS">VIDIOCPWCGCONTOUR</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSBACKLIGHT:CAPS">VIDIOCPWCSBACKLIGHT</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGBACKLIGHT:CAPS">VIDIOCPWCGBACKLIGHT</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSFLICKER:CAPS">VIDIOCPWCSFLICKER</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGFLICKER:CAPS">VIDIOCPWCGFLICKER</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCSDYNNOISE:CAPS">VIDIOCPWCSDYNNOISE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGDYNNOISE:CAPS">VIDIOCPWCGDYNNOISE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGREALSIZE:CAPS">VIDIOCPWCGREALSIZE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCMPTRESET:CAPS">VIDIOCPWCMPTRESET</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCMPTGRANGE:CAPS">VIDIOCPWCMPTGRANGE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCMPTSANGLE:CAPS">VIDIOCPWCMPTSANGLE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS">VIDIOCPWCMPTGANGLE</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS">VIDIOCPWCMPTSTATUS</a>
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS">VIDIOCPWCGVIDCMD</a>
+struct              <a href="libcam-pwc-ioctl.html#pwc-table-init-buffer">pwc_table_init_buffer</a>;
+#define             <a href="libcam-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS">VIDIOCPWCGVIDTABLE</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id410546"></a><h2>Description</h2>
+<a name="id2632860"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id410561"></a><h2>Details</h2>
+<a name="id2632875"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id410572"></a><h3>
+<a name="id2632886"></a><h3>
 <a name="PSZ-SQCIF:CAPS"></a>PSZ_SQCIF</h3>
-<a class="indexterm" name="id410584"></a><pre class="programlisting">#define PSZ_SQCIF	0x00
+<a class="indexterm" name="id2632899"></a><pre class="programlisting">#define PSZ_SQCIF	0x00
 </pre>
 <p>
 
@@ -130,9 +130,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id410599"></a><h3>
+<a name="id2632914"></a><h3>
 <a name="PSZ-QSIF:CAPS"></a>PSZ_QSIF</h3>
-<a class="indexterm" name="id410611"></a><pre class="programlisting">#define PSZ_QSIF	0x01
+<a class="indexterm" name="id2632926"></a><pre class="programlisting">#define PSZ_QSIF	0x01
 </pre>
 <p>
 
@@ -140,9 +140,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id410627"></a><h3>
+<a name="id2632941"></a><h3>
 <a name="PSZ-QCIF:CAPS"></a>PSZ_QCIF</h3>
-<a class="indexterm" name="id410639"></a><pre class="programlisting">#define PSZ_QCIF	0x02
+<a class="indexterm" name="id2632954"></a><pre class="programlisting">#define PSZ_QCIF	0x02
 </pre>
 <p>
 
@@ -150,9 +150,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id410654"></a><h3>
+<a name="id2632969"></a><h3>
 <a name="PSZ-SIF:CAPS"></a>PSZ_SIF</h3>
-<a class="indexterm" name="id410666"></a><pre class="programlisting">#define PSZ_SIF		0x03
+<a class="indexterm" name="id2632982"></a><pre class="programlisting">#define PSZ_SIF		0x03
 </pre>
 <p>
 
@@ -160,9 +160,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id410682"></a><h3>
+<a name="id2632997"></a><h3>
 <a name="PSZ-CIF:CAPS"></a>PSZ_CIF</h3>
-<a class="indexterm" name="id410694"></a><pre class="programlisting">#define PSZ_CIF		0x04
+<a class="indexterm" name="id2633009"></a><pre class="programlisting">#define PSZ_CIF		0x04
 </pre>
 <p>
 
@@ -170,9 +170,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id410709"></a><h3>
+<a name="id2633024"></a><h3>
 <a name="PSZ-VGA:CAPS"></a>PSZ_VGA</h3>
-<a class="indexterm" name="id410721"></a><pre class="programlisting">#define PSZ_VGA		0x05
+<a class="indexterm" name="id2633037"></a><pre class="programlisting">#define PSZ_VGA		0x05
 </pre>
 <p>
 
@@ -180,9 +180,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418279"></a><h3>
+<a name="id2633052"></a><h3>
 <a name="PSZ-MAX:CAPS"></a>PSZ_MAX</h3>
-<a class="indexterm" name="id418289"></a><pre class="programlisting">#define PSZ_MAX		6
+<a class="indexterm" name="id2633064"></a><pre class="programlisting">#define PSZ_MAX		6
 </pre>
 <p>
 
@@ -190,9 +190,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418303"></a><h3>
+<a name="id2630219"></a><h3>
 <a name="PWC-FPS-SHIFT:CAPS"></a>PWC_FPS_SHIFT</h3>
-<a class="indexterm" name="id418313"></a><pre class="programlisting">#define PWC_FPS_SHIFT		16
+<a class="indexterm" name="id2630232"></a><pre class="programlisting">#define PWC_FPS_SHIFT		16
 </pre>
 <p>
 
@@ -200,9 +200,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418327"></a><h3>
+<a name="id2630247"></a><h3>
 <a name="PWC-FPS-MASK:CAPS"></a>PWC_FPS_MASK</h3>
-<a class="indexterm" name="id418337"></a><pre class="programlisting">#define PWC_FPS_MASK		0x00FF0000
+<a class="indexterm" name="id2630259"></a><pre class="programlisting">#define PWC_FPS_MASK		0x00FF0000
 </pre>
 <p>
 
@@ -210,9 +210,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418351"></a><h3>
+<a name="id2630275"></a><h3>
 <a name="PWC-FPS-FRMASK:CAPS"></a>PWC_FPS_FRMASK</h3>
-<a class="indexterm" name="id418363"></a><pre class="programlisting">#define PWC_FPS_FRMASK		0x003F0000
+<a class="indexterm" name="id2630287"></a><pre class="programlisting">#define PWC_FPS_FRMASK		0x003F0000
 </pre>
 <p>
 
@@ -220,9 +220,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418379"></a><h3>
+<a name="id2630303"></a><h3>
 <a name="PWC-FPS-SNAPSHOT:CAPS"></a>PWC_FPS_SNAPSHOT</h3>
-<a class="indexterm" name="id418391"></a><pre class="programlisting">#define PWC_FPS_SNAPSHOT	0x00400000
+<a class="indexterm" name="id2630314"></a><pre class="programlisting">#define PWC_FPS_SNAPSHOT	0x00400000
 </pre>
 <p>
 
@@ -230,9 +230,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418406"></a><h3>
+<a name="id2630330"></a><h3>
 <a name="pwc-coord"></a>struct pwc_coord</h3>
-<a class="indexterm" name="id418418"></a><pre class="programlisting">struct pwc_coord {
+<a class="indexterm" name="id2630342"></a><pre class="programlisting">struct pwc_coord {
 	int x, y;		/* guess what */
 	int size;		/* size, or offset */
 };
@@ -243,9 +243,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418434"></a><h3>
+<a name="id2630359"></a><h3>
 <a name="pwc-probe"></a>struct pwc_probe</h3>
-<a class="indexterm" name="id418446"></a><pre class="programlisting">struct pwc_probe {
+<a class="indexterm" name="id2630371"></a><pre class="programlisting">struct pwc_probe {
 	char name[32];
 	int type;
 };
@@ -256,9 +256,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418462"></a><h3>
+<a name="id2630387"></a><h3>
 <a name="pwc-serial"></a>struct pwc_serial</h3>
-<a class="indexterm" name="id418474"></a><pre class="programlisting">struct pwc_serial {
+<a class="indexterm" name="id2630399"></a><pre class="programlisting">struct pwc_serial {
 	char serial[30];	/* String with serial number. Contains terminating 0 */
 };
 </pre>
@@ -268,9 +268,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418490"></a><h3>
+<a name="id2630416"></a><h3>
 <a name="PWC-WB-INDOOR:CAPS"></a>PWC_WB_INDOOR</h3>
-<a class="indexterm" name="id418502"></a><pre class="programlisting">#define PWC_WB_INDOOR		0
+<a class="indexterm" name="id2630429"></a><pre class="programlisting">#define PWC_WB_INDOOR		0
 </pre>
 <p>
 
@@ -278,9 +278,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418517"></a><h3>
+<a name="id2630444"></a><h3>
 <a name="PWC-WB-OUTDOOR:CAPS"></a>PWC_WB_OUTDOOR</h3>
-<a class="indexterm" name="id418529"></a><pre class="programlisting">#define PWC_WB_OUTDOOR		1
+<a class="indexterm" name="id2630457"></a><pre class="programlisting">#define PWC_WB_OUTDOOR		1
 </pre>
 <p>
 
@@ -288,9 +288,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418545"></a><h3>
+<a name="id2630472"></a><h3>
 <a name="PWC-WB-FL:CAPS"></a>PWC_WB_FL</h3>
-<a class="indexterm" name="id418557"></a><pre class="programlisting">#define PWC_WB_FL		2
+<a class="indexterm" name="id2640158"></a><pre class="programlisting">#define PWC_WB_FL		2
 </pre>
 <p>
 
@@ -298,9 +298,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418572"></a><h3>
+<a name="id2640172"></a><h3>
 <a name="PWC-WB-MANUAL:CAPS"></a>PWC_WB_MANUAL</h3>
-<a class="indexterm" name="id418584"></a><pre class="programlisting">#define PWC_WB_MANUAL		3
+<a class="indexterm" name="id2640182"></a><pre class="programlisting">#define PWC_WB_MANUAL		3
 </pre>
 <p>
 
@@ -308,9 +308,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418600"></a><h3>
+<a name="id2640196"></a><h3>
 <a name="PWC-WB-AUTO:CAPS"></a>PWC_WB_AUTO</h3>
-<a class="indexterm" name="id382406"></a><pre class="programlisting">#define PWC_WB_AUTO		4
+<a class="indexterm" name="id2640206"></a><pre class="programlisting">#define PWC_WB_AUTO		4
 </pre>
 <p>
 
@@ -318,9 +318,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375642"></a><h3>
+<a name="id2640220"></a><h3>
 <a name="pwc-whitebalance"></a>struct pwc_whitebalance</h3>
-<a class="indexterm" name="id418615"></a><pre class="programlisting">struct pwc_whitebalance {
+<a class="indexterm" name="id2640230"></a><pre class="programlisting">struct pwc_whitebalance {
 	int mode;
 	int manual_red, manual_blue;	/* R/W */
 	int read_red, read_blue;	/* R/O */
@@ -332,9 +332,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418629"></a><h3>
+<a name="id2640246"></a><h3>
 <a name="pwc-wb-speed"></a>struct pwc_wb_speed</h3>
-<a class="indexterm" name="id418640"></a><pre class="programlisting">struct pwc_wb_speed {
+<a class="indexterm" name="id2640256"></a><pre class="programlisting">struct pwc_wb_speed {
 	int control_speed;
 	int control_delay;
 };
@@ -345,9 +345,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418653"></a><h3>
+<a name="id2640271"></a><h3>
 <a name="pwc-leds"></a>struct pwc_leds</h3>
-<a class="indexterm" name="id418664"></a><pre class="programlisting">struct pwc_leds {
+<a class="indexterm" name="id2640281"></a><pre class="programlisting">struct pwc_leds {
 	int led_on;			/* Led on-time; range = 0..25000 */
 	int led_off;			/* Led off-time; range = 0..25000  */
 };
@@ -358,9 +358,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418678"></a><h3>
+<a name="id2640299"></a><h3>
 <a name="pwc-imagesize"></a>struct pwc_imagesize</h3>
-<a class="indexterm" name="id418689"></a><pre class="programlisting">struct pwc_imagesize {
+<a class="indexterm" name="id2640311"></a><pre class="programlisting">struct pwc_imagesize {
 	int width;
 	int height;
 };
@@ -371,9 +371,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418702"></a><h3>
+<a name="id2640327"></a><h3>
 <a name="PWC-MPT-PAN:CAPS"></a>PWC_MPT_PAN</h3>
-<a class="indexterm" name="id418713"></a><pre class="programlisting">#define PWC_MPT_PAN		0x01
+<a class="indexterm" name="id2640340"></a><pre class="programlisting">#define PWC_MPT_PAN		0x01
 </pre>
 <p>
 
@@ -381,9 +381,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418726"></a><h3>
+<a name="id2640355"></a><h3>
 <a name="PWC-MPT-TILT:CAPS"></a>PWC_MPT_TILT</h3>
-<a class="indexterm" name="id418737"></a><pre class="programlisting">#define PWC_MPT_TILT		0x02
+<a class="indexterm" name="id2640367"></a><pre class="programlisting">#define PWC_MPT_TILT		0x02
 </pre>
 <p>
 
@@ -391,9 +391,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418750"></a><h3>
+<a name="id2640383"></a><h3>
 <a name="PWC-MPT-TIMEOUT:CAPS"></a>PWC_MPT_TIMEOUT</h3>
-<a class="indexterm" name="id418761"></a><pre class="programlisting">#define PWC_MPT_TIMEOUT		0x04 /* for status */
+<a class="indexterm" name="id2640394"></a><pre class="programlisting">#define PWC_MPT_TIMEOUT		0x04 /* for status */
 </pre>
 <p>
 
@@ -401,9 +401,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418774"></a><h3>
+<a name="id2640411"></a><h3>
 <a name="pwc-mpt-angles"></a>struct pwc_mpt_angles</h3>
-<a class="indexterm" name="id418785"></a><pre class="programlisting">struct pwc_mpt_angles {
+<a class="indexterm" name="id2640423"></a><pre class="programlisting">struct pwc_mpt_angles {
 	int absolute;		/* write-only */
 	int pan;		/* degrees * 100 */
 	int tilt;		/* degress * 100 */
@@ -415,9 +415,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418800"></a><h3>
+<a name="id2640440"></a><h3>
 <a name="pwc-mpt-range"></a>struct pwc_mpt_range</h3>
-<a class="indexterm" name="id418810"></a><pre class="programlisting">struct pwc_mpt_range {
+<a class="indexterm" name="id2640453"></a><pre class="programlisting">struct pwc_mpt_range {
 	int pan_min, pan_max;		/* degrees * 100 */
 	int tilt_min, tilt_max;
 };
@@ -428,9 +428,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418825"></a><h3>
+<a name="id2640470"></a><h3>
 <a name="pwc-mpt-status"></a>struct pwc_mpt_status</h3>
-<a class="indexterm" name="id418835"></a><pre class="programlisting">struct pwc_mpt_status {
+<a class="indexterm" name="id2640482"></a><pre class="programlisting">struct pwc_mpt_status {
 	int status;
 	int time_pan;
 	int time_tilt;
@@ -442,9 +442,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418849"></a><h3>
+<a name="id2597959"></a><h3>
 <a name="pwc-video-command"></a>struct pwc_video_command</h3>
-<a class="indexterm" name="id418859"></a><pre class="programlisting">struct pwc_video_command {
+<a class="indexterm" name="id2640496"></a><pre class="programlisting">struct pwc_video_command {
 	int type;		/* camera type (645, 675, 730, etc.) */
 	int release;		/* release number */
 
@@ -462,9 +462,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418876"></a><h3>
+<a name="id2640516"></a><h3>
 <a name="PWCX-FLAG-PLANAR:CAPS"></a>PWCX_FLAG_PLANAR</h3>
-<a class="indexterm" name="id418886"></a><pre class="programlisting">#define PWCX_FLAG_PLANAR	0x0001
+<a class="indexterm" name="id2640526"></a><pre class="programlisting">#define PWCX_FLAG_PLANAR	0x0001
 </pre>
 <p>
 
@@ -472,9 +472,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418900"></a><h3>
+<a name="id2640540"></a><h3>
 <a name="PWCX-FLAG-BAYER:CAPS"></a>PWCX_FLAG_BAYER</h3>
-<a class="indexterm" name="id418910"></a><pre class="programlisting">#define PWCX_FLAG_BAYER		0x0008
+<a class="indexterm" name="id2640550"></a><pre class="programlisting">#define PWCX_FLAG_BAYER		0x0008
 </pre>
 <p>
 
@@ -482,9 +482,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418924"></a><h3>
+<a name="id2640564"></a><h3>
 <a name="VIDIOCPWCRUSER:CAPS"></a>VIDIOCPWCRUSER</h3>
-<a class="indexterm" name="id418934"></a><pre class="programlisting">#define VIDIOCPWCRUSER		_IO('v', 192)
+<a class="indexterm" name="id2640574"></a><pre class="programlisting">#define VIDIOCPWCRUSER		_IO('v', 192)
 </pre>
 <p>
 
@@ -492,9 +492,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418948"></a><h3>
+<a name="id2640588"></a><h3>
 <a name="VIDIOCPWCSUSER:CAPS"></a>VIDIOCPWCSUSER</h3>
-<a class="indexterm" name="id418958"></a><pre class="programlisting">#define VIDIOCPWCSUSER		_IO('v', 193)
+<a class="indexterm" name="id2640598"></a><pre class="programlisting">#define VIDIOCPWCSUSER		_IO('v', 193)
 </pre>
 <p>
 
@@ -502,9 +502,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418972"></a><h3>
+<a name="id2640612"></a><h3>
 <a name="VIDIOCPWCFACTORY:CAPS"></a>VIDIOCPWCFACTORY</h3>
-<a class="indexterm" name="id418982"></a><pre class="programlisting">#define VIDIOCPWCFACTORY	_IO('v', 194)
+<a class="indexterm" name="id2640622"></a><pre class="programlisting">#define VIDIOCPWCFACTORY	_IO('v', 194)
 </pre>
 <p>
 
@@ -512,9 +512,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id418996"></a><h3>
+<a name="id2640636"></a><h3>
 <a name="VIDIOCPWCSCQUAL:CAPS"></a>VIDIOCPWCSCQUAL</h3>
-<a class="indexterm" name="id419006"></a><pre class="programlisting">#define VIDIOCPWCSCQUAL		_IOW('v', 195, int)
+<a class="indexterm" name="id2640646"></a><pre class="programlisting">#define VIDIOCPWCSCQUAL		_IOW('v', 195, int)
 </pre>
 <p>
 
@@ -522,9 +522,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419020"></a><h3>
+<a name="id2640661"></a><h3>
 <a name="VIDIOCPWCGCQUAL:CAPS"></a>VIDIOCPWCGCQUAL</h3>
-<a class="indexterm" name="id419030"></a><pre class="programlisting">#define VIDIOCPWCGCQUAL		_IOR('v', 195, int)
+<a class="indexterm" name="id2640671"></a><pre class="programlisting">#define VIDIOCPWCGCQUAL		_IOR('v', 195, int)
 </pre>
 <p>
 
@@ -532,9 +532,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419044"></a><h3>
+<a name="id2640686"></a><h3>
 <a name="VIDIOCPWCGSERIAL:CAPS"></a>VIDIOCPWCGSERIAL</h3>
-<a class="indexterm" name="id419054"></a><pre class="programlisting">#define VIDIOCPWCGSERIAL	_IOR('v', 198, struct pwc_serial)
+<a class="indexterm" name="id2640696"></a><pre class="programlisting">#define VIDIOCPWCGSERIAL	_IOR('v', 198, struct pwc_serial)
 </pre>
 <p>
 
@@ -542,9 +542,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419068"></a><h3>
+<a name="id2640711"></a><h3>
 <a name="VIDIOCPWCPROBE:CAPS"></a>VIDIOCPWCPROBE</h3>
-<a class="indexterm" name="id419078"></a><pre class="programlisting">#define VIDIOCPWCPROBE		_IOR('v', 199, struct pwc_probe)
+<a class="indexterm" name="id2640721"></a><pre class="programlisting">#define VIDIOCPWCPROBE		_IOR('v', 199, struct pwc_probe)
 </pre>
 <p>
 
@@ -552,9 +552,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419092"></a><h3>
+<a name="id2640736"></a><h3>
 <a name="VIDIOCPWCSAGC:CAPS"></a>VIDIOCPWCSAGC</h3>
-<a class="indexterm" name="id419102"></a><pre class="programlisting">#define VIDIOCPWCSAGC		_IOW('v', 200, int)
+<a class="indexterm" name="id2640746"></a><pre class="programlisting">#define VIDIOCPWCSAGC		_IOW('v', 200, int)
 </pre>
 <p>
 
@@ -562,9 +562,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419116"></a><h3>
+<a name="id2640761"></a><h3>
 <a name="VIDIOCPWCGAGC:CAPS"></a>VIDIOCPWCGAGC</h3>
-<a class="indexterm" name="id419126"></a><pre class="programlisting">#define VIDIOCPWCGAGC		_IOR('v', 200, int)
+<a class="indexterm" name="id2640771"></a><pre class="programlisting">#define VIDIOCPWCGAGC		_IOR('v', 200, int)
 </pre>
 <p>
 
@@ -572,9 +572,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419140"></a><h3>
+<a name="id2640786"></a><h3>
 <a name="VIDIOCPWCSSHUTTER:CAPS"></a>VIDIOCPWCSSHUTTER</h3>
-<a class="indexterm" name="id419150"></a><pre class="programlisting">#define VIDIOCPWCSSHUTTER	_IOW('v', 201, int)
+<a class="indexterm" name="id2640796"></a><pre class="programlisting">#define VIDIOCPWCSSHUTTER	_IOW('v', 201, int)
 </pre>
 <p>
 
@@ -582,9 +582,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419164"></a><h3>
+<a name="id2640811"></a><h3>
 <a name="VIDIOCPWCSAWB:CAPS"></a>VIDIOCPWCSAWB</h3>
-<a class="indexterm" name="id419174"></a><pre class="programlisting">#define VIDIOCPWCSAWB           _IOW('v', 202, struct pwc_whitebalance)
+<a class="indexterm" name="id2640821"></a><pre class="programlisting">#define VIDIOCPWCSAWB           _IOW('v', 202, struct pwc_whitebalance)
 </pre>
 <p>
 
@@ -592,9 +592,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419189"></a><h3>
+<a name="id2640836"></a><h3>
 <a name="VIDIOCPWCGAWB:CAPS"></a>VIDIOCPWCGAWB</h3>
-<a class="indexterm" name="id419199"></a><pre class="programlisting">#define VIDIOCPWCGAWB           _IOR('v', 202, struct pwc_whitebalance)
+<a class="indexterm" name="id2640846"></a><pre class="programlisting">#define VIDIOCPWCGAWB           _IOR('v', 202, struct pwc_whitebalance)
 </pre>
 <p>
 
@@ -602,9 +602,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419214"></a><h3>
+<a name="id2640861"></a><h3>
 <a name="VIDIOCPWCSAWBSPEED:CAPS"></a>VIDIOCPWCSAWBSPEED</h3>
-<a class="indexterm" name="id419224"></a><pre class="programlisting">#define VIDIOCPWCSAWBSPEED	_IOW('v', 203, struct pwc_wb_speed)
+<a class="indexterm" name="id2640872"></a><pre class="programlisting">#define VIDIOCPWCSAWBSPEED	_IOW('v', 203, struct pwc_wb_speed)
 </pre>
 <p>
 
@@ -612,9 +612,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419238"></a><h3>
+<a name="id2640886"></a><h3>
 <a name="VIDIOCPWCGAWBSPEED:CAPS"></a>VIDIOCPWCGAWBSPEED</h3>
-<a class="indexterm" name="id419248"></a><pre class="programlisting">#define VIDIOCPWCGAWBSPEED	_IOR('v', 203, struct pwc_wb_speed)
+<a class="indexterm" name="id2640897"></a><pre class="programlisting">#define VIDIOCPWCGAWBSPEED	_IOR('v', 203, struct pwc_wb_speed)
 </pre>
 <p>
 
@@ -622,9 +622,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419262"></a><h3>
+<a name="id2640912"></a><h3>
 <a name="VIDIOCPWCSLED:CAPS"></a>VIDIOCPWCSLED</h3>
-<a class="indexterm" name="id419272"></a><pre class="programlisting">#define VIDIOCPWCSLED           _IOW('v', 205, struct pwc_leds)
+<a class="indexterm" name="id2640922"></a><pre class="programlisting">#define VIDIOCPWCSLED           _IOW('v', 205, struct pwc_leds)
 </pre>
 <p>
 
@@ -632,9 +632,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419286"></a><h3>
+<a name="id2640937"></a><h3>
 <a name="VIDIOCPWCGLED:CAPS"></a>VIDIOCPWCGLED</h3>
-<a class="indexterm" name="id419296"></a><pre class="programlisting">#define VIDIOCPWCGLED           _IOR('v', 205, struct pwc_leds)
+<a class="indexterm" name="id2640947"></a><pre class="programlisting">#define VIDIOCPWCGLED           _IOR('v', 205, struct pwc_leds)
 </pre>
 <p>
 
@@ -642,9 +642,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419310"></a><h3>
+<a name="id2640962"></a><h3>
 <a name="VIDIOCPWCSCONTOUR:CAPS"></a>VIDIOCPWCSCONTOUR</h3>
-<a class="indexterm" name="id419320"></a><pre class="programlisting">#define VIDIOCPWCSCONTOUR	_IOW('v', 206, int)
+<a class="indexterm" name="id2640972"></a><pre class="programlisting">#define VIDIOCPWCSCONTOUR	_IOW('v', 206, int)
 </pre>
 <p>
 
@@ -652,9 +652,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419334"></a><h3>
+<a name="id2640987"></a><h3>
 <a name="VIDIOCPWCGCONTOUR:CAPS"></a>VIDIOCPWCGCONTOUR</h3>
-<a class="indexterm" name="id419344"></a><pre class="programlisting">#define VIDIOCPWCGCONTOUR	_IOR('v', 206, int)
+<a class="indexterm" name="id2640997"></a><pre class="programlisting">#define VIDIOCPWCGCONTOUR	_IOR('v', 206, int)
 </pre>
 <p>
 
@@ -662,9 +662,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419358"></a><h3>
+<a name="id2641012"></a><h3>
 <a name="VIDIOCPWCSBACKLIGHT:CAPS"></a>VIDIOCPWCSBACKLIGHT</h3>
-<a class="indexterm" name="id419368"></a><pre class="programlisting">#define VIDIOCPWCSBACKLIGHT	_IOW('v', 207, int)
+<a class="indexterm" name="id2641022"></a><pre class="programlisting">#define VIDIOCPWCSBACKLIGHT	_IOW('v', 207, int)
 </pre>
 <p>
 
@@ -672,9 +672,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419382"></a><h3>
+<a name="id2641037"></a><h3>
 <a name="VIDIOCPWCGBACKLIGHT:CAPS"></a>VIDIOCPWCGBACKLIGHT</h3>
-<a class="indexterm" name="id419392"></a><pre class="programlisting">#define VIDIOCPWCGBACKLIGHT	_IOR('v', 207, int)
+<a class="indexterm" name="id2641047"></a><pre class="programlisting">#define VIDIOCPWCGBACKLIGHT	_IOR('v', 207, int)
 </pre>
 <p>
 
@@ -682,9 +682,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419406"></a><h3>
+<a name="id2641062"></a><h3>
 <a name="VIDIOCPWCSFLICKER:CAPS"></a>VIDIOCPWCSFLICKER</h3>
-<a class="indexterm" name="id419416"></a><pre class="programlisting">#define VIDIOCPWCSFLICKER	_IOW('v', 208, int)
+<a class="indexterm" name="id2641072"></a><pre class="programlisting">#define VIDIOCPWCSFLICKER	_IOW('v', 208, int)
 </pre>
 <p>
 
@@ -692,9 +692,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419430"></a><h3>
+<a name="id2641087"></a><h3>
 <a name="VIDIOCPWCGFLICKER:CAPS"></a>VIDIOCPWCGFLICKER</h3>
-<a class="indexterm" name="id419440"></a><pre class="programlisting">#define VIDIOCPWCGFLICKER	_IOR('v', 208, int)
+<a class="indexterm" name="id2641097"></a><pre class="programlisting">#define VIDIOCPWCGFLICKER	_IOR('v', 208, int)
 </pre>
 <p>
 
@@ -702,9 +702,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419454"></a><h3>
+<a name="id2641112"></a><h3>
 <a name="VIDIOCPWCSDYNNOISE:CAPS"></a>VIDIOCPWCSDYNNOISE</h3>
-<a class="indexterm" name="id419464"></a><pre class="programlisting">#define VIDIOCPWCSDYNNOISE	_IOW('v', 209, int)
+<a class="indexterm" name="id2641122"></a><pre class="programlisting">#define VIDIOCPWCSDYNNOISE	_IOW('v', 209, int)
 </pre>
 <p>
 
@@ -712,9 +712,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419478"></a><h3>
+<a name="id2641137"></a><h3>
 <a name="VIDIOCPWCGDYNNOISE:CAPS"></a>VIDIOCPWCGDYNNOISE</h3>
-<a class="indexterm" name="id419488"></a><pre class="programlisting">#define VIDIOCPWCGDYNNOISE	_IOR('v', 209, int)
+<a class="indexterm" name="id2641147"></a><pre class="programlisting">#define VIDIOCPWCGDYNNOISE	_IOR('v', 209, int)
 </pre>
 <p>
 
@@ -722,9 +722,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419502"></a><h3>
+<a name="id2641162"></a><h3>
 <a name="VIDIOCPWCGREALSIZE:CAPS"></a>VIDIOCPWCGREALSIZE</h3>
-<a class="indexterm" name="id419512"></a><pre class="programlisting">#define VIDIOCPWCGREALSIZE	_IOR('v', 210, struct pwc_imagesize)
+<a class="indexterm" name="id2641172"></a><pre class="programlisting">#define VIDIOCPWCGREALSIZE	_IOR('v', 210, struct pwc_imagesize)
 </pre>
 <p>
 
@@ -732,9 +732,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419526"></a><h3>
+<a name="id2641187"></a><h3>
 <a name="VIDIOCPWCMPTRESET:CAPS"></a>VIDIOCPWCMPTRESET</h3>
-<a class="indexterm" name="id419536"></a><pre class="programlisting">#define VIDIOCPWCMPTRESET	_IOW('v', 211, int)
+<a class="indexterm" name="id2641197"></a><pre class="programlisting">#define VIDIOCPWCMPTRESET	_IOW('v', 211, int)
 </pre>
 <p>
 
@@ -742,9 +742,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419550"></a><h3>
+<a name="id2641212"></a><h3>
 <a name="VIDIOCPWCMPTGRANGE:CAPS"></a>VIDIOCPWCMPTGRANGE</h3>
-<a class="indexterm" name="id419560"></a><pre class="programlisting">#define VIDIOCPWCMPTGRANGE	_IOR('v', 211, struct pwc_mpt_range)
+<a class="indexterm" name="id2641222"></a><pre class="programlisting">#define VIDIOCPWCMPTGRANGE	_IOR('v', 211, struct pwc_mpt_range)
 </pre>
 <p>
 
@@ -752,9 +752,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419574"></a><h3>
+<a name="id2641237"></a><h3>
 <a name="VIDIOCPWCMPTSANGLE:CAPS"></a>VIDIOCPWCMPTSANGLE</h3>
-<a class="indexterm" name="id419584"></a><pre class="programlisting">#define VIDIOCPWCMPTSANGLE	_IOW('v', 212, struct pwc_mpt_angles)
+<a class="indexterm" name="id2641247"></a><pre class="programlisting">#define VIDIOCPWCMPTSANGLE	_IOW('v', 212, struct pwc_mpt_angles)
 </pre>
 <p>
 
@@ -762,9 +762,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419598"></a><h3>
+<a name="id2641262"></a><h3>
 <a name="VIDIOCPWCMPTGANGLE:CAPS"></a>VIDIOCPWCMPTGANGLE</h3>
-<a class="indexterm" name="id419608"></a><pre class="programlisting">#define VIDIOCPWCMPTGANGLE	_IOR('v', 212, struct pwc_mpt_angles)
+<a class="indexterm" name="id2641272"></a><pre class="programlisting">#define VIDIOCPWCMPTGANGLE	_IOR('v', 212, struct pwc_mpt_angles)
 </pre>
 <p>
 
@@ -772,9 +772,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419622"></a><h3>
+<a name="id2641287"></a><h3>
 <a name="VIDIOCPWCMPTSTATUS:CAPS"></a>VIDIOCPWCMPTSTATUS</h3>
-<a class="indexterm" name="id419632"></a><pre class="programlisting">#define VIDIOCPWCMPTSTATUS	_IOR('v', 213, struct pwc_mpt_status)
+<a class="indexterm" name="id2641298"></a><pre class="programlisting">#define VIDIOCPWCMPTSTATUS	_IOR('v', 213, struct pwc_mpt_status)
 </pre>
 <p>
 
@@ -782,9 +782,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419646"></a><h3>
+<a name="id2641312"></a><h3>
 <a name="VIDIOCPWCGVIDCMD:CAPS"></a>VIDIOCPWCGVIDCMD</h3>
-<a class="indexterm" name="id419657"></a><pre class="programlisting">#define VIDIOCPWCGVIDCMD	_IOR('v', 215, struct pwc_video_command)
+<a class="indexterm" name="id2641323"></a><pre class="programlisting">#define VIDIOCPWCGVIDCMD	_IOR('v', 215, struct pwc_video_command)
 </pre>
 <p>
 
@@ -792,9 +792,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419671"></a><h3>
+<a name="id2641338"></a><h3>
 <a name="pwc-table-init-buffer"></a>struct pwc_table_init_buffer</h3>
-<a class="indexterm" name="id419681"></a><pre class="programlisting">struct pwc_table_init_buffer {
+<a class="indexterm" name="id2641348"></a><pre class="programlisting">struct pwc_table_init_buffer {
    int len;
    char *buffer;
 };
@@ -805,9 +805,9 @@ struct              <a class="link" href="libcam-pwc-ioctl.html#pwc-table-init-b
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id419696"></a><h3>
+<a name="id2641363"></a><h3>
 <a name="VIDIOCPWCGVIDTABLE:CAPS"></a>VIDIOCPWCGVIDTABLE</h3>
-<a class="indexterm" name="id419706"></a><pre class="programlisting">#define VIDIOCPWCGVIDTABLE	_IOR('v', 216, struct pwc_table_init_buffer)
+<a class="indexterm" name="id2641373"></a><pre class="programlisting">#define VIDIOCPWCGVIDTABLE	_IOR('v', 216, struct pwc_table_init_buffer)
 </pre>
 <p>
 

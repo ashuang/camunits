@@ -47,7 +47,6 @@
 <ANCHOR id="cam-unit-set-status" href="libcam/CamUnit.html#cam-unit-set-status">
 <ANCHOR id="cam-unit-produce-frame" href="libcam/CamUnit.html#cam-unit-produce-frame">
 <ANCHOR id="cam-unit-status-to-str" href="libcam/CamUnit.html#cam-unit-status-to-str">
-<ANCHOR id="CamUnit-buffer-ready" href="libcam/CamUnit.html#CamUnit-buffer-ready">
 <ANCHOR id="CamUnit-control-parameters-changed" href="libcam/CamUnit.html#CamUnit-control-parameters-changed">
 <ANCHOR id="CamUnit-control-value-changed" href="libcam/CamUnit.html#CamUnit-control-value-changed">
 <ANCHOR id="CamUnit-frame-ready" href="libcam/CamUnit.html#CamUnit-frame-ready">
@@ -158,7 +157,7 @@
 <ANCHOR id="cam-unit-chain-set-desired-status" href="libcam/CamUnitChain.html#cam-unit-chain-set-desired-status">
 <ANCHOR id="cam-unit-chain-get-desired-status" href="libcam/CamUnitChain.html#cam-unit-chain-get-desired-status">
 <ANCHOR id="cam-unit-chain-check-status-all-units" href="libcam/CamUnitChain.html#cam-unit-chain-check-status-all-units">
-<ANCHOR id="CamUnitChain-buffer-ready" href="libcam/CamUnitChain.html#CamUnitChain-buffer-ready">
+<ANCHOR id="cam-unit-chain-attach-glib" href="libcam/CamUnitChain.html#cam-unit-chain-attach-glib">
 <ANCHOR id="CamUnitChain-desired-status-changed" href="libcam/CamUnitChain.html#CamUnitChain-desired-status-changed">
 <ANCHOR id="CamUnitChain-frame-ready" href="libcam/CamUnitChain.html#CamUnitChain-frame-ready">
 <ANCHOR id="CamUnitChain-unit-added" href="libcam/CamUnitChain.html#CamUnitChain-unit-added">
@@ -175,10 +174,10 @@
 <ANCHOR id="cam-unit-manager-find-unit-description" href="libcam/CamUnitManager.html#cam-unit-manager-find-unit-description">
 <ANCHOR id="cam-unit-manager-list-package" href="libcam/CamUnitManager.html#cam-unit-manager-list-package">
 <ANCHOR id="cam-unit-manager-create-unit-by-id" href="libcam/CamUnitManager.html#cam-unit-manager-create-unit-by-id">
+<ANCHOR id="cam-unit-manager-add-plugin-dir" href="libcam/CamUnitManager.html#cam-unit-manager-add-plugin-dir">
 <ANCHOR id="CamUnitManager-unit-description-added" href="libcam/CamUnitManager.html#CamUnitManager-unit-description-added">
 <ANCHOR id="CamUnitManager-unit-description-removed" href="libcam/CamUnitManager.html#CamUnitManager-unit-description-removed">
 <ANCHOR id="CamUnitManager-unit-driver-added" href="libcam/CamUnitManager.html#CamUnitManager-unit-driver-added">
-<ANCHOR id="CamUnitManager-unit-driver-removed" href="libcam/CamUnitManager.html#CamUnitManager-unit-driver-removed">
 <ANCHOR id="CamV4L2" href="libcam/CamV4L2.html">
 <ANCHOR id="CamV4L2Driver" href="libcam/CamV4L2.html#CamV4L2Driver">
 <ANCHOR id="CAM-V4L2-DRIVER-TYPE:CAPS" href="libcam/CamV4L2.html#CAM-V4L2-DRIVER-TYPE:CAPS">
@@ -262,12 +261,6 @@
 <ANCHOR id="CamColorConversionFilter-struct" href="libcam/CamColorConversionFilter.html#CamColorConversionFilter-struct">
 <ANCHOR id="cam-color-conversion-filter-new" href="libcam/CamColorConversionFilter.html#cam-color-conversion-filter-new">
 <ANCHOR id="cam-color-conversion-filter-driver-new" href="libcam/CamColorConversionFilter.html#cam-color-conversion-filter-driver-new">
-<ANCHOR id="libcam-CamBayerFilter" href="libcam/libcam-CamBayerFilter.html">
-<ANCHOR id="CamBayerFilter" href="libcam/libcam-CamBayerFilter.html#CamBayerFilter">
-<ANCHOR id="cam-bayer-filter-new" href="libcam/libcam-CamBayerFilter.html#cam-bayer-filter-new">
-<ANCHOR id="cam-bayer-filter-driver-new" href="libcam/libcam-CamBayerFilter.html#cam-bayer-filter-driver-new">
-<ANCHOR id="CamBayerFilterMethod" href="libcam/libcam-CamBayerFilter.html#CamBayerFilterMethod">
-<ANCHOR id="CamBayerFilterTiling" href="libcam/libcam-CamBayerFilter.html#CamBayerFilterTiling">
 <ANCHOR id="CamLoggerUnit" href="libcam/CamLoggerUnit.html">
 <ANCHOR id="CAM-TYPE-LOGGER-UNIT:CAPS" href="libcam/CamLoggerUnit.html#CAM-TYPE-LOGGER-UNIT:CAPS">
 <ANCHOR id="CAM-LOGGER-UNIT:CAPS" href="libcam/CamLoggerUnit.html#CAM-LOGGER-UNIT:CAPS">
@@ -369,7 +362,6 @@
 <ANCHOR id="CAM-PLUGIN-TYPE-EXTENDED:CAPS" href="libcam/libcam-plugin.html#CAM-PLUGIN-TYPE-EXTENDED:CAPS">
 <ANCHOR id="CAM-PLUGIN-INTERFACE:CAPS" href="libcam/libcam-plugin.html#CAM-PLUGIN-INTERFACE:CAPS">
 <ANCHOR id="cam-plugin-unit-driver-create" href="libcam/libcam-plugin.html#cam-plugin-unit-driver-create">
-<ANCHOR id="cam-plugin-load-drivers" href="libcam/libcam-plugin.html#cam-plugin-load-drivers">
 <ANCHOR id="libcam-gl-texture" href="libcam/libcam-gl-texture.html">
 <ANCHOR id="CamGLTexture" href="libcam/libcam-gl-texture.html#CamGLTexture">
 <ANCHOR id="cam-gl-texture-new" href="libcam/libcam-gl-texture.html#cam-gl-texture-new">

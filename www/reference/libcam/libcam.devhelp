@@ -23,7 +23,6 @@
       <sub name="CamFilterJpeg" link="CamFilterJpeg.html"/>
       <sub name="CamFastBayerFilter" link="CamFastBayerFilter.html"/>
       <sub name="CamColorConversionFilter" link="CamColorConversionFilter.html"/>
-      <sub name="CamBayerFilter" link="libcam-CamBayerFilter.html"/>
       <sub name="CamLoggerUnit" link="CamLoggerUnit.html"/>
     </sub>
     <sub name="Other stuff" link="ch04.html">
@@ -85,7 +84,6 @@
     <function name="cam_unit_set_status ()" link="CamUnit.html#cam-unit-set-status"/>
     <function name="cam_unit_produce_frame ()" link="CamUnit.html#cam-unit-produce-frame"/>
     <function name="cam_unit_status_to_str ()" link="CamUnit.html#cam-unit-status-to-str"/>
-    <function name="The &quot;buffer-ready&quot; signal" link="CamUnit.html#CamUnit-buffer-ready"/>
     <function name="The &quot;control-parameters-changed&quot; signal" link="CamUnit.html#CamUnit-control-parameters-changed"/>
     <function name="The &quot;control-value-changed&quot; signal" link="CamUnit.html#CamUnit-control-value-changed"/>
     <function name="The &quot;frame-ready&quot; signal" link="CamUnit.html#CamUnit-frame-ready"/>
@@ -190,7 +188,7 @@
     <function name="cam_unit_chain_set_desired_status ()" link="CamUnitChain.html#cam-unit-chain-set-desired-status"/>
     <function name="cam_unit_chain_get_desired_status ()" link="CamUnitChain.html#cam-unit-chain-get-desired-status"/>
     <function name="cam_unit_chain_check_status_all_units ()" link="CamUnitChain.html#cam-unit-chain-check-status-all-units"/>
-    <function name="The &quot;buffer-ready&quot; signal" link="CamUnitChain.html#CamUnitChain-buffer-ready"/>
+    <function name="cam_unit_chain_attach_glib ()" link="CamUnitChain.html#cam-unit-chain-attach-glib"/>
     <function name="The &quot;desired-status-changed&quot; signal" link="CamUnitChain.html#CamUnitChain-desired-status-changed"/>
     <function name="The &quot;frame-ready&quot; signal" link="CamUnitChain.html#CamUnitChain-frame-ready"/>
     <function name="The &quot;unit-added&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-added"/>
@@ -206,10 +204,10 @@
     <function name="cam_unit_manager_find_unit_description ()" link="CamUnitManager.html#cam-unit-manager-find-unit-description"/>
     <function name="cam_unit_manager_list_package ()" link="CamUnitManager.html#cam-unit-manager-list-package"/>
     <function name="cam_unit_manager_create_unit_by_id ()" link="CamUnitManager.html#cam-unit-manager-create-unit-by-id"/>
+    <function name="cam_unit_manager_add_plugin_dir ()" link="CamUnitManager.html#cam-unit-manager-add-plugin-dir"/>
     <function name="The &quot;unit-description-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-added"/>
     <function name="The &quot;unit-description-removed&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-removed"/>
     <function name="The &quot;unit-driver-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-driver-added"/>
-    <function name="The &quot;unit-driver-removed&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-driver-removed"/>
     <function name="CAM_V4L2_DRIVER_TYPE" link="CamV4L2.html#CAM-V4L2-DRIVER-TYPE:CAPS"/>
     <function name="CamV4L2Driver" link="CamV4L2.html#CamV4L2Driver-struct"/>
     <function name="cam_v4l2_driver_new ()" link="CamV4L2.html#cam-v4l2-driver-new"/>
@@ -280,11 +278,6 @@
     <function name="CamColorConversionFilter" link="CamColorConversionFilter.html#CamColorConversionFilter-struct"/>
     <function name="cam_color_conversion_filter_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-new"/>
     <function name="cam_color_conversion_filter_driver_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new"/>
-    <function name="CamBayerFilter" link="libcam-CamBayerFilter.html#CamBayerFilter"/>
-    <function name="cam_bayer_filter_new ()" link="libcam-CamBayerFilter.html#cam-bayer-filter-new"/>
-    <function name="cam_bayer_filter_driver_new ()" link="libcam-CamBayerFilter.html#cam-bayer-filter-driver-new"/>
-    <function name="enum CamBayerFilterMethod" link="libcam-CamBayerFilter.html#CamBayerFilterMethod"/>
-    <function name="enum CamBayerFilterTiling" link="libcam-CamBayerFilter.html#CamBayerFilterTiling"/>
     <function name="CAM_TYPE_LOGGER_UNIT" link="CamLoggerUnit.html#CAM-TYPE-LOGGER-UNIT:CAPS"/>
     <function name="CAM_LOGGER_UNIT()" link="CamLoggerUnit.html#CAM-LOGGER-UNIT:CAPS"/>
     <function name="CAM_LOGGER_UNIT_CLASS()" link="CamLoggerUnit.html#CAM-LOGGER-UNIT-CLASS:CAPS"/>
@@ -380,7 +373,6 @@
     <function name="CAM_PLUGIN_TYPE_EXTENDED()" link="libcam-plugin.html#CAM-PLUGIN-TYPE-EXTENDED:CAPS"/>
     <function name="CAM_PLUGIN_INTERFACE()" link="libcam-plugin.html#CAM-PLUGIN-INTERFACE:CAPS"/>
     <function name="cam_plugin_unit_driver_create ()" link="libcam-plugin.html#cam-plugin-unit-driver-create"/>
-    <function name="cam_plugin_load_drivers ()" link="libcam-plugin.html#cam-plugin-load-drivers"/>
     <function name="CamGLTexture" link="libcam-gl-texture.html#CamGLTexture"/>
     <function name="cam_gl_texture_new ()" link="libcam-gl-texture.html#cam-gl-texture-new"/>
     <function name="cam_gl_texture_free ()" link="libcam-gl-texture.html#cam-gl-texture-free"/>

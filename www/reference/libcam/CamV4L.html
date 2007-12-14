@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamV4L</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamV4L2.html" title="CamV4L2">
@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamInputExample.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id356472" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587596" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id368757" class="shortcut">Description</a>
+                  <a href="#id2559253" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id358011" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2559192" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamV4L"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id356472"></a><span class="refentrytitle">CamV4L</span>
+<a name="id2587596"></a><span class="refentrytitle">CamV4L</span>
 </h2>
-<p>CamV4L</p>
+<p>CamV4L &#8212; input unit for Video 4 Linux (V4L) devices</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -47,60 +47,52 @@
 
 
 
-#define             <a class="link" href="CamV4L.html#CAM-V4L-DRIVER-TYPE:CAPS">CAM_V4L_DRIVER_TYPE</a>
-                    <a class="link" href="CamV4L.html#CamV4LDriver-struct">CamV4LDriver</a>;
-<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamV4L.html#cam-v4l-driver-new">cam_v4l_driver_new</a>                  (void);
-#define             <a class="link" href="CamV4L.html#CAM-TYPE-V4L:CAPS">CAM_TYPE_V4L</a>
-#define             <a class="link" href="CamV4L.html#CAM-V4L:CAPS">CAM_V4L</a>                             (obj)
-#define             <a class="link" href="CamV4L.html#CAM-V4L-CLASS:CAPS">CAM_V4L_CLASS</a>                       (klass)
-#define             <a class="link" href="CamV4L.html#CAM-IS-V4L:CAPS">CAM_IS_V4L</a>                          (obj)
-#define             <a class="link" href="CamV4L.html#CAM-IS-V4L-CLASS:CAPS">CAM_IS_V4L_CLASS</a>                    (klass)
-#define             <a class="link" href="CamV4L.html#CAM-V4L-GET-CLASS:CAPS">CAM_V4L_GET_CLASS</a>                   (obj)
-                    <a class="link" href="CamV4L.html#CamV4L-struct">CamV4L</a>;
-<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               <a class="link" href="CamV4L.html#cam-v4l-get-type">cam_v4l_get_type</a>                    (void);
-<a class="link" href="CamV4L.html" title="CamV4L">CamV4L</a>*             <a class="link" href="CamV4L.html#cam-v4l-new">cam_v4l_new</a>                         (int videonum);
+#define             <a href="CamV4L.html#CAM-V4L-DRIVER-TYPE:CAPS">CAM_V4L_DRIVER_TYPE</a>
+                    <a href="CamV4L.html#CamV4LDriver-struct">CamV4LDriver</a>;
+<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamV4L.html#cam-v4l-driver-new">cam_v4l_driver_new</a>                  (void);
+#define             <a href="CamV4L.html#CAM-TYPE-V4L:CAPS">CAM_TYPE_V4L</a>
+#define             <a href="CamV4L.html#CAM-V4L:CAPS">CAM_V4L</a>                             (obj)
+#define             <a href="CamV4L.html#CAM-V4L-CLASS:CAPS">CAM_V4L_CLASS</a>                       (klass)
+#define             <a href="CamV4L.html#CAM-IS-V4L:CAPS">CAM_IS_V4L</a>                          (obj)
+#define             <a href="CamV4L.html#CAM-IS-V4L-CLASS:CAPS">CAM_IS_V4L_CLASS</a>                    (klass)
+#define             <a href="CamV4L.html#CAM-V4L-GET-CLASS:CAPS">CAM_V4L_GET_CLASS</a>                   (obj)
+                    <a href="CamV4L.html#CamV4L-struct">CamV4L</a>;
+GType               <a href="CamV4L.html#cam-v4l-get-type">cam_v4l_get_type</a>                    (void);
+<a href="CamV4L.html" title="CamV4L">CamV4L</a>*             <a href="CamV4L.html#cam-v4l-new">cam_v4l_new</a>                         (int videonum);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id358011"></a><h2>Object Hierarchy</h2>
+<a name="id2559192"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
                +----CamV4LDriver
 </pre>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamV4L
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id368757"></a><h2>Description</h2>
+<a name="id2559253"></a><h2>Description</h2>
+<p>
+</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id368773"></a><h2>Details</h2>
+<a name="id2616164"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id345492"></a><h3>
+<a name="id2616175"></a><h3>
 <a name="CAM-V4L-DRIVER-TYPE:CAPS"></a>CAM_V4L_DRIVER_TYPE</h3>
-<a class="indexterm" name="id345504"></a><pre class="programlisting">#define CAM_V4L_DRIVER_TYPE  cam_v4l_driver_get_type()
+<a class="indexterm" name="id2616186"></a><pre class="programlisting">#define CAM_V4L_DRIVER_TYPE  cam_v4l_driver_get_type()
 </pre>
 <p>
 
@@ -108,25 +100,25 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id345519"></a><h3>
+<a name="id2616203"></a><h3>
 <a name="CamV4LDriver-struct"></a>CamV4LDriver</h3>
-<a class="indexterm" name="id345531"></a><pre class="programlisting">typedef struct _CamV4LDriver CamV4LDriver;</pre>
+<a class="indexterm" name="id2616215"></a><pre class="programlisting">typedef struct _CamV4LDriver CamV4LDriver;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id345546"></a><h3>
+<a name="id2616231"></a><h3>
 <a name="cam-v4l-driver-new"></a>cam_v4l_driver_new ()</h3>
-<a class="indexterm" name="id345558"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_v4l_driver_new                  (void);</pre>
+<a class="indexterm" name="id2616243"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_v4l_driver_new                  (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -136,9 +128,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id345593"></a><h3>
+<a name="id2616279"></a><h3>
 <a name="CAM-TYPE-V4L:CAPS"></a>CAM_TYPE_V4L</h3>
-<a class="indexterm" name="id345605"></a><pre class="programlisting">#define CAM_TYPE_V4L  cam_v4l_get_type()
+<a class="indexterm" name="id2617057"></a><pre class="programlisting">#define CAM_TYPE_V4L  cam_v4l_get_type()
 </pre>
 <p>
 
@@ -146,16 +138,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id345620"></a><h3>
+<a name="id2617072"></a><h3>
 <a name="CAM-V4L:CAPS"></a>CAM_V4L()</h3>
-<a class="indexterm" name="id341609"></a><pre class="programlisting">#define             CAM_V4L(obj)</pre>
+<a class="indexterm" name="id2617085"></a><pre class="programlisting">#define             CAM_V4L(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -165,16 +157,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341643"></a><h3>
+<a name="id2617119"></a><h3>
 <a name="CAM-V4L-CLASS:CAPS"></a>CAM_V4L_CLASS()</h3>
-<a class="indexterm" name="id341655"></a><pre class="programlisting">#define             CAM_V4L_CLASS(klass)</pre>
+<a class="indexterm" name="id2617131"></a><pre class="programlisting">#define             CAM_V4L_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -184,16 +176,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341689"></a><h3>
+<a name="id2617166"></a><h3>
 <a name="CAM-IS-V4L:CAPS"></a>CAM_IS_V4L()</h3>
-<a class="indexterm" name="id341701"></a><pre class="programlisting">#define             CAM_IS_V4L(obj)</pre>
+<a class="indexterm" name="id2617178"></a><pre class="programlisting">#define             CAM_IS_V4L(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -203,16 +195,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341735"></a><h3>
+<a name="id2617212"></a><h3>
 <a name="CAM-IS-V4L-CLASS:CAPS"></a>CAM_IS_V4L_CLASS()</h3>
-<a class="indexterm" name="id341747"></a><pre class="programlisting">#define             CAM_IS_V4L_CLASS(klass)</pre>
+<a class="indexterm" name="id2617224"></a><pre class="programlisting">#define             CAM_IS_V4L_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -222,16 +214,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341781"></a><h3>
+<a name="id2617258"></a><h3>
 <a name="CAM-V4L-GET-CLASS:CAPS"></a>CAM_V4L_GET_CLASS()</h3>
-<a class="indexterm" name="id341793"></a><pre class="programlisting">#define             CAM_V4L_GET_CLASS(obj)</pre>
+<a class="indexterm" name="id2617270"></a><pre class="programlisting">#define             CAM_V4L_GET_CLASS(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -241,27 +233,25 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341828"></a><h3>
+<a name="id2617305"></a><h3>
 <a name="CamV4L-struct"></a>CamV4L</h3>
-<a class="indexterm" name="id341840"></a><pre class="programlisting">typedef struct _CamV4L CamV4L;</pre>
+<a class="indexterm" name="id2617318"></a><pre class="programlisting">typedef struct _CamV4L CamV4L;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395550"></a><h3>
+<a name="id2617333"></a><h3>
 <a name="cam-v4l-get-type"></a>cam_v4l_get_type ()</h3>
-<a class="indexterm" name="id395562"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               cam_v4l_get_type                    (void);</pre>
+<a class="indexterm" name="id2617345"></a><pre class="programlisting">GType               cam_v4l_get_type                    (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -271,9 +261,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395597"></a><h3>
+<a name="id2617382"></a><h3>
 <a name="cam-v4l-new"></a>cam_v4l_new ()</h3>
-<a class="indexterm" name="id395609"></a><pre class="programlisting"><a class="link" href="CamV4L.html" title="CamV4L">CamV4L</a>*             cam_v4l_new                         (int videonum);</pre>
+<a class="indexterm" name="id2617394"></a><pre class="programlisting"><a href="CamV4L.html" title="CamV4L">CamV4L</a>*             cam_v4l_new                         (int videonum);</pre>
 <p>
 Constructor.  don't call this function manually.  Instead, let the
 CamV4LDriver call it.</p>
@@ -284,12 +274,12 @@ CamV4LDriver call it.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>videonum</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>videonum</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

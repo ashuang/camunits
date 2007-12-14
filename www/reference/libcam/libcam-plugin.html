@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>plugin</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch04.html" title="Other stuff">
 <link rel="prev" href="libcam-log.html" title="log">
@@ -24,16 +24,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-gl-texture.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id352131" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574638" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id408234" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2571852" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-plugin"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id352131"></a><span class="refentrytitle">plugin</span>
+<a name="id2574638"></a><span class="refentrytitle">plugin</span>
 </h2>
 <p>plugin</p>
 </td>
@@ -45,29 +45,27 @@
 
 
 
-#define             <a class="link" href="libcam-plugin.html#CAM-PLUGIN-TYPE:CAPS">CAM_PLUGIN_TYPE</a>                     (TN, t_n, T_P)
-#define             <a class="link" href="libcam-plugin.html#CAM-PLUGIN-TYPE-WITH-CODE:CAPS">CAM_PLUGIN_TYPE_WITH_CODE</a>           (TN, t_n, T_P, _C_)
-#define             <a class="link" href="libcam-plugin.html#CAM-PLUGIN-ABSTRACT-TYPE:CAPS">CAM_PLUGIN_ABSTRACT_TYPE</a>            (TN, t_n, T_P)
-#define             <a class="link" href="libcam-plugin.html#CAM-PLUGIN-ABSTRACT-TYPE-WITH-CODE:CAPS">CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE</a>  (TN, t_n, T_P, _C_)
-#define             <a class="link" href="libcam-plugin.html#CAM-PLUGIN-TYPE-EXTENDED:CAPS">CAM_PLUGIN_TYPE_EXTENDED</a>            (TN, t_n, T_P, _f_, _C_)
-#define             <a class="link" href="libcam-plugin.html#CAM-PLUGIN-INTERFACE:CAPS">CAM_PLUGIN_INTERFACE</a>                (TYPE_IFACE, iface_init)
-<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="libcam-plugin.html#cam-plugin-unit-driver-create">cam_plugin_unit_driver_create</a>       (const char *filename);
-void                <a class="link" href="libcam-plugin.html#cam-plugin-load-drivers">cam_plugin_load_drivers</a>             (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager,
-                                                         const char *path);
+#define             <a href="libcam-plugin.html#CAM-PLUGIN-TYPE:CAPS">CAM_PLUGIN_TYPE</a>                     (TN, t_n, T_P)
+#define             <a href="libcam-plugin.html#CAM-PLUGIN-TYPE-WITH-CODE:CAPS">CAM_PLUGIN_TYPE_WITH_CODE</a>           (TN, t_n, T_P, _C_)
+#define             <a href="libcam-plugin.html#CAM-PLUGIN-ABSTRACT-TYPE:CAPS">CAM_PLUGIN_ABSTRACT_TYPE</a>            (TN, t_n, T_P)
+#define             <a href="libcam-plugin.html#CAM-PLUGIN-ABSTRACT-TYPE-WITH-CODE:CAPS">CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE</a>  (TN, t_n, T_P, _C_)
+#define             <a href="libcam-plugin.html#CAM-PLUGIN-TYPE-EXTENDED:CAPS">CAM_PLUGIN_TYPE_EXTENDED</a>            (TN, t_n, T_P, _f_, _C_)
+#define             <a href="libcam-plugin.html#CAM-PLUGIN-INTERFACE:CAPS">CAM_PLUGIN_INTERFACE</a>                (TYPE_IFACE, iface_init)
+<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="libcam-plugin.html#cam-plugin-unit-driver-create">cam_plugin_unit_driver_create</a>       (const char *filename);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id408234"></a><h2>Description</h2>
+<a name="id2571852"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id408110"></a><h2>Details</h2>
+<a name="id2571868"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id408119"></a><h3>
+<a name="id2571878"></a><h3>
 <a name="CAM-PLUGIN-TYPE:CAPS"></a>CAM_PLUGIN_TYPE()</h3>
-<a class="indexterm" name="id408131"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE(TN, t_n, T_P)			    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+<a class="indexterm" name="id2571890"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE(TN, t_n, T_P)			    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
 </pre>
 <p>
 
@@ -76,17 +74,17 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></td>
 <td>
 
 
@@ -97,9 +95,9 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id407127"></a><h3>
+<a name="id2589078"></a><h3>
 <a name="CAM-PLUGIN-TYPE-WITH-CODE:CAPS"></a>CAM_PLUGIN_TYPE_WITH_CODE()</h3>
-<a class="indexterm" name="id407138"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_WITH_CODE(TN, t_n, T_P, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, 0) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
+<a class="indexterm" name="id2589089"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_WITH_CODE(TN, t_n, T_P, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, 0) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
 </pre>
 <p>
 
@@ -108,22 +106,22 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>_C_</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>_C_</code></em>&#160;:</span></td>
 <td>
 
 
@@ -134,9 +132,9 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id401200"></a><h3>
+<a name="id2625568"></a><h3>
 <a name="CAM-PLUGIN-ABSTRACT-TYPE:CAPS"></a>CAM_PLUGIN_ABSTRACT_TYPE()</h3>
-<a class="indexterm" name="id401212"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE(TN, t_n, T_P)		    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, {})
+<a class="indexterm" name="id2625579"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE(TN, t_n, T_P)		    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, {})
 </pre>
 <p>
 
@@ -145,17 +143,17 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></td>
 <td>
 
 
@@ -166,9 +164,9 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399602"></a><h3>
+<a name="id2623438"></a><h3>
 <a name="CAM-PLUGIN-ABSTRACT-TYPE-WITH-CODE:CAPS"></a>CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE()</h3>
-<a class="indexterm" name="id399614"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
+<a class="indexterm" name="id2623449"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
 </pre>
 <p>
 
@@ -177,22 +175,22 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>_C_</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>_C_</code></em>&#160;:</span></td>
 <td>
 
 
@@ -203,9 +201,9 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id403994"></a><h3>
+<a name="id2623529"></a><h3>
 <a name="CAM-PLUGIN-TYPE-EXTENDED:CAPS"></a>CAM_PLUGIN_TYPE_EXTENDED()</h3>
-<a class="indexterm" name="id404006"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
+<a class="indexterm" name="id2623540"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
 </pre>
 <p>
 
@@ -214,27 +212,27 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>TN</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>t_n</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>T_P</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>_f_</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>_f_</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>_C_</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>_C_</code></em>&#160;:</span></td>
 <td>
 
 
@@ -245,9 +243,9 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id408024"></a><h3>
+<a name="id2629237"></a><h3>
 <a name="CAM-PLUGIN-INTERFACE:CAPS"></a>CAM_PLUGIN_INTERFACE()</h3>
-<a class="indexterm" name="id408037"></a><pre class="programlisting">#define             CAM_PLUGIN_INTERFACE(TYPE_IFACE, iface_init)</pre>
+<a class="indexterm" name="id2629249"></a><pre class="programlisting">#define             CAM_PLUGIN_INTERFACE(TYPE_IFACE, iface_init)</pre>
 <p>
 
 </p>
@@ -255,12 +253,12 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>TYPE_IFACE</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>TYPE_IFACE</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>iface_init</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>iface_init</code></em>&#160;:</span></td>
 <td>
 
 
@@ -271,9 +269,9 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id408085"></a><h3>
+<a name="id2629298"></a><h3>
 <a name="cam-plugin-unit-driver-create"></a>cam_plugin_unit_driver_create ()</h3>
-<a class="indexterm" name="id408097"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_plugin_unit_driver_create       (const char *filename);</pre>
+<a class="indexterm" name="id2628809"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_plugin_unit_driver_create       (const char *filename);</pre>
 <p>
 
 </p>
@@ -281,39 +279,12 @@ void                <a class="link" href="libcam-plugin.html#cam-plugin-load-dri
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td>
-
-
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id407397"></a><h3>
-<a name="cam-plugin-load-drivers"></a>cam_plugin_load_drivers ()</h3>
-<a class="indexterm" name="id407409"></a><pre class="programlisting">void                cam_plugin_load_drivers             (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager,
-                                                         const char *path);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>path</code></em>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamFastBayerFilter</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamFilterJpeg.html" title="CamFilterJpeg">
@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamColorConversionFilter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id377612" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582985" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id381558" class="shortcut">Description</a>
+                  <a href="#id2622379" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id381522" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2622343" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamFastBayerFilter"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id377612"></a><span class="refentrytitle">CamFastBayerFilter</span>
+<a name="id2582985"></a><span class="refentrytitle">CamFastBayerFilter</span>
 </h2>
-<p>CamFastBayerFilter</p>
+<p>CamFastBayerFilter &#8212; SSE2/SSE3 optimized Bayer demosaic filter.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -47,56 +47,57 @@
 
 
 
-                    <a class="link" href="CamFastBayerFilter.html#CamFastBayerFilter-struct">CamFastBayerFilter</a>;
-<a class="link" href="CamFastBayerFilter.html" title="CamFastBayerFilter">CamFastBayerFilter</a>* <a class="link" href="CamFastBayerFilter.html#cam-fast-bayer-filter-new">cam_fast_bayer_filter_new</a>           (void);
-<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamFastBayerFilter.html#cam-fast-bayer-filter-driver-new">cam_fast_bayer_filter_driver_new</a>    (void);
+                    <a href="CamFastBayerFilter.html#CamFastBayerFilter-struct">CamFastBayerFilter</a>;
+<a href="CamFastBayerFilter.html" title="CamFastBayerFilter">CamFastBayerFilter</a>* <a href="CamFastBayerFilter.html#cam-fast-bayer-filter-new">cam_fast_bayer_filter_new</a>           (void);
+<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamFastBayerFilter.html#cam-fast-bayer-filter-driver-new">cam_fast_bayer_filter_driver_new</a>    (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id381522"></a><h2>Object Hierarchy</h2>
+<a name="id2622343"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamFastBayerFilter
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id381558"></a><h2>Description</h2>
+<a name="id2622379"></a><h2>Description</h2>
+<p>
+An SSE2/SSE3 optimized Bayer demosaic filter.  Do _NOT_ try to use this
+filter if your architecture doesn't support SSE2/SSE3.
+</p>
+<p>
+CamFastBayerFilter is a core unit, and is always available with unit
+id "convert.fast_debayer"</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id381574"></a><h2>Details</h2>
+<a name="id2622406"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id381584"></a><h3>
+<a name="id2622416"></a><h3>
 <a name="CamFastBayerFilter-struct"></a>CamFastBayerFilter</h3>
-<a class="indexterm" name="id365965"></a><pre class="programlisting">typedef struct _CamFastBayerFilter CamFastBayerFilter;</pre>
-<p>
-An SSE2/SSE3 optimized Bayer demosaic filter.</p>
+<a class="indexterm" name="id2622428"></a><pre class="programlisting">typedef struct _CamFastBayerFilter CamFastBayerFilter;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id365984"></a><h3>
+<a name="id2622444"></a><h3>
 <a name="cam-fast-bayer-filter-new"></a>cam_fast_bayer_filter_new ()</h3>
-<a class="indexterm" name="id365995"></a><pre class="programlisting"><a class="link" href="CamFastBayerFilter.html" title="CamFastBayerFilter">CamFastBayerFilter</a>* cam_fast_bayer_filter_new           (void);</pre>
+<a class="indexterm" name="id2622456"></a><pre class="programlisting"><a href="CamFastBayerFilter.html" title="CamFastBayerFilter">CamFastBayerFilter</a>* cam_fast_bayer_filter_new           (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -106,16 +107,16 @@ An SSE2/SSE3 optimized Bayer demosaic filter.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395256"></a><h3>
+<a name="id2621123"></a><h3>
 <a name="cam-fast-bayer-filter-driver-new"></a>cam_fast_bayer_filter_driver_new ()</h3>
-<a class="indexterm" name="id395267"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_fast_bayer_filter_driver_new    (void);</pre>
+<a class="indexterm" name="id2621133"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_fast_bayer_filter_driver_new    (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

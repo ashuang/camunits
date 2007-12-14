@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamFilterJpeg</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamFilterGL.html" title="CamFilterGL">
@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamFastBayerFilter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id365694" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2600737" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id400057" class="shortcut">Description</a>
+                  <a href="#id2622249" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id371750" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2558610" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamFilterJpeg"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id365694"></a><span class="refentrytitle">CamFilterJpeg</span>
+<a name="id2600737"></a><span class="refentrytitle">CamFilterJpeg</span>
 </h2>
-<p>CamFilterJpeg</p>
+<p>CamFilterJpeg &#8212; unit to encode and decode JPEG images</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -47,56 +47,57 @@
 
 
 
-                    <a class="link" href="CamFilterJpeg.html#CamFilterJpeg-struct">CamFilterJpeg</a>;
-<a class="link" href="CamFilterJpeg.html" title="CamFilterJpeg">CamFilterJpeg</a>*      <a class="link" href="CamFilterJpeg.html#cam-filter-jpeg-new">cam_filter_jpeg_new</a>                 (void);
-<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamFilterJpeg.html#cam-filter-jpeg-driver-new">cam_filter_jpeg_driver_new</a>          (void);
+                    <a href="CamFilterJpeg.html#CamFilterJpeg-struct">CamFilterJpeg</a>;
+<a href="CamFilterJpeg.html" title="CamFilterJpeg">CamFilterJpeg</a>*      <a href="CamFilterJpeg.html#cam-filter-jpeg-new">cam_filter_jpeg_new</a>                 (void);
+<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamFilterJpeg.html#cam-filter-jpeg-driver-new">cam_filter_jpeg_driver_new</a>          (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id371750"></a><h2>Object Hierarchy</h2>
+<a name="id2558610"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamFilterJpeg
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id400057"></a><h2>Description</h2>
+<a name="id2622249"></a><h2>Description</h2>
+<p>
+CamFilterJpeg can compress RGB, BGRA, and grayscale images to JPEG.  It can
+also decompress JPEG-compressed images to RGB.  CamFilterJpeg uses libjpeg.
+</p>
+<p>
+CamFilterJpeg is a core unit, and is always available with unit
+id "convert.jpeg"</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id400073"></a><h2>Details</h2>
+<a name="id2622276"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id400084"></a><h3>
+<a name="id2622286"></a><h3>
 <a name="CamFilterJpeg-struct"></a>CamFilterJpeg</h3>
-<a class="indexterm" name="id352473"></a><pre class="programlisting">typedef struct _CamFilterJpeg CamFilterJpeg;</pre>
-<p>
-This demonstrates how to create a simple filter</p>
+<a class="indexterm" name="id2622298"></a><pre class="programlisting">typedef struct _CamFilterJpeg CamFilterJpeg;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id352492"></a><h3>
+<a name="id2622314"></a><h3>
 <a name="cam-filter-jpeg-new"></a>cam_filter_jpeg_new ()</h3>
-<a class="indexterm" name="id352504"></a><pre class="programlisting"><a class="link" href="CamFilterJpeg.html" title="CamFilterJpeg">CamFilterJpeg</a>*      cam_filter_jpeg_new                 (void);</pre>
+<a class="indexterm" name="id2622327"></a><pre class="programlisting"><a href="CamFilterJpeg.html" title="CamFilterJpeg">CamFilterJpeg</a>*      cam_filter_jpeg_new                 (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -106,16 +107,16 @@ This demonstrates how to create a simple filter</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id370930"></a><h3>
+<a name="id2621307"></a><h3>
 <a name="cam-filter-jpeg-driver-new"></a>cam_filter_jpeg_driver_new ()</h3>
-<a class="indexterm" name="id370941"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_filter_jpeg_driver_new          (void);</pre>
+<a class="indexterm" name="id2621318"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_filter_jpeg_driver_new          (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

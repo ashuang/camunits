@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamInputExample</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamV4L.html" title="CamV4L">
@@ -24,20 +24,21 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamInputLog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id359094" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2557937" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id317446" class="shortcut">Description</a>
+                  <a href="#id2622034" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id378795" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2621973" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamInputExample"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id359094"></a><span class="refentrytitle">CamInputExample</span>
+<a name="id2557937"></a><span class="refentrytitle">CamInputExample</span>
 </h2>
-<p>CamInputExample</p>
+<p>CamInputExample &#8212; Debugging class, and also demonstration of how to create
+a simple CamUnitDriver and CamUnit</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -47,60 +48,59 @@
 
 
 
-#define             <a class="link" href="CamInputExample.html#CAM-INPUT-EXAMPLE-DRIVER-TYPE:CAPS">CAM_INPUT_EXAMPLE_DRIVER_TYPE</a>
-                    <a class="link" href="CamInputExample.html#CamInputExampleDriver-struct">CamInputExampleDriver</a>;
-<a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* <a class="link" href="CamInputExample.html#cam-input-example-driver-new">cam_input_example_driver_new</a>     (void);
-#define             <a class="link" href="CamInputExample.html#CAM-INPUT-EXAMPLE-TYPE:CAPS">CAM_INPUT_EXAMPLE_TYPE</a>
-#define             <a class="link" href="CamInputExample.html#CAM-INPUT-EXAMPLE:CAPS">CAM_INPUT_EXAMPLE</a>                   (obj)
-#define             <a class="link" href="CamInputExample.html#CAM-INPUT-EXAMPLE-CLASS:CAPS">CAM_INPUT_EXAMPLE_CLASS</a>             (klass)
-#define             <a class="link" href="CamInputExample.html#CAM-IS-INPUT-EXAMPLE:CAPS">CAM_IS_INPUT_EXAMPLE</a>                (obj)
-#define             <a class="link" href="CamInputExample.html#CAM-IS-INPUT-EXAMPLE-CLASS:CAPS">CAM_IS_INPUT_EXAMPLE_CLASS</a>          (klass)
-#define             <a class="link" href="CamInputExample.html#CAM-INPUT-EXAMPLE-GET-CLASS:CAPS">CAM_INPUT_EXAMPLE_GET_CLASS</a>         (obj)
-                    <a class="link" href="CamInputExample.html#CamInputExample-struct">CamInputExample</a>;
-<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               <a class="link" href="CamInputExample.html#cam-input-example-get-type">cam_input_example_get_type</a>          (void);
-<a class="link" href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    <a class="link" href="CamInputExample.html#cam-input-example-new">cam_input_example_new</a>               (void);
+#define             <a href="CamInputExample.html#CAM-INPUT-EXAMPLE-DRIVER-TYPE:CAPS">CAM_INPUT_EXAMPLE_DRIVER_TYPE</a>
+                    <a href="CamInputExample.html#CamInputExampleDriver-struct">CamInputExampleDriver</a>;
+<a href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* <a href="CamInputExample.html#cam-input-example-driver-new">cam_input_example_driver_new</a>     (void);
+#define             <a href="CamInputExample.html#CAM-INPUT-EXAMPLE-TYPE:CAPS">CAM_INPUT_EXAMPLE_TYPE</a>
+#define             <a href="CamInputExample.html#CAM-INPUT-EXAMPLE:CAPS">CAM_INPUT_EXAMPLE</a>                   (obj)
+#define             <a href="CamInputExample.html#CAM-INPUT-EXAMPLE-CLASS:CAPS">CAM_INPUT_EXAMPLE_CLASS</a>             (klass)
+#define             <a href="CamInputExample.html#CAM-IS-INPUT-EXAMPLE:CAPS">CAM_IS_INPUT_EXAMPLE</a>                (obj)
+#define             <a href="CamInputExample.html#CAM-IS-INPUT-EXAMPLE-CLASS:CAPS">CAM_IS_INPUT_EXAMPLE_CLASS</a>          (klass)
+#define             <a href="CamInputExample.html#CAM-INPUT-EXAMPLE-GET-CLASS:CAPS">CAM_INPUT_EXAMPLE_GET_CLASS</a>         (obj)
+                    <a href="CamInputExample.html#CamInputExample-struct">CamInputExample</a>;
+GType               <a href="CamInputExample.html#cam-input-example-get-type">cam_input_example_get_type</a>          (void);
+<a href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    <a href="CamInputExample.html#cam-input-example-new">cam_input_example_new</a>               (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id378795"></a><h2>Object Hierarchy</h2>
+<a name="id2621973"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
                +----CamInputExampleDriver
 </pre>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamInputExample
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id317446"></a><h2>Description</h2>
+<a name="id2622034"></a><h2>Description</h2>
+<p>
+CamInputExample serves as an always-present input unit (unit id:
+"input.example") that can be used for debugging when no other units are
+available.  Additionally, it serves as an example of how to create a simple
+unit driver and unit with basic controls.
+</p>
+<p>
+Programmers writing their first units are advised to look at the source code
+for CamInputExampleDriver and CamInputExample (see libcam/input_example.h)</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id317462"></a><h2>Details</h2>
+<a name="id2622063"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id317473"></a><h3>
+<a name="id2622074"></a><h3>
 <a name="CAM-INPUT-EXAMPLE-DRIVER-TYPE:CAPS"></a>CAM_INPUT_EXAMPLE_DRIVER_TYPE</h3>
-<a class="indexterm" name="id395691"></a><pre class="programlisting">#define CAM_INPUT_EXAMPLE_DRIVER_TYPE  cam_input_example_driver_get_type()
+<a class="indexterm" name="id2622085"></a><pre class="programlisting">#define CAM_INPUT_EXAMPLE_DRIVER_TYPE  cam_input_example_driver_get_type()
 </pre>
 <p>
 
@@ -108,25 +108,25 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395706"></a><h3>
+<a name="id2622102"></a><h3>
 <a name="CamInputExampleDriver-struct"></a>CamInputExampleDriver</h3>
-<a class="indexterm" name="id395719"></a><pre class="programlisting">typedef struct _CamInputExampleDriver CamInputExampleDriver;</pre>
+<a class="indexterm" name="id2622113"></a><pre class="programlisting">typedef struct _CamInputExampleDriver CamInputExampleDriver;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395734"></a><h3>
+<a name="id2622128"></a><h3>
 <a name="cam-input-example-driver-new"></a>cam_input_example_driver_new ()</h3>
-<a class="indexterm" name="id395746"></a><pre class="programlisting"><a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* cam_input_example_driver_new     (void);</pre>
+<a class="indexterm" name="id2622140"></a><pre class="programlisting"><a href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* cam_input_example_driver_new     (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -136,9 +136,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395781"></a><h3>
+<a name="id2620700"></a><h3>
 <a name="CAM-INPUT-EXAMPLE-TYPE:CAPS"></a>CAM_INPUT_EXAMPLE_TYPE</h3>
-<a class="indexterm" name="id395794"></a><pre class="programlisting">#define CAM_INPUT_EXAMPLE_TYPE  cam_input_example_get_type()
+<a class="indexterm" name="id2620711"></a><pre class="programlisting">#define CAM_INPUT_EXAMPLE_TYPE  cam_input_example_get_type()
 </pre>
 <p>
 
@@ -146,16 +146,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395809"></a><h3>
+<a name="id2620727"></a><h3>
 <a name="CAM-INPUT-EXAMPLE:CAPS"></a>CAM_INPUT_EXAMPLE()</h3>
-<a class="indexterm" name="id341312"></a><pre class="programlisting">#define             CAM_INPUT_EXAMPLE(obj)</pre>
+<a class="indexterm" name="id2620739"></a><pre class="programlisting">#define             CAM_INPUT_EXAMPLE(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -165,16 +165,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341346"></a><h3>
+<a name="id2620773"></a><h3>
 <a name="CAM-INPUT-EXAMPLE-CLASS:CAPS"></a>CAM_INPUT_EXAMPLE_CLASS()</h3>
-<a class="indexterm" name="id341358"></a><pre class="programlisting">#define             CAM_INPUT_EXAMPLE_CLASS(klass)</pre>
+<a class="indexterm" name="id2620787"></a><pre class="programlisting">#define             CAM_INPUT_EXAMPLE_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -184,16 +184,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341392"></a><h3>
+<a name="id2620822"></a><h3>
 <a name="CAM-IS-INPUT-EXAMPLE:CAPS"></a>CAM_IS_INPUT_EXAMPLE()</h3>
-<a class="indexterm" name="id341405"></a><pre class="programlisting">#define             CAM_IS_INPUT_EXAMPLE(obj)</pre>
+<a class="indexterm" name="id2620833"></a><pre class="programlisting">#define             CAM_IS_INPUT_EXAMPLE(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -203,16 +203,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341439"></a><h3>
+<a name="id2620868"></a><h3>
 <a name="CAM-IS-INPUT-EXAMPLE-CLASS:CAPS"></a>CAM_IS_INPUT_EXAMPLE_CLASS()</h3>
-<a class="indexterm" name="id341451"></a><pre class="programlisting">#define             CAM_IS_INPUT_EXAMPLE_CLASS(klass)</pre>
+<a class="indexterm" name="id2620880"></a><pre class="programlisting">#define             CAM_IS_INPUT_EXAMPLE_CLASS(klass)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
 <td>
 
 
@@ -222,16 +222,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341485"></a><h3>
+<a name="id2620915"></a><h3>
 <a name="CAM-INPUT-EXAMPLE-GET-CLASS:CAPS"></a>CAM_INPUT_EXAMPLE_GET_CLASS()</h3>
-<a class="indexterm" name="id341498"></a><pre class="programlisting">#define             CAM_INPUT_EXAMPLE_GET_CLASS(obj)</pre>
+<a class="indexterm" name="id2620928"></a><pre class="programlisting">#define             CAM_INPUT_EXAMPLE_GET_CLASS(obj)</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
 <td>
 
 
@@ -241,27 +241,25 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341532"></a><h3>
+<a name="id2620964"></a><h3>
 <a name="CamInputExample-struct"></a>CamInputExample</h3>
-<a class="indexterm" name="id341544"></a><pre class="programlisting">typedef struct _CamInputExample CamInputExample;</pre>
+<a class="indexterm" name="id2620975"></a><pre class="programlisting">typedef struct _CamInputExample CamInputExample;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id341559"></a><h3>
+<a name="id2620992"></a><h3>
 <a name="cam-input-example-get-type"></a>cam_input_example_get_type ()</h3>
-<a class="indexterm" name="id400260"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               cam_input_example_get_type          (void);</pre>
+<a class="indexterm" name="id2621003"></a><pre class="programlisting">GType               cam_input_example_get_type          (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -271,20 +269,19 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id400292"></a><h3>
+<a name="id2621040"></a><h3>
 <a name="cam-input-example-new"></a>cam_input_example_new ()</h3>
-<a class="indexterm" name="id400304"></a><pre class="programlisting"><a class="link" href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    cam_input_example_new               (void);</pre>
+<a class="indexterm" name="id2621051"></a><pre class="programlisting"><a href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    cam_input_example_new               (void);</pre>
 <p>
-Constructor.
-Don't call this function manually.  Instead, let the CamInputExampleDriver
-call it.</p>
+Constructor.  Don't call this function manually.  Instead, let the
+CamInputExampleDriver call it.</p>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
