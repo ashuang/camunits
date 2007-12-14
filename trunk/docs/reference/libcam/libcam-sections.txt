@@ -191,8 +191,7 @@ cam_unit_chain_reorder_unit
 cam_unit_chain_set_desired_status
 cam_unit_chain_get_desired_status
 cam_unit_chain_check_status_all_units
-cam_unit_chain_attach_glib_mainloop
-cam_unit_chain_detach_glib_mainloop
+cam_unit_chain_attach_glib
 <SUBSECTION Standard>
 CAM_UNIT_CHAIN
 CAM_IS_UNIT_CHAIN
@@ -298,6 +297,7 @@ cam_unit_manager_get_drivers
 cam_unit_manager_find_unit_description
 cam_unit_manager_list_package
 cam_unit_manager_create_unit_by_id
+cam_unit_manager_add_plugin_dir
 <SUBSECTION Standard>
 CAM_UNIT_MANAGER
 CAM_IS_UNIT_MANAGER
@@ -376,24 +376,6 @@ cam_color_conversion_filter_get_type
 CAM_COLOR_CONVERSION_FILTER_CLASS
 CAM_IS_COLOR_CONVERSION_FILTER_CLASS
 CAM_COLOR_CONVERSION_FILTER_GET_CLASS
-</SECTION>
-
-<SECTION>
-<FILE>filter_bayer</FILE>
-<TITLE>CamBayerFilter</TITLE>
-CamBayerFilter
-cam_bayer_filter_new
-cam_bayer_filter_driver_new
-CamBayerFilterMethod
-CamBayerFilterTiling
-<SUBSECTION Standard>
-CAM_BAYER_FILTER
-CAM_IS_BAYER_FILTER
-CAM_TYPE_BAYER_FILTER
-cam_bayer_filter_get_type
-CAM_BAYER_FILTER_CLASS
-CAM_IS_BAYER_FILTER_CLASS
-CAM_BAYER_FILTER_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -547,7 +529,6 @@ CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE
 CAM_PLUGIN_TYPE_EXTENDED
 CAM_PLUGIN_INTERFACE
 cam_plugin_unit_driver_create
-cam_plugin_load_drivers
 </SECTION>
 
 <SECTION>

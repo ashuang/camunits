@@ -9,9 +9,14 @@
 G_BEGIN_DECLS
 
 /**
- * CamFilterJpeg
+ * SECTION:filter_jpeg
+ * @short_description: unit to encode and decode JPEG images
  *
- * This demonstrates how to create a simple filter
+ * CamFilterJpeg can compress RGB, BGRA, and grayscale images to JPEG.  It can
+ * also decompress JPEG-compressed images to RGB.  CamFilterJpeg uses libjpeg.
+ *
+ * CamFilterJpeg is a core unit, and is always available with unit
+ * id "convert.jpeg"
  */
 
 typedef struct _CamFilterJpeg CamFilterJpeg;

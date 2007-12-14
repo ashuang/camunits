@@ -33,7 +33,7 @@ extern "C" {
  * cam_unit_manager_add_driver().
  *
  * In a simple libcam application, there is no need to work directly with the
- * CamUnitManager.  Instead, an simple libcam application may use a
+ * CamUnitManager.  Instead, a simple libcam application may use a
  * #CamUnitChain object, which itself contains a CamUnitManager.  Reasons for
  * using a CamUnitManager directly could be sharing a manager across multiple
  * chains, implementing new #CamUnit and #CamUnitDriver subclasses, or
@@ -150,7 +150,7 @@ cam_unit_manager_find_unit_description (CamUnitManager *self,
         const char *unit_id);
 
 /**
- * cam_unit_manager_list_descriptions:
+ * cam_unit_manager_list_package:
  * @driver_package:  the package to check
  * @recurse:  TRUE to recursively list unit descriptions in subpackages
  *
@@ -167,6 +167,7 @@ GList * cam_unit_manager_list_package (CamUnitManager *self,
 
 /**
  * cam_unit_manager_create_unit_by_id:
+ * @unit_id: ID of the unit to instantiate
  *
  * Convenience method to instantiate a unit.
  *

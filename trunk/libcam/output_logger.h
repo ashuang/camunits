@@ -10,8 +10,12 @@
 G_BEGIN_DECLS
 
 /**
- * CamLoggerUnit
+ * SECTION:output_logger
+ * @short_description: logging unit that streams its input to disk
  *
+ * CamLoggerUnit can be used to log image streams to disk for later playback
+ * and analysis.  It is a core unit, always available with unit id
+ * "output.logger"
  */
 
 typedef struct _CamLoggerUnit CamLoggerUnit;

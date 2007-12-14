@@ -10,6 +10,8 @@
 G_BEGIN_DECLS
 
 /**
+ * SECTION:input_v4l
+ * @short_description: input unit for Video 4 Linux (V4L) devices
  * CamInputLogDriver documentation goes here
  */
 
