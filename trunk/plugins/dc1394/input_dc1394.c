@@ -9,7 +9,6 @@
 #include <sys/mman.h>
 #include <dc1394/control.h>
 #include <dc1394/vendor/avt.h>
-#include <libraw1394/raw1394.h>
 #include <math.h>
 
 //#define USE_CONFIG
@@ -17,16 +16,12 @@
 #include <dgc/config_util.h>
 #endif
 
-#ifdef USE_RAW1394
-#include "capture_raw1394.h"
-#endif
-
 #include <libcam/dbg.h>
 #include <libcam/pixels.h>
 #include <libcam/plugin.h>
 #include "input_dc1394.h"
 
-#define NUM_BUFFERS 60
+#define NUM_BUFFERS 10
 
 #define VENDOR_ID_POINT_GREY 0xb09d
 
@@ -35,7 +30,6 @@
 
 static CamUnit * driver_create_unit (CamUnitDriver * super,
         const CamUnitDescription * udesc);
-static void driver_finalize (GObject * obj);
 static int driver_start (CamUnitDriver * super);
 static int driver_stop (CamUnitDriver * super);
 static int add_all_camera_controls (CamUnit * super);
@@ -48,32 +42,15 @@ cam_dc1394_driver_init (CamDC1394Driver * self)
     dbg (DBG_DRIVER, "dc1394 driver constructor\n");
     CamUnitDriver * super = CAM_UNIT_DRIVER (self);
     cam_unit_driver_set_name (super, "input", "dc1394");
-
-    self->cameras = NULL;
-    self->num_cameras = 0;
 }
 
 static void
 cam_dc1394_driver_class_init (CamDC1394DriverClass * klass)
 {
     dbg (DBG_DRIVER, "dc1394 driver class initializer\n");
-    GObjectClass * gobject_class = G_OBJECT_CLASS (klass);
-    gobject_class->finalize = driver_finalize;
     klass->parent_class.create_unit = driver_create_unit;
     klass->parent_class.start = driver_start;
     klass->parent_class.stop = driver_stop;
-}
-
-static void
-driver_finalize (GObject * obj)
-{
-    dbg (DBG_DRIVER, "dc1394 driver finalize\n");
-    CamDC1394Driver * self = CAM_DC1394_DRIVER (obj);
-
-    if (self->num_cameras)
-        err ("Warning: dc1394 driver finalized before stopping\n");
-
-    G_OBJECT_CLASS (cam_dc1394_driver_parent_class)->finalize (obj);
 }
 
 static int
@@ -81,19 +58,27 @@ driver_start (CamUnitDriver * super)
 {
     CamDC1394Driver * self = CAM_DC1394_DRIVER (super);
 
-    if (dc1394_find_cameras (&self->cameras, &self->num_cameras)
-            != DC1394_SUCCESS)
+    self->dc1394 = dc1394_new ();
+    if (!self->dc1394)
         return -1;
 
+    if (dc1394_camera_enumerate (self->dc1394, &self->list) < 0) {
+        dc1394_free (self->dc1394);
+        return -1;
+    }
+
     int i;
-    for (i = 0; i < self->num_cameras; i++) {
+    for (i = 0; i < self->list->num; i++) {
         char name[256], id[32];
+        dc1394camera_t * camera = dc1394_camera_new (self->dc1394,
+                self->list->ids[i].guid);
 
         snprintf (name, sizeof (name), "%s %s",
-                self->cameras[i]->vendor,
-                self->cameras[i]->model);
+                camera->vendor,
+                camera->model);
+        dc1394_camera_free (camera);
 
-        int64_t uid = self->cameras[i]->euid_64;
+        int64_t uid = self->list->ids[i].guid;
         snprintf (id, sizeof (id), "%"PRIx64, uid);
 
         CamUnitDescription * udesc = 
@@ -112,14 +97,8 @@ driver_stop (CamUnitDriver * super)
 {
     CamDC1394Driver * self = CAM_DC1394_DRIVER (super);
 
-    int i;
-    for (i = 0; i < self->num_cameras; i++) {
-        dc1394_free_camera (self->cameras[i]);
-    }
-    free (self->cameras);
-
-    self->num_cameras = 0;
-    self->cameras = NULL;
+    dc1394_camera_free_list (self->list);
+    dc1394_free (self->dc1394);
 
     return CAM_UNIT_DRIVER_CLASS (cam_dc1394_driver_parent_class)->stop (super);
 }
@@ -136,12 +115,16 @@ driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
     int idx = GPOINTER_TO_INT (g_object_get_data (G_OBJECT(udesc), 
                 "dc1394-driver-index"));
 
-    if (idx >= self->num_cameras) {
+    if (idx >= self->list->num) {
         fprintf (stderr, "Error: invalid unit id %s\n", udesc->unit_id);
         return NULL;
     }
 
-    CamDC1394 * result = cam_dc1394_new (self->cameras[idx]);
+    dc1394camera_t * camera = dc1394_camera_new (self->dc1394,
+            self->list->ids[idx].guid);
+    if (!camera)
+        return NULL;
+    CamDC1394 * result = cam_dc1394_new (camera);
 
     return CAM_UNIT (result);
 }
@@ -165,11 +148,7 @@ cam_plugin_create (GTypeModule * module)
 typedef struct _CamDC1394Private CamDC1394Private;
 
 struct _CamDC1394Private {
-#ifdef USE_RAW1394
-    CaptureRaw1394 * raw1394;
-#endif
     int embedded_timestamp;
-    raw1394handle_t raw1394_handle;
     int raw1394_fd;
 };
 
@@ -216,11 +195,13 @@ dc1394_finalize (GObject * obj)
 {
     dbg (DBG_INPUT, "dc1394 finalize\n");
     CamUnit * super = CAM_UNIT (obj);
+    CamDC1394 * self = CAM_DC1394 (super);
 
     if (super->status != CAM_UNIT_STATUS_IDLE) {
         dbg (DBG_INPUT, "forcibly shutting down dc1394 unit\n");
         dc1394_stream_shutdown (super);
     }
+    dc1394_camera_free (self->cam);
 
     G_OBJECT_CLASS (cam_dc1394_parent_class)->finalize (obj);
 }
@@ -272,7 +253,7 @@ static int
 setup_embedded_timestamps (CamDC1394 * self)
 {
     uint32_t value;
-    if (GetCameraAdvControlRegister (self->cam, 0x2F8, &value) !=
+    if (dc1394_get_adv_control_register (self->cam, 0x2F8, &value) !=
             DC1394_SUCCESS)
         return -1;
 
@@ -281,7 +262,7 @@ setup_embedded_timestamps (CamDC1394 * self)
 
     value |= 0x1;
 
-    if (SetCameraAdvControlRegister (self->cam, 0x2F8, value) !=
+    if (dc1394_set_adv_control_register (self->cam, 0x2F8, value) !=
             DC1394_SUCCESS)
         return -1;
 
@@ -299,7 +280,7 @@ cam_dc1394_new (dc1394camera_t * cam)
 
     self->cam = cam;
 
-    printf ("Found camera with UID 0x%"PRIx64"\n", cam->euid_64);
+    printf ("Found camera with UID 0x%"PRIx64"\n", cam->guid);
 
     dc1394format7modeset_t info;
 
@@ -347,6 +328,7 @@ cam_dc1394_new (dc1394camera_t * cam)
     return self;
 
 fail:
+    dc1394_camera_free (self->cam);
     g_object_unref (G_OBJECT (self));
     return NULL;
 }
@@ -389,7 +371,7 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     dc1394_format7_set_color_coding (self->cam, vidmode, color_coding);
 
     uint32_t psize_unit, psize_max;
-    dc1394_format7_get_packet_para (self->cam, vidmode, &psize_unit,
+    dc1394_format7_get_packet_parameters (self->cam, vidmode, &psize_unit,
             &psize_max);
 
     CamUnitControl * ctl = cam_unit_find_control (super, "packet-size");
@@ -405,9 +387,8 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
 
     cam_unit_control_force_set_int (ctl, desired_packet);
 
-
 #if 0
-    dc1394_format7_get_recommended_byte_per_packet (self->cam,
+    dc1394_format7_get_recommended_packet_size (self->cam,
             vidmode, &self->packet_size);
     dbg (DBG_INPUT, "DC1394: Using device-recommended packet size of %d\n",
             self->packet_size);
@@ -415,7 +396,7 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     if (self->packet_size == 0)
         self->packet_size = 4096;
 
-    dc1394_format7_set_byte_per_packet (self->cam, vidmode, self->packet_size);
+    dc1394_format7_set_packet_size (self->cam, vidmode, self->packet_size);
 
     uint64_t bytes_per_frame;
     dc1394_format7_get_total_bytes (self->cam, vidmode, &bytes_per_frame);
@@ -429,25 +410,12 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
         printf ("%d\n", self->num_buffers);
     }
 
-#ifdef USE_RAW1394
-    /* Using libraw1394 for the iso streaming */
-    CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
-    priv->raw1394 = capture_raw1394_new (self->cam, super,
-            self->packet_size,
-            self->num_buffers * bytes_per_frame / self->packet_size);
-            //320);
-    if (!priv->raw1394)
-        goto fail;
-
-    self->fd = capture_raw1394_get_fileno (priv->raw1394);
-#else
     /* Using libdc1394 for iso streaming */
     if (dc1394_capture_setup (self->cam, self->num_buffers,
                 DC1394_CAPTURE_FLAGS_DEFAULT) != DC1394_SUCCESS)
         goto fail;
 
     self->fd = dc1394_capture_get_fileno (self->cam);
-#endif
 
     return 0;
 
@@ -466,13 +434,7 @@ dc1394_stream_shutdown (CamUnit * super)
 
     dbg (DBG_INPUT, "Shutting down DC1394 stream\n");
 
-#ifdef USE_RAW1394
-    CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
-    capture_raw1394_free (priv->raw1394);
-    priv->raw1394 = NULL;
-#else
     dc1394_capture_stop (self->cam);
-#endif
 
     /* chain up to parent, which handles some of the work */
     return CAM_UNIT_CLASS (cam_dc1394_parent_class)->stream_shutdown (super);
@@ -489,11 +451,6 @@ dc1394_stream_on (CamUnit * super)
             DC1394_SUCCESS)
         return -1;
 
-    CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
-    priv->raw1394_handle = raw1394_new_handle ();
-    raw1394_set_port (priv->raw1394_handle, 0);
-    priv->raw1394_fd = raw1394_get_fd (priv->raw1394_handle);
-
     return 0;
 }
 
@@ -505,9 +462,6 @@ dc1394_stream_off (CamUnit * super)
     dbg (DBG_INPUT, "DC1394 stream off\n");
 
     dc1394_video_set_transmission (self->cam, DC1394_OFF);
-
-    CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
-    raw1394_destroy_handle (priv->raw1394_handle);
 
     return 0;
 }
@@ -542,20 +496,25 @@ static gboolean
 dc1394_try_produce_frame (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
-
     dbg (DBG_INPUT, "DC1394 stream iterate\n");
 
     if (super->status != CAM_UNIT_STATUS_STREAMING) return FALSE;
 
-#ifdef USE_RAW1394
-    capture_raw1394_iterate (priv->raw1394);
-#else
     dc1394video_frame_t * frame;
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)
             != DC1394_SUCCESS) {
         err ("DC1394 dequeue failed\n");
         return FALSE;
     }
+    while (frame->frames_behind > 0) {
+        dc1394_capture_enqueue (self->cam, frame);
+        if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT,
+                    &frame) != DC1394_SUCCESS) {
+            err ("DC1394 dequeue failed\n");
+            return FALSE;
+        }
+    }
+
 
     // TODO don't malloc
     CamFrameBuffer * buf = 
@@ -566,10 +525,9 @@ dc1394_try_produce_frame (CamUnit * super)
                 "probably dropped frames...\n",
                 frame->frames_behind);
     
-    buf->data = frame->image;
-    buf->length = frame->image_bytes;
     buf->bytesused = frame->image_bytes;
 
+#if 0
     CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
 
     struct raw1394_cycle_timer ct = { 0xffffffff, 0 };
@@ -597,10 +555,11 @@ dc1394_try_produce_frame (CamUnit * super)
         buf->timestamp = ct.local_time - usec_diff;
     }
     else {
+#endif
         buf->timestamp = frame->timestamp;
-    }
+//    }
     char str[20];
-    sprintf (str, "0x%016"PRIx64, self->cam->euid_64);
+    sprintf (str, "0x%016"PRIx64, self->cam->guid);
     cam_framebuffer_metadata_set (buf, "Source GUID", (uint8_t *) str,
             strlen (str));
 
@@ -609,7 +568,6 @@ dc1394_try_produce_frame (CamUnit * super)
     dc1394_capture_enqueue (self->cam, frame);
 
     g_object_unref (buf);
-#endif
 
 //    int ts_type = TS_SHORT;
 // TODO David - FIXME
@@ -760,7 +718,7 @@ add_all_camera_controls (CamUnit * super)
     dc1394featureset_t features;
     CamUnitControl * ctl;
 
-    dc1394_get_camera_feature_set (self->cam, &features);
+    dc1394_feature_get_all (self->cam, &features);
 
     int i, reread = 0;
     for (i = 0; i < DC1394_FEATURE_NUM; i++) {
@@ -773,7 +731,7 @@ add_all_camera_controls (CamUnit * super)
         }
     }
     if (reread)
-        dc1394_get_camera_feature_set (self->cam, &features);
+        dc1394_feature_get_all (self->cam, &features);
 
     cam_unit_add_control_int (super, "packet-size",
             "Packet Size", 1, 4192, 1, 4192, 1);
@@ -797,6 +755,14 @@ add_all_camera_controls (CamUnit * super)
             fprintf (stderr, "Warning: One-push available on control \"%s\"\n",
                     feature_desc[i]);
 #endif
+        int manual_capable = 0;
+        int auto_capable = 0;
+        for (int j = 0; j < f->modes.num; j++) {
+            if (f->modes.modes[j] == DC1394_FEATURE_MODE_MANUAL)
+                manual_capable = 1;
+            if (f->modes.modes[j] == DC1394_FEATURE_MODE_AUTO)
+                auto_capable = 1;
+        }
 
         if (f->id == DC1394_FEATURE_TRIGGER) {
             int entries_enabled[NUM_TRIGGER_MODES];
@@ -852,30 +818,30 @@ add_all_camera_controls (CamUnit * super)
             continue;
         }
 
-        if (!f->on_off_capable && !f->auto_capable && !f->manual_capable) {
+        if (!f->on_off_capable && !auto_capable && !manual_capable) {
             fprintf (stderr, "Warning: Control \"%s\" has neither auto, "
                     "manual, or off mode\n", feature_desc[i]);
             continue;
         }
 
-        if (f->on_off_capable && !f->auto_capable && !f->manual_capable) {
+        if (f->on_off_capable && !auto_capable && !manual_capable) {
             fprintf (stderr, "Warning: Control \"%s\" has neither auto "
                     "nor manual mode\n", feature_desc[i]);
             continue;
         }
 
-        if (!f->on_off_capable && f->auto_capable && !f->manual_capable) {
+        if (!f->on_off_capable && auto_capable && !manual_capable) {
             fprintf (stderr, "Warning: Control \"%s\" has only auto mode\n",
                     feature_desc[i]);
             continue;
         }
 
-        if (!(!f->on_off_capable && !f->auto_capable && f->manual_capable)) {
+        if (!(!f->on_off_capable && !auto_capable && manual_capable)) {
             int entries_enabled[] = {
-                f->on_off_capable, f->auto_capable, f->manual_capable
+                f->on_off_capable, auto_capable, manual_capable
             };
             int cur_val = CAM_DC1394_MENU_OFF;
-            if (f->is_on && f->auto_active)
+            if (f->is_on && f->current_mode == DC1394_FEATURE_MODE_AUTO)
                 cur_val = CAM_DC1394_MENU_AUTO;
             else if (f->is_on)
                 cur_val = CAM_DC1394_MENU_MANUAL;
@@ -884,7 +850,6 @@ add_all_camera_controls (CamUnit * super)
 
             ctl = cam_unit_add_control_enum (super, 
                     ctl_id,
-//                    CAM_DC1394_CNTL_FLAG_STATE | f->id,
                     (char *) feature_desc[i], cur_val, 1,
                     feature_state_desc, entries_enabled);
             g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
@@ -892,10 +857,11 @@ add_all_camera_controls (CamUnit * super)
             free (ctl_id);
         }
 
-        int enabled = (f->is_on && !f->auto_active) ||
-            (!f->on_off_capable && !f->auto_capable && f->manual_capable);
+        int enabled = (f->is_on &&
+                f->current_mode != DC1394_FEATURE_MODE_AUTO) ||
+            (!f->on_off_capable && !auto_capable && manual_capable);
 
-        if (!f->readout_capable && f->manual_capable) {
+        if (!f->readout_capable && manual_capable) {
             fprintf (stderr, "Control \"%s\" is not readout capable but can "
                     "still be set\n", feature_desc[i]);
         }
@@ -1006,7 +972,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
                     DC1394_TRIGGER_MODE_0);
         }
         f.id = DC1394_FEATURE_TRIGGER;
-        dc1394_get_camera_feature (self->cam, &f);
+        dc1394_feature_get (self->cam, &f);
         if (f.is_on)
             g_value_set_int (actual,
                     f.trigger_mode - DC1394_TRIGGER_MODE_0 + 1);
@@ -1043,10 +1009,10 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
             dc1394_feature_set_mode (self->cam, f.id, (val == 1) ?
                     DC1394_FEATURE_MODE_AUTO : DC1394_FEATURE_MODE_MANUAL);
         }
-        dc1394_get_camera_feature (self->cam, &f);
+        dc1394_feature_get (self->cam, &f);
         if (!f.is_on)
             g_value_set_int (actual, CAM_DC1394_MENU_OFF);
-        else if (f.auto_active)
+        else if (f.current_mode == DC1394_FEATURE_MODE_AUTO)
             g_value_set_int (actual, CAM_DC1394_MENU_AUTO);
         else
             g_value_set_int (actual, CAM_DC1394_MENU_MANUAL);
@@ -1056,12 +1022,12 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
             CamUnitControl * ctl2 = cam_unit_find_control (super,
                     "white-balance-red");
             cam_unit_control_modify_int (ctl2, f.min, f.max, 1,
-                    f.is_on && !f.auto_active);
+                    f.is_on && f.current_mode != DC1394_FEATURE_MODE_AUTO);
             cam_unit_control_force_set_int (ctl2, f.RV_value);
             CamUnitControl * ctl3 = cam_unit_find_control (super,
                     "white-balance-blue");
             cam_unit_control_modify_int (ctl3, f.min, f.max, 1,
-                    f.is_on && !f.auto_active);
+                    f.is_on && f.current_mode != DC1394_FEATURE_MODE_AUTO);
             cam_unit_control_force_set_int (ctl3, f.BU_value);
             return TRUE;
         }
@@ -1071,27 +1037,27 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
         if (ctl2->type == CAM_UNIT_CONTROL_TYPE_INT) {
             cam_unit_control_modify_int (ctl2, f.min, f.max, 1,
-                    f.is_on && !f.auto_active);
+                    f.is_on && f.current_mode != DC1394_FEATURE_MODE_AUTO);
             cam_unit_control_force_set_int (ctl2, f.value);
         }
         else {
             cam_unit_control_modify_float (ctl2, f.abs_min, f.abs_max,
                     (f.abs_max - f.abs_min) / NUM_FLOAT_STEPS,
-                    f.is_on && !f.auto_active);
+                    f.is_on && f.current_mode != DC1394_FEATURE_MODE_AUTO);
             cam_unit_control_force_set_float (ctl2, f.abs_value);
         }
         return TRUE;
     }
 
     if (f.id == DC1394_FEATURE_WHITE_BALANCE) {
-        dc1394_get_camera_feature (self->cam, &f);
+        dc1394_feature_get (self->cam, &f);
         if (strstr (ctl->id, "blue"))
             dc1394_feature_whitebalance_set_value (self->cam,
                     val, f.RV_value);
         else
             dc1394_feature_whitebalance_set_value (self->cam,
                     f.BU_value, val);
-        dc1394_get_camera_feature (self->cam, &f);
+        dc1394_feature_get (self->cam, &f);
         if (strstr (ctl->id, "blue"))
             g_value_set_int (actual, f.BU_value);
         else
@@ -1102,7 +1068,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     if (G_VALUE_TYPE (proposed) == G_TYPE_FLOAT) {
         float fval = g_value_get_float (proposed);
         dc1394_feature_set_absolute_value (self->cam, f.id, fval);
-        dc1394_get_camera_feature (self->cam, &f);
+        dc1394_feature_get (self->cam, &f);
         if (f.readout_capable)
             g_value_set_float (actual, f.abs_value);
         else
@@ -1110,7 +1076,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     }
     else {
         dc1394_feature_set_value (self->cam, f.id, val);
-        dc1394_get_camera_feature (self->cam, &f);
+        dc1394_feature_get (self->cam, &f);
         if (f.readout_capable)
             g_value_set_int (actual, f.value);
         else
