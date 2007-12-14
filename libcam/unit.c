@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include <string.h>
 #include <poll.h>
 #include <errno.h>
@@ -557,23 +558,26 @@ cam_unit_stream_init_any_format (CamUnit *self)
     if (! self->output_formats) return -1;
 
     const CamUnitFormat *fmt = NULL;
-    int best_score = 0;
+    int64_t best_score = 0;
+    int64_t max_wh = 10000 * 10000;
 
     for (GList *fiter=self->output_formats; fiter; fiter=fiter->next) {
         CamUnitFormat *cfmt = CAM_UNIT_FORMAT(fiter->data);
-        int score = 0;
+        int64_t score = MIN (cfmt->width * cfmt->height, max_wh);
+
         if (self->requested_pixelformat != CAM_PIXEL_FORMAT_INVALID &&
                 self->requested_pixelformat == cfmt->pixelformat) {
-            score += 3;
+            score += max_wh * 3;
         }
         if (self->requested_width > 0 && 
                 self->requested_width == cfmt->width) {
-            score ++;
+            score += max_wh;
         }
         if (self->requested_height > 0 &&
                 self->requested_height == cfmt->height) {
-            score ++;
+            score += max_wh;
         }
+
         if (!fmt || score > best_score) {
             best_score = score;
             fmt = cfmt;

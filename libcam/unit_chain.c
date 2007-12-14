@@ -41,7 +41,6 @@ static gboolean cam_unit_chain_source_dispatch (GSource *source,
 static void cam_unit_chain_source_finalize (GSource *source);
 static void on_unit_status_changed (CamUnit *unit, int old_status, 
         CamUnitChain *self);
-//static void print_chain (CamUnitChain *self);
 
 G_DEFINE_TYPE (CamUnitChain, cam_unit_chain, G_TYPE_OBJECT);
 
@@ -628,7 +627,6 @@ cam_unit_chain_source_prepare (GSource *source, gint *timeout)
     CamUnitChain * self = csource->chain;
 
 //    dbg (DBG_CHAIN, "source prepare (%d units)\n", g_list_length (self->units));
-//    print_chain (self);
 
     *timeout = -1;
 
