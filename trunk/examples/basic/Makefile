@@ -1,4 +1,3 @@
-LIB_PATH := ../libcam
 BIN_PATH := .
 
 CFLAGS_GLIB  := `pkg-config --cflags glib-2.0`
