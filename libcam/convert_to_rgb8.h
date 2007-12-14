@@ -11,9 +11,16 @@
 G_BEGIN_DECLS
 
 /**
- * CamConvertToRgb8
+ * SECTION:convert_to_rgb8
+ * @short_description: Convenience unit that attempts to convert everything to 24-bit RGB
  *
- * This demonstrates how to create a simple filter
+ * CamConvertToRgb8 is a convenience unit that attempts to convert its input to
+ * 24-bit RGB.  It is actually a wrapper around several other conversion units,
+ * and tries to intelligently decide which unit to use when faced with a given
+ * input image source.
+ *
+ * CamConvertToRgb8 is a core unit, and is always available with unit
+ * id "convert.to_rgb8"
  */
 
 typedef struct _CamConvertToRgb8 CamConvertToRgb8;

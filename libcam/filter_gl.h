@@ -18,8 +18,8 @@ G_BEGIN_DECLS
  * unchanged, but implements the #draw_gl_init, #draw_gl, and #draw_gl_shutdown
  * routines that allow it to render images to an OpenGL context.
  *
- * To create a new CamFilterGL unit, use #cam_unit_chain_add_unit_by_id with
- * unit_id "filter_gl:0"
+ * CamFilterGL is a core unit, and is always available with unit id
+ * "output.opengl"
  */
 
 typedef struct _CamFilterGL CamFilterGL;

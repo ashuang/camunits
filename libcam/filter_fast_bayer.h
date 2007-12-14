@@ -9,9 +9,14 @@
 G_BEGIN_DECLS
 
 /**
- * CamFastBayerFilter
+ * SECTION:filter_fast_bayer
+ * @short_description: SSE2/SSE3 optimized Bayer demosaic filter.
  *
- * An SSE2/SSE3 optimized Bayer demosaic filter.
+ * An SSE2/SSE3 optimized Bayer demosaic filter.  Do _NOT_ try to use this
+ * filter if your architecture doesn't support SSE2/SSE3.
+ *
+ * CamFastBayerFilter is a core unit, and is always available with unit
+ * id "convert.fast_debayer"
  */
 
 typedef struct _CamFastBayerFilter CamFastBayerFilter;

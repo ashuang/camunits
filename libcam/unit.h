@@ -30,15 +30,15 @@
  *
  * Filter units form the backbone of an image processing chain, and may
  * transform an image in some way.  Examples of filter units that modify 
- * images are #CamColorConversionFilter and #CamBayerFilter.  Other filter
+ * images are #CamColorConversionFilter and #CamFastBayerFilter.  Other filter
  * units may simply pass the image through while doing something else (e.g.
  * #CamFilterGL)
  *
  * A CamUnit object exists in one of three states: idle, ready, or streaming.
  * See: #CamUnitStatus
  *
- * Filter units must have an associated input unit, set using the
- * #cam_unit_set_input method.  This method is typically invoked by the
+ * Filter units must have an associated input unit, set using
+ * cam_unit_set_input().  This method is typically invoked by the
  * #CamUnitChain containing the unit.
  */
 
@@ -190,7 +190,22 @@ GType cam_unit_get_type(void);
 
 // ======== CamUnit public methods =============
 
-int cam_unit_set_input (CamUnit * self, CamUnit * src_unit);
+/**
+ * cam_unit_set_input:
+ * @input: the input unit.  To detach a CamUnit from its input, set this to
+ * NULL.
+ *
+ * Sets the input of a CamUnit.  This method only makes sense for filter units
+ * (e.g. #CamColorConversionFilter, #CamFilterGL), and is meaningless for input
+ * units (e.g. #CamInputLog).  When using a CamUnit as part of a #CamUnitChain,
+ * the chain should take care of invoking this method when appropriate.
+ *
+ * The CamUnit (on which this method is being invoked, not the input unit) must
+ * in state CAM_UNIT_STATUS_IDLE.
+ *
+ * Returns: 0 on success, -1 on failure (e.g. if the unit is not idle).
+ */
+int cam_unit_set_input (CamUnit * self, CamUnit * input);
 
 /**
  * cam_unit_get_input:
@@ -269,9 +284,6 @@ int cam_unit_stream_init_any_format (CamUnit *self);
  * Sets the preferred format when initializing the stream via
  * cam_unit_stream_init_any_format.  If a format matching the requested
  * parameters is not found, then an arbitrary format is chosen.
- *
- * Returns: 0 on success, -1 if format does not belong to the unit and is not
- * NULL
  */
 int cam_unit_set_preferred_format (CamUnit *self, 
         CamPixelFormat pixelformat, int width, int height);

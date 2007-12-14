@@ -9,11 +9,12 @@
 G_BEGIN_DECLS
 
 /**
- * A Video for Linux 2 driver.
+ * SECTION:input_log
+ * @short_description: input unit for libcam log files
  */
 
 
-/*
+/**
  * SECTION:input_v4l2
  * @short_description: input unit for Video 4 Linux 2 (V4L2) devices
  */

@@ -11,9 +11,16 @@
 G_BEGIN_DECLS
 
 /**
- * CamColorConversionFilter
+ * SECTION:convert_colorspace
+ * @short_description: General-purpose colorspace conversion
  *
- * This demonstrates how to create a simple filter
+ * CamColorConversionFilter attempts to be a swiss-army-knife of colorspace
+ * conversions.  It does so with limited success.  The list of supported
+ * conversions changes frequently; the best way to find out which conversions
+ * are supported is to either look at the source code or experiment in camview.
+ *
+ * CamColorConversionFilter is a core unit, and is always available with unit
+ * id "convert.colorspace"
  */
 
 typedef struct _CamColorConversionFilter CamColorConversionFilter;

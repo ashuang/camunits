@@ -73,7 +73,7 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
      * @manager: the CamUnitManager emitting the signal
      * @udesc: the CamUnitDescription just added
      *
-     * The unit-description-addede signal is emitted when the CamUnitManager
+     * The unit-description-added signal is emitted when the CamUnitManager
      * detects that a driver has added a CamUnitDescription to its list of
      * available units.
      */
@@ -105,7 +105,7 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
                 0, NULL, NULL,
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
-                G_TYPE_OBJECT);
+                CAM_TYPE_UNIT_DESCRIPTION);
 
     /**
      * CamUnitManager::unit-driver-added
