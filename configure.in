@@ -21,7 +21,7 @@ AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
 AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, JPEG_LIBS='-ljpeg',
              [AC_MSG_ERROR([libjpeg not found, but is required by libcam.])])
 PKG_PROG_PKG_CONFIG
-PKG_CHECK_MODULES(DC1394, [libdc1394-2 = 2.0.0-rc7],,
+PKG_CHECK_MODULES(DC1394, [libdc1394-2 = 2.0.0-rc9],,
                   [AC_MSG_WARN([libdc1394 not found, firewire camera support will be disabled])])
 
 AC_SUBST(GL_LIBS)
@@ -132,5 +132,5 @@ Configuration (libcam):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
-        DC1394 plugin:         ${DC1394MSG}"
+	DC1394 plugin:         ${DC1394MSG}"
 

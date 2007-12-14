@@ -37,8 +37,8 @@ typedef struct _CamDC1394DriverClass CamDC1394DriverClass;
 struct _CamDC1394Driver {
     CamUnitDriver parent;
 
-    dc1394camera_t ** cameras;
-    unsigned int num_cameras;
+    dc1394_t * dc1394;
+    dc1394camera_list_t * list;
 };
 
 struct _CamDC1394DriverClass {
