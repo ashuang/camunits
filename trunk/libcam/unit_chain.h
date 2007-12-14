@@ -12,6 +12,14 @@ extern "C" {
  * @short_description: A sequence of #CamUnit objects that form an image
  * processing chain.
  *
+ * CamUnitChain is largely a convenience class for creating and managing a
+ * sequence of #CamUnit objects in an image processing chain.  CamUnitChain is
+ * optimized for use within a GLib GMainLoop, but it is possible to use a
+ * CamUnitChain within other event loops with a little more work.
+ *
+ * The CamUnitChain handles the tedium of connecting units together,
+ * consolidating their file descriptors and timers (for input units) and
+ * attaching the units to a GMainLoop.
  */
 
 typedef struct _CamUnitChain CamUnitChain;
@@ -62,15 +70,16 @@ GType cam_unit_chain_get_type (void);
 // ========= Unit Chain public methods ==========
 
 /**
- * constructor.  create a new chain with a new unit manager
+ * Constructor.  create a new chain with a new unit manager
  */
 CamUnitChain * cam_unit_chain_new (void);
 
 /**
  * cam_unit_chain_new_with_manager:
+ * @manager: an existing CamUnitManager to use with the new CamUnitChain.
  *
- * constructor.  create a new chain with an existing manager.  on return,
- * the reference count on manager is incremeneted.
+ * Constructor.  create a new chain with an existing manager.  on return,
+ * the reference count on %manager is incremeneted.
  */
 CamUnitChain * cam_unit_chain_new_with_manager (CamUnitManager *manager);
 
@@ -79,7 +88,7 @@ CamUnitChain * cam_unit_chain_new_with_manager (CamUnitManager *manager);
  *
  * Returns: the unit manager associated with the chain
  */
-CamUnitManager * cam_unit_chain_get_manager (CamUnitChain *chain);
+CamUnitManager * cam_unit_chain_get_manager (CamUnitChain *self);
 
 /**
  * cam_unit_chain_get_length:
@@ -113,6 +122,7 @@ int cam_unit_chain_insert_unit (CamUnitChain *self, CamUnit *unit,
 
 /**
  * cam_unit_chain_insert_unit_tail:
+ * @unit: the CamUnit to insert
  *
  * Convenience method.  Inserts a unit into the chain as the last unit.
  * calls g_object_ref_sink on unit
@@ -123,6 +133,7 @@ int cam_unit_chain_insert_unit_tail (CamUnitChain *self, CamUnit *unit);
 
 /**
  * cam_unit_chain_add_unit_by_id:
+ * @unit_id: ID of the new unit to instantiate and add.
  *
  * Convenience method.  Searches for a unit description with specified ID, 
  * creates a new unit from it, and adds it to the chain.
@@ -134,6 +145,7 @@ CamUnit * cam_unit_chain_add_unit_by_id (CamUnitChain *self,
 
 /**
  * cam_unit_chain_remove_unit:
+ * @unit: the CamUnit to remove
  *
  * removes a unit from the chain and decrements the unit's refcount.  Note that
  * this may destroy the unit if the chain is the only object with a reference
@@ -165,6 +177,7 @@ CamUnit * cam_unit_chain_get_last_unit (const CamUnitChain *self);
 
 /**
  * cam_unit_chain_find_unit_by_id:
+ * @unit_id: search query
  *
  * Searches for a unit in the chain with the specified id, and returns the
  * first matching unit.  Does not modify the reference count of the unit.
@@ -192,6 +205,8 @@ int cam_unit_chain_get_unit_index (CamUnitChain *self, const CamUnit *unit);
 
 /**
  * cam_unit_chain_reorder_unit:
+ * @unit: the target CamUnit
+ * @new_index: the new position within the chain for the CamUnit.
  *
  * Re-positions a unit within the chain.  
  *
@@ -203,6 +218,7 @@ int cam_unit_chain_reorder_unit (CamUnitChain *self, CamUnit *unit,
 
 /**
  * cam_unit_chain_set_desired_status:
+ * @status: the desired CamUnitStatus
  *
  * Sets the desired status for every unit in the chain.  Upon calling this, the
  * chain will attempt to call stream_{init_any_format,on,off,shutdown} on each
@@ -221,6 +237,7 @@ CamUnitStatus cam_unit_chain_get_desired_status(const CamUnitChain *self);
 
 /**
  * cam_unit_chain_are_all_units_status:
+ * @status: the query status.
  *
  * Convenience function.  Checks to see if all units in the chain have the 
  * specified status.
@@ -231,9 +248,24 @@ CamUnitStatus cam_unit_chain_get_desired_status(const CamUnitChain *self);
 CamUnit * cam_unit_chain_check_status_all_units (const CamUnitChain *self,
         CamUnitStatus status);
 
+/**
+ * cam_unit_chain_attach_glib:
+ * @priority: the GLib event priority to give the event sources in the
+ *            CamUnitChain.
+ * @context: a GMainContext to which the chain will be attached.  May be NULL,
+ *           in which case the default GMainContext is used.
+ *
+ * Attaches a CamUnitChain to a GLib event context.  Use this method when
+ * using a GTK or GLib event loop.
+ */
 int cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
         GMainContext * context);
 
+/**
+ * cam_unit_chain_detach_glib:
+ *
+ * Detaches a CamUnitChain from its GLib event context.
+ */
 void cam_unit_chain_detach_glib (CamUnitChain *self);
 
 #ifdef __cplusplus
