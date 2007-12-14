@@ -157,6 +157,15 @@ GList * cam_unit_manager_list_package (CamUnitManager *self,
 CamUnit * cam_unit_manager_create_unit_by_id (CamUnitManager *self,
         const char *unit_id);
 
+/**
+ * cam_unit_manager_add_plugin_dir:
+ * @path: target directory containing libcam plugins
+ *
+ * Causes the unit manager to scan the specified directory for plugins.
+ * Discovered plugins will be loaded into the manager.
+ */
+void cam_unit_manager_add_plugin_dir (CamUnitManager *self, const char *path);
+
 #ifdef __cplusplus
 }
 #endif

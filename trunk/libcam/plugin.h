@@ -80,9 +80,6 @@ type_name##_get_type (void) \
 CamUnitDriver *
 cam_plugin_unit_driver_create (const char * filename);
 
-void
-cam_plugin_load_drivers (CamUnitManager * manager, const char * path);
-
 #ifdef __cplusplus
 }
 #endif

@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <dirent.h>
-#include <errno.h>
 
 #include <gmodule.h>
 
@@ -79,8 +77,7 @@ cam_plugin_class_init (CamPluginClass * klass)
 CamUnitDriver *
 cam_plugin_unit_driver_create (const char * filename)
 {
-    CamPlugin * self = 
-        CAM_PLUGIN( g_object_new( CAM_TYPE_PLUGIN, NULL ) );
+    CamPlugin * self = CAM_PLUGIN (g_object_new (CAM_TYPE_PLUGIN, NULL));
     self->filename = strdup (filename);
 
     if (!g_module_supported ()) {
@@ -96,36 +93,6 @@ cam_plugin_unit_driver_create (const char * filename)
     CamUnitDriver * driver = self->create (G_TYPE_MODULE (self));
     g_type_module_unuse (G_TYPE_MODULE (self));
     return driver;
-}
-
-void
-cam_plugin_load_drivers (CamUnitManager * manager, const char * path)
-{
-    DIR * dir = opendir (path);
-    if (!dir) {
-        fprintf (stderr, "Warning: failed to open %s: %s\n", path,
-                strerror (errno));
-        return;
-    }
-
-    struct dirent * dirent;
-    while ((dirent = readdir (dir))) {
-        if (dirent->d_name[0] == '.')
-            continue;
-        int len = strlen (dirent->d_name);
-        if (len > 3 && !strcmp (dirent->d_name + len - 3, ".la"))
-            continue;
-
-        gchar * filename = g_build_filename (path, dirent->d_name, NULL);
-
-        CamUnitDriver * driver = cam_plugin_unit_driver_create (filename);
-        if (driver)
-            cam_unit_manager_add_driver (manager, driver);
-
-        g_free (filename);
-    }
-
-    closedir (dir);
 }
 
 gboolean
