@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
+#include <errno.h>
 
 #include "unit_manager.h"
 #include "plugin.h"
@@ -311,6 +313,36 @@ cam_unit_manager_create_unit_by_id (CamUnitManager *self,
     return cam_unit_driver_create_unit (udesc->driver, udesc);
 }
 
+void 
+cam_unit_manager_add_plugin_dir (CamUnitManager *self, const char *path)
+{
+    DIR * dir = opendir (path);
+    if (!dir) {
+        fprintf (stderr, "Warning: failed to open %s: %s\n", path,
+                strerror (errno));
+        return;
+    }
+
+    struct dirent * dirent;
+    while ((dirent = readdir (dir))) {
+        if (dirent->d_name[0] == '.')
+            continue;
+        int len = strlen (dirent->d_name);
+        if (len > 3 && !strcmp (dirent->d_name + len - 3, ".la"))
+            continue;
+
+        gchar * filename = g_build_filename (path, dirent->d_name, NULL);
+
+        CamUnitDriver * driver = cam_plugin_unit_driver_create (filename);
+        if (driver)
+            cam_unit_manager_add_driver (self, driver);
+
+        g_free (filename);
+    }
+
+    closedir (dir);
+}
+
 static void
 cam_unit_manager_register_core_drivers (CamUnitManager *self)
 {
@@ -361,5 +393,14 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     CamUnitDriver *logger_driver = cam_logger_unit_driver_new ();
     cam_unit_manager_add_driver (self, logger_driver);
 
-    cam_plugin_load_drivers (self, LIBCAM_PLUGINS_PATH);
+    cam_unit_manager_add_plugin_dir (self, LIBCAM_PLUGINS_PATH);
+
+    const char *plugin_path_env = g_getenv ("LIBCAM_PLUGIN_PATH");
+    if (plugin_path_env && strlen (plugin_path_env)) {
+        char **env_dirs = g_strsplit (plugin_path_env, ":", 0);
+        for (int i=0; env_dirs[i]; i++) {
+            cam_unit_manager_add_plugin_dir (self, env_dirs[i]);
+        }
+        g_strfreev (env_dirs);
+    }
 }
