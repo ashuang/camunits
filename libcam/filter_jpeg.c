@@ -3,6 +3,7 @@
 #include <string.h>
 #include <jpeglib.h>
 #include <jerror.h>
+#include <setjmp.h>
 
 #include "filter_jpeg.h"
 #include "pixels.h"
@@ -179,15 +180,37 @@ term_source (j_decompress_ptr cinfo)
 {
 }
 
+struct _my_jpeg_error_mgr {
+    struct jpeg_error_mgr pub;
+    jmp_buf setjmp_buffer;
+};
+typedef struct _my_jpeg_error_mgr my_jpeg_error_mgr_t;
+
+static void
+_error_exit (j_common_ptr cinfo)
+{
+    my_jpeg_error_mgr_t *err = (my_jpeg_error_mgr_t*) cinfo->err;
+    fprintf (stderr, "JPEG decoding error (%s:%d) - ", __FILE__, __LINE__);
+    (*cinfo->err->output_message) (cinfo);
+    longjmp(err->setjmp_buffer, 1);
+}
+
 static int
 _jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride)
 {
     struct jpeg_decompress_struct cinfo;
-    struct jpeg_error_mgr jerr;
     struct jpeg_source_mgr jsrc;
+    my_jpeg_error_mgr_t jerr;
 
-    cinfo.err = jpeg_std_error (&jerr);
+    cinfo.err = jpeg_std_error (&jerr.pub);
+    jerr.pub.error_exit = _error_exit;
+    if (setjmp(jerr.setjmp_buffer)) {
+        // code execution starts here if the _error_exit handler was called
+        jpeg_destroy_decompress(&cinfo);
+        return -1;
+    }
+
     jpeg_create_decompress (&cinfo);
 
     jsrc.next_input_byte = src;
