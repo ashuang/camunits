@@ -96,8 +96,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         memset (outbuf->data + i*super->fmt->row_stride + x0*3, val, rw*3);
     }
 
-    // copy the bytesused, timestamp, source_uid, etc. fields.
+    // copy the timestamp and metadata dictionary
     cam_framebuffer_copy_metadata (outbuf, inbuf);
+
     outbuf->bytesused = super->fmt->row_stride * super->fmt->height;
 
     cam_unit_produce_frame (super, outbuf, super->fmt);
