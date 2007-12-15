@@ -23,40 +23,51 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
-// class initializer
+// Class initializer
 static void
 my_filter_example_class_init (MyFilterExampleClass *klass)
 {
-    GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-    gobject_class->finalize = my_filter_example_finalize;
+    // override the destructor
+    G_OBJECT_CLASS (klass)->finalize = my_filter_example_finalize;
+
+    // override the "on_input_frame_ready" method
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
 
+// First part of the constructor
 MyFilterExample * 
 my_filter_example_new()
 {
     return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
 }
 
+// Initializer.  This is the second part of the constructor.
 static void
 my_filter_example_init (MyFilterExample *self)
 {
     // Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
 
+    // create a control
     self->patch_intensity_control = cam_unit_add_control_int (super, 
             "patch-intensity", "Patch Intensity", 0, 255, 1, 127, 1);
+
+    // request notification when the input of the unit changes
     g_signal_connect (G_OBJECT(self), "input-format-changed",
             G_CALLBACK(on_input_format_changed), NULL);
 }
 
+// destructor.
 static void
 my_filter_example_finalize (GObject *obj)
 {
-    // destructor.  release heap/freestore memory here
+    // If we allocated memory on the heap/freestore, we'd release it here
+
+    // invoke the superclass destructor
     G_OBJECT_CLASS (my_filter_example_parent_class)->finalize(obj);
 }
 
+// this method is called whenever the input unit produces a frame
 static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
@@ -93,11 +104,19 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     g_object_unref (outbuf);
 }
 
+// this is the signal handler attached in "my_filter_example_init", and is
+// called when the format of the input data changes.
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
+    // first, clear all available output formats from this unit
     cam_unit_remove_all_output_formats (super);
-    if (!infmt || infmt->pixelformat != CAM_PIXEL_FORMAT_RGB) return;
+
+    // If there is no input, then we can't produce output.  
+    if (!infmt) return;
+   
+    // actually, we can only handle 8-bit RGB input data.
+    if (infmt->pixelformat != CAM_PIXEL_FORMAT_RGB) return;
 
     cam_unit_add_output_format_full (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
