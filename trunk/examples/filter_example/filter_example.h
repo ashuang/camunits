@@ -1,5 +1,5 @@
-#ifndef __example_filter_h__
-#define __example_filter_h__
+#ifndef __my_filter_example_h__
+#define __my_filter_example_h__
 
 #include <glib-object.h>
 
@@ -7,47 +7,52 @@
 
 G_BEGIN_DECLS
 
-/**
- * CamFilterExample
- *
- * This demonstrates how to create a simple filter
- */
+// This file demonstrates how to create a simple CamUnit subclass.  When
+// implementing a custom MyUnit, replace "FilterExample", "FILTER_EXAMPLE",
+// and "filter_example" with your own names.  You'll also want to pick a
+// different namespace (i.e. prefix) from "My"
 
-typedef struct _CamFilterExample CamFilterExample;
-typedef struct _CamFilterExampleClass CamFilterExampleClass;
+typedef struct _MyFilterExample MyFilterExample;
+typedef struct _MyFilterExampleClass MyFilterExampleClass;
 
-// boilerplate
-#define CAM_TYPE_FILTER_EXAMPLE  cam_filter_example_get_type()
-#define CAM_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAM_TYPE_FILTER_EXAMPLE, CamFilterExample))
-#define CAM_FILTER_EXAMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAM_TYPE_FILTER_EXAMPLE, CamFilterExampleClass ))
-#define IS_CAM_FILTER_EXAMPLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAM_TYPE_FILTER_EXAMPLE ))
-#define IS_CAM_FILTER_EXAMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAM_TYPE_FILTER_EXAMPLE))
-#define CAM_FILTER_EXAMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAM_TYPE_FILTER_EXAMPLE, CamFilterExampleClass))
+// boilerplate.
+#define MY_TYPE_FILTER_EXAMPLE  my_filter_example_get_type()
+#define MY_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        MY_TYPE_FILTER_EXAMPLE, MyFilterExample))
+#define MY_FILTER_EXAMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
+            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass ))
+#define IS_MY_FILTER_EXAMPLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            MY_TYPE_FILTER_EXAMPLE ))
+#define IS_MY_FILTER_EXAMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
+            (klass), MY_TYPE_FILTER_EXAMPLE))
+#define MY_FILTER_EXAMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
+            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass))
 
-struct _CamFilterExample {
+// object definition struct.  member variables go in here
+struct _MyFilterExample {
+    // the first member must always be the superclass struct
     CamUnit parent;
+
+    // add one member variable
     CamUnitControl *patch_intensity_control;
 };
 
-struct _CamFilterExampleClass {
+// class definition.  This is pretty much a vtable, and you will rarely need to
+// change it
+struct _MyFilterExampleClass {
     CamUnitClass parent_class;
 };
 
-GType cam_filter_example_get_type (void);
+GType my_filter_example_get_type (void);
 
 /** 
  * Constructor.
  * 
  * Don't call this function manually.  Instead, use the unit driver
  */
-CamFilterExample * cam_filter_example_new();
+MyFilterExample * my_filter_example_new();
 
-CamUnitDriver * cam_filter_example_driver_new (void);
+CamUnitDriver * my_filter_example_driver_new (void);
 
 G_END_DECLS
 
