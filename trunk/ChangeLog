@@ -1,4 +1,5 @@
 2007-12-14  David Moore  <dcm@acm.org>
+	* Add non-format7 modes to input_dc1394
 	* Update input_dc1394 to use version 2.0.0-rc9 of libdc1394
 
 2007-12-05  David Moore  <dcm@acm.org>
