@@ -284,9 +284,6 @@ cam_dc1394_new (dc1394camera_t * cam)
 
     dc1394format7modeset_t info;
 
-    if (dc1394_video_set_mode (cam, DC1394_VIDEO_MODE_FORMAT7_0) !=
-            DC1394_SUCCESS)
-        goto fail;
     if (dc1394_format7_get_modeset (cam, &info) != DC1394_SUCCESS)
         goto fail;
     
@@ -302,7 +299,7 @@ cam_dc1394_new (dc1394camera_t * cam)
             CamPixelFormat pix =
                 dc1394_pixel_format (mode->color_codings.codings[j],
                         mode->color_filter);
-            sprintf (name, "%dx%d %s", mode->max_size_x, mode->max_size_y,
+            sprintf (name, "%dx%d %s (F7)", mode->max_size_x, mode->max_size_y,
                     cam_pixel_format_str (pix));
 
             int stride = mode->max_size_x * cam_pixel_format_bpp(pix) / 8;
@@ -313,11 +310,38 @@ cam_dc1394_new (dc1394camera_t * cam)
                     stride, 
                     mode->max_size_y * stride);
 
+            g_object_set_data (G_OBJECT (fmt), "input_dc1394-mode",
+                    GINT_TO_POINTER (DC1394_VIDEO_MODE_FORMAT7_0 + i));
             g_object_set_data (G_OBJECT (fmt), "input_dc1394-format7-mode",
                     GINT_TO_POINTER (i));
             g_object_set_data (G_OBJECT (fmt), "input_dc1394-color-coding",
                     GINT_TO_POINTER (j));
         }
+    }
+
+    dc1394video_modes_t modes;
+    dc1394_video_get_supported_modes (cam, &modes);
+    for (i = 0; i < modes.num; i++) {
+        dc1394video_mode_t mode = modes.modes[i];
+        if (dc1394_is_video_mode_scalable (mode))
+            continue;
+        dc1394color_coding_t color_coding;
+        dc1394_get_color_coding_from_video_mode (cam, mode, &color_coding);
+        CamPixelFormat pix = dc1394_pixel_format (color_coding, 0);
+
+        uint32_t width, height, stride;
+        dc1394_get_image_size_from_video_mode (cam, mode, &width, &height);
+        stride = width * cam_pixel_format_bpp (pix) / 8;
+
+        char name[256];
+        sprintf (name, "%dx%d %s", width, height, cam_pixel_format_str (pix));
+
+        CamUnitFormat * fmt =
+            cam_unit_add_output_format_full (CAM_UNIT (self), pix, name,
+                    width, height, stride, height * stride);
+
+        g_object_set_data (G_OBJECT (fmt), "input_dc1394-mode",
+                GINT_TO_POINTER (mode));
     }
 
     add_all_camera_controls (CAM_UNIT (self));
@@ -340,75 +364,76 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "Initializing DC1394 stream (pxlfmt 0x%x %dx%d)\n",
             format->pixelformat, format->width, format->height);
 
-    dc1394format7modeset_t info;
-    dc1394_format7_get_modeset (self->cam, &info);
-
-    int i = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (format), 
-                "input_dc1394-format7-mode"));
-    int j = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (format),
-                "input_dc1394-color-coding"));
-    dc1394format7mode_t * mode = info.mode + i;
-    dc1394color_coding_t color_coding = mode->color_codings.codings[j];
-    
-    if (format->pixelformat != dc1394_pixel_format (color_coding,
-                mode->color_filter) ||
-            format->width != mode->max_size_x ||
-            format->height != mode->max_size_y)
-        goto fail;
-
-    dc1394video_mode_t vidmode = DC1394_VIDEO_MODE_FORMAT7_0 + i;
-
+    dc1394video_mode_t vidmode = GPOINTER_TO_INT (g_object_get_data (
+                G_OBJECT (format), "input_dc1394-mode"));
     dc1394_video_set_mode (self->cam, vidmode);
     dc1394_video_set_iso_speed (self->cam, DC1394_ISO_SPEED_400);
 
-    int width, height;
-    dc1394_format7_set_image_size (self->cam, vidmode,
-            format->width, format->height);
-    dc1394_format7_set_image_position (self->cam, vidmode, 0, 0);
-    width = format->width;
-    height = format->height;
+    if (dc1394_is_video_mode_scalable (vidmode)) {
+        dc1394format7modeset_t info;
+        dc1394_format7_get_modeset (self->cam, &info);
 
-    dc1394_format7_set_color_coding (self->cam, vidmode, color_coding);
+        int i = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (format), 
+                    "input_dc1394-format7-mode"));
+        int j = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (format),
+                    "input_dc1394-color-coding"));
+        dc1394format7mode_t * mode = info.mode + i;
+        dc1394color_coding_t color_coding = mode->color_codings.codings[j];
 
-    uint32_t psize_unit, psize_max;
-    dc1394_format7_get_packet_parameters (self->cam, vidmode, &psize_unit,
-            &psize_max);
+        if (format->pixelformat != dc1394_pixel_format (color_coding,
+                    mode->color_filter) ||
+                format->width != mode->max_size_x ||
+                format->height != mode->max_size_y)
+            goto fail;
 
-    CamUnitControl * ctl = cam_unit_find_control (super, "packet-size");
-    int desired_packet = cam_unit_control_get_int (ctl);
+        int width, height;
+        dc1394_format7_set_image_size (self->cam, vidmode,
+                format->width, format->height);
+        dc1394_format7_set_image_position (self->cam, vidmode, 0, 0);
+        width = format->width;
+        height = format->height;
 
-    desired_packet = (desired_packet / psize_unit) * psize_unit;
-    if (desired_packet > psize_max)
-        desired_packet = psize_max;
-    if (desired_packet < psize_unit)
-        desired_packet = psize_unit;
+        dc1394_format7_set_color_coding (self->cam, vidmode, color_coding);
 
-    self->packet_size = desired_packet;
+        uint32_t psize_unit, psize_max;
+        dc1394_format7_get_packet_parameters (self->cam, vidmode, &psize_unit,
+                &psize_max);
 
-    cam_unit_control_force_set_int (ctl, desired_packet);
+        CamUnitControl * ctl = cam_unit_find_control (super, "packet-size");
+        int desired_packet = cam_unit_control_get_int (ctl);
+
+        desired_packet = (desired_packet / psize_unit) * psize_unit;
+        if (desired_packet > psize_max)
+            desired_packet = psize_max;
+        if (desired_packet < psize_unit)
+            desired_packet = psize_unit;
+
+        self->packet_size = desired_packet;
+
+        cam_unit_control_force_set_int (ctl, desired_packet);
 
 #if 0
-    dc1394_format7_get_recommended_packet_size (self->cam,
-            vidmode, &self->packet_size);
-    dbg (DBG_INPUT, "DC1394: Using device-recommended packet size of %d\n",
-            self->packet_size);
+        dc1394_format7_get_recommended_packet_size (self->cam,
+                vidmode, &self->packet_size);
+        dbg (DBG_INPUT, "DC1394: Using device-recommended packet size of %d\n",
+                self->packet_size);
 #endif
-    if (self->packet_size == 0)
-        self->packet_size = 4096;
+        if (self->packet_size == 0)
+            self->packet_size = 4096;
 
-    dc1394_format7_set_packet_size (self->cam, vidmode, self->packet_size);
+        dc1394_format7_set_packet_size (self->cam, vidmode, self->packet_size);
+        uint64_t bytes_per_frame;
+        dc1394_format7_get_total_bytes (self->cam, vidmode, &bytes_per_frame);
 
-    uint64_t bytes_per_frame;
-    dc1394_format7_get_total_bytes (self->cam, vidmode, &bytes_per_frame);
+        if (bytes_per_frame * self->num_buffers > 25000000) {
+            printf ("Reducing dc1394 buffers from %d to ", self->num_buffers);
+            self->num_buffers = 25000000 / bytes_per_frame;
+            printf ("%d\n", self->num_buffers);
+        }
+    }
 
 //  FIXME
 //    super->stride = bytes_per_frame / height;
-
-    if (bytes_per_frame * self->num_buffers > 25000000) {
-        printf ("Reducing dc1394 buffers from %d to ", self->num_buffers);
-        self->num_buffers = 25000000 / bytes_per_frame;
-        printf ("%d\n", self->num_buffers);
-    }
 
     /* Using libdc1394 for iso streaming */
     if (dc1394_capture_setup (self->cam, self->num_buffers,
