@@ -7,17 +7,17 @@
 #include "filter_example.h"
 
 /* Boilerplate */
-G_DEFINE_TYPE (CamFilterExample, cam_filter_example, CAM_TYPE_UNIT);
+G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
 
 CamUnitDriver *
-cam_filter_example_driver_new()
+my_filter_example_driver_new()
 {
     return cam_unit_driver_new_stock ("filter", "example",
-            "Example", 0, (CamUnitConstructor)cam_filter_example_new);
+            "Example", 0, (CamUnitConstructor)my_filter_example_new);
 }
 
-// ============== CamFilterExample ===============
-static void cam_filter_example_finalize (GObject *obj);
+// ============== MyFilterExample ===============
+static void my_filter_example_finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
@@ -25,21 +25,21 @@ static void on_input_format_changed (CamUnit *super,
 
 // class initializer
 static void
-cam_filter_example_class_init (CamFilterExampleClass *klass)
+my_filter_example_class_init (MyFilterExampleClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-    gobject_class->finalize = cam_filter_example_finalize;
+    gobject_class->finalize = my_filter_example_finalize;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
 
-CamFilterExample * 
-cam_filter_example_new()
+MyFilterExample * 
+my_filter_example_new()
 {
-    return CAM_FILTER_EXAMPLE (g_object_new(CAM_TYPE_FILTER_EXAMPLE, NULL));
+    return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
 }
 
 static void
-cam_filter_example_init (CamFilterExample *self)
+my_filter_example_init (MyFilterExample *self)
 {
     // Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
@@ -51,17 +51,17 @@ cam_filter_example_init (CamFilterExample *self)
 }
 
 static void
-cam_filter_example_finalize (GObject *obj)
+my_filter_example_finalize (GObject *obj)
 {
     // destructor.  release heap/freestore memory here
-    G_OBJECT_CLASS (cam_filter_example_parent_class)->finalize(obj);
+    G_OBJECT_CLASS (my_filter_example_parent_class)->finalize(obj);
 }
 
 static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamFilterExample *self = CAM_FILTER_EXAMPLE(super);
+    MyFilterExample *self = MY_FILTER_EXAMPLE(super);
 
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (super->fmt->max_data_size);

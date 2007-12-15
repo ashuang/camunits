@@ -97,7 +97,7 @@ int main (int argc, char **argv)
 
     // register our custom unit driver
     cam_unit_manager_add_driver (self->chain->manager, 
-            cam_filter_example_driver_new ());
+            my_filter_example_driver_new ());
 
     // abort if no input unit was specified
     if (argc < 2) {
