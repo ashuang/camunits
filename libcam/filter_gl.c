@@ -1,13 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <GL/gl.h>
 #include <GL/glext.h>
 
 #include "filter_gl.h"
 #include "dbg.h"
 
-#define err(args...) fprintf(stderr, args)
+G_DEFINE_TYPE (CamFilterGL, cam_filter_gl, CAM_TYPE_UNIT);
 
 CamUnitDriver *
 cam_filter_gl_driver_new()
@@ -18,7 +15,6 @@ cam_filter_gl_driver_new()
 }
 
 // ============== CamFilterGL ===============
-static void cam_filter_gl_finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static int cam_filter_gl_draw_gl_init (CamUnit *super);
@@ -28,14 +24,10 @@ static void on_status_changed(CamUnit *super, int old_status, gpointer nil);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
-G_DEFINE_TYPE (CamFilterGL, cam_filter_gl, CAM_TYPE_UNIT);
-
 static void
 cam_filter_gl_class_init (CamFilterGLClass *klass)
 {
     dbg(DBG_OUTPUT, "FilterGL class initializer\n");
-    GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-    gobject_class->finalize = cam_filter_gl_finalize;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
     klass->parent_class.draw_gl_init = cam_filter_gl_draw_gl_init;
     klass->parent_class.draw_gl = cam_filter_gl_draw_gl;
@@ -45,9 +37,9 @@ cam_filter_gl_class_init (CamFilterGLClass *klass)
 static void
 cam_filter_gl_init (CamFilterGL *self)
 {
+    // constructor.  Initialize the unit with some reasonable defaults here.
     dbg(DBG_OUTPUT, "FilterGL constructor\n");
 
-    // constructor.  Initialize the unit with some reasonable defaults here.
     self->gl_initialized = 0;
     self->texture_valid = 0;
 
@@ -55,14 +47,6 @@ cam_filter_gl_init (CamFilterGL *self)
             G_CALLBACK(on_status_changed), NULL);
     g_signal_connect (G_OBJECT(self), "input-format-changed",
             G_CALLBACK(on_input_format_changed), NULL);
-}
-
-static void
-cam_filter_gl_finalize (GObject *obj)
-{
-    dbg(DBG_OUTPUT, "FilterGL finalize\n");
-    // destructor.  release heap/freestore memory here
-    G_OBJECT_CLASS (cam_filter_gl_parent_class)->finalize(obj);
 }
 
 CamFilterGL * 
@@ -126,7 +110,6 @@ int cam_filter_gl_draw_gl_init (CamUnit *super)
 static 
 int cam_filter_gl_draw_gl (CamUnit *super)
 {
-//    dbg(DBG_OUTPUT, "FilterGL Draw GL\n");
     CamFilterGL *self = CAM_FILTER_GL(super);
     if (! super->fmt) return -1;
     if (! self->gl_texture) return -1;
@@ -192,4 +175,3 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             infmt->name, infmt->width, infmt->height, 
             infmt->row_stride, infmt->max_data_size);
 }
-
