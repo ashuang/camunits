@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Preface</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="index.html" title="libcam Tutorial">
+<link rel="prev" href="index.html" title="libcam Tutorial">
+<link rel="next" href="preface-audience.html" title="Audience">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="index.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td>&#160;</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="preface-audience.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="preface" lang="en">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ch-preface"></a>Preface</h2></div></div></div>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="preface-about"></a>Introduction to libcam</h2></div></div></div>
+<p>
+    libcam is a device independent library for image acquisition and
+    processing.  A major design point of libcam is to provide a very simple
+    API that allows an image processing routine to operate without any code
+    modifications on any image source, whether it be a Firewire camera, USB
+    camera, or logged data.  A second design point is to provide a framework
+    (i.e. set of classes and utilities) to assist rapid development of image
+    processing and machine vision algorithms.  This framework includes
+    colorspace conversion and image compression routines, UI widgets, and
+    visualization tools.
+</p>
+<p>
+    libcam is motivated by the current state of image acquisition libraries.
+    To date, writing a program to process and work with images is a much
+    more complicated procedure than it needs to be.  Camera manufacturers
+    often distribute proprietary development kits for working with their
+    cameras, which means a program written for one camera is not likely to
+    work with a camera from a different manufacturer.  Standards have been
+    developed to alleviate this problem, such as the IEEE 1394 Digital Camera
+    and USB Video Class specifications.  While these standards help on the
+    driver side, there is still no standard device-independent API for image
+    sources.  Finally, for machine vision researchers, recording a single
+    dataset and being able to re-run their algorithms on that same data set
+    over and over again is a desirable feature that is not supported in any
+    major API.
+</p>
+<p>
+    libcam addresses these problems by providing a simple, general, and useful
+    abstraction for image sources.  It was developed and used by Team MIT in
+    the 2007 DARPA Urban Challenge<sup>[<a name="id288515" href="#ftn.id288515">1</a>]</sup>.
+    In that context, libcam provided a
+    framework for processing high resolution images (5 cameras, 752x480 Bayer
+    @ 22.8 fps) to achieve real time vision-based lane detection and tracking
+    on an autonomous vehicle in an urban setting.  This tutorial provides an
+    introduction to programming with libcam, and describes the various ways
+    that libcam can be used in an image processing application.
+</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id288515" href="#id288515">1</a>] </sup><a href="http://www.darpa.mil/grandchallenge" target="_top">http://www.darpa.mil/grandchallenge</a></p></div>
+</div>
+</div>
+</body>
+</html>

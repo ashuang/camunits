@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Creating Custom Units -- Subclassing CamUnit and CamUnitDriver</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="index.html" title="libcam Tutorial">
+<link rel="prev" href="camunit-controls.html" title="Unit Controls">
+<link rel="next" href="subclassing-class-relationships.html" title="The Relationship Between Libcam Classes">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="camunit-controls.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td>&#160;</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="subclassing-class-relationships.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter" lang="en">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ch-subclassing"></a>Creating Custom Units -- Subclassing <code class="classname">CamUnit</code> and <code class="classname">CamUnitDriver</code>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="sect1"><a href="ch-subclassing.html#subclassing-gobject-type-system">The GObject Type System</a></span></dt>
+<dt><span class="sect1"><a href="subclassing-class-relationships.html">The Relationship Between Libcam Classes</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="subclassing-class-relationships.html#acquiring-relationships-connecting"><code class="classname">CamUnit</code> Trees</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="subclassing-example-filter.html">Example Filter</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-naming">Naming Conventions</a></span></dt>
+<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-hfile">Filter Example <code class="filename">.h</code> file</a></span></dt>
+<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-cfile">Filter Example <code class="filename">.c</code> file</a></span></dt>
+<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-using">Using Filter Example in a libcam application</a></span></dt>
+<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-summary">Filter Example summary</a></span></dt>
+</dl></dd>
+</dl></div>
+<p>
+        Productively using libcam in an image processing application does not
+        require one to build custom units.  It is perfectly possible, and
+        sometimes simpler to simply connect a signal handler to the
+        "frame-ready" signal of a <code class="classname">CamUnitChain</code> or
+        <code class="classname">CamUnit</code> and do all of the processing in that
+        signal handler.  So why bother creating custom units?
+    </p>
+<p>
+        Building a custom unit provides three main features.  
+        </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Controls</em></span></span></td>
+<td>
+<p>
+                        In our experience, most image processing 
+                        and image acquisition methods have some set of
+                        controls and parameters that can be adjusted to affect
+                        the output images. These parameters could be window
+                        sizes, thresholds, scale factors, etc.  Playing with
+                        hard-coded constants is often slow and tedious.
+                        Using a GUI toolkit to implement widgets that control
+                        the parameters is useful, but involves highly
+                        repetetive code and is often tedious.
+                    </p>
+<p>
+                        The <code class="classname">CamUnit</code> base class provides
+                        a control API that allows subclasses to easily add
+                        controls and parameters.  These controls can be
+                        accessed and modified programmatically just as easily
+                        as hard-coded parameters.  Additionally,
+                        when a <code class="classname">CamUnit</code> is used with
+                        the libcam GTK widgets (e.g.
+                        <code class="classname">CamUnitControlWidget</code> and
+                        <code class="classname">CamUnitChain</code>), 
+                        GUI elements are automatically created that allow
+                        users to adjust the exposed controls in real-time.
+                    </p>
+<p>
+                        In short, <code class="classname">CamUnit</code> 
+                        simplifies the process of exposing controls for an
+                        image processing element.  These controls are
+                        accessible programmatically for applications without a
+                        GUI, and they are also accessible in GUI form for
+                        applications that use the libcam GTK widgets.
+                    </p>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Visualization via OpenGL</em></span></span></td>
+<td>
+<p>
+                        When developing an image processing application, a
+                        common and very useful debugging technique is to
+                        visualize the intermediate or final stages of an
+                        algorithm by rendering into the input image.  For
+                        example, a face detector might circle the detected
+                        faces, an optical flow algorithm might draw flow
+                        vectors, etc.  libcam provides a framework for
+                        integrating visualization routines into an image
+                        processing element.  Subclasses of
+                        <code class="classname">CamUnit</code> can override virtual
+                        methods that will be automatically invoked when the
+                        application uses a
+                        <code class="classname">CamUnitChainGLWidget</code>.  This
+                        widget takes care of setting up an OpenGL context, and
+                        instructs each unit in a chain to render whatever
+                        visualization it deems useful.  
+                    </p>
+<p>
+                        We have specifically
+                        chosen OpenGL because it is a widely used, stable
+                        API that is both easy to use and has been implemented
+                        on all major platforms.  Although OpenGL is typically
+                        used in the context of 3D applications, it does
+                        provide a highly developed and mature API for 2D
+                        rendering.
+                    </p>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Portability</em></span></span></td>
+<td><p>
+                        This last bit almost need not be mentioned, but I'll
+                        say it for emphasis.  By conforming to the
+                        <code class="classname">CamUnit</code> abstraction, which
+                        consists primarily of an object that is capable of
+                        producing or processing images, an image processing
+                        element becomes much more portable.  This is
+                        especially true for image processing elements that
+                        transform their input into another image, such as
+                        colorspace conversion units, convolution filters,
+                        radial undistortion, etc.
+                    </p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+    </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="subclassing-gobject-type-system"></a>The GObject Type System</h2></div></div></div>
+<p>
+            libcam is written in C, which was not designed specifically for
+            object-oriented programming techniques.  The GObject type system,
+            included with GLib, is essentially an object-oriented programming
+            framework designed in C.  It makes heavy use of C structs and
+            function pointers, provides run-time type-safety, virtual methods,
+            interfaces, single-inheritance, and most of the features one would
+            normally expect from an object-oriented framework.
+        </p>
+<p>
+            While GObject is robust and mature, it can also be very awkward to
+            use in C.  We'll be completely honest here -- boilerplate code and
+            nested macros abound in GObject.  It does have a learning curve,
+            and it can be easy to become mired in the implementation details,
+            but once you've made it past the few dozen lines of boilerplate
+            needed to implement an object, everything else is pretty
+            straightforward.  For more information, see the <a href="http://library.gnome.org/devel/gobject/" target="_top">GObject
+                Reference Manual</a>.  There are also several tutorials on
+            GObject that can be found with some straightforward web searching.
+        </p>
+<p>
+            This tutorial will not focus on trying to explain how GObject
+            works.  For the most part, when we have to deal with the GObject
+            type system in this tutorial, we'll say something like, "just do
+            it this way" and expect that if you really want to know why,
+            you'll go look at the GObject documentation.
+        </p>
+</div>
+</div>
+</body>
+</html>

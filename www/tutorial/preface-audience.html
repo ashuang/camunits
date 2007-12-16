@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Audience</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="ch-preface.html" title="Preface">
+<link rel="prev" href="ch-preface.html" title="Preface">
+<link rel="next" href="preface-license.html" title="License">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="ch-preface.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch-preface.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="preface-license.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="preface-audience"></a>Audience</h2></div></div></div>
+<p>
+        The primary audience for libcam is other machine vision researchers
+        and people who actively develop and use image processing algorithms.
+        Currently, libcam is supported on GNU/Linux and OS X.  There are no
+        immediate plans to support Windows XP.  libcam is written in C, and so
+        can be used in C or C++ applications.
+    </p>
+<p>
+        libcam is written in C using the GObject framework for object-oriented
+        programming.  All classes in libcam are derived from
+        <code class="classname">GObject</code>, and memory management is handled via 
+        <code class="classname">GObject</code> reference counting.  Additionally,
+        libcam objects make heavy use of the GLib signalling framework to
+        deliver information.
+    </p>
+<p>
+        It is not necessary to have a deep understanding of
+        <code class="classname">GObject</code> in order to understand libcam.
+        However, familiarity with object-oriented programming techniques and
+        the publish/subscribe method (also known as signals/slots or the
+        Observer design pattern) is assumed.
+    </p>
+</div>
+</body>
+</html>

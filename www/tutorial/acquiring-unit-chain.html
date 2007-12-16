@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Using a CamUnitChain</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="prev" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="next" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="ch-acquiring.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch-acquiring.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="ch-camunit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="acquiring-unit-chain"></a>Using a <code class="classname">CamUnitChain</code>
+</h2></div></div></div>
+<p>
+        Constructing a <code class="classname">CamUnitChain</code> is straightforward:
+</p>
+<pre class="programlisting">
+    CamUnitChain * chain = cam_unit_chain_new ();
+</pre>
+<p>
+
+        Since a <code class="classname">CamUnitChain</code>, along with every other
+        libcam class, is a reference-counted GObject, memory management is
+        handled using <code class="function">g_object_ref</code> and
+        <code class="function">g_object_unref</code>.  A
+        <code class="classname">CamUnitChain</code> is created with a reference count
+        of one.  When the reference count reaches zero, the
+        <code class="classname">CamUnitChain</code> is destroyed.  Thus, we should
+        decrement the reference count of the chain when it's no longer needed.
+</p>
+<pre class="programlisting">
+    g_object_unref (chain);
+</pre>
+<p>
+    </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="acquiring-unit-ids"></a>Unit IDs</h3></div></div></div>
+<p>
+            Each <code class="classname">CamUnitChain</code> maintains a central
+            registry of the different <code class="classname">CamUnit</code> objects
+            that can be instantiated.  A <code class="classname">CamUnit</code> is
+            identified by a <span class="emphasis"><em>unit ID</em></span>.  The exact details
+            of how this registry is managed and how the units are provided to
+            the <code class="classname">CamUnitChain</code> is not described here, but
+            for now it's sufficient to say that in order to create a unit, you
+            must first know its unit ID.
+        </p>
+<p>
+            The easiest way to find out what sort of units are available on
+            your system is to use the program <span><strong class="command">camview</strong></span>,
+            which comes with libcam.  When first loaded,
+            <span><strong class="command">camview</strong></span> displays a list of units available to
+            libcam.  Clicking on a unit listed in <span><strong class="command">camview</strong></span>
+            will reveal its unit ID.  <a href="acquiring-unit-chain.html#acquiring-camview-unit-id" title="Figure&#160;1.&#160;Looking up Unit IDs in camview">Figure&#160;1, &#8220;Looking up Unit IDs in <span>camview</span>&#8221;</a> illustrates this.
+        </p>
+<div class="figure">
+<a name="acquiring-camview-unit-id"></a><p class="title"><b>Figure&#160;1.&#160;Looking up Unit IDs in <span>camview</span></b></p>
+<div class="figure-contents"><div class="mediaobject">
+<img src="camview-unit-id.png" alt="Looking up Unit IDs in camview"><div class="caption"><p>
+                The easiest way to determine which units are available on a
+                system and their unit IDs is to run <span><strong class="command">camview</strong></span>
+                and inspect the list of units displayed in the "Manager" frame.
+            </p></div>
+</div></div>
+</div>
+<br class="figure-break"><p>
+            The <code class="literal">input.example</code> unit is a sample
+            <code class="classname">CamUnit</code> that is distributed with libcam and
+            periodically generates a test image.  It can often be useful for
+            testing when no other units area available.
+        </p>
+<p>
+            Once you have the unit id of a desired unit, add it to the
+            <code class="classname">CamUnitChain</code> with the
+            <code class="methodname">cam_unit_chain_add_unit_by_id</code> method.
+</p>
+<pre class="programlisting">
+    cam_unit_chain_add_unit_by_id (chain, "input.example");
+</pre>
+<p>
+            The <code class="classname">CamUnitChain</code> then takes care of
+            instantiating the desired <code class="classname">CamUnit</code> and
+            appending it to the image processing chain.
+        </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="acqruigin-statuses"></a>Unit states - IDLE, READY, STREAMING</h3></div></div></div>
+<p>
+            A <code class="classname">CamUnit</code> can be in one of three general
+            states: <code class="literal">CAM_UNIT_STATUS_IDLE</code>,
+            <code class="literal">CAM_UNIT_STATUS_READY</code>, or
+            <code class="literal">CAM_UNIT_STATUS_STREAMING</code>.  This distinction is
+            made mostly for units that consume hardware resources.  Roughly
+            speaking, an <span class="emphasis"><em>idle</em></span> unit is one that is not
+            consuming system
+            resources and is not able to produce any frames.  A
+            <span class="emphasis"><em>ready</em></span> unit is
+            one that has been initialized and is holding all the resources it
+            needs to produce frames, but is simply not doing so.  Finally, a
+            <span class="emphasis"><em>streaming</em></span> unit is one that has been
+            initialized and is actively
+            producing or processing image frames.
+        </p>
+<p>
+            <code class="classname">CamUnit</code> exposes methods for changing the
+            state of an individual unit, and
+            <code class="classname">CamUnitChain</code> provides a convenience method
+            that attempts to set every unit in the chain to the
+            desired status.
+</p>
+<pre class="programlisting">
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+</pre>
+<p>
+            This causes the <code class="classname">CamUnitChain</code> to iterate
+            through each unit in the chain and adjust the unit accordingly.
+        </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="acquiring-chain-glib"></a>Attaching to GMainContext</h3></div></div></div>
+<p>
+            <code class="classname">CamUnitChain</code> provides a convenience
+            method, <code class="methodname">cam_unit_chain_attach_glib</code> for
+            attaching to a GLib event loop.  Once attached, the units in the
+            chain will begin producing frames when the event loop is running.
+
+</p>
+<pre class="programlisting">
+    cam_unit_chain_attach_glib (chain, G_PRIORITY_DEFAULT, NULL);
+</pre>
+<p>
+
+            This method allows the user to specify the priority of the
+            <code class="classname">CamUnitChain</code>, as well as a pointer to the
+            desired <code class="classname">GMainContext</code>.  If
+            <code class="literal">NULL</code> is given as the
+            <code class="classname">GMainContext</code>, then the default context is
+            used.
+        </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="acquiring-frame-ready"></a>The "frame-ready" event</h3></div></div></div>
+<p>
+            Image frames are delivered via the GObject signalling framework.
+            Each <code class="classname">CamUnit</code> emits a "frame-ready" signal
+            when it produces a frame, and a
+            <code class="classname">CamUnitChain</code> emits a separate "frame-ready"
+            signal when the last unit in the chain produces a frame.  For
+            simple applications, we recommend connecting to the
+            <code class="classname">CamUnitChain</code> "frame-ready" signal.
+</p>
+<pre class="programlisting">
+    g_signal_connect (G_OBJECT (chain), "frame-ready",
+            G_CALLBACK (on_frame_ready), mainloop);
+</pre>
+<p>
+            By connecting to the "frame-ready" signal of the
+            <code class="classname">CamUnitChain</code> in this manner, the function
+            <code class="function">on_frame_ready</code> is called every time an image
+            frame makes it all the way through the image processing chain.
+</p>
+<pre class="programlisting">
+static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
+        const CamFrameBuffer *buf, void *user_data)
+{
+    .
+    .
+    .
+}
+</pre>
+<p>
+            The "frame-ready" signal is emitted with two arguments: a pointer
+            to the last <code class="classname">CamUnit</code> in the chain, and the 
+            <code class="classname">CamFrameBuffer</code> corresponding to the actual
+            image data produced.
+        </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="acquiring-buffer-format"></a><code class="classname">CamFrameBuffer</code> and
+            <code class="classname">CamUnitFormat</code>
+</h3></div></div></div>
+<p>
+            Image frames are delivered using the
+            <code class="classname">CamFrameBuffer</code> object.  The most important
+            field of the <code class="classname">CamFrameBuffer</code> object is the
+            <code class="literal">data</code> field, which contains the actual image
+            data.
+        </p>
+<p>
+            Since there is a wide range of binary representations for images,
+            such as sRGB, YUV422, Bayer, JPEG, etc., libcam provides a way to
+            describe the actual format of the image data via the
+            <code class="classname">CamUnitFormat</code> class.  The format of the
+            images produced by a <code class="classname">CamUnit</code> can be
+            determined using the
+            <code class="methodname">cam_unit_get_output_format</code> method.
+</p>
+<pre class="programlisting">
+    const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
+</pre>
+<p>
+            The most useful fields of a <code class="classname">CamUnitFormat</code>
+            object are:
+
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><code class="literal">pixelformat</code></span></td>
+<td><p>A magic number identifying the pixel format of
+                    the data.  Typical values are
+                    <code class="literal">CAM_PIXEL_FORMAT_RGB</code>,
+                    <code class="literal">CAM_PIXEL_FORMAT_YUYV</code>,
+                    <code class="literal">CAM_PIXEL_FORMAT_GRAY</code>, etc.
+                </p></td>
+</tr>
+<tr>
+<td><span class="term"><code class="literal">width</code>, <code class="literal">height</code></span></td>
+<td><p>The dimensions, in pixels, of the image.
+                </p></td>
+</tr>
+<tr>
+<td><span class="term"><code class="literal">row_stride</code></span></td>
+<td><p>Only meaningful for image formats with a fixed number of
+                    bytes per pixel.  This stores the number of bytes
+                    separating the first pixel of successive rows in the
+                    image.  For compressed (e.g.
+                    <code class="literal">CAM_PIXEL_FORMAT_MJPEG</code>) and planar
+                    pixelformats (e.g.
+                    <code class="literal">CAM_PIXEL_FORMAT_YUYV</code>) this value is
+                    not useful.
+                </p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+            
+            The example unit <code class="literal">input.example</code> always produces
+            8-bit RGB frames (pixelformat
+            <code class="literal">CAM_PIXEL_FORMAT_RGB</code>) and so the example
+            program is able to write the data directly to disk using the PPM
+            image file format<sup>[<a name="id326596" href="#ftn.id326596">2</a>]</sup>.
+            If you decide to try this example with other units available on
+            your system, you must ensure that they either output RGB directly,
+            or you must insert a colorspace conversion unit (described in the
+            next chapter).
+        </p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id326596" href="#id326596">2</a>] </sup><a href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
+</div>
+</div>
+</body>
+</html>

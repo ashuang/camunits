@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>The Relationship Between Libcam Classes</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="prev" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="next" href="subclassing-example-filter.html" title="Example Filter">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="ch-subclassing.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch-subclassing.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="subclassing-example-filter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="subclassing-class-relationships"></a>The Relationship Between Libcam Classes</h2></div></div></div>
+<p>
+
+            </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term">CamUnit</span></td>
+<td>
+<p>
+                            As mentioned earlier,
+                            <code class="classname">CamUnit</code> is the fundamental
+                            class in libcam and represents an object that can
+                            produce images.  A <code class="classname">CamUnit</code>
+                            typically produces images by processing input
+                            images it receives from another
+                            <code class="classname">CamUnit</code> (e.g. contrast
+                            normalization, radial undistortion, etc.)
+                            or by reading data
+                            from disk or an image capture device (e.g. camera
+                            or TV tuner).
+                        </p>
+<p>
+                            <code class="classname">CamUnit</code> is an abstract base
+                            class and is only useful when subclassed.
+                            However, a <code class="classname">CamUnit</code> should
+                            almost never be directly instantiated by a libcam
+                            application.
+                    </p>
+</td>
+</tr>
+<tr>
+<td><span class="term">CamUnitDriver</span></td>
+<td>
+<p>
+                            A <code class="classname">CamUnitDriver</code> is a
+                            factory-like class responsible for enumerating the
+                            availability of a <code class="classname">CamUnit</code>
+                            and instantiating a <code class="classname">CamUnit</code>
+                            when requested.  This feature is used primarily by
+                            input units, where many or no units of a
+                            particular type might be available.  For example,
+                            a unit driver for Video4Linux devices would
+                            enumerate all V4L devices on the system and then
+                            be able to instantiate a
+                            <code class="classname">CamUnit</code> for each V4L device
+                            available.  On the other hand, drivers
+                            corresponding to image processing elements will
+                            typically offer one unit.
+                            </p>
+<p>
+                        <code class="classname">CamUnitDriver</code> is also an
+                        abstract base class that is only useful when
+                        subclassed.
+                    </p>
+</td>
+</tr>
+<tr>
+<td><span class="term">CamUnitManager</span></td>
+<td>
+<p>
+                            The <code class="classname">CamUnitManager</code> is a
+                            factory class that maintains a central registry of
+                            <code class="classname">CamUnitDriver</code>s and
+                            available <code class="classname">CamUnit</code>s.  The
+                            sole purpose of the
+                            <code class="classname">CamUnitManager</code> is to make
+                            it easy to discover available units and
+                            instantiate them.
+                            </p>
+<p>
+                            The relationship between
+                            <code class="classname">CamUnitManager</code>,
+                            <code class="classname">CamUnitDriver</code>, and
+                            <code class="classname">CamUnit</code> is illustrated in
+                            <a href="subclassing-class-relationships.html#subclassing-relationships-manager" title="Figure&#160;3.&#160;Unit, Driver, and Manager">Figure&#160;3, &#8220;Unit, Driver, and Manager&#8221;</a>
+                    </p>
+</td>
+</tr>
+<tr>
+<td><span class="term">CamUnitChain</span></td>
+<td>
+<p>
+                            The <code class="classname">CamUnitChain</code> class
+                            exists because a highly typical usage scenario is
+                            to create a number of
+                            <code class="classname">CamUnit</code> objects and then
+                            connect them in sequence to form an image
+                            processing chain.  A
+                            <code class="classname">CamUnitChain</code> provides a
+                            wrapper around
+                            <code class="classname">CamUnitManager</code> and handles
+                            a lot of the tedium of connecting units together.
+
+                            </p>
+<p>
+                            The relationship between
+                            <code class="classname">CamUnitChain</code> and the other
+                            classes is illustrated in <a href="subclassing-class-relationships.html#subclassing-relationships-chain" title="Figure&#160;4.&#160;Chain and other classes">Figure&#160;4, &#8220;Chain and other classes&#8221;</a>
+                    </p>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        </p>
+<div class="figure">
+<a name="subclassing-relationships-manager"></a><p class="title"><b>Figure&#160;3.&#160;Unit, Driver, and Manager</b></p>
+<div class="figure-contents"><div class="mediaobject">
+<img src="cam_unit_manager.png" alt="Unit, Driver, and Manager"><div class="caption"><p>
+                        A <code class="classname">CamUnitManager</code> contains a
+                        registry of <code class="classname">CamUnitDriver</code>
+                        objects, which are capable of instantiating
+                        <code class="classname">CamUnit</code> objects.
+                    </p></div>
+</div></div>
+</div>
+<br class="figure-break"><div class="figure">
+<a name="subclassing-relationships-chain"></a><p class="title"><b>Figure&#160;4.&#160;Chain and other classes</b></p>
+<div class="figure-contents"><div class="mediaobject">
+<img src="cam_unit_chain.png" alt="Chain and other classes"><div class="caption"><p>
+                        A <code class="classname">CamUnitChain</code> wraps around a
+                        <code class="classname">CamUnitManager</code> and does much of
+                        the tedious work involved in creating and connecting
+                        sequences of <code class="classname">CamUnit</code> objects.
+                    </p></div>
+</div></div>
+</div>
+<br class="figure-break"><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="acquiring-relationships-connecting"></a><code class="classname">CamUnit</code> Trees</h3></div></div></div>
+<p>
+                It is possible to form image processing trees, where the
+                output of one <code class="classname">CamUnit</code> is passed to 
+                multiple <code class="classname">CamUnit</code> objects.  This is not
+                yet well documented, however.  If
+                you want to do this, best to ask on the mailing lists.
+                </p>
+<p>
+                <span class="emphasis"><em>TODO</em></span>  
+            </p>
+</div>
+</div>
+</body>
+</html>

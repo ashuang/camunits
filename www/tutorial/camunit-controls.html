@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Unit Controls</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="prev" href="camunit-motivation.html" title="Conversion Units">
+<link rel="next" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="camunit-motivation.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch-camunit.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="ch-subclassing.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="camunit-controls"></a>Unit Controls</h2></div></div></div>
+<p>
+        Image producing units often have controls and parameters that can be
+        used to adjust the output.  For example, cameras typically might
+        have exposure, white balance, or gamma controls.  Similarly, a
+        conversion unit may expose controls for affecting the exact
+        conversion.  For example, <code class="literal">input.jpeg</code> provides a
+        parameter to control the compression quality.
+    </p>
+<p>
+        Each <code class="classname">CamUnit</code> provides a list of controls that
+        it exposes, which can be enumerated and accessed programmatically.
+        Each control has a string identifier, the <span class="emphasis"><em>control
+            ID</em></span> unique to the unit that can be
+        used for access.
+        To see which controls are available in a unit, it is probably fastest
+        to examine the unit in <span><strong class="command">camview</strong></span>, which enumerates
+        all the controls for a unit and provides GUI widgets for adjusting
+        them.  The control ID can be found by hovering the mouse over the
+        actual control and waiting for a tooltip to appear.  <a href="camunit-controls.html#camunit-controls-fig" title="Figure&#160;2.&#160;Using camview to inspect available Unit controls and formats">Figure&#160;2, &#8220;Using <span>camview</span> to inspect available Unit controls
+    and formats&#8221;</a> shows an example of this.
+
+</p>
+<div class="figure">
+<a name="camunit-controls-fig"></a><p class="title"><b>Figure&#160;2.&#160;Using <span>camview</span> to inspect available Unit controls
+    and formats</b></p>
+<div class="figure-contents"><div class="mediaobject">
+<img src="camunit-controls.png" alt="Using camview to inspect available Unit controls and formats"><div class="caption"><p>
+                Often, the easiest way to determine which controls and output
+                formats are available for a given unit is to inspect it in
+                <span><strong class="command">camview</strong></span>.
+            </p></div>
+</div></div>
+</div>
+<p><br class="figure-break">
+    </p>
+<p>
+        Controls are strongly typed, and it is important to know the data type
+        of a actual control before setting it.  Five different types are
+        supported, integers, booleans, double-precision floating point,
+        strings, and enumerations.  Additionally, numerical controls can also
+        have a minimum and maximum value as well as a step size.  For example,
+        the quality control in the JPEG unit is an integer control that ranges
+        from 0-100.  To set this control, we could do:
+</p>
+<pre class="programlisting">
+    cam_unit_set_control_int (jpeg_unit, "quality", 50);
+</pre>
+<p>
+
+        In addition to <code class="methodname">cam_unit_set_control_int</code>,
+        there are <code class="methodname">cam_unit_set_control_string</code>,
+        <code class="methodname">cam_unit_set_control_float</code>, etc.
+        Additionally, there are methods for retrieving the current value of a
+        control, all of which are described in the reference documentation.
+    </p>
+</div>
+</body>
+</html>

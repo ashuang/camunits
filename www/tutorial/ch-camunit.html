@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Conversion Units and Unit Controls</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="index.html" title="libcam Tutorial">
+<link rel="prev" href="acquiring-unit-chain.html" title="Using a CamUnitChain">
+<link rel="next" href="camunit-motivation.html" title="Conversion Units">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="acquiring-unit-chain.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td>&#160;</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="camunit-motivation.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter" lang="en">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ch-camunit"></a>Conversion Units and Unit Controls</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="sect1"><a href="ch-camunit.html#camunit-specify-output">Specifying the output format of a Unit</a></span></dt>
+<dt><span class="sect1"><a href="camunit-motivation.html">Conversion Units</a></span></dt>
+<dt><span class="sect1"><a href="camunit-controls.html">Unit Controls</a></span></dt>
+</dl></div>
+<p>
+        The example given in <a href="ch-acquiring.html" title="Acquiring images (Quickstart guide)"><i>Acquiring images (Quickstart guide)</i></a> provides a simple
+        description of how to use libcam to acquire images.  This chapter
+        describes how to do two of the most basic operations:  insert
+        units that convert frames from one image format to another, and
+        accessing the controls exposed by a unit.
+    </p>
+<p>
+        Different image sensors and cameras 
+    </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="camunit-specify-output"></a>Specifying the output format of a Unit</h2></div></div></div>
+<p>
+        Some <code class="classname">CamUnit</code> objects are able to output images
+        in several formats.  For example, many cameras can produce images in
+        a number of resolutions or have an option to perform on-board
+        colorspace conversion.  To reflect this capability, a
+        <code class="classname">CamUnit</code> provides a list of
+        <code class="classname">CamUnitFormats</code> that it is able to produce.  In
+        other cases, if a <code class="classname">CamUnit</code> is not able to deal
+        with its input format (e.g. if it expects 8bpp Grayscale data and is
+        instead given 24bpp RGB) then it may report that it is unable to
+        produce any output formats with its current input.
+    </p>
+<p>
+        When a <code class="classname">CamUnit</code> is initialized (i.e. its status
+        is set to <code class="literal">CAM_UNIT_STATUS_READY</code>), a specific output
+        format must be chosen.  The unit itself can arbitrarily pick one of
+        its output formats (this is the default when using a
+        <code class="classname">CamUnitChain</code>), or an application can
+        request a specific output format.  To do this, use the
+        <code class="methodname">cam_unit_set_preferred_format</code> method.
+        </p>
+<pre class="programlisting">
+    int cam_unit_set_preferred_format (CamUnit *self, 
+                            CamPixelFormat pixelformat, int width, int height);
+        </pre>
+<p>
+
+        This method allows a program to request a specific pixel format and
+        image size.  To indicate that any width or height is acceptable, you
+        can specify a value of 0 for either the height or width parameter.  To
+        indicate that any pixel format is acceptable, pass in the constant
+        <code class="literal">CAM_PIXEL_FORMAT_INVALID</code>.  When the unit is
+        initialized by a chain, it will choose the output format best matching
+        the requested parameters.
+    </p>
+</div>
+</div>
+</body>
+</html>

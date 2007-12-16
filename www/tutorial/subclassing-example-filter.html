@@ -1,0 +1,882 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Example Filter</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="prev" href="subclassing-class-relationships.html" title="The Relationship Between Libcam Classes">
+<link rel="next" href="ch-otherenvs.html" title="Other Environments">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="subclassing-class-relationships.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch-subclassing.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="ch-otherenvs.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="subclassing-example-filter"></a>Example Filter</h2></div></div></div>
+<p>
+            This example demonstrates how to create an image processing unit --
+            one that takes images as input, transforms the image in some way,
+            and then produces a modified image as output.  The output of this
+            example unit is the original input image with a rectangle drawn in
+            the middle.  A parameter allows us to control the brightness of the
+            rectangle drawn.  We will call our unit "Filter Example"
+        </p>
+<p>
+            <a href="subclassing-example-filter.html#filter_example.h" title="Example&#160;2.&#160;filter_example.h">Example&#160;2, &#8220;<code class="filename">filter_example.h</code>&#8221;</a> and <a href="subclassing-example-filter.html#filter_example.c" title="Example&#160;3.&#160;filter_example.c">Example&#160;3, &#8220;<code class="filename">filter_example.c</code>&#8221;</a> contain the fully implemented
+            unit.  This example is also distributed with the libcam.  A step
+            by step explanation of the example follows.
+        </p>
+<div class="example">
+<a name="filter_example.h"></a><p class="title"><b>Example&#160;2.&#160;<code class="filename">filter_example.h</code></b></p>
+<div class="example-contents"><pre class="programlisting">
+
+#ifndef __my_filter_example_h__
+#define __my_filter_example_h__
+
+#include &lt;glib-object.h&gt;
+
+#include &lt;libcam/unit.h&gt;
+
+G_BEGIN_DECLS
+
+// This file demonstrates how to create a simple CamUnit subclass.  When
+// implementing a custom MyUnit, replace "FilterExample", "FILTER_EXAMPLE",
+// and "filter_example" with your own names.  You'll also want to pick a
+// different namespace (i.e. prefix) from "My"
+
+typedef struct _MyFilterExample MyFilterExample;
+typedef struct _MyFilterExampleClass MyFilterExampleClass;
+
+// boilerplate.
+#define MY_TYPE_FILTER_EXAMPLE  my_filter_example_get_type()
+#define MY_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        MY_TYPE_FILTER_EXAMPLE, MyFilterExample))
+#define MY_FILTER_EXAMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
+            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass ))
+#define IS_MY_FILTER_EXAMPLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            MY_TYPE_FILTER_EXAMPLE ))
+#define IS_MY_FILTER_EXAMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
+            (klass), MY_TYPE_FILTER_EXAMPLE))
+#define MY_FILTER_EXAMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
+            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass))
+
+// object definition struct.  member variables go in here
+struct _MyFilterExample {
+    // the first member must always be the superclass struct
+    CamUnit parent;
+
+    // add one member variable
+    CamUnitControl *patch_intensity_control;
+};
+
+// class definition.  This is pretty much a vtable, and you will rarely need to
+// change it
+struct _MyFilterExampleClass {
+    CamUnitClass parent_class;
+};
+
+GType my_filter_example_get_type (void);
+
+/** 
+ * Constructor.
+ * 
+ * Don't call this function manually.  Instead, use the unit driver
+ */
+MyFilterExample * my_filter_example_new();
+
+CamUnitDriver * my_filter_example_driver_new (void);
+
+G_END_DECLS
+
+#endif
+
+</pre></div>
+</div>
+<br class="example-break"><div class="example">
+<a name="filter_example.c"></a><p class="title"><b>Example&#160;3.&#160;<code class="filename">filter_example.c</code></b></p>
+<div class="example-contents"><pre class="programlisting">
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#include &lt;libcam/cam.h&gt;
+
+#include "filter_example.h"
+
+/* Boilerplate */
+G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
+
+CamUnitDriver *
+my_filter_example_driver_new()
+{
+    return cam_unit_driver_new_stock ("filter", "example",
+            "Example", 0, (CamUnitConstructor)my_filter_example_new);
+}
+
+// ============== MyFilterExample ===============
+static void my_filter_example_finalize (GObject *obj);
+static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
+        const CamUnitFormat *infmt);
+static void on_input_format_changed (CamUnit *super, 
+        const CamUnitFormat *infmt);
+
+// Class initializer
+static void
+my_filter_example_class_init (MyFilterExampleClass *klass)
+{
+    // override the destructor
+    G_OBJECT_CLASS (klass)-&gt;finalize = my_filter_example_finalize;
+
+    // override the "on_input_frame_ready" method
+    klass-&gt;parent_class.on_input_frame_ready = on_input_frame_ready;
+}
+
+// First part of the constructor
+MyFilterExample * 
+my_filter_example_new()
+{
+    return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
+}
+
+// Initializer.  This is the second part of the constructor.
+static void
+my_filter_example_init (MyFilterExample *self)
+{
+    // Initialize the unit with some reasonable defaults here.
+    CamUnit *super = CAM_UNIT (self);
+
+    // create a control
+    self-&gt;patch_intensity_control = cam_unit_add_control_int (super, 
+            "patch-intensity", "Patch Intensity", 0, 255, 1, 127, 1);
+
+    // request notification when the input of the unit changes
+    g_signal_connect (G_OBJECT(self), "input-format-changed",
+            G_CALLBACK(on_input_format_changed), NULL);
+}
+
+// destructor.
+static void
+my_filter_example_finalize (GObject *obj)
+{
+    // If we allocated memory on the heap/freestore, we'd release it here
+
+    // invoke the superclass destructor
+    G_OBJECT_CLASS (my_filter_example_parent_class)-&gt;finalize(obj);
+}
+
+// this method is called whenever the input unit produces a frame
+static void
+on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
+        const CamUnitFormat *infmt)
+{
+    MyFilterExample *self = MY_FILTER_EXAMPLE(super);
+
+    CamFrameBuffer *outbuf = 
+        cam_framebuffer_new_alloc (super-&gt;fmt-&gt;max_data_size);
+
+    cam_pixel_copy_8u_generic (inbuf-&gt;data, infmt-&gt;row_stride,
+            outbuf-&gt;data, super-&gt;fmt-&gt;row_stride,
+            0, 0, 0, 0, infmt-&gt;width, infmt-&gt;height, 
+            cam_pixel_format_bpp (infmt-&gt;pixelformat));
+
+    // draw a little rectangle
+    int x0 = super-&gt;fmt-&gt;width / 4;
+    int x1 = x0 * 3;
+    int rw = x1 - x0;
+    int y0 = super-&gt;fmt-&gt;height / 4;
+    int y1 = y0 * 3;
+
+    int val = cam_unit_control_get_int (self-&gt;patch_intensity_control);
+
+    int i;
+    for (i=y0; i&lt;y1; i++) {
+        memset (outbuf-&gt;data + i*super-&gt;fmt-&gt;row_stride + x0*3, val, rw*3);
+    }
+
+    // copy the timestamp and metadata dictionary
+    cam_framebuffer_copy_metadata (outbuf, inbuf);
+
+    outbuf-&gt;bytesused = super-&gt;fmt-&gt;row_stride * super-&gt;fmt-&gt;height;
+
+    cam_unit_produce_frame (super, outbuf, super-&gt;fmt);
+    g_object_unref (outbuf);
+}
+
+// this is the signal handler attached in "my_filter_example_init", and is
+// called when the format of the input data changes.
+static void
+on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
+{
+    // first, clear all available output formats from this unit
+    cam_unit_remove_all_output_formats (super);
+
+    // If there is no input, then we can't produce output.  
+    if (!infmt) return;
+   
+    // actually, we can only handle 8-bit RGB input data.
+    if (infmt-&gt;pixelformat != CAM_PIXEL_FORMAT_RGB) return;
+
+    cam_unit_add_output_format_full (super, infmt-&gt;pixelformat,
+            infmt-&gt;name, infmt-&gt;width, infmt-&gt;height, 
+            infmt-&gt;row_stride, infmt-&gt;max_data_size);
+}
+
+</pre></div>
+</div>
+<br class="example-break"><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="subclassing-example-naming"></a>Naming Conventions</h3></div></div></div>
+<p>
+                Before jumping into the code, let's note a few things about
+                naming conventions.  In addition to putting an object-oriented
+                programming framework into C via a careful usage of structs,
+                macros, and function pointers, we are also retrofitting C with
+                a namespacing scheme.  Although C does not inherently support
+                namespaces, we can achieve some of the benefits of a properly
+                namespaced language by following careful naming rules.  libcam
+                follows the GLib namespacing conventions and recommends
+                the same for other applications that use libcam.
+            </p>
+<p>
+                The first step in adhering to these namespacing guidelines is
+                to choose a namespace.  GLib chose "g", GTK chose "gtk", and
+                libcam chose "cam".  The example filter uses the namespace
+                "my".  The rules for naming functions, macros, and structs
+                with this namespace are then:
+                </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p><span class="emphasis"><em>functions and methods</em></span> are
+                            always lowercase, with words separated by
+                            underscores.  e.g.
+                            <code class="literal">my_sample_function</code>
+                        </p></li>
+<li><p><span class="emphasis"><em>types</em></span> (i.e. classes,
+                            structs, and enums) are almost always CamelCaps,
+                            with no spaces separating words.  e.g.  
+                            <code class="literal">MySampleClass</code>
+                    </p></li>
+<li><p><span class="emphasis"><em>macros</em></span> are always
+                            uppercase, with words separated by underscores.
+                            e.g. <code class="literal">MY_SAMPLE_MACRO</code>
+                    </p></li>
+</ul></div>
+<p>
+            </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="subclassing-example-hfile"></a>Filter Example <code class="filename">.h</code> file</h3></div></div></div>
+<p>
+                Now we'll do a line by line explanation of the header file.
+            
+</p>
+<pre class="programlisting">
+
+#ifndef __my_filter_example_h__
+#define __my_filter_example_h__
+
+#include &lt;glib-object.h&gt;
+#include &lt;libcam/unit.h&gt;
+
+G_BEGIN_DECLS
+
+</pre>
+<p>
+            
+                This is all required boilerplate, most of which should be
+                straightforward to a C programmer.
+                <code class="literal">G_BEGIN_DECLS</code> is a macro that provides C++
+                compatibility<sup>[<a name="id328944" href="#ftn.id328944">3</a>]</sup>.
+                The end of the file will also have a corresponding
+                <code class="literal">G_END_DECLS</code>.
+
+</p>
+<pre class="programlisting">
+
+typedef struct _MyFilterExample MyFilterExample;
+typedef struct _MyFilterExampleClass MyFilterExampleClass;
+
+</pre>
+<p>
+
+                Here, we forward-declare two structs.
+                <code class="classname">MyFilterExample</code> will be the class
+                definition struct.  This struct is what most C++ programmers
+                would think of when they're defining the contents of a class.
+                <code class="classname">MyFilterExampleClass</code> will be the class
+                vtable<sup>[<a name="id328979" href="#ftn.id328979">4</a>]</sup>.
+                
+</p>
+<pre class="programlisting">
+
+// boilerplate.
+#define MY_TYPE_FILTER_EXAMPLE  my_filter_example_get_type()
+#define MY_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        MY_TYPE_FILTER_EXAMPLE, MyFilterExample))
+#define MY_FILTER_EXAMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
+            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass ))
+#define IS_MY_FILTER_EXAMPLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            MY_TYPE_FILTER_EXAMPLE ))
+#define IS_MY_FILTER_EXAMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
+            (klass), MY_TYPE_FILTER_EXAMPLE))
+#define MY_FILTER_EXAMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
+            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass))
+
+</pre>
+<p>
+
+                This constitutes the nastiest part of our boilerplate.  This
+                is all GObject macro magic that will eventually make it easier
+                to do runtime type checking.  For now, just do a search and
+                replace, swapping out the namespace and class names
+                accordingly.
+
+</p>
+<pre class="programlisting">
+
+struct _MyFilterExample {
+    // the first member must always be the superclass struct
+    CamUnit parent;
+
+    // add one member variable
+    CamUnitControl *patch_intensity_control;
+};
+
+struct _MyFilterExampleClass {
+    CamUnitClass parent_class;
+};
+
+</pre>
+<p>
+
+                These two struct definitions correspond to the class
+                definition and vtable, mentioned above.  The first struct,
+                <code class="literal">struct _MyFilterExample</code>, is what most C++
+                programmers would think of in a class definition.  The first
+                member of this struct <span class="emphasis"><em>must</em></span> be
+                <code class="literal">CamUnit parent;</code>.  After that, feel free to
+                declare any member variables needed in the custom unit.
+            </p>
+<p>
+                The next struct primarily defines the virtual methods for the
+                class.  Unless your class will itself be a superclass and
+                provide virtual methods not defined in libcam, just rename the
+                struct and leave it alone.
+
+</p>
+<pre class="programlisting">
+
+GType my_filter_example_get_type (void);
+
+MyFilterExample * my_filter_example_new();
+
+CamUnitDriver * my_filter_example_driver_new (void);
+
+G_END_DECLS
+
+#endif
+
+</pre>
+<p>
+
+                The last part of header file consists of method definitions.
+                Every GObject type always has a type retrieval method, named
+                <code class="literal">xx_yy_zz_get_type</code>.  In this case, it's
+                named <code class="literal">my_filter_example_get_type</code>.  Rename
+                that accordingly.
+            </p>
+<p>
+                Next, our example unit defines two constructors.  One is the
+                constructor for the actual unit, the second is the constructor
+                for the unit driver.  Finally, we close the header with the
+                GLib macro for C++ portability, and close the original
+                <code class="literal">#ifdef</code> at the top of the file.
+            </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="subclassing-example-cfile"></a>Filter Example <code class="filename">.c</code> file</h3></div></div></div>
+<p>
+                Now we'll do a line by line explanation of the
+                <code class="filename">.c</code> file.
+            </p>
+<p>
+</p>
+<pre class="programlisting">
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#include &lt;libcam/cam.h&gt;
+
+#include "filter_example.h"
+
+/* Boilerplate */
+G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
+
+</pre>
+<p>
+
+                The <code class="filename">.c</code> file starts off with some
+                straightforward <code class="literal">#include</code> statements.  After
+                this is an admittedly cryptic macro invocation of
+                <code class="function">G_DEFINE_TYPE</code>, which generates much
+                of the boilerplate needed to add a new type to the GObject
+                type system.  Exactly what it expands to is not important, but
+                it does there are a few important bits worth noting.  First,
+                it forward-declare two functions that we must define later on:  
+</p>
+<pre class="programlisting">
+
+    static void my_filter_example_init (MyFilterExample *self);
+    static void my_filter_example_class_init (MyFilterExampleClass *klass);
+
+</pre>
+<p>
+                The function <code class="function">my_filter_example_init</code> is
+                the instance initializer, and is analagous, but not identical
+                to a C++ constructor.  The major difference is that it never
+                takes any parameters.
+                <code class="function">my_filter_example_class_init</code> is the class
+                initializer, which is typically not explicitly seen in other
+                object oriented programming languages.  Both of these will be
+                explained in a more detail further on.  For a more thorough
+                explanation, see the GObject documentation and
+                tutorial<sup>[<a name="id329161" href="#ftn.id329161">5</a>]</sup>
+                In addition to forward-declaring these two macros,
+                <code class="function">G_DEFINE_TYPE</code> also defines a static
+                global variable that we will use later:
+</p>
+<pre class="programlisting">
+
+    static void * my_filter_example_parent_class = NULL;
+
+</pre>
+<p>
+
+                This variable is a pointer to the parent class of the newly
+                defined type that will be populated automatically by the
+                GObject type system.  It will be used to override
+                virtual methods of the parent class, and also to directly
+                invoke parent class methods.
+            </p>
+<p>
+                Finally, the <code class="function">G_DEFINE_TYPE</code> macro defines
+                the function <code class="function">my_filter_example_get_type</code>,
+                which was declared in <code class="filename">filter_example.h</code>.
+                This function is primarily used by the GObject type system for
+                runtime type checking and registration.  Lots of stuff for a
+                single macro invocation, right?  It's natural for many
+                programmers to shudder at all of the hidden complexity, but
+                that really is the bulk of it.  Moving on to the rest of the
+                file, we have:
+
+</p>
+<pre class="programlisting">
+
+
+CamUnitDriver *
+my_filter_example_driver_new()
+{
+    return cam_unit_driver_new_stock ("filter", "example",
+            "Example", 0, (CamUnitConstructor)my_filter_example_new);
+}
+
+
+</pre>
+<p>
+
+                This is the constructor for the unit driver.  As mentioned
+                earlier in this chapter, drivers for image processing units
+                typically offer exactly one unit.  To reduce complexity,
+                libcam provides a default constructor for creating one of
+                these "stock" drivers.  The result of invoking
+                <code class="function">cam_unit_driver_new_stock</code> with these
+                parameters is a driver that always has one unit available with
+                unit id "filter.example", a human-readable name of "Example",
+                and that has no special flags.  Lastly, the constructor for
+                the stock unit is passed to the stock driver.  This will be
+                used by the stock driver when it is requested to create
+                instances of the new unit.
+
+</p>
+<pre class="programlisting">
+
+// ============== MyFilterExample ===============
+static void my_filter_example_finalize (GObject *obj);
+static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
+        const CamUnitFormat *infmt);
+static void on_input_format_changed (CamUnit *super, 
+        const CamUnitFormat *infmt);
+
+// Class initializer
+static void
+my_filter_example_class_init (MyFilterExampleClass *klass)
+{
+    // override the destructor
+    G_OBJECT_CLASS (klass)-&gt;finalize = my_filter_example_finalize;
+
+    // override the "on_input_frame_ready" method
+    klass-&gt;parent_class.on_input_frame_ready = on_input_frame_ready;
+}
+
+</pre>
+<p>
+
+                In this next section of code, we forward-declare several
+                functions, and then define the class initializer.  The class
+                initializer has two primary responsibilities.  First, it sets
+                up the class virtual method table, overriding methods of the
+                parent class when necessary.  In this example, our new class
+                overrides the <code class="methodname">on_input_frame_ready</code>
+                method of its parent class.  It also overrides the destructor,
+                which is a virtual method of the base class
+                <code class="classname">GObject</code>
+            </p>
+<p>
+                The second responsibility of the class initializer is
+                to define new signals that instances of the class will emit.
+                For example, <code class="classname">CamUnit</code> provides the
+                "frame-ready" signal, which is defined in its class
+                initializer.  Our filter class does not have any new signals,
+                but does inherit all of the signals from its parent classes.
+
+</p>
+<pre class="programlisting">
+
+
+// First part of the constructor
+MyFilterExample * 
+my_filter_example_new()
+{
+    return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
+}
+
+// Initializer.  This is the second part of the constructor.
+static void
+my_filter_example_init (MyFilterExample *self)
+{
+    // Initialize the unit with some reasonable defaults here.
+    CamUnit *super = CAM_UNIT (self);
+
+    // create a control
+    self-&gt;patch_intensity_control = cam_unit_add_control_int (super, 
+            "patch-intensity", "Patch Intensity", 0, 255, 1, 127, 1);
+
+    // request notification when the input of the unit changes
+    g_signal_connect (G_OBJECT(self), "input-format-changed",
+            G_CALLBACK(on_input_format_changed), NULL);
+}
+
+</pre>
+<p>
+
+                Here, we define the constructor of our new class.  Unlike most
+                object-oriented programming languages, the constructor in
+                GObject is split up into multiple methods.  At the core is the
+                instance initializer
+                <code class="function">my_filter_example_init</code>, which is required
+                to initialize an instance to a reasonable default state
+                without using any constructor arguments.  This initializer is
+                not publicly exposed, and is never invoked directly by
+                programs.  It is instead invoked as a result of the external
+                constructor, <code class="function">my_filter_example_new</code>
+                calling <code class="function">g_object_new</code>.  
+            </p>
+<p>
+                The external constructor is allowed to accept arguments.  The
+                idea is that it will first create an instance of the class
+                that has been initialized to valid defaults via the instance
+                initializer.  Next, it can adjust the instance according to
+                the arguments passed in.  In our example, the external
+                constructor does not accept any arguments, and so it simply
+                returns the result of the instance initializer.  In general,
+                subclasses of <code class="classname">CamUnit</code> will not have
+                constructors that take arguments, so this so this paragraph is
+                mostly pedagogical.
+            </p>
+<p>
+                In terms of actual work accomplished in our constructor, our
+                example does two things.  First, it creates a single integer
+                control with id "patch-intensity" and human readable name "Patch
+                Intensity".  The control value is allowed to range from 0 to
+                255 with default increments of 1.  Its initial value is 127,
+                and it is enabled by default.
+            </p>
+<p>
+                Second, our constructor connects to a signal emitted by our
+                own intsance: the "input-format-changed" signal.  This signal
+                fires whenever the input format to our unit changes.  We will
+                use this signal handler later on to adjust the available
+                outputs produced by our unit.
+
+</p>
+<pre class="programlisting">
+
+
+// destructor.
+static void
+my_filter_example_finalize (GObject *obj)
+{
+    // If we allocated memory on the heap/freestore, we'd release it here
+
+    // invoke the superclass destructor
+    G_OBJECT_CLASS (my_filter_example_parent_class)-&gt;finalize(obj);
+}
+
+</pre>
+<p>
+
+                After the constructor, we define the destructor.  We will
+                define it in almost exactly the same manner we would define a
+                C++ destructor.  First, the child class releases any system
+                resources and heap memory it has allocated.  In our cases,
+                there are none.  Next, the child class invokes the destructor
+                of its parent class.
+
+</p>
+<pre class="programlisting">
+
+
+// this method is called whenever the input unit produces a frame
+static void
+on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
+        const CamUnitFormat *infmt)
+{
+    MyFilterExample *self = MY_FILTER_EXAMPLE(super);
+
+
+</pre>
+<p>
+
+                Finally, we get to the meat of the unit!  As seen in the class
+                initializer, we have overriden the
+                <code class="function">on_input_frame_ready</code> method of the parent
+                class.  This function is called whenever the input of our unit
+                produces a frame via the "frame-ready" signal.  The three
+                arguments passed to this method are the unit itself, a pointer
+                to the framebuffer containing the actual image data, and a
+                pointer to a unit format struct describing how the image data
+                is formatted.
+
+</p>
+<pre class="programlisting">
+
+    CamFrameBuffer *outbuf = 
+        cam_framebuffer_new_alloc (super-&gt;fmt-&gt;max_data_size);
+
+    cam_pixel_copy_8u_generic (inbuf-&gt;data, infmt-&gt;row_stride,
+            outbuf-&gt;data, super-&gt;fmt-&gt;row_stride,
+            0, 0, 0, 0, infmt-&gt;width, infmt-&gt;height, 
+            cam_pixel_format_bpp (infmt-&gt;pixelformat));
+
+</pre>
+<p>
+                Worth noting is that the input framebuffer is
+                <code class="literal">const</code>, and so must not be modified by our
+                unit.  The first action taken by our unit is to allocate a new
+                framebuffer to store the output image.  The superclass member
+                variable <code class="varname">fmt</code> stores the output format that
+                our unit has been initialized to, so we can use that to
+                construct our output framebuffer accordingly.  Next, our
+                example makes a bitwise copy of the input image into our
+                output buffer.
+                
+
+</p>
+<pre class="programlisting">
+
+    // draw a little rectangle
+    int x0 = super-&gt;fmt-&gt;width / 4;
+    int x1 = x0 * 3;
+    int rw = x1 - x0;
+    int y0 = super-&gt;fmt-&gt;height / 4;
+    int y1 = y0 * 3;
+
+    int val = cam_unit_control_get_int (self-&gt;patch_intensity_control);
+
+    int i;
+    for (i=y0; i&lt;y1; i++) {
+        memset (outbuf-&gt;data + i*super-&gt;fmt-&gt;row_stride + x0*3, val, rw*3);
+    }
+
+</pre>
+<p>
+                These are the actual guts of our unit -- drawing a rectangle
+                into the image.  We have a trivial example demonstrating how
+                to retrieve the value of a control, and then using that value
+                to affect the output.
+
+</p>
+<pre class="programlisting">
+
+
+    // copy the timestamp and metadata dictionary
+    cam_framebuffer_copy_metadata (outbuf, inbuf);
+
+    outbuf-&gt;bytesused = super-&gt;fmt-&gt;row_stride * super-&gt;fmt-&gt;height;
+
+    cam_unit_produce_frame (super, outbuf, super-&gt;fmt);
+    g_object_unref (outbuf);
+}
+
+</pre>
+<p>
+                
+                Finally, we close the method by setting the metadata of the
+                output framebuffer, and calling the
+                <code class="function">cam_unit_produce_frame</code> method, which
+                triggers the "frame-ready" signal of our unit.  This is a
+                synchronous signalling framework, so by the time
+                <code class="function">cam_unit_produce_frame</code> returns, all other
+                signal handlers that have subscribed to this unit will have
+                completed.  This means that we can now release the memory
+                allocated for the framebuffer.  Since GObject uses reference
+                counting for its memory management, we decrement the reference
+                count of the framebuffer to free its contents.
+
+</p>
+<pre class="programlisting">
+
+
+// this is the signal handler attached in "my_filter_example_init", and is
+// called when the format of the input data changes.
+static void
+on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
+{
+    // first, clear all available output formats from this unit
+    cam_unit_remove_all_output_formats (super);
+
+    // If there is no input, then we can't produce output.  
+    if (!infmt) return;
+   
+    // actually, we can only handle 8-bit RGB input data.
+    if (infmt-&gt;pixelformat != CAM_PIXEL_FORMAT_RGB) return;
+
+    cam_unit_add_output_format_full (super, infmt-&gt;pixelformat,
+            infmt-&gt;name, infmt-&gt;width, infmt-&gt;height, 
+            infmt-&gt;row_stride, infmt-&gt;max_data_size);
+}
+
+</pre>
+<p>
+
+                The last step in our example is to define the function that
+                will be invoked when the input to our unit changes.  We have
+                created our unit to be able to process 8-bit RGB images of
+                arbitrary sizes, so whenever the input to our unit changes, we
+                must verify that our unit is able to process the new input
+                format.
+            </p>
+<p>
+                Note that it is possible for the argument
+                <code class="varname">infmt</code> to be <code class="literal">NULL</code>.  This
+                will happen when there literally is no input.  In that case,
+                our unit cannot produce output when it has no input so it
+                simply does not define any available output formats.  In any
+                other case, when it determines that its input is 8-bit RGB, it
+                defines a single output format that matches the dimensions and
+                row stride of its input.
+            </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="subclassing-example-using"></a>Using Filter Example in a libcam application</h3></div></div></div>
+<p>
+                So far we have demonstrated how to create the filter example,
+                but not how to actually use it in a libcam application.  This
+                process is actually pretty simple, and the only change we must
+                make to an existing libcam application is to register the
+                new driver with the unit manager used by the application.
+            </p>
+<p>
+                If we create a new <code class="classname">CamUnitChain</code> using
+                the default constructor, then the chain creates its own
+                internal unit manager.  To register the new filter with the
+                unit manager, you can use the method
+                <code class="methodname">cam_unit_manager_add_driver</code>:
+</p>
+<pre class="programlisting">
+
+#include "filter_example.h"
+.
+.
+.
+    CamUnitChain *chain = cam_unit_chain_new ();
+    cam_unit_manager_add_driver (chain-&gt;manager, 
+            my_filter_example_driver_new ());
+
+</pre>
+<p>
+
+                After this, the chain is able to create instances of the unit
+                (via the unit manager) by invoking
+                <code class="methodname">cam_unit_chain_add_unit_by_id</code> and
+                passing it the ID of our new unit -- "filter.example".
+                
+</p>
+<pre class="programlisting">
+
+    CamUnit *filter_example = cam_unit_chain_add_unit_by_id ("filter.example");
+
+</pre>
+<p>
+
+                Full source code for both this example and a program that uses
+                it is included in the libcam source code.
+                
+            </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="subclassing-example-summary"></a>Filter Example summary</h3></div></div></div>
+<p>
+                In this example, we have created a subclass of
+                <code class="classname">CamUnit</code> that is able to process 8-bit
+                RGB images.  This example demonstrates many, but not all, of
+                the features available to subclasses of
+                <code class="classname">CamUnit</code>.  It exposes a single control
+                that will automatically be given a UI element when used in a
+                graphical application and the libcam GTK widgets.  It also
+                adapts its output format as its input changes, making it
+                useful for a variety of images and not just a single pixel
+                format and resolution.
+            </p>
+<p>
+                We have not demonstrated how to use the OpenGL rendering
+                framework of <code class="classname">CamUnit</code>, and we have
+                glossed over the unit status (i.e. idle, ready, streaming).
+                As always, if these are not well documented elsewhere in our
+                tutorial, the best place to look is the source code that is
+                distributed with libcam.
+            </p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id328944" href="#id328944">3</a>] </sup>This expands to '<code class="literal">extern
+                            "C" {</code>' in C++, to prevent C++ from
+                        mangling declared function names</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id328979" href="#id328979">4</a>] </sup><a href="http://en.wikipedia.org/wiki/Virtual_table" target="_top">http://en.wikipedia.org/wiki/Virtual_table</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id329161" href="#id329161">5</a>] </sup><a href="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html" target="_top">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</a></p></div>
+</div>
+</div>
+</body>
+</html>

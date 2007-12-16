@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Acquiring images (Quickstart guide)</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="index.html" title="libcam Tutorial">
+<link rel="prev" href="preface-license.html" title="License">
+<link rel="next" href="acquiring-unit-chain.html" title="Using a CamUnitChain">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="preface-license.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td>&#160;</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="acquiring-unit-chain.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter" lang="en">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ch-acquiring"></a>Acquiring images (Quickstart guide)</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="sect1"><a href="ch-acquiring.html#acquiring-glib">Using libcam with GLib</a></span></dt>
+<dt><span class="sect1"><a href="acquiring-unit-chain.html">Using a <code class="classname">CamUnitChain</code></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="acquiring-unit-chain.html#acquiring-unit-ids">Unit IDs</a></span></dt>
+<dt><span class="sect2"><a href="acquiring-unit-chain.html#acqruigin-statuses">Unit states - IDLE, READY, STREAMING</a></span></dt>
+<dt><span class="sect2"><a href="acquiring-unit-chain.html#acquiring-chain-glib">Attaching to GMainContext</a></span></dt>
+<dt><span class="sect2"><a href="acquiring-unit-chain.html#acquiring-frame-ready">The "frame-ready" event</a></span></dt>
+<dt><span class="sect2"><a href="acquiring-unit-chain.html#acquiring-buffer-format"><code class="classname">CamFrameBuffer</code> and
+            <code class="classname">CamUnitFormat</code></a></span></dt>
+</dl></dd>
+</dl></div>
+<p>
+    The fundamental class in libcam is the <code class="classname">CamUnit</code> class.
+    Conceptually, an instance of a <code class="classname">CamUnit</code> represents an
+    object that can produce frames.  Units are typically connected in series,
+    or in a tree-like fashion, to form an image processing application.
+    Because units connected in series are very common, libcam provides the
+    convenience class <code class="classname">CamUnitChain</code> for managing units.
+</p>
+<p>
+    <a href="ch-acquiring.html#trivial-acquire.c" title="Example&#160;1.&#160;Basic Image Acquisition">Example&#160;1, &#8220;Basic Image Acquisition&#8221;</a> provides a basic example on how to
+    acquire a test image and write it to disk.  It uses the builtin
+    <code class="literal">input.example</code> CamUnit, which periodically generates a
+    test image.  
+</p>
+<div class="example">
+<a name="trivial-acquire.c"></a><p class="title"><b>Example&#160;1.&#160;Basic Image Acquisition</b></p>
+<div class="example-contents"><pre class="programlisting">
+
+#include &lt;stdio.h&gt;
+
+#include &lt;glib.h&gt;
+#include &lt;libcam/cam.h&gt;
+
+static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
+        const CamFrameBuffer *buf, void *user_data)
+{
+    GMainLoop *mainloop = (GMainLoop*) user_data;
+    const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
+    FILE *fp = fopen ("trivial-acquire.ppm", "wb");
+    if (fp) {
+        fprintf(fp, "P6 %d %d %d\n", fmt-&gt;width, fmt-&gt;height, 255);
+        for (int i=0; i&lt;fmt-&gt;height; i++){
+            int count = fwrite(buf-&gt;data + i*fmt-&gt;row_stride, 
+                    fmt-&gt;width*3, 1, fp);
+            if (1 != count) {
+                perror ("fwrite");
+                break;
+            }
+        }
+        fclose (fp);
+    }
+    printf ("wrote to trivial-acquire.ppm\n");
+    g_main_quit (mainloop);
+}
+
+int main(int argc, char **argv)
+{
+    g_type_init();
+
+    // create the GLib event handling loop
+    GMainLoop *mainloop = g_main_loop_new (NULL, FALSE);
+
+    // create an image processing chain and add a single example unit
+    CamUnitChain * chain = cam_unit_chain_new ();
+    cam_unit_chain_add_unit_by_id (chain, "input.example");
+
+    // start the chain streaming
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+
+    // attach the chain to the glib event loop.
+    cam_unit_chain_attach_glib (chain, G_PRIORITY_DEFAULT, NULL);
+
+    // subscribe to be notified when an image has made its way through the
+    // chain
+    g_signal_connect (G_OBJECT (chain), "frame-ready",
+            G_CALLBACK (on_frame_ready), mainloop);
+
+    // run 
+    g_main_loop_run (mainloop);
+
+    // cleanup
+    g_main_loop_unref (mainloop);
+    g_object_unref (chain);
+    return 0;
+}
+
+</pre></div>
+</div>
+<br class="example-break"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="acquiring-glib"></a>Using libcam with GLib</h2></div></div></div>
+<p>
+        libcam uses the <code class="classname">GObject</code> type
+        system, which must be initialized before any libcam classes are
+        instantiated.
+        </p>
+<pre class="programlisting">
+    g_type_init ();
+        </pre>
+<p>
+
+        libcam was designed for easy integration into a GLib event loop.
+        While libcam does not require the GLib event loop, and can be used
+        with other event loops such as Qt, libcam does provide convenience
+        functions for working with the GLib mainloop, and the tutorials all
+        assume the use of a <code class="classname">GMainLoop</code>.  To create a
+        <code class="classname">GMainLoop</code>, use
+        <code class="function">g_main_loop_new</code>.
+        </p>
+<pre class="programlisting">
+    GMainLoop * mainloop = g_main_loop_new (NULL, FALSE);
+        </pre>
+<p>
+        
+    </p>
+<p>
+        For more details on event driven programming with GLib, see the GLib
+        documentation and tutorials.
+    </p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Conversion Units</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="libcam Tutorial">
+<link rel="up" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="prev" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="next" href="camunit-controls.html" title="Unit Controls">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="preface" href="ch-preface.html" title="Preface">
+<link rel="chapter" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
+<link rel="chapter" href="ch-camunit.html" title="Conversion Units and Unit Controls">
+<link rel="chapter" href="ch-subclassing.html" title="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver">
+<link rel="chapter" href="ch-otherenvs.html" title="Other Environments">
+<link rel="appendix" href="gfdl.html" title="Appendix&#160;A.&#160;GNU Free Documentation License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="ch-camunit.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch-camunit.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Tutorial</th>
+<td><a accesskey="n" href="camunit-controls.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="camunit-motivation"></a>Conversion Units</h2></div></div></div>
+<p>
+        For a variety of reasons, there is no one standard way of representing
+        an image.  8-bit grayscale, 24-bit RGB, YUV 4:2:2, Bayer, grayscale,
+        all of these are fairly common image formats.  Frequently, however, an
+        image processing algorithm can only deal with images in a very
+        specific colorspace and binary representation.
+    </p>
+<p>
+        libcam provides a set of conversion <code class="classname">CamUnit</code>
+        classes to handle this.  These units can be found in the "convert"
+        namespace.  Each unit can only perform a certain number of
+        conversions, and also has certain input requirements.  A few examples
+        of some of the conversion units and some the conversions they can
+        perform are:
+
+        </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><code class="literal">convert.fast_debayer</code></span></td>
+<td><div class="itemizedlist"><ul type="disc">
+<li><p>
+                                Bayer RGGB -&gt; BGRA
+                        </p></li>
+<li><p>
+                                Bayer GBRG -&gt; BGRA
+                        </p></li>
+<li><p>
+                                Bayer GRBG -&gt; BGRA
+                        </p></li>
+<li><p>
+                                Bayer BGGR -&gt; BGRA
+                        </p></li>
+</ul></div></td>
+</tr>
+<tr>
+<td><span class="term"><code class="literal">convert.colorspace</code></span></td>
+<td><div class="itemizedlist"><ul type="disc">
+<li><p>
+                                8bpp Gray -&gt; 24bpp RGB
+                        </p></li>
+<li><p>
+                                8bpp Gray -&gt; 32bpp RGBA
+                        </p></li>
+<li><p>
+                                YUV 4:2:0 Planar-&gt; 24bpp RGB
+                        </p></li>
+<li><p>
+                                YUV 4:2:2 -&gt; 24bpp RGB
+                        </p></li>
+<li><p>
+                                and more...
+                        </p></li>
+</ul></div></td>
+</tr>
+<tr>
+<td><span class="term"><code class="literal">convert.jpeg</code></span></td>
+<td><div class="itemizedlist"><ul type="disc">
+<li><p>
+                                24bpp RGB -&gt; JPEG
+                        </p></li>
+<li><p>
+                                JPEG -&gt; 24bpp RGB
+                        </p></li>
+<li><p>
+                                8bpp Gray -&gt; JPEG
+                        </p></li>
+<li><p>
+                                and more...
+                        </p></li>
+</ul></div></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+
+        To use one, add the desired unit to the end of a
+        <code class="classname">CamUnitChain</code> and specify the desired output
+        format.  For example, as we saw in the previous chapter, the example
+        input unit produces 24bpp RGB images.  To create a chain that
+        compresses these to JPEG, we could do the following:
+
+</p>
+<pre class="programlisting">
+    CamUnitChain *chain = cam_unit_chain_new ();
+
+    CamUnit *example_input = 
+        cam_unit_chain_add_unit_by_id (chain, "input.example");
+
+    CamUnit *jpeg_unit = 
+        cam_unit_chain_add_unit_by_id (chain, "convert.jpeg");
+
+    cam_unit_set_preferred_format (jpeg_unit, CAM_PIXEL_FORMAT_MJPEG, 0, 0);
+</pre>
+<p>
+    </p>
+<p>
+        If we then attach a callback function to the chain's "frame-ready" 
+        signal, then the image data received in that function should be
+        JPEG compressed.
+    </p>
+</div>
+</body>
+</html>
