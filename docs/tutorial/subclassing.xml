@@ -660,8 +660,6 @@ G_END_DECLS
             </para>
 
             <para>
-                TODO
-            </para>
 <programlisting>
 <![CDATA[
 #include <stdio.h>
@@ -674,6 +672,62 @@ G_END_DECLS
 
 /* Boilerplate */
 G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
+]]>
+</programlisting>
+
+                The <filename>.c</filename> file starts off with some
+                straightforward <literal>#include</literal> statements.  After
+                this is an admittedly cryptic macro invocation of
+                <function>G_DEFINE_TYPE</function>, which generates much
+                of the boilerplate needed to add a new type to the GObject
+                type system.  Exactly what it expands to is not important, but
+                it does there are a few important bits worth noting.  First,
+                it forward-declare two functions that we must define later on:  
+<programlisting>
+<![CDATA[
+    static void my_filter_example_init (MyFilterExample *self);
+    static void my_filter_example_class_init (MyFilterExampleClass *klass);
+]]>
+</programlisting>
+                The function <function>my_filter_example_init</function> is
+                the instance initializer, and is analagous, but not identical
+                to a C++ constructor.  The major difference is that it never
+                takes any parameters.
+                <function>my_filter_example_class_init</function> is the class
+                initializer, which is typically not explicitly seen in other
+                object oriented programming languages.  Both of these will be
+                explained in a more detail further on.  For a more thorough
+                explanation, see the GObject documentation and
+                tutorial<footnote><para><ulink
+                            url="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</ulink></para></footnote>
+                In addition to forward-declaring these two macros,
+                <function>G_DEFINE_TYPE</function> also defines a static
+                global variable that we will use later:
+<programlisting>
+<![CDATA[
+    static void * my_filter_example_parent_class = NULL;
+]]>
+</programlisting>
+
+                This variable is a pointer to the parent class of the newly
+                defined type that will be populated automatically by the
+                GObject type system.  It will be used to override
+                virtual methods of the parent class, and also to directly
+                invoke parent class methods.
+            </para>
+            <para>
+                Finally, the <function>G_DEFINE_TYPE</function> macro defines
+                the function <function>my_filter_example_get_type</function>,
+                which was declared in <filename>filter_example.h</filename>.
+                This function is primarily used by the GObject type system for
+                runtime type checking and registration.  Lots of stuff for a
+                single macro invocation, right?  It's natural for many
+                programmers to shudder at all of the hidden complexity, but
+                that really is the bulk of it.  Moving on to the rest of the
+                file, we have:
+
+<programlisting>
+<![CDATA[
 
 CamUnitDriver *
 my_filter_example_driver_new()
@@ -682,6 +736,24 @@ my_filter_example_driver_new()
             "Example", 0, (CamUnitConstructor)my_filter_example_new);
 }
 
+]]>
+</programlisting>
+
+                This is the constructor for the unit driver.  As mentioned
+                earlier in this chapter, drivers for image processing units
+                typically offer exactly one unit.  To reduce complexity,
+                libcam provides a default constructor for creating one of
+                these "stock" drivers.  The result of invoking
+                <function>cam_unit_driver_new_stock</function> with these
+                parameters is a driver that always has one unit available with
+                unit id "filter.example", a human-readable name of "Example",
+                and that has no special flags.  Lastly, the constructor for
+                the stock unit is passed to the stock driver.  This will be
+                used by the stock driver when it is requested to create
+                instances of the new unit.
+
+<programlisting>
+<![CDATA[
 // ============== MyFilterExample ===============
 static void my_filter_example_finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
@@ -699,6 +771,29 @@ my_filter_example_class_init (MyFilterExampleClass *klass)
     // override the "on_input_frame_ready" method
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
+]]>
+</programlisting>
+
+                In this next section of code, we forward-declare several
+                functions, and then define the class initializer.  The class
+                initializer has two primary responsibilities.  First, it sets
+                up the class virtual method table, overriding methods of the
+                parent class when necessary.  In this example, our new class
+                overrides the <methodname>on_input_frame_ready</methodname>
+                method of its parent class.  It also overrides the destructor,
+                which is a virtual method of the base class
+                <classname>GObject</classname>
+            </para>
+            <para>
+                The second responsibility of the class initializer is
+                to define new signals that instances of the class will emit.
+                For example, <classname>CamUnit</classname> provides the
+                "frame-ready" signal, which is defined in its class
+                initializer.  Our filter class does not have any new signals,
+                but does inherit all of the signals from its parent classes.
+
+<programlisting>
+<![CDATA[
 
 // First part of the constructor
 MyFilterExample * 
@@ -722,6 +817,50 @@ my_filter_example_init (MyFilterExample *self)
     g_signal_connect (G_OBJECT(self), "input-format-changed",
             G_CALLBACK(on_input_format_changed), NULL);
 }
+]]>
+</programlisting>
+
+                Here, we define the constructor of our new class.  Unlike most
+                object-oriented programming languages, the constructor in
+                GObject is split up into multiple methods.  At the core is the
+                instance initializer
+                <function>my_filter_example_init</function>, which is required
+                to initialize an instance to a reasonable default state
+                without using any constructor arguments.  This initializer is
+                not publicly exposed, and is never invoked directly by
+                programs.  It is instead invoked as a result of the external
+                constructor, <function>my_filter_example_new</function>
+                calling <function>g_object_new</function>.  
+            </para>
+            <para>
+                The external constructor is allowed to accept arguments.  The
+                idea is that it will first create an instance of the class
+                that has been initialized to valid defaults via the instance
+                initializer.  Next, it can adjust the instance according to
+                the arguments passed in.  In our example, the external
+                constructor does not accept any arguments, and so it simply
+                returns the result of the instance initializer.  In general,
+                subclasses of <classname>CamUnit</classname> will not have
+                constructors that take arguments, so this so this paragraph is
+                mostly pedagogical.
+            </para>
+            <para>
+                In terms of actual work accomplished in our constructor, our
+                example does two things.  First, it creates a single integer
+                control with id "patch-intensity" and human readable name "Patch
+                Intensity".  The control value is allowed to range from 0 to
+                255 with default increments of 1.  Its initial value is 127,
+                and it is enabled by default.
+            </para>
+            <para>
+                Second, our constructor connects to a signal emitted by our
+                own intsance: the "input-format-changed" signal.  This signal
+                fires whenever the input format to our unit changes.  We will
+                use this signal handler later on to adjust the available
+                outputs produced by our unit.
+
+<programlisting>
+<![CDATA[
 
 // destructor.
 static void
@@ -732,6 +871,18 @@ my_filter_example_finalize (GObject *obj)
     // invoke the superclass destructor
     G_OBJECT_CLASS (my_filter_example_parent_class)->finalize(obj);
 }
+]]>
+</programlisting>
+
+                After the constructor, we define the destructor.  We will
+                define it in almost exactly the same manner we would define a
+                C++ destructor.  First, the child class releases any system
+                resources and heap memory it has allocated.  In our cases,
+                there are none.  Next, the child class invokes the destructor
+                of its parent class.
+
+<programlisting>
+<![CDATA[
 
 // this method is called whenever the input unit produces a frame
 static void
@@ -740,6 +891,21 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 {
     MyFilterExample *self = MY_FILTER_EXAMPLE(super);
 
+]]>
+</programlisting>
+
+                Finally, we get to the meat of the unit!  As seen in the class
+                initializer, we have overriden the
+                <function>on_input_frame_ready</function> method of the parent
+                class.  This function is called whenever the input of our unit
+                produces a frame via the "frame-ready" signal.  The three
+                arguments passed to this method are the unit itself, a pointer
+                to the framebuffer containing the actual image data, and a
+                pointer to a unit format struct describing how the image data
+                is formatted.
+
+<programlisting>
+<![CDATA[
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (super->fmt->max_data_size);
 
@@ -747,7 +913,21 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
             outbuf->data, super->fmt->row_stride,
             0, 0, 0, 0, infmt->width, infmt->height, 
             cam_pixel_format_bpp (infmt->pixelformat));
+]]>
+</programlisting>
+                Worth noting is that the input framebuffer is
+                <literal>const</literal>, and so must not be modified by our
+                unit.  The first action taken by our unit is to allocate a new
+                framebuffer to store the output image.  The superclass member
+                variable <varname>fmt</varname> stores the output format that
+                our unit has been initialized to, so we can use that to
+                construct our output framebuffer accordingly.  Next, our
+                example makes a bitwise copy of the input image into our
+                output buffer.
+                
 
+<programlisting>
+<![CDATA[
     // draw a little rectangle
     int x0 = super->fmt->width / 4;
     int x1 = x0 * 3;
@@ -761,6 +941,15 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     for (i=y0; i<y1; i++) {
         memset (outbuf->data + i*super->fmt->row_stride + x0*3, val, rw*3);
     }
+]]>
+</programlisting>
+                These are the actual guts of our unit -- drawing a rectangle
+                into the image.  We have a trivial example demonstrating how
+                to retrieve the value of a control, and then using that value
+                to affect the output.
+
+<programlisting>
+<![CDATA[
 
     // copy the timestamp and metadata dictionary
     cam_framebuffer_copy_metadata (outbuf, inbuf);
@@ -770,6 +959,23 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     cam_unit_produce_frame (super, outbuf, super->fmt);
     g_object_unref (outbuf);
 }
+]]>
+</programlisting>
+                
+                Finally, we close the method by setting the metadata of the
+                output framebuffer, and calling the
+                <function>cam_unit_produce_frame</function> method, which
+                triggers the "frame-ready" signal of our unit.  This is a
+                synchronous signalling framework, so by the time
+                <function>cam_unit_produce_frame</function> returns, all other
+                signal handlers that have subscribed to this unit will have
+                completed.  This means that we can now release the memory
+                allocated for the framebuffer.  Since GObject uses reference
+                counting for its memory management, we decrement the reference
+                count of the framebuffer to free its contents.
+
+<programlisting>
+<![CDATA[
 
 // this is the signal handler attached in "my_filter_example_init", and is
 // called when the format of the input data changes.
@@ -791,7 +997,91 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 }
 ]]>
 </programlisting>
-        
+
+                The last step in our example is to define the function that
+                will be invoked when the input to our unit changes.  We have
+                created our unit to be able to process 8-bit RGB images of
+                arbitrary sizes, so whenever the input to our unit changes, we
+                must verify that our unit is able to process the new input
+                format.
+            </para>
+            <para>
+                Note that it is possible for the argument
+                <varname>infmt</varname> to be <literal>NULL</literal>.  This
+                will happen when there literally is no input.  In that case,
+                our unit cannot produce output when it has no input so it
+                simply does not define any available output formats.  In any
+                other case, when it determines that its input is 8-bit RGB, it
+                defines a single output format that matches the dimensions and
+                row stride of its input.
+            </para>
+        </sect2>
+        <sect2 id="subclassing-example-using">
+            <title>Using Filter Example in a libcam application</title>
+            <para>
+                So far we have demonstrated how to create the filter example,
+                but not how to actually use it in a libcam application.  This
+                process is actually pretty simple, and the only change we must
+                make to an existing libcam application is to register the
+                new driver with the unit manager used by the application.
+            </para>
+            <para>
+                If we create a new <classname>CamUnitChain</classname> using
+                the default constructor, then the chain creates its own
+                internal unit manager.  To register the new filter with the
+                unit manager, you can use the method
+                <methodname>cam_unit_manager_add_driver</methodname>:
+<programlisting>
+<![CDATA[
+#include "filter_example.h"
+.
+.
+.
+    CamUnitChain *chain = cam_unit_chain_new ();
+    cam_unit_manager_add_driver (chain->manager, 
+            my_filter_example_driver_new ());
+]]>
+</programlisting>
+
+                After this, the chain is able to create instances of the unit
+                (via the unit manager) by invoking
+                <methodname>cam_unit_chain_add_unit_by_id</methodname> and
+                passing it the ID of our new unit -- "filter.example".
+                
+<programlisting>
+<![CDATA[
+    CamUnit *filter_example = cam_unit_chain_add_unit_by_id ("filter.example");
+]]>
+</programlisting>
+
+                Full source code for both this example and a program that uses
+                it is included in the libcam source code.
+                
+            </para>
+        </sect2>
+        <sect2 id="subclassing-example-summary">
+            <title>Filter Example summary</title>
+
+            <para>
+                In this example, we have created a subclass of
+                <classname>CamUnit</classname> that is able to process 8-bit
+                RGB images.  This example demonstrates many, but not all, of
+                the features available to subclasses of
+                <classname>CamUnit</classname>.  It exposes a single control
+                that will automatically be given a UI element when used in a
+                graphical application and the libcam GTK widgets.  It also
+                adapts its output format as its input changes, making it
+                useful for a variety of images and not just a single pixel
+                format and resolution.
+            </para>
+            <para>
+                We have not demonstrated how to use the OpenGL rendering
+                framework of <classname>CamUnit</classname>, and we have
+                glossed over the unit status (i.e. idle, ready, streaming).
+                As always, if these are not well documented elsewhere in our
+                tutorial, the best place to look is the source code that is
+                distributed with libcam.
+            </para>
         </sect2>
     </sect1>
 </chapter>
