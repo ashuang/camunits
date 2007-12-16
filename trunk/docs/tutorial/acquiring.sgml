@@ -157,7 +157,7 @@ int main(int argc, char **argv)
     <title>Looking up Unit IDs in <command>camview</command></title>
     <mediaobject>
         <imageobject>
-            <imagedata fileref="images/camview-unit-id.png" format="PNG"/>
+            <imagedata fileref="camview-unit-id.png" format="PNG"/>
         </imageobject>
         <caption>
             <para>
