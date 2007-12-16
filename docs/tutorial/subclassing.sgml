@@ -231,7 +231,7 @@
             <title>Unit, Driver, and Manager</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="images/cam_unit_manager.png" format="PNG"/>
+                    <imagedata fileref="cam_unit_manager.png" format="PNG"/>
                 </imageobject>
                 <caption>
                     <para>
@@ -247,7 +247,7 @@
             <title>Chain and other classes</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="images/cam_unit_chain.png" format="PNG"/>
+                    <imagedata fileref="cam_unit_chain.png" format="PNG"/>
                 </imageobject>
                 <caption>
                     <para>

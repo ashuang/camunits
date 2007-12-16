@@ -185,7 +185,7 @@
     and formats</title>
     <mediaobject>
         <imageobject>
-            <imagedata fileref="images/camunit-controls.png" format="PNG"/>
+            <imagedata fileref="camunit-controls.png" format="PNG"/>
         </imageobject>
         <caption>
             <para>
