@@ -2,18 +2,30 @@
     <title>Creating Custom Units -- Subclassing <classname>CamUnit</classname> and <classname>CamUnitDriver</classname></title>
 
     <para>
-        Productively using libcam in an image processing application does not
-        require one to build custom units.  It is perfectly possible, and
-        sometimes simpler to simply connect a signal handler to the
-        "frame-ready" signal of a <classname>CamUnitChain</classname> or
-        <classname>CamUnit</classname> and do all of the processing in that
-        signal handler.  So why bother creating custom units?
-    </para>
+        This chapter describes some of the more advanced features of the libcam
+        framework.  Specifically, it describes how to create subclasses of
+        <classname>CamUnit</classname> that can also be inserted into
+        image processing chains and used in conjunction with other units.
+        <note><title>Caveat Emptor</title>
+        <para>
+        While we believe strongly in building image procesing elements as
+        subclasses of <classname>CamUnit</classname>,
+        undertaking the creation of a <classname>CamUnit</classname>
+        requires a much deeper understanding of how libcam works than does
+        simply using the output of an image processing chain.  
+        Productively using libcam in an image processing application
+        does not require one to build custom units.  Specifically, one can
+        choose to use libcam primarily as an image acquisition and colorspace
+        conversion tool.  We encourage readers to look at the three features
+        mentioned next, and then decide if they are worth the investment of
+        learning how to create custom units.
+        </para></note>
+        </para>
     <para>
         Building a custom unit provides three main features.  
         <variablelist>
             <varlistentry>
-                <term><emphasis>Controls</emphasis></term>
+                <term><emphasis>Controls and Parameters</emphasis></term>
                 <listitem>
                     <para>
                         In our experience, most image processing 
@@ -114,7 +126,7 @@
             normally expect from an object-oriented framework.
         </para>
         <para>
-            While GObject is robust and mature, it can also be very awkward to
+            While GObject is robust and mature, it can also be awkward to
             use in C.  We'll be completely honest here -- boilerplate code and
             nested macros abound in GObject.  It does have a learning curve,
             and it can be easy to become mired in the implementation details,
@@ -130,7 +142,8 @@
             works.  For the most part, when we have to deal with the GObject
             type system in this tutorial, we'll say something like, "just do
             it this way" and expect that if you really want to know why,
-            you'll go look at the GObject documentation.
+            you'll go look at the GObject documentation<footnote><para><ulink
+            url="http://library.gnome.org/devel/gobject/">http://library.gnome.org/devel/gobject/</ulink></para></footnote>.
         </para>
     </sect1>
     <sect1 id="subclassing-class-relationships">
@@ -189,11 +202,9 @@
                     <listitem><para>
                             The <classname>CamUnitManager</classname> is a
                             factory class that maintains a central registry of
-                            <classname>CamUnitDriver</classname>s and
-                            available <classname>CamUnit</classname>s.  The
-                            sole purpose of the
-                            <classname>CamUnitManager</classname> is to make
-                            it easy to discover available units and
+                            drivers and available units.  The sole purpose of
+                            the <classname>CamUnitManager</classname> is to
+                            make it easy to discover available units and
                             instantiate them.
                             </para><para>
                             The relationship between
@@ -216,7 +227,8 @@
                             <classname>CamUnitChain</classname> provides a
                             wrapper around
                             <classname>CamUnitManager</classname> and handles
-                            a lot of the tedium of connecting units together.
+                            much of the tedium involved in connecting units
+                            together.
 
                             </para><para>
                             The relationship between
@@ -276,8 +288,8 @@
     <sect1 id="subclassing-example-filter">
         <title>Example Filter</title>
         <para>
-            This example demonstrates how to create an image processing unit --
-            one that takes images as input, transforms the image in some way,
+            This example demonstrates how to create an image processing unit 
+            that takes images as input, transforms each input image in some way,
             and then produces a modified image as output.  The output of this
             example unit is the original input image with a rectangle drawn in
             the middle.  A parameter allows us to control the brightness of the
@@ -494,7 +506,8 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 naming conventions.  In addition to putting an object-oriented
                 programming framework into C via a careful usage of structs,
                 macros, and function pointers, we are also retrofitting C with
-                a namespacing scheme.  Although C does not inherently support
+                a namespacing scheme<footnote><para><ulink
+                url="http://en.wikipedia.org/wiki/Namespace_%28programming%29#Emulating_namespaces">http://en.wikipedia.org/wiki/Namespace_(programming)#Emulating_namespaces</ulink></para></footnote>.  Although C does not inherently support
                 namespaces, we can achieve some of the benefits of a properly
                 namespaced language by following careful naming rules.  libcam
                 follows the GLib namespacing conventions and recommends
@@ -564,8 +577,9 @@ typedef struct _MyFilterExampleClass MyFilterExampleClass;
 
                 Here, we forward-declare two structs.
                 <classname>MyFilterExample</classname> will be the class
-                definition struct.  This struct is what most C++ programmers
-                would think of when they're defining the contents of a class.
+                definition struct, which is what most C++ programmers
+                think of when they're defining the contents of a class in a
+                header file.
                 <classname>MyFilterExampleClass</classname> will be the class
                 vtable<footnote><para><ulink
                             url="http://en.wikipedia.org/wiki/Virtual_table">http://en.wikipedia.org/wiki/Virtual_table</ulink></para></footnote>.
@@ -614,14 +628,15 @@ struct _MyFilterExampleClass {
                 <literal>struct _MyFilterExample</literal>, is what most C++
                 programmers would think of in a class definition.  The first
                 member of this struct <emphasis>must</emphasis> be
-                <literal>CamUnit parent;</literal>.  After that, feel free to
+                "<literal>CamUnit parent;</literal>".  After that, feel free to
                 declare any member variables needed in the custom unit.
             </para>
             <para>
-                The next struct primarily defines the virtual methods for the
-                class.  Unless your class will itself be a superclass and
-                provide virtual methods not defined in libcam, just rename the
-                struct and leave it alone.
+                The next struct, <literal>struct
+                _MyFilterExampleClass</literal>, primarily defines the virtual
+                methods for the class.  Unless your class will itself be a
+                superclass and provide virtual methods not defined in libcam,
+                just rename the struct and leave it alone.
 
 <programlisting>
 <![CDATA[
@@ -647,7 +662,8 @@ G_END_DECLS
                 Next, our example unit defines two constructors.  One is the
                 constructor for the actual unit, the second is the constructor
                 for the unit driver.  Finally, we close the header with the
-                GLib macro for C++ portability, and close the original
+                GLib macro <function>G_END_DECLS</function> for C++
+                portability, and close the original
                 <literal>#ifdef</literal> at the top of the file.
             </para>
         </sect2>
@@ -681,8 +697,8 @@ G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
                 <function>G_DEFINE_TYPE</function>, which generates much
                 of the boilerplate needed to add a new type to the GObject
                 type system.  Exactly what it expands to is not important, but
-                it does there are a few important bits worth noting.  First,
-                it forward-declare two functions that we must define later on:  
+                there are a few bits worth noting.  First, the macro
+                forward-declares two functions that we must define later on:  
 <programlisting>
 <![CDATA[
     static void my_filter_example_init (MyFilterExample *self);
@@ -696,10 +712,10 @@ G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
                 <function>my_filter_example_class_init</function> is the class
                 initializer, which is typically not explicitly seen in other
                 object oriented programming languages.  Both of these will be
-                explained in a more detail further on.  For a more thorough
-                explanation, see the GObject documentation and
+                explained in a more detail further on.  For an even more
+                thorough explanation, see the GObject documentation and
                 tutorial<footnote><para><ulink
-                            url="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</ulink></para></footnote>
+                            url="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</ulink></para></footnote>.
                 In addition to forward-declaring these two macros,
                 <function>G_DEFINE_TYPE</function> also defines a static
                 global variable that we will use later:
@@ -713,7 +729,7 @@ G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
                 defined type that will be populated automatically by the
                 GObject type system.  It will be used to override
                 virtual methods of the parent class, and also to directly
-                invoke parent class methods.
+                invoke parent class methods that we have overriden.
             </para>
             <para>
                 Finally, the <function>G_DEFINE_TYPE</function> macro defines
