@@ -248,12 +248,19 @@ int cam_pixel_convert_8u_yuv420p_to_8u_bgra(uint8_t *dest, int dstride, int dwid
 int cam_pixel_convert_8u_yuv420p_to_8u_gray(uint8_t *dest, int dstride, int dwidth,
         int dheight, const uint8_t *src, int sstride);
 
-int cam_pixel_convert_8u_yuv422_to_8u_gray (uint8_t *dest, int dstride, int dwidth,
-        int dheight, const uint8_t *src, int sstride);
-int cam_pixel_convert_8u_yuv422_to_8u_bgra(uint8_t *dest, int dstride, int dwidth,
-        int dheight, const uint8_t *src, int sstride);
-int cam_pixel_convert_8u_yuv422_to_8u_rgb(uint8_t *dest, int dstride, int dwidth,
-        int dheight, const uint8_t *src, int sstride);
+int cam_pixel_convert_8u_uyvy_to_8u_gray (uint8_t *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
+int cam_pixel_convert_8u_uyvy_to_8u_bgra(uint8_t *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
+int cam_pixel_convert_8u_uyvy_to_8u_rgb(uint8_t *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
+
+int cam_pixel_convert_8u_yuyv_to_8u_gray (uint8_t *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
+int cam_pixel_convert_8u_yuyv_to_8u_bgra(uint8_t *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
+int cam_pixel_convert_8u_yuyv_to_8u_rgb(uint8_t *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
 
 /**
  * cam_pixel_replicate_border_8u:
