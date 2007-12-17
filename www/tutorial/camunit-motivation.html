@@ -31,9 +31,9 @@
 <a name="camunit-motivation"></a>Conversion Units</h2></div></div></div>
 <p>
         For a variety of reasons, there is no one standard way of representing
-        an image.  8-bit grayscale, 24-bit RGB, YUV 4:2:2, Bayer, grayscale,
-        all of these are fairly common image formats.  Frequently, however, an
-        image processing algorithm can only deal with images in a very
+        an image.  8bpp grayscale, 24bpp RGB, YUV 4:2:2, Bayer BGGR, 
+        all of these are fairly common image formats.  However, an
+        image processing algorithm can often deal only with images in a very
         specific colorspace and binary representation.
     </p>
 <p>
@@ -92,13 +92,13 @@
                                 24bpp RGB -&gt; JPEG
                         </p></li>
 <li><p>
+                                32bpp BGRA -&gt; JPEG
+                        </p></li>
+<li><p>
                                 JPEG -&gt; 24bpp RGB
                         </p></li>
 <li><p>
                                 8bpp Gray -&gt; JPEG
-                        </p></li>
-<li><p>
-                                and more...
                         </p></li>
 </ul></div></td>
 </tr>

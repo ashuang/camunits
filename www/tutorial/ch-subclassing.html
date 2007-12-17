@@ -44,13 +44,29 @@
 </dl></dd>
 </dl></div>
 <p>
-        Productively using libcam in an image processing application does not
-        require one to build custom units.  It is perfectly possible, and
-        sometimes simpler to simply connect a signal handler to the
-        "frame-ready" signal of a <code class="classname">CamUnitChain</code> or
-        <code class="classname">CamUnit</code> and do all of the processing in that
-        signal handler.  So why bother creating custom units?
-    </p>
+        This chapter describes some of the more advanced features of the libcam
+        framework.  Specifically, it describes how to create subclasses of
+        <code class="classname">CamUnit</code> that can also be inserted into
+        image processing chains and used in conjunction with other units.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caveat Emptor</h3>
+<p>
+        While we believe strongly in building image procesing elements as
+        subclasses of <code class="classname">CamUnit</code>,
+        undertaking the creation of a <code class="classname">CamUnit</code>
+        requires a much deeper understanding of how libcam works than does
+        simply using the output of an image processing chain.  
+        Productively using libcam in an image processing application
+        does not require one to build custom units.  Specifically, one can
+        choose to use libcam primarily as an image acquisition and colorspace
+        conversion tool.  We encourage readers to look at the three features
+        mentioned next, and then decide if they are worth the investment of
+        learning how to create custom units.
+        </p>
+</div>
+<p>
+        </p>
 <p>
         Building a custom unit provides three main features.  
         </p>
@@ -58,7 +74,7 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Controls</em></span></span></td>
+<td><span class="term"><span class="emphasis"><em>Controls and Parameters</em></span></span></td>
 <td>
 <p>
                         In our experience, most image processing 
@@ -158,7 +174,7 @@
             normally expect from an object-oriented framework.
         </p>
 <p>
-            While GObject is robust and mature, it can also be very awkward to
+            While GObject is robust and mature, it can also be awkward to
             use in C.  We'll be completely honest here -- boilerplate code and
             nested macros abound in GObject.  It does have a learning curve,
             and it can be easy to become mired in the implementation details,
@@ -173,8 +189,12 @@
             works.  For the most part, when we have to deal with the GObject
             type system in this tutorial, we'll say something like, "just do
             it this way" and expect that if you really want to know why,
-            you'll go look at the GObject documentation.
+            you'll go look at the GObject documentation<sup>[<a name="id328296" href="#ftn.id328296">3</a>]</sup>.
         </p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id328296" href="#id328296">3</a>] </sup><a href="http://library.gnome.org/devel/gobject/" target="_top">http://library.gnome.org/devel/gobject/</a></p></div>
 </div>
 </div>
 </body>

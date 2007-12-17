@@ -41,9 +41,6 @@
         units that convert frames from one image format to another, and
         accessing the controls exposed by a unit.
     </p>
-<p>
-        Different image sensors and cameras 
-    </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="camunit-specify-output"></a>Specifying the output format of a Unit</h2></div></div></div>
@@ -52,12 +49,13 @@
         in several formats.  For example, many cameras can produce images in
         a number of resolutions or have an option to perform on-board
         colorspace conversion.  To reflect this capability, a
-        <code class="classname">CamUnit</code> provides a list of
-        <code class="classname">CamUnitFormats</code> that it is able to produce.  In
-        other cases, if a <code class="classname">CamUnit</code> is not able to deal
-        with its input format (e.g. if it expects 8bpp Grayscale data and is
-        instead given 24bpp RGB) then it may report that it is unable to
-        produce any output formats with its current input.
+        <code class="classname">CamUnit</code> provides a list of formats that it is
+        able to produce, represented by a list of
+        <code class="classname">CamUnitFormat</code> objects.  In some cases, for
+        example if a <code class="classname">CamUnit</code> is not properly initialized
+        or is not able to deal with its input format (e.g. if it expects 8bpp
+        grayscale data and is instead given 24bpp RGB) then it may report that
+        it is unable to produce any output formats with its current input.
     </p>
 <p>
         When a <code class="classname">CamUnit</code> is initialized (i.e. its status

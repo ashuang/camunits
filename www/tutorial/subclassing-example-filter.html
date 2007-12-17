@@ -30,8 +30,8 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="subclassing-example-filter"></a>Example Filter</h2></div></div></div>
 <p>
-            This example demonstrates how to create an image processing unit --
-            one that takes images as input, transforms the image in some way,
+            This example demonstrates how to create an image processing unit 
+            that takes images as input, transforms each input image in some way,
             and then produces a modified image as output.  The output of this
             example unit is the original input image with a rectangle drawn in
             the middle.  A parameter allows us to control the brightness of the
@@ -248,7 +248,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 naming conventions.  In addition to putting an object-oriented
                 programming framework into C via a careful usage of structs,
                 macros, and function pointers, we are also retrofitting C with
-                a namespacing scheme.  Although C does not inherently support
+                a namespacing scheme<sup>[<a name="id328728" href="#ftn.id328728">4</a>]</sup>.  Although C does not inherently support
                 namespaces, we can achieve some of the benefits of a properly
                 namespaced language by following careful naming rules.  libcam
                 follows the GLib namespacing conventions and recommends
@@ -303,7 +303,7 @@ G_BEGIN_DECLS
                 This is all required boilerplate, most of which should be
                 straightforward to a C programmer.
                 <code class="literal">G_BEGIN_DECLS</code> is a macro that provides C++
-                compatibility<sup>[<a name="id328944" href="#ftn.id328944">3</a>]</sup>.
+                compatibility<sup>[<a name="id328968" href="#ftn.id328968">5</a>]</sup>.
                 The end of the file will also have a corresponding
                 <code class="literal">G_END_DECLS</code>.
 
@@ -318,10 +318,11 @@ typedef struct _MyFilterExampleClass MyFilterExampleClass;
 
                 Here, we forward-declare two structs.
                 <code class="classname">MyFilterExample</code> will be the class
-                definition struct.  This struct is what most C++ programmers
-                would think of when they're defining the contents of a class.
+                definition struct, which is what most C++ programmers
+                think of when they're defining the contents of a class in a
+                header file.
                 <code class="classname">MyFilterExampleClass</code> will be the class
-                vtable<sup>[<a name="id328979" href="#ftn.id328979">4</a>]</sup>.
+                vtable<sup>[<a name="id329003" href="#ftn.id329003">6</a>]</sup>.
                 
 </p>
 <pre class="programlisting">
@@ -371,14 +372,15 @@ struct _MyFilterExampleClass {
                 <code class="literal">struct _MyFilterExample</code>, is what most C++
                 programmers would think of in a class definition.  The first
                 member of this struct <span class="emphasis"><em>must</em></span> be
-                <code class="literal">CamUnit parent;</code>.  After that, feel free to
+                "<code class="literal">CamUnit parent;</code>".  After that, feel free to
                 declare any member variables needed in the custom unit.
             </p>
 <p>
-                The next struct primarily defines the virtual methods for the
-                class.  Unless your class will itself be a superclass and
-                provide virtual methods not defined in libcam, just rename the
-                struct and leave it alone.
+                The next struct, <code class="literal">struct
+                _MyFilterExampleClass</code>, primarily defines the virtual
+                methods for the class.  Unless your class will itself be a
+                superclass and provide virtual methods not defined in libcam,
+                just rename the struct and leave it alone.
 
 </p>
 <pre class="programlisting">
@@ -406,7 +408,8 @@ G_END_DECLS
                 Next, our example unit defines two constructors.  One is the
                 constructor for the actual unit, the second is the constructor
                 for the unit driver.  Finally, we close the header with the
-                GLib macro for C++ portability, and close the original
+                GLib macro <code class="function">G_END_DECLS</code> for C++
+                portability, and close the original
                 <code class="literal">#ifdef</code> at the top of the file.
             </p>
 </div>
@@ -441,8 +444,8 @@ G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
                 <code class="function">G_DEFINE_TYPE</code>, which generates much
                 of the boilerplate needed to add a new type to the GObject
                 type system.  Exactly what it expands to is not important, but
-                it does there are a few important bits worth noting.  First,
-                it forward-declare two functions that we must define later on:  
+                there are a few bits worth noting.  First, the macro
+                forward-declares two functions that we must define later on:  
 </p>
 <pre class="programlisting">
 
@@ -458,9 +461,9 @@ G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
                 <code class="function">my_filter_example_class_init</code> is the class
                 initializer, which is typically not explicitly seen in other
                 object oriented programming languages.  Both of these will be
-                explained in a more detail further on.  For a more thorough
-                explanation, see the GObject documentation and
-                tutorial<sup>[<a name="id329161" href="#ftn.id329161">5</a>]</sup>
+                explained in a more detail further on.  For an even more
+                thorough explanation, see the GObject documentation and
+                tutorial<sup>[<a name="id329198" href="#ftn.id329198">7</a>]</sup>.
                 In addition to forward-declaring these two macros,
                 <code class="function">G_DEFINE_TYPE</code> also defines a static
                 global variable that we will use later:
@@ -476,7 +479,7 @@ G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
                 defined type that will be populated automatically by the
                 GObject type system.  It will be used to override
                 virtual methods of the parent class, and also to directly
-                invoke parent class methods.
+                invoke parent class methods that we have overriden.
             </p>
 <p>
                 Finally, the <code class="function">G_DEFINE_TYPE</code> macro defines
@@ -871,11 +874,12 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id328944" href="#id328944">3</a>] </sup>This expands to '<code class="literal">extern
+<div class="footnote"><p><sup>[<a name="ftn.id328728" href="#id328728">4</a>] </sup><a href="http://en.wikipedia.org/wiki/Namespace_%28programming%29#Emulating_namespaces" target="_top">http://en.wikipedia.org/wiki/Namespace_(programming)#Emulating_namespaces</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id328968" href="#id328968">5</a>] </sup>This expands to '<code class="literal">extern
                             "C" {</code>' in C++, to prevent C++ from
                         mangling declared function names</p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id328979" href="#id328979">4</a>] </sup><a href="http://en.wikipedia.org/wiki/Virtual_table" target="_top">http://en.wikipedia.org/wiki/Virtual_table</a></p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id329161" href="#id329161">5</a>] </sup><a href="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html" target="_top">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id329003" href="#id329003">6</a>] </sup><a href="http://en.wikipedia.org/wiki/Virtual_table" target="_top">http://en.wikipedia.org/wiki/Virtual_table</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id329198" href="#id329198">7</a>] </sup><a href="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html" target="_top">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</a></p></div>
 </div>
 </div>
 </body>

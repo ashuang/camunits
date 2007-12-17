@@ -40,9 +40,8 @@
 <p>
         Each <code class="classname">CamUnit</code> provides a list of controls that
         it exposes, which can be enumerated and accessed programmatically.
-        Each control has a string identifier, the <span class="emphasis"><em>control
-            ID</em></span> unique to the unit that can be
-        used for access.
+        Each control has a string identifier -- the <span class="emphasis"><em>control
+            ID</em></span>.
         To see which controls are available in a unit, it is probably fastest
         to examine the unit in <span><strong class="command">camview</strong></span>, which enumerates
         all the controls for a unit and provides GUI widgets for adjusting
@@ -58,7 +57,8 @@
 <img src="camunit-controls.png" alt="Using camview to inspect available Unit controls and formats"><div class="caption"><p>
                 Often, the easiest way to determine which controls and output
                 formats are available for a given unit is to inspect it in
-                <span><strong class="command">camview</strong></span>.
+                <span><strong class="command">camview</strong></span>.  Hovering the mouse over a control
+                reveals a tooltip showing the ID and data type of the control.
             </p></div>
 </div></div>
 </div>
@@ -67,11 +67,12 @@
 <p>
         Controls are strongly typed, and it is important to know the data type
         of a actual control before setting it.  Five different types are
-        supported, integers, booleans, double-precision floating point,
-        strings, and enumerations.  Additionally, numerical controls can also
-        have a minimum and maximum value as well as a step size.  For example,
-        the quality control in the JPEG unit is an integer control that ranges
-        from 0-100.  To set this control, we could do:
+        supported, integers, booleans, double-precision floating point numbers,
+        strings, and enumerations.  Numerical controls can also
+        have a minimum and maximum value as well as a suggested step size.  For
+        example, the quality control in the JPEG unit is an integer control
+        that ranges from 0-100.  To set this control programmatically, we could
+        do:
 </p>
 <pre class="programlisting">
     cam_unit_set_control_int (jpeg_unit, "quality", 50);
@@ -79,9 +80,9 @@
 <p>
 
         In addition to <code class="methodname">cam_unit_set_control_int</code>,
-        there are <code class="methodname">cam_unit_set_control_string</code>,
+        there are also <code class="methodname">cam_unit_set_control_string</code>,
         <code class="methodname">cam_unit_set_control_float</code>, etc.
-        Additionally, there are methods for retrieving the current value of a
+        Finally, there are methods for retrieving the current value of a
         control, all of which are described in the reference documentation.
     </p>
 </div>
