@@ -8,9 +8,6 @@
         units that convert frames from one image format to another, and
         accessing the controls exposed by a unit.
     </para>
-    <para>
-        Different image sensors and cameras 
-    </para>
 
 <sect1 id="camunit-specify-output">
     <title>Specifying the output format of a Unit</title>
@@ -20,12 +17,13 @@
         in several formats.  For example, many cameras can produce images in
         a number of resolutions or have an option to perform on-board
         colorspace conversion.  To reflect this capability, a
-        <classname>CamUnit</classname> provides a list of
-        <classname>CamUnitFormats</classname> that it is able to produce.  In
-        other cases, if a <classname>CamUnit</classname> is not able to deal
-        with its input format (e.g. if it expects 8bpp Grayscale data and is
-        instead given 24bpp RGB) then it may report that it is unable to
-        produce any output formats with its current input.
+        <classname>CamUnit</classname> provides a list of formats that it is
+        able to produce, represented by a list of
+        <classname>CamUnitFormat</classname> objects.  In some cases, for
+        example if a <classname>CamUnit</classname> is not properly initialized
+        or is not able to deal with its input format (e.g. if it expects 8bpp
+        grayscale data and is instead given 24bpp RGB) then it may report that
+        it is unable to produce any output formats with its current input.
     </para>
     <para>
         When a <classname>CamUnit</classname> is initialized (i.e. its status
@@ -54,9 +52,9 @@
     <title>Conversion Units</title>
     <para>
         For a variety of reasons, there is no one standard way of representing
-        an image.  8-bit grayscale, 24-bit RGB, YUV 4:2:2, Bayer, grayscale,
-        all of these are fairly common image formats.  Frequently, however, an
-        image processing algorithm can only deal with images in a very
+        an image.  8bpp grayscale, 24bpp RGB, YUV 4:2:2, Bayer BGGR, 
+        all of these are fairly common image formats.  However, an
+        image processing algorithm can often deal only with images in a very
         specific colorspace and binary representation.
     </para>
     <para>
@@ -117,13 +115,13 @@
                                 24bpp RGB -> JPEG
                         </para></listitem>
                         <listitem><para>
+                                32bpp BGRA -> JPEG
+                        </para></listitem>
+                        <listitem><para>
                                 JPEG -> 24bpp RGB
                         </para></listitem>
                         <listitem><para>
                                 8bpp Gray -> JPEG
-                        </para></listitem>
-                        <listitem><para>
-                                and more...
                         </para></listitem>
                     </itemizedlist>
                 </listitem>
@@ -170,9 +168,8 @@
     <para>
         Each <classname>CamUnit</classname> provides a list of controls that
         it exposes, which can be enumerated and accessed programmatically.
-        Each control has a string identifier, the <emphasis>control
-            ID</emphasis> unique to the unit that can be
-        used for access.
+        Each control has a string identifier -- the <emphasis>control
+            ID</emphasis>.
         To see which controls are available in a unit, it is probably fastest
         to examine the unit in <command>camview</command>, which enumerates
         all the controls for a unit and provides GUI widgets for adjusting
@@ -191,7 +188,8 @@
             <para>
                 Often, the easiest way to determine which controls and output
                 formats are available for a given unit is to inspect it in
-                <command>camview</command>.
+                <command>camview</command>.  Hovering the mouse over a control
+                reveals a tooltip showing the ID and data type of the control.
             </para>
         </caption>
     </mediaobject>
@@ -200,19 +198,20 @@
     <para>
         Controls are strongly typed, and it is important to know the data type
         of a actual control before setting it.  Five different types are
-        supported, integers, booleans, double-precision floating point,
-        strings, and enumerations.  Additionally, numerical controls can also
-        have a minimum and maximum value as well as a step size.  For example,
-        the quality control in the JPEG unit is an integer control that ranges
-        from 0-100.  To set this control, we could do:
+        supported, integers, booleans, double-precision floating point numbers,
+        strings, and enumerations.  Numerical controls can also
+        have a minimum and maximum value as well as a suggested step size.  For
+        example, the quality control in the JPEG unit is an integer control
+        that ranges from 0-100.  To set this control programmatically, we could
+        do:
 <programlisting>
     cam_unit_set_control_int (jpeg_unit, "quality", 50);
 </programlisting>
 
         In addition to <methodname>cam_unit_set_control_int</methodname>,
-        there are <methodname>cam_unit_set_control_string</methodname>,
+        there are also <methodname>cam_unit_set_control_string</methodname>,
         <methodname>cam_unit_set_control_float</methodname>, etc.
-        Additionally, there are methods for retrieving the current value of a
+        Finally, there are methods for retrieving the current value of a
         control, all of which are described in the reference documentation.
     </para>
 </sect1>

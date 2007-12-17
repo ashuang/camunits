@@ -4,5 +4,5 @@
 cd html
 rm -f *.html
 rm -rf images
-docbook2html ../tutorial.xml
+docbook2html ../tutorial.sgml
 cp -r ../images .
