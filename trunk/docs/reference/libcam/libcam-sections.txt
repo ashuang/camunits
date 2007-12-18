@@ -513,15 +513,6 @@ cam_pixel_copy_8u_generic
 </SECTION>
 
 <SECTION>
-<FILE>capture_raw1394</FILE>
-CaptureRaw1394
-capture_raw1394_new
-capture_raw1394_free
-capture_raw1394_get_fileno
-capture_raw1394_iterate
-</SECTION>
-
-<SECTION>
 <FILE>libcam-gmarshal</FILE>
 g_cclosure_user_marshal_VOID__OBJECT_OBJECT
 </SECTION>
