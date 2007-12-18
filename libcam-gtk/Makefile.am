@@ -29,8 +29,8 @@ libcam_gtk_la_SOURCES = \
 
 libcam_gtk_la_LIBADD = $(GTK_LIBS) ../libcam/libcam.la
 
-libcamincludedir = $(includedir)/libcam
-libcaminclude_HEADERS = \
+libcamgtkincludedir = $(includedir)/libcam-gtk
+libcamgtkinclude_HEADERS = \
 	cam_gtk.h \
 	unit_chain_gl_widget.h \
 	unit_chain_widget.h \
