@@ -1,0 +1,11 @@
+<chapter id="ch-otherenvs">
+    <title>Other Environments</title>
+
+    <sect1 id="otherenvs-eventloops">
+        <title>Using non GLib event loops</title>
+
+        <para>
+            <emphasis>TODO</emphasis>
+        </para>
+    </sect1>
+</chapter>
