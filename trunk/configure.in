@@ -114,6 +114,9 @@ AC_OUTPUT([
   plugins/Makefile
   plugins/dc1394/Makefile
   plugins/ladybug2/Makefile
+  examples/Makefile
+  examples/basic/Makefile
+  examples/filter_example/Makefile
   docs/Makefile
   docs/reference/Makefile
   docs/reference/libcam/Makefile
