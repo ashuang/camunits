@@ -35,12 +35,6 @@ First, make sure you have Albert's sources file.
 
 === Configuring apt and sources.list ===
 
-*Ubuntu 7.04 Feisty Fawn*
-
-{{{
-sudo wget http://people.csail.mit.edu/albert/debian/feisty.list -O /etc/apt/sources.list.d/ashuang.list
-}}}
-
 *Ubuntu 7.10 Gutsy Gibbon*
 
 {{{
