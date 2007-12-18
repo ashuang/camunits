@@ -10,7 +10,7 @@ Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
 Package: libcam0
 Section: libs
 Architecture: amd64 i386 
-Suggests: libcam0-plugins-dc1394, libcam0-utils
+Suggests: libcam0-plugins-dc1394, libcam-utils
 Depends: ${shlibs:Depends}
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
@@ -43,7 +43,7 @@ Description: utility programs for libcam
 Package: libcam-gtk0
 Section: libs
 Architecture: amd64 i386 
-Suggests: libcam0-plugins-dc1394, libcam0-utils
+Suggests: libcam0-plugins-dc1394, libcam-utils
 Depends: ${shlibs:Depends}
 Description: GTK+ widgets for libcam
  libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
