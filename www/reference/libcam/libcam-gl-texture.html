@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gl_texture</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch04.html" title="Other stuff">
 <link rel="prev" href="libcam-plugin.html" title="plugin">
@@ -24,16 +24,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-pwc-ioctl.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2596329" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id347693" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2623644" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id402149" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-gl-texture"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2596329"></a><span class="refentrytitle">gl_texture</span>
+<a name="id347693"></a><span class="refentrytitle">gl_texture</span>
 </h2>
 <p>gl_texture</p>
 </td>
@@ -45,48 +45,48 @@
 
 
 
-                    <a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a>;
-<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a>*       <a href="libcam-gl-texture.html#cam-gl-texture-new">cam_gl_texture_new</a>                  (int width,
+                    <a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a>;
+<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a>*       <a class="link" href="libcam-gl-texture.html#cam-gl-texture-new">cam_gl_texture_new</a>                  (int width,
                                                          int height,
                                                          int max_data_size);
-void                <a href="libcam-gl-texture.html#cam-gl-texture-free">cam_gl_texture_free</a>                 (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);
-void                <a href="libcam-gl-texture.html#cam-gl-texture-draw">cam_gl_texture_draw</a>                 (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);
-void                <a href="libcam-gl-texture.html#cam-gl-texture-draw-alpha">cam_gl_texture_draw_alpha</a>           (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+void                <a class="link" href="libcam-gl-texture.html#cam-gl-texture-free">cam_gl_texture_free</a>                 (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);
+void                <a class="link" href="libcam-gl-texture.html#cam-gl-texture-draw">cam_gl_texture_draw</a>                 (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);
+void                <a class="link" href="libcam-gl-texture.html#cam-gl-texture-draw-alpha">cam_gl_texture_draw_alpha</a>           (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
                                                          double alpha);
-void                <a href="libcam-gl-texture.html#cam-gl-texture-draw-partial">cam_gl_texture_draw_partial</a>         (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+void                <a class="link" href="libcam-gl-texture.html#cam-gl-texture-draw-partial">cam_gl_texture_draw_partial</a>         (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
                                                          double x,
                                                          double y,
                                                          double w,
                                                          double h);
-int                 <a href="libcam-gl-texture.html#cam-gl-texture-upload">cam_gl_texture_upload</a>               (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
-                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> pixelformat,
+int                 <a class="link" href="libcam-gl-texture.html#cam-gl-texture-upload">cam_gl_texture_upload</a>               (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> pixelformat,
                                                          int stride,
                                                          void *data);
-void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">cam_gl_texture_set_interp</a>           (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+void                <a class="link" href="libcam-gl-texture.html#cam-gl-texture-set-interp">cam_gl_texture_set_interp</a>           (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
                                                          GLint nearest_or_linear);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623644"></a><h2>Description</h2>
+<a name="id402149"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623660"></a><h2>Details</h2>
+<a name="id405328"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2623671"></a><h3>
+<a name="id405338"></a><h3>
 <a name="CamGLTexture"></a>CamGLTexture</h3>
-<a class="indexterm" name="id2623683"></a><pre class="programlisting">typedef struct _CamGLTexture CamGLTexture;</pre>
+<a class="indexterm" name="id405350"></a><pre class="programlisting">typedef struct _CamGLTexture CamGLTexture;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623699"></a><h3>
+<a name="id405365"></a><h3>
 <a name="cam-gl-texture-new"></a>cam_gl_texture_new ()</h3>
-<a class="indexterm" name="id2623711"></a><pre class="programlisting"><a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a>*       cam_gl_texture_new                  (int width,
+<a class="indexterm" name="id405377"></a><pre class="programlisting"><a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a>*       cam_gl_texture_new                  (int width,
                                                          int height,
                                                          int max_data_size);</pre>
 <p>
@@ -96,22 +96,22 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>max_data_size</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>max_data_size</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -122,16 +122,16 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2631787"></a><h3>
+<a name="id405473"></a><h3>
 <a name="cam-gl-texture-free"></a>cam_gl_texture_free ()</h3>
-<a class="indexterm" name="id2631799"></a><pre class="programlisting">void                cam_gl_texture_free                 (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);</pre>
+<a class="indexterm" name="id405485"></a><pre class="programlisting">void                cam_gl_texture_free                 (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></p></td>
 <td>
 
 
@@ -141,16 +141,16 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2631845"></a><h3>
+<a name="id402265"></a><h3>
 <a name="cam-gl-texture-draw"></a>cam_gl_texture_draw ()</h3>
-<a class="indexterm" name="id2631858"></a><pre class="programlisting">void                cam_gl_texture_draw                 (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);</pre>
+<a class="indexterm" name="id402277"></a><pre class="programlisting">void                cam_gl_texture_draw                 (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></p></td>
 <td>
 
 
@@ -160,9 +160,9 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2631904"></a><h3>
+<a name="id402322"></a><h3>
 <a name="cam-gl-texture-draw-alpha"></a>cam_gl_texture_draw_alpha ()</h3>
-<a class="indexterm" name="id2631915"></a><pre class="programlisting">void                cam_gl_texture_draw_alpha           (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+<a class="indexterm" name="id402333"></a><pre class="programlisting">void                cam_gl_texture_draw_alpha           (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
                                                          double alpha);</pre>
 <p>
 
@@ -171,12 +171,12 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></p></td>
 <td>
 
 
@@ -187,9 +187,9 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2631982"></a><h3>
+<a name="id402398"></a><h3>
 <a name="cam-gl-texture-draw-partial"></a>cam_gl_texture_draw_partial ()</h3>
-<a class="indexterm" name="id2629720"></a><pre class="programlisting">void                cam_gl_texture_draw_partial         (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+<a class="indexterm" name="id402409"></a><pre class="programlisting">void                cam_gl_texture_draw_partial         (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
                                                          double x,
                                                          double y,
                                                          double w,
@@ -201,27 +201,27 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></p></td>
 <td>
 
 
@@ -232,10 +232,10 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629850"></a><h3>
+<a name="id407710"></a><h3>
 <a name="cam-gl-texture-upload"></a>cam_gl_texture_upload ()</h3>
-<a class="indexterm" name="id2629862"></a><pre class="programlisting">int                 cam_gl_texture_upload               (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
-                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> pixelformat,
+<a class="indexterm" name="id407722"></a><pre class="programlisting">int                 cam_gl_texture_upload               (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> pixelformat,
                                                          int stride,
                                                          void *data);</pre>
 <p>
@@ -245,27 +245,27 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pixelformat</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>pixelformat</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>stride</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>stride</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -276,9 +276,9 @@ void                <a href="libcam-gl-texture.html#cam-gl-texture-set-interp">c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629982"></a><h3>
+<a name="id407839"></a><h3>
 <a name="cam-gl-texture-set-interp"></a>cam_gl_texture_set_interp ()</h3>
-<a class="indexterm" name="id2627159"></a><pre class="programlisting">void                cam_gl_texture_set_interp           (<a href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
+<a class="indexterm" name="id407851"></a><pre class="programlisting">void                cam_gl_texture_set_interp           (<a class="link" href="libcam-gl-texture.html#CamGLTexture">CamGLTexture</a> *t,
                                                          GLint nearest_or_linear);</pre>
 <p>
 sets the interpolation mode when the texture is not drawn at a 1:1 scale.</p>
@@ -289,12 +289,12 @@ sets the interpolation mode when the texture is not drawn at a 1:1 scale.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>t</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>nearest_or_linear</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>nearest_or_linear</code></em>&#160;:</span></p></td>
 <td> typically GL_LINEAR or GL_NEAREST.  default is GL_LINEAR
 </td>
 </tr>

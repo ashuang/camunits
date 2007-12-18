@@ -98,12 +98,12 @@
     <keyword type="enum" name="enum CamUnitControlUIHint" link="CamUnitControl.html#CamUnitControlUIHint"/>
     <keyword type="function" name="CamUnitControlCallback ()" link="CamUnitControl.html#CamUnitControlCallback"/>
     <keyword type="struct" name="CamUnitControl" link="CamUnitControl.html#CamUnitControl-struct"/>
-    <keyword type="function" name="cam_unit_control_set_callback ()" link="CamUnitControl.html#cam-unit-control-set-callback"/>
     <keyword type="function" name="cam_unit_control_new_enum ()" link="CamUnitControl.html#cam-unit-control-new-enum"/>
     <keyword type="function" name="cam_unit_control_new_int ()" link="CamUnitControl.html#cam-unit-control-new-int"/>
     <keyword type="function" name="cam_unit_control_new_float ()" link="CamUnitControl.html#cam-unit-control-new-float"/>
     <keyword type="function" name="cam_unit_control_new_boolean ()" link="CamUnitControl.html#cam-unit-control-new-boolean"/>
     <keyword type="function" name="cam_unit_control_new_string ()" link="CamUnitControl.html#cam-unit-control-new-string"/>
+    <keyword type="function" name="cam_unit_control_set_callback ()" link="CamUnitControl.html#cam-unit-control-set-callback"/>
     <keyword type="function" name="cam_unit_control_modify_int ()" link="CamUnitControl.html#cam-unit-control-modify-int"/>
     <keyword type="function" name="cam_unit_control_modify_float ()" link="CamUnitControl.html#cam-unit-control-modify-float"/>
     <keyword type="function" name="cam_unit_control_modify_enum ()" link="CamUnitControl.html#cam-unit-control-modify-enum"/>
@@ -135,19 +135,13 @@
     <keyword type="function" name="cam_unit_control_get_enabled ()" link="CamUnitControl.html#cam-unit-control-get-enabled"/>
     <keyword type="function" name="cam_unit_control_set_ui_hints ()" link="CamUnitControl.html#cam-unit-control-set-ui-hints"/>
     <keyword type="function" name="cam_unit_control_get_ui_hints ()" link="CamUnitControl.html#cam-unit-control-get-ui-hints"/>
+    <keyword type="function" name="cam_unit_control_get_type_str ()" link="CamUnitControl.html#cam-unit-control-get-type-str"/>
     <keyword type="" name="The &quot;parameters-changed&quot; signal" link="CamUnitControl.html#CamUnitControl-parameters-changed"/>
     <keyword type="" name="The &quot;value-changed&quot; signal" link="CamUnitControl.html#CamUnitControl-value-changed"/>
     <keyword type="struct" name="CamUnitDescription" link="CamUnitDriver.html#CamUnitDescription-struct"/>
     <keyword type="function" name="cam_unit_description_new ()" link="CamUnitDriver.html#cam-unit-description-new"/>
-    <keyword type="function" name="CamUnitConstructor ()" link="CamUnitDriver.html#CamUnitConstructor"/>
-    <keyword type="macro" name="CAM_TYPE_UNIT_DRIVER" link="CamUnitDriver.html#CAM-TYPE-UNIT-DRIVER:CAPS"/>
-    <keyword type="macro" name="CAM_UNIT_DRIVER()" link="CamUnitDriver.html#CAM-UNIT-DRIVER:CAPS"/>
-    <keyword type="macro" name="CAM_UNIT_DRIVER_CLASS()" link="CamUnitDriver.html#CAM-UNIT-DRIVER-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_IS_UNIT_DRIVER()" link="CamUnitDriver.html#CAM-IS-UNIT-DRIVER:CAPS"/>
-    <keyword type="macro" name="CAM_IS_UNIT_DRIVER_CLASS()" link="CamUnitDriver.html#CAM-IS-UNIT-DRIVER-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_UNIT_DRIVER_GET_CLASS()" link="CamUnitDriver.html#CAM-UNIT-DRIVER-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamUnitDriver" link="CamUnitDriver.html#CamUnitDriver-struct"/>
-    <keyword type="function" name="cam_unit_driver_get_type ()" link="CamUnitDriver.html#cam-unit-driver-get-type"/>
+    <keyword type="function" name="CamUnitConstructor ()" link="CamUnitDriver.html#CamUnitConstructor"/>
     <keyword type="function" name="cam_unit_driver_new_stock ()" link="CamUnitDriver.html#cam-unit-driver-new-stock"/>
     <keyword type="function" name="cam_unit_driver_new_stock_full ()" link="CamUnitDriver.html#cam-unit-driver-new-stock-full"/>
     <keyword type="function" name="cam_unit_driver_create_unit ()" link="CamUnitDriver.html#cam-unit-driver-create-unit"/>
@@ -189,6 +183,7 @@
     <keyword type="function" name="cam_unit_chain_get_desired_status ()" link="CamUnitChain.html#cam-unit-chain-get-desired-status"/>
     <keyword type="function" name="cam_unit_chain_check_status_all_units ()" link="CamUnitChain.html#cam-unit-chain-check-status-all-units"/>
     <keyword type="function" name="cam_unit_chain_attach_glib ()" link="CamUnitChain.html#cam-unit-chain-attach-glib"/>
+    <keyword type="function" name="cam_unit_chain_detach_glib ()" link="CamUnitChain.html#cam-unit-chain-detach-glib"/>
     <keyword type="" name="The &quot;desired-status-changed&quot; signal" link="CamUnitChain.html#CamUnitChain-desired-status-changed"/>
     <keyword type="" name="The &quot;frame-ready&quot; signal" link="CamUnitChain.html#CamUnitChain-frame-ready"/>
     <keyword type="" name="The &quot;unit-added&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-added"/>
@@ -208,59 +203,21 @@
     <keyword type="" name="The &quot;unit-description-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-added"/>
     <keyword type="" name="The &quot;unit-description-removed&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-removed"/>
     <keyword type="" name="The &quot;unit-driver-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-driver-added"/>
-    <keyword type="macro" name="CAM_V4L2_DRIVER_TYPE" link="CamV4L2.html#CAM-V4L2-DRIVER-TYPE:CAPS"/>
     <keyword type="struct" name="CamV4L2Driver" link="CamV4L2.html#CamV4L2Driver-struct"/>
     <keyword type="function" name="cam_v4l2_driver_new ()" link="CamV4L2.html#cam-v4l2-driver-new"/>
-    <keyword type="macro" name="CAM_TYPE_V4L2" link="CamV4L2.html#CAM-TYPE-V4L2:CAPS"/>
-    <keyword type="macro" name="CAM_V4L2()" link="CamV4L2.html#CAM-V4L2:CAPS"/>
-    <keyword type="macro" name="CAM_V4L2_CLASS()" link="CamV4L2.html#CAM-V4L2-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_IS_V4L2()" link="CamV4L2.html#CAM-IS-V4L2:CAPS"/>
-    <keyword type="macro" name="CAM_IS_V4L2_CLASS()" link="CamV4L2.html#CAM-IS-V4L2-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_V4L2_GET_CLASS()" link="CamV4L2.html#CAM-V4L2-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamV4L2" link="CamV4L2.html#CamV4L2-struct"/>
-    <keyword type="function" name="cam_v4l2_get_type ()" link="CamV4L2.html#cam-v4l2-get-type"/>
     <keyword type="function" name="cam_v4l2_new ()" link="CamV4L2.html#cam-v4l2-new"/>
-    <keyword type="macro" name="CAM_V4L_DRIVER_TYPE" link="CamV4L.html#CAM-V4L-DRIVER-TYPE:CAPS"/>
     <keyword type="struct" name="CamV4LDriver" link="CamV4L.html#CamV4LDriver-struct"/>
     <keyword type="function" name="cam_v4l_driver_new ()" link="CamV4L.html#cam-v4l-driver-new"/>
-    <keyword type="macro" name="CAM_TYPE_V4L" link="CamV4L.html#CAM-TYPE-V4L:CAPS"/>
-    <keyword type="macro" name="CAM_V4L()" link="CamV4L.html#CAM-V4L:CAPS"/>
-    <keyword type="macro" name="CAM_V4L_CLASS()" link="CamV4L.html#CAM-V4L-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_IS_V4L()" link="CamV4L.html#CAM-IS-V4L:CAPS"/>
-    <keyword type="macro" name="CAM_IS_V4L_CLASS()" link="CamV4L.html#CAM-IS-V4L-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_V4L_GET_CLASS()" link="CamV4L.html#CAM-V4L-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamV4L" link="CamV4L.html#CamV4L-struct"/>
-    <keyword type="function" name="cam_v4l_get_type ()" link="CamV4L.html#cam-v4l-get-type"/>
     <keyword type="function" name="cam_v4l_new ()" link="CamV4L.html#cam-v4l-new"/>
-    <keyword type="macro" name="CAM_INPUT_EXAMPLE_DRIVER_TYPE" link="CamInputExample.html#CAM-INPUT-EXAMPLE-DRIVER-TYPE:CAPS"/>
     <keyword type="struct" name="CamInputExampleDriver" link="CamInputExample.html#CamInputExampleDriver-struct"/>
     <keyword type="function" name="cam_input_example_driver_new ()" link="CamInputExample.html#cam-input-example-driver-new"/>
-    <keyword type="macro" name="CAM_INPUT_EXAMPLE_TYPE" link="CamInputExample.html#CAM-INPUT-EXAMPLE-TYPE:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_EXAMPLE()" link="CamInputExample.html#CAM-INPUT-EXAMPLE:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_EXAMPLE_CLASS()" link="CamInputExample.html#CAM-INPUT-EXAMPLE-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_IS_INPUT_EXAMPLE()" link="CamInputExample.html#CAM-IS-INPUT-EXAMPLE:CAPS"/>
-    <keyword type="macro" name="CAM_IS_INPUT_EXAMPLE_CLASS()" link="CamInputExample.html#CAM-IS-INPUT-EXAMPLE-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_EXAMPLE_GET_CLASS()" link="CamInputExample.html#CAM-INPUT-EXAMPLE-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamInputExample" link="CamInputExample.html#CamInputExample-struct"/>
-    <keyword type="function" name="cam_input_example_get_type ()" link="CamInputExample.html#cam-input-example-get-type"/>
     <keyword type="function" name="cam_input_example_new ()" link="CamInputExample.html#cam-input-example-new"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_DRIVER_TYPE" link="CamInputLog.html#CAM-INPUT-LOG-DRIVER-TYPE:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_DRIVER()" link="CamInputLog.html#CAM-INPUT-LOG-DRIVER:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_DRIVER_CLASS()" link="CamInputLog.html#CAM-INPUT-LOG-DRIVER-CLASS:CAPS"/>
-    <keyword type="macro" name="IS_CAM_INPUT_LOG_DRIVER()" link="CamInputLog.html#IS-CAM-INPUT-LOG-DRIVER:CAPS"/>
-    <keyword type="macro" name="IS_CAM_INPUT_LOG_DRIVER_CLASS()" link="CamInputLog.html#IS-CAM-INPUT-LOG-DRIVER-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_DRIVER_GET_CLASS()" link="CamInputLog.html#CAM-INPUT-LOG-DRIVER-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamInputLogDriver" link="CamInputLog.html#CamInputLogDriver-struct"/>
-    <keyword type="function" name="cam_input_log_driver_get_type ()" link="CamInputLog.html#cam-input-log-driver-get-type"/>
     <keyword type="function" name="cam_input_log_driver_new ()" link="CamInputLog.html#cam-input-log-driver-new"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_TYPE" link="CamInputLog.html#CAM-INPUT-LOG-TYPE:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_LOG()" link="CamInputLog.html#CAM-INPUT-LOG:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_CLASS()" link="CamInputLog.html#CAM-INPUT-LOG-CLASS:CAPS"/>
-    <keyword type="macro" name="IS_CAM_INPUT_LOG()" link="CamInputLog.html#IS-CAM-INPUT-LOG:CAPS"/>
-    <keyword type="macro" name="IS_CAM_INPUT_LOG_CLASS()" link="CamInputLog.html#IS-CAM-INPUT-LOG-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_INPUT_LOG_GET_CLASS()" link="CamInputLog.html#CAM-INPUT-LOG-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamInputLog" link="CamInputLog.html#CamInputLog-struct"/>
-    <keyword type="function" name="cam_input_log_get_type ()" link="CamInputLog.html#cam-input-log-get-type"/>
     <keyword type="function" name="cam_input_log_new ()" link="CamInputLog.html#cam-input-log-new"/>
     <keyword type="function" name="cam_log_set_file ()" link="CamInputLog.html#cam-log-set-file"/>
     <keyword type="struct" name="CamConvertToRgb8" link="CamConvertToRgb8.html#CamConvertToRgb8-struct"/>
@@ -278,14 +235,7 @@
     <keyword type="struct" name="CamColorConversionFilter" link="CamColorConversionFilter.html#CamColorConversionFilter-struct"/>
     <keyword type="function" name="cam_color_conversion_filter_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-new"/>
     <keyword type="function" name="cam_color_conversion_filter_driver_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new"/>
-    <keyword type="macro" name="CAM_TYPE_LOGGER_UNIT" link="CamLoggerUnit.html#CAM-TYPE-LOGGER-UNIT:CAPS"/>
-    <keyword type="macro" name="CAM_LOGGER_UNIT()" link="CamLoggerUnit.html#CAM-LOGGER-UNIT:CAPS"/>
-    <keyword type="macro" name="CAM_LOGGER_UNIT_CLASS()" link="CamLoggerUnit.html#CAM-LOGGER-UNIT-CLASS:CAPS"/>
-    <keyword type="macro" name="IS_CAM_LOGGER_UNIT()" link="CamLoggerUnit.html#IS-CAM-LOGGER-UNIT:CAPS"/>
-    <keyword type="macro" name="IS_CAM_LOGGER_UNIT_CLASS()" link="CamLoggerUnit.html#IS-CAM-LOGGER-UNIT-CLASS:CAPS"/>
-    <keyword type="macro" name="CAM_LOGGER_UNIT_GET_CLASS()" link="CamLoggerUnit.html#CAM-LOGGER-UNIT-GET-CLASS:CAPS"/>
     <keyword type="struct" name="CamLoggerUnit" link="CamLoggerUnit.html#CamLoggerUnit-struct"/>
-    <keyword type="function" name="cam_logger_unit_get_type ()" link="CamLoggerUnit.html#cam-logger-unit-get-type"/>
     <keyword type="function" name="cam_logger_unit_new ()" link="CamLoggerUnit.html#cam-logger-unit-new"/>
     <keyword type="function" name="cam_logger_unit_driver_new ()" link="CamLoggerUnit.html#cam-logger-unit-driver-new"/>
     <keyword type="macro" name="DBG_MODE()" link="libcam-dbg.html#DBG-MODE:CAPS"/>
@@ -338,9 +288,12 @@
     <keyword type="function" name="cam_pixel_convert_8u_yuv420p_to_8u_bgr ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-bgr"/>
     <keyword type="function" name="cam_pixel_convert_8u_yuv420p_to_8u_bgra ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-bgra"/>
     <keyword type="function" name="cam_pixel_convert_8u_yuv420p_to_8u_gray ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-gray"/>
-    <keyword type="function" name="cam_pixel_convert_8u_yuv422_to_8u_gray ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuv422-to-8u-gray"/>
-    <keyword type="function" name="cam_pixel_convert_8u_yuv422_to_8u_bgra ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuv422-to-8u-bgra"/>
-    <keyword type="function" name="cam_pixel_convert_8u_yuv422_to_8u_rgb ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuv422-to-8u-rgb"/>
+    <keyword type="function" name="cam_pixel_convert_8u_uyvy_to_8u_bgra ()" link="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-bgra"/>
+    <keyword type="function" name="cam_pixel_convert_8u_uyvy_to_8u_gray ()" link="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-gray"/>
+    <keyword type="function" name="cam_pixel_convert_8u_uyvy_to_8u_rgb ()" link="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-rgb"/>
+    <keyword type="function" name="cam_pixel_convert_8u_yuyv_to_8u_bgra ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-bgra"/>
+    <keyword type="function" name="cam_pixel_convert_8u_yuyv_to_8u_gray ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-gray"/>
+    <keyword type="function" name="cam_pixel_convert_8u_yuyv_to_8u_rgb ()" link="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-rgb"/>
     <keyword type="function" name="cam_pixel_replicate_border_8u ()" link="libcam-pixels.html#cam-pixel-replicate-border-8u"/>
     <keyword type="function" name="cam_pixel_replicate_bayer_border_8u ()" link="libcam-pixels.html#cam-pixel-replicate-bayer-border-8u"/>
     <keyword type="function" name="cam_pixel_split_bayer_planes_8u ()" link="libcam-pixels.html#cam-pixel-split-bayer-planes-8u"/>

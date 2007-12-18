@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamUnitDriver</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch01.html" title="Units">
 <link rel="prev" href="CamUnitControl.html" title="CamUnitControl">
@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamFrameBuffer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2509624" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id376703" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2602024" class="shortcut">Description</a>
+                  <a href="#id342360" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2601919" class="shortcut">Object Hierarchy</a>
+                  <a href="#id342258" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2601992" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id342330" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitDriver"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2509624"></a><span class="refentrytitle">CamUnitDriver</span>
+<a name="id376703"></a><span class="refentrytitle">CamUnitDriver</span>
 </h2>
 <p>CamUnitDriver &#8212; Factory-like class that instantiates CamUnit objects.</p>
 </td>
@@ -49,92 +49,97 @@
 
 
 
-                    <a href="CamUnitDriver.html#CamUnitDescription-struct">CamUnitDescription</a>;
-<a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a href="CamUnitDriver.html#cam-unit-description-new">cam_unit_description_new</a>            (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver,
+                    <a class="link" href="CamUnitDriver.html#CamUnitDescription-struct">CamUnitDescription</a>;
+<a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitDriver.html#cam-unit-description-new">cam_unit_description_new</a>            (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver,
                                                          const char *name,
                                                          const char *unit_id,
                                                          uint32_t flags);
-<a href="CamUnit.html" title="CamUnit">CamUnit</a>*            (<a href="CamUnitDriver.html#CamUnitConstructor">*CamUnitConstructor</a>)               (void);
-#define             <a href="CamUnitDriver.html#CAM-TYPE-UNIT-DRIVER:CAPS">CAM_TYPE_UNIT_DRIVER</a>
-#define             <a href="CamUnitDriver.html#CAM-UNIT-DRIVER:CAPS">CAM_UNIT_DRIVER</a>                     (obj)
-#define             <a href="CamUnitDriver.html#CAM-UNIT-DRIVER-CLASS:CAPS">CAM_UNIT_DRIVER_CLASS</a>               (klass)
-#define             <a href="CamUnitDriver.html#CAM-IS-UNIT-DRIVER:CAPS">CAM_IS_UNIT_DRIVER</a>                  (obj)
-#define             <a href="CamUnitDriver.html#CAM-IS-UNIT-DRIVER-CLASS:CAPS">CAM_IS_UNIT_DRIVER_CLASS</a>            (klass)
-#define             <a href="CamUnitDriver.html#CAM-UNIT-DRIVER-GET-CLASS:CAPS">CAM_UNIT_DRIVER_GET_CLASS</a>           (obj)
-                    <a href="CamUnitDriver.html#CamUnitDriver-struct">CamUnitDriver</a>;
-GType               <a href="CamUnitDriver.html#cam-unit-driver-get-type">cam_unit_driver_get_type</a>            (void);
-<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamUnitDriver.html#cam-unit-driver-new-stock">cam_unit_driver_new_stock</a>           (const char *package,
+                    <a class="link" href="CamUnitDriver.html#CamUnitDriver-struct">CamUnitDriver</a>;
+<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            (<a class="link" href="CamUnitDriver.html#CamUnitConstructor">*CamUnitConstructor</a>)               (void);
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock">cam_unit_driver_new_stock</a>           (const char *package,
                                                          const char *driver_name,
                                                          const char *unit_name,
                                                          uint32_t flags,
-                                                         <a href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor);
-<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamUnitDriver.html#cam-unit-driver-new-stock-full">cam_unit_driver_new_stock_full</a>      (const char *package,
+                                                         <a class="link" href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor);
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock-full">cam_unit_driver_new_stock_full</a>      (const char *package,
                                                          const char *driver_name,
                                                          const char *unit_name,
                                                          uint32_t flags,
-                                                         <a href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor,
-                                                         GTypeModule *module);
-<a href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a href="CamUnitDriver.html#cam-unit-driver-create-unit">cam_unit_driver_create_unit</a>         (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
-                                                         const <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
-int                 <a href="CamUnitDriver.html#cam-unit-driver-start">cam_unit_driver_start</a>               (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
-void                <a href="CamUnitDriver.html#cam-unit-driver-stop">cam_unit_driver_stop</a>                (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
-const char*         <a href="CamUnitDriver.html#cam-unit-driver-get-package">cam_unit_driver_get_package</a>         (const <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
-<a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a href="CamUnitDriver.html#cam-unit-driver-find-unit-description">cam_unit_driver_find_unit_description</a>
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+                                                         <a class="link" href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
+>GTypeModule</a> *module);
+<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a class="link" href="CamUnitDriver.html#cam-unit-driver-create-unit">cam_unit_driver_create_unit</a>         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+                                                         const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
+int                 <a class="link" href="CamUnitDriver.html#cam-unit-driver-start">cam_unit_driver_start</a>               (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
+void                <a class="link" href="CamUnitDriver.html#cam-unit-driver-stop">cam_unit_driver_stop</a>                (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
+const char*         <a class="link" href="CamUnitDriver.html#cam-unit-driver-get-package">cam_unit_driver_get_package</a>         (const <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
+<a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitDriver.html#cam-unit-driver-find-unit-description">cam_unit_driver_find_unit_description</a>
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *unit_id);
-GList*              <a href="CamUnitDriver.html#cam-unit-driver-get-unit-descriptions">cam_unit_driver_get_unit_descriptions</a>
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
-<a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a href="CamUnitDriver.html#cam-unit-driver-add-unit-description">cam_unit_driver_add_unit_description</a>
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnitDriver.html#cam-unit-driver-get-unit-descriptions">cam_unit_driver_get_unit_descriptions</a>
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
+<a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitDriver.html#cam-unit-driver-add-unit-description">cam_unit_driver_add_unit_description</a>
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *name,
                                                          const char *unit_id,
                                                          uint32_t flags);
-int                 <a href="CamUnitDriver.html#cam-unit-driver-remove-unit-description">cam_unit_driver_remove_unit_description</a>
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+int                 <a class="link" href="CamUnitDriver.html#cam-unit-driver-remove-unit-description">cam_unit_driver_remove_unit_description</a>
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *unit_id);
-void                <a href="CamUnitDriver.html#cam-unit-driver-set-name">cam_unit_driver_set_name</a>            (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+void                <a class="link" href="CamUnitDriver.html#cam-unit-driver-set-name">cam_unit_driver_set_name</a>            (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *package,
                                                          const char *name);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601919"></a><h2>Object Hierarchy</h2>
+<a name="id342258"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
          +----CamUnitDescription
 </pre>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
          +----CamUnitDriver
-               +----<a href="CamV4L.html#CamV4LDriver">CamV4LDriver</a>
-               +----<a href="CamV4L2.html#CamV4L2Driver">CamV4L2Driver</a>
-               +----<a href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>
-               +----<a href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>
+               +----<a class="link" href="CamV4L.html#CamV4LDriver">CamV4LDriver</a>
+               +----<a class="link" href="CamV4L2.html#CamV4L2Driver">CamV4L2Driver</a>
+               +----<a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>
+               +----<a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601992"></a><h2>Signals</h2>
+<a name="id342330"></a><h2>Signals</h2>
 <pre class="synopsis">
 
-  "<a href="CamUnitDriver.html#CamUnitDriver-unit-description-added">unit-description-added</a>"                         : Run First
-  "<a href="CamUnitDriver.html#CamUnitDriver-unit-description-removed">unit-description-removed</a>"                       : Run First
+  "<a class="link" href="CamUnitDriver.html#CamUnitDriver-unit-description-added">unit-description-added</a>"                         : Run First
+  "<a class="link" href="CamUnitDriver.html#CamUnitDriver-unit-description-removed">unit-description-removed</a>"                       : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602024"></a><h2>Description</h2>
+<a name="id342360"></a><h2>Description</h2>
 <p>
-CamUnitDriver is a factory-like class that instantiates <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects.
+CamUnitDriver is a factory-like class that instantiates <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects.
 </p>
 <p>
 A CamUnitDriver serves two purposes.  The first is to provide a list of
-<a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects that describe the types of <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects the
+<a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects that describe the types of <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects the
 CamUnitDriver is able to instantiate.  The second is to instantiate a
-<a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object, given a <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>.
+<a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object, given a <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>.
 </p>
 <p>
 More concretely, it is often the case that multiple input devices of the
@@ -142,35 +147,35 @@ same type are attached to a computer (e.g. several DC1394 cameras, or
 several USB V4L2 cameras).  The driver in this case probes the hardware upon
 startup, enumerates the available options, and then releases hardware
 resources.  The enumerated options are then converted into
-<a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects, which are presented to describe what the driver
+<a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects, which are presented to describe what the driver
 can instantiate.  The user can then choose one of these descriptions and
-request that an actual <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object be created to interface with that
+request that an actual <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object be created to interface with that
 specific input device.
 </p>
 <p>
 The CamUnitDriver is useful primarily for input devices, where the steps
-required to instantiate a <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> may differ depending on the physical
+required to instantiate a <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> may differ depending on the physical
 device.  Pure software units such as color conversion filters do not have to
 worry about this, and will typically use a "stock" CamUnitDriver -- see
-#<a href="CamUnitDriver.html#cam-unit-driver-new-stock"><code class="function">cam_unit_driver_new_stock()</code></a>.
+#<a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock"><code class="function">cam_unit_driver_new_stock()</code></a>.
 </p>
 <p>
 Unless you are writing a new input unit, or doing something other than
 implementing a standard image processing filter, you should not have to deal
-with this class very much, and <a href="CamUnitDriver.html#cam-unit-driver-new-stock"><span class="type">cam_unit_driver_new_stock</span></a> should be
-sufficient.  The <a href="CamUnitManager.html" title="CamUnitManager"><span class="type">CamUnitManager</span></a> maintains a list of drivers to provide a
-global view of what's available across all drivers, and the <a href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a>
-should usually be used as a proxy to instantiate new <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects.</p>
+with this class very much, and <a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock"><span class="type">cam_unit_driver_new_stock</span></a> should be
+sufficient.  The <a class="link" href="CamUnitManager.html" title="CamUnitManager"><span class="type">CamUnitManager</span></a> maintains a list of drivers to provide a
+global view of what's available across all drivers, and the <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a>
+should usually be used as a proxy to instantiate new <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects.</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601373"></a><h2>Details</h2>
+<a name="id344241"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2601384"></a><h3>
+<a name="id344252"></a><h3>
 <a name="CamUnitDescription-struct"></a>CamUnitDescription</h3>
-<a class="indexterm" name="id2601396"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id344265"></a><pre class="programlisting">typedef struct {
     CamUnitDriver * driver;
     char * name;
     char * unit_id;
@@ -187,23 +192,23 @@ is actually instantiated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>&#160;*<em class="structfield"><code>driver</code></em>;</span></td>
-<td>  the <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> providing this description
+<td><p><span class="term"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>&#160;*<em class="structfield"><code>driver</code></em>;</span></p></td>
+<td>  the <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> providing this description
 </td>
 </tr>
 <tr>
-<td><span class="term">char&#160;*<em class="structfield"><code>name</code></em>;</span></td>
+<td><p><span class="term">char&#160;*<em class="structfield"><code>name</code></em>;</span></p></td>
 <td>    a nickname / human-understandable name for the available unit
 </td>
 </tr>
 <tr>
-<td><span class="term">char&#160;*<em class="structfield"><code>unit_id</code></em>;</span></td>
+<td><p><span class="term">char&#160;*<em class="structfield"><code>unit_id</code></em>;</span></p></td>
 <td> a string identifying the unit
 </td>
 </tr>
 <tr>
-<td><span class="term">uint32_t&#160;<em class="structfield"><code>flags</code></em>;</span></td>
-<td>   a bitwise OR of <a href="CamUnit.html#CamUnitFlags"><span class="type">CamUnitFlags</span></a>
+<td><p><span class="term">uint32_t&#160;<em class="structfield"><code>flags</code></em>;</span></p></td>
+<td>   a bitwise OR of <a class="link" href="CamUnit.html#CamUnitFlags"><span class="type">CamUnitFlags</span></a>
 </td>
 </tr>
 </tbody>
@@ -211,16 +216,18 @@ is actually instantiated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601522"></a><h3>
+<a name="id344387"></a><h3>
 <a name="cam-unit-description-new"></a>cam_unit_description_new ()</h3>
-<a class="indexterm" name="id2561196"></a><pre class="programlisting"><a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_description_new            (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver,
+<a class="indexterm" name="id344400"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_description_new            (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver,
                                                          const char *name,
                                                          const char *unit_id,
                                                          uint32_t flags);</pre>
 <p>
 constructor.  creates a new CamUnitDescription.  When the description is no
-longer needed, free it with <code class="function">g_object_unref()</code>.  You should not use this
-unless you're implementing a new <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a>.</p>
+longer needed, free it with <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"
+><code class="function">g_object_unref()</code></a>.  You should not use this
+unless you're implementing a new <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a>.</p>
 <p>
 
 </p>
@@ -228,27 +235,27 @@ unless you're implementing a new <a href="CamUnitDriver.html" title="CamUnitDriv
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -259,149 +266,25 @@ unless you're implementing a new <a href="CamUnitDriver.html" title="CamUnitDriv
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561340"></a><h3>
-<a name="CamUnitConstructor"></a>CamUnitConstructor ()</h3>
-<a class="indexterm" name="id2561352"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            (*CamUnitConstructor)               (void);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561388"></a><h3>
-<a name="CAM-TYPE-UNIT-DRIVER:CAPS"></a>CAM_TYPE_UNIT_DRIVER</h3>
-<a class="indexterm" name="id2561399"></a><pre class="programlisting">#define CAM_TYPE_UNIT_DRIVER  cam_unit_driver_get_type ()
-</pre>
-<p>
-
-</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561415"></a><h3>
-<a name="CAM-UNIT-DRIVER:CAPS"></a>CAM_UNIT_DRIVER()</h3>
-<a class="indexterm" name="id2561427"></a><pre class="programlisting">#define             CAM_UNIT_DRIVER(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561462"></a><h3>
-<a name="CAM-UNIT-DRIVER-CLASS:CAPS"></a>CAM_UNIT_DRIVER_CLASS()</h3>
-<a class="indexterm" name="id2561473"></a><pre class="programlisting">#define             CAM_UNIT_DRIVER_CLASS(klass)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561508"></a><h3>
-<a name="CAM-IS-UNIT-DRIVER:CAPS"></a>CAM_IS_UNIT_DRIVER()</h3>
-<a class="indexterm" name="id2561520"></a><pre class="programlisting">#define             CAM_IS_UNIT_DRIVER(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561555"></a><h3>
-<a name="CAM-IS-UNIT-DRIVER-CLASS:CAPS"></a>CAM_IS_UNIT_DRIVER_CLASS()</h3>
-<a class="indexterm" name="id2561566"></a><pre class="programlisting">#define             CAM_IS_UNIT_DRIVER_CLASS(klass)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561601"></a><h3>
-<a name="CAM-UNIT-DRIVER-GET-CLASS:CAPS"></a>CAM_UNIT_DRIVER_GET_CLASS()</h3>
-<a class="indexterm" name="id2561612"></a><pre class="programlisting">#define             CAM_UNIT_DRIVER_GET_CLASS(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2561647"></a><h3>
+<a name="id344539"></a><h3>
 <a name="CamUnitDriver-struct"></a>CamUnitDriver</h3>
-<a class="indexterm" name="id2561659"></a><pre class="programlisting">typedef struct _CamUnitDriver CamUnitDriver;</pre>
+<a class="indexterm" name="id344551"></a><pre class="programlisting">typedef struct _CamUnitDriver CamUnitDriver;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561675"></a><h3>
-<a name="cam-unit-driver-get-type"></a>cam_unit_driver_get_type ()</h3>
-<a class="indexterm" name="id2561686"></a><pre class="programlisting">GType               cam_unit_driver_get_type            (void);</pre>
+<a name="id344566"></a><h3>
+<a name="CamUnitConstructor"></a>CamUnitConstructor ()</h3>
+<a class="indexterm" name="id344578"></a><pre class="programlisting"><a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            (*CamUnitConstructor)               (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -411,13 +294,13 @@ unless you're implementing a new <a href="CamUnitDriver.html" title="CamUnitDriv
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561722"></a><h3>
+<a name="id344614"></a><h3>
 <a name="cam-unit-driver-new-stock"></a>cam_unit_driver_new_stock ()</h3>
-<a class="indexterm" name="id2561734"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_unit_driver_new_stock           (const char *package,
+<a class="indexterm" name="id344627"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_unit_driver_new_stock           (const char *package,
                                                          const char *driver_name,
                                                          const char *unit_name,
                                                          uint32_t flags,
-                                                         <a href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor);</pre>
+                                                         <a class="link" href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor);</pre>
 <p>
 Creates a "stock" unit driver that always has a single unit available with
 the specified unit id, flags.  Invoking <em class="parameter"><code>constructor</code></em> should always return a
@@ -433,35 +316,35 @@ need any special driver functionality.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>package</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>package</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver_name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver_name</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_name</code></em>&#160;:</span></td>
-<td>   the name to assign <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects instantiated by the
+<td><p><span class="term"><em class="parameter"><code>unit_name</code></em>&#160;:</span></p></td>
+<td>   the name to assign <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects instantiated by the
               driver.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
-<td> a bitwise OR of <a href="CamUnit.html#CamUnitFlags"><span class="type">CamUnitFlags</span></a>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td> a bitwise OR of <a class="link" href="CamUnit.html#CamUnitFlags"><span class="type">CamUnitFlags</span></a>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>constructor</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>constructor</code></em>&#160;:</span></p></td>
 <td> Invoking this function should return a newly allocated
-<a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object.
+<a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a stock <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a stock <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a>
 </td>
 </tr>
 </tbody>
@@ -469,14 +352,16 @@ need any special driver functionality.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561924"></a><h3>
+<a name="id344809"></a><h3>
 <a name="cam-unit-driver-new-stock-full"></a>cam_unit_driver_new_stock_full ()</h3>
-<a class="indexterm" name="id2561936"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_unit_driver_new_stock_full      (const char *package,
+<a class="indexterm" name="id344821"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_unit_driver_new_stock_full      (const char *package,
                                                          const char *driver_name,
                                                          const char *unit_name,
                                                          uint32_t flags,
-                                                         <a href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor,
-                                                         GTypeModule *module);</pre>
+                                                         <a class="link" href="CamUnitDriver.html#CamUnitConstructor">CamUnitConstructor</a> constructor,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
+>GTypeModule</a> *module);</pre>
 <p>
 
 </p>
@@ -484,37 +369,37 @@ need any special driver functionality.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>package</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>package</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver_name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver_name</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_name</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>constructor</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>constructor</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>module</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>module</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -525,12 +410,12 @@ need any special driver functionality.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562100"></a><h3>
+<a name="id344980"></a><h3>
 <a name="cam-unit-driver-create-unit"></a>cam_unit_driver_create_unit ()</h3>
-<a class="indexterm" name="id2562112"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_driver_create_unit         (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
-                                                         const <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);</pre>
+<a class="indexterm" name="id344993"></a><pre class="programlisting"><a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_driver_create_unit         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+                                                         const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);</pre>
 <p>
-Creates a new instance of a <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> using the provided description.</p>
+Creates a new instance of a <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> using the provided description.</p>
 <p>
 
 </p>
@@ -538,18 +423,18 @@ Creates a new instance of a <a href="CamUnit.html" title="CamUnit"><span class="
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></p></td>
 <td> a description of the unit to instantiate
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a newly created <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object.
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a newly created <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> object.
 </td>
 </tr>
 </tbody>
@@ -557,9 +442,9 @@ Creates a new instance of a <a href="CamUnit.html" title="CamUnit"><span class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562210"></a><h3>
+<a name="id345087"></a><h3>
 <a name="cam-unit-driver-start"></a>cam_unit_driver_start ()</h3>
-<a class="indexterm" name="id2562221"></a><pre class="programlisting">int                 cam_unit_driver_start               (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
+<a class="indexterm" name="id345099"></a><pre class="programlisting">int                 cam_unit_driver_start               (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
 <p>
 Instructs a driver to do whatever it needs to do to discover available
 units.  This is most applicable to drivers that need to reserve system
@@ -572,12 +457,12 @@ guaranteed to discover available units until it has been started.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> 0 on success, -1 on failure
 </td>
 </tr>
@@ -586,9 +471,9 @@ guaranteed to discover available units until it has been started.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562286"></a><h3>
+<a name="id345161"></a><h3>
 <a name="cam-unit-driver-stop"></a>cam_unit_driver_stop ()</h3>
-<a class="indexterm" name="id2562297"></a><pre class="programlisting">void                cam_unit_driver_stop                (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
+<a class="indexterm" name="id345173"></a><pre class="programlisting">void                cam_unit_driver_stop                (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
 <p>
 Instructs a unit driver to stop discovering new units and release whatever
 resources it used for doing so.</p>
@@ -598,7 +483,7 @@ resources it used for doing so.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 
 
@@ -608,9 +493,9 @@ resources it used for doing so.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562349"></a><h3>
+<a name="id345222"></a><h3>
 <a name="cam-unit-driver-get-package"></a>cam_unit_driver_get_package ()</h3>
-<a class="indexterm" name="id2562361"></a><pre class="programlisting">const char*         cam_unit_driver_get_package         (const <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
+<a class="indexterm" name="id345234"></a><pre class="programlisting">const char*         cam_unit_driver_get_package         (const <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -620,12 +505,12 @@ resources it used for doing so.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> the package of the unit driver.
 </td>
 </tr>
@@ -634,13 +519,13 @@ resources it used for doing so.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614721"></a><h3>
+<a name="id345295"></a><h3>
 <a name="cam-unit-driver-find-unit-description"></a>cam_unit_driver_find_unit_description ()</h3>
-<a class="indexterm" name="id2614734"></a><pre class="programlisting"><a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_driver_find_unit_description
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+<a class="indexterm" name="id345308"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_driver_find_unit_description
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *unit_id);</pre>
 <p>
-Looks for a <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> provided by the driver that matches the 
+Looks for a <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> provided by the driver that matches the 
 specified <em class="parameter"><code>unit_id</code></em>.  If no such unit description is found, then
 search_unit_description is invoked to specifically query the unit driver.</p>
 <p>
@@ -650,18 +535,18 @@ search_unit_description is invoked to specifically query the unit driver.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> the matching <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>, or NULL if no such description 
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> the matching <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>, or NULL if no such description 
 was found
 </td>
 </tr>
@@ -670,12 +555,14 @@ was found
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614832"></a><h3>
+<a name="id345408"></a><h3>
 <a name="cam-unit-driver-get-unit-descriptions"></a>cam_unit_driver_get_unit_descriptions ()</h3>
-<a class="indexterm" name="id2614845"></a><pre class="programlisting">GList*              cam_unit_driver_get_unit_descriptions
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
+<a class="indexterm" name="id345421"></a><pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_driver_get_unit_descriptions
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
 <p>
-Obtains a list of <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects describing all units this
+Obtains a list of <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects describing all units this
 driver is able to instantiate.  This list should be released with
 g_list_free when no longer needed.</p>
 <p>
@@ -685,13 +572,13 @@ g_list_free when no longer needed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a GList of <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> a GList of <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects
 </td>
 </tr>
 </tbody>
@@ -699,10 +586,10 @@ g_list_free when no longer needed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614924"></a><h3>
+<a name="id345496"></a><h3>
 <a name="cam-unit-driver-add-unit-description"></a>cam_unit_driver_add_unit_description ()</h3>
-<a class="indexterm" name="id2614938"></a><pre class="programlisting"><a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_driver_add_unit_description
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+<a class="indexterm" name="id345508"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_driver_add_unit_description
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *name,
                                                          const char *unit_id,
                                                          uint32_t flags);</pre>
@@ -715,28 +602,28 @@ Protected method.  Adds a new unit description to the driver.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> the newly added <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>.  It is safe to ignore the
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> the newly added <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>.  It is safe to ignore the
 return value if you don't need it.
 </td>
 </tr>
@@ -745,10 +632,10 @@ return value if you don't need it.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615045"></a><h3>
+<a name="id345638"></a><h3>
 <a name="cam-unit-driver-remove-unit-description"></a>cam_unit_driver_remove_unit_description ()</h3>
-<a class="indexterm" name="id2615058"></a><pre class="programlisting">int                 cam_unit_driver_remove_unit_description
-                                                        (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+<a class="indexterm" name="id345651"></a><pre class="programlisting">int                 cam_unit_driver_remove_unit_description
+                                                        (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *unit_id);</pre>
 <p>
 Protected method.  Removes a unit description from the driver.  Calling
@@ -760,17 +647,17 @@ this will emit the "unit-description-removed" signal.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> 0 on success, -1 on failure (if the specified unit was not found)
 </td>
 </tr>
@@ -779,9 +666,9 @@ this will emit the "unit-description-removed" signal.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615136"></a><h3>
+<a name="id345733"></a><h3>
 <a name="cam-unit-driver-set-name"></a>cam_unit_driver_set_name ()</h3>
-<a class="indexterm" name="id2615146"></a><pre class="programlisting">void                cam_unit_driver_set_name            (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
+<a class="indexterm" name="id345745"></a><pre class="programlisting">void                cam_unit_driver_set_name            (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *package,
                                                          const char *name);</pre>
 <p>
@@ -793,17 +680,17 @@ Protected method.  Sets the package and name of the driver.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>package</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>package</code></em>&#160;:</span></p></td>
 <td>  The name of the package.  Can be NULL.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
 <td>     The name of the driver.  Must not be NULL.
 </td>
 </tr>
@@ -812,13 +699,15 @@ Protected method.  Sets the package and name of the driver.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2615233"></a><h2>Signal Details</h2>
+<a name="id345837"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2615242"></a><h3>
+<a name="id345847"></a><h3>
 <a name="CamUnitDriver-unit-description-added"></a>The "unit-description-added" signal</h3>
-<a class="indexterm" name="id2615252"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>      *driver,
-                                                        <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
-                                                        gpointer            user_data)      : Run First</pre>
+<a class="indexterm" name="id345856"></a><pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>      *driver,
+                                                        <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>            user_data)      : Run First</pre>
 <p>
 The unit-description-added signal is emitted when a CamUnitDriver
 adds a CamUnitDescription to its list of available units.</p>
@@ -829,17 +718,17 @@ adds a CamUnitDescription to its list of available units.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></p></td>
 <td> the CamUnitDriver emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></p></td>
 <td> the CamUnitDescription just added
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -847,11 +736,13 @@ adds a CamUnitDescription to its list of available units.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615339"></a><h3>
+<a name="id345946"></a><h3>
 <a name="CamUnitDriver-unit-description-removed"></a>The "unit-description-removed" signal</h3>
-<a class="indexterm" name="id2615349"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>      *driver,
-                                                        <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
-                                                        gpointer            user_data)      : Run First</pre>
+<a class="indexterm" name="id345955"></a><pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>      *driver,
+                                                        <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>            user_data)      : Run First</pre>
 <p>
 The unit-description-removed signal is emitted when a CamUnitDriver
 removes a CamUnitDescription from its list of available units.
@@ -867,17 +758,17 @@ handlers should not retain references to <code class="literal">udesc</code>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></p></td>
 <td> the CamUnitDriver emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></p></td>
 <td> the CamUnitDescription being removed
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>

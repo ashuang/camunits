@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamLoggerUnit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamColorConversionFilter.html" title="CamColorConversionFilter">
@@ -24,18 +24,18 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2600107" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id349373" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2622520" class="shortcut">Description</a>
+                  <a href="#id394546" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2622484" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id394510" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamLoggerUnit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2600107"></a><span class="refentrytitle">CamLoggerUnit</span>
+<a name="id349373"></a><span class="refentrytitle">CamLoggerUnit</span>
 </h2>
 <p>CamLoggerUnit &#8212; logging unit that streams its input to disk</p>
 </td>
@@ -47,30 +47,28 @@
 
 
 
-#define             <a href="CamLoggerUnit.html#CAM-TYPE-LOGGER-UNIT:CAPS">CAM_TYPE_LOGGER_UNIT</a>
-#define             <a href="CamLoggerUnit.html#CAM-LOGGER-UNIT:CAPS">CAM_LOGGER_UNIT</a>                     (obj)
-#define             <a href="CamLoggerUnit.html#CAM-LOGGER-UNIT-CLASS:CAPS">CAM_LOGGER_UNIT_CLASS</a>               (klass)
-#define             <a href="CamLoggerUnit.html#IS-CAM-LOGGER-UNIT:CAPS">IS_CAM_LOGGER_UNIT</a>                  (obj)
-#define             <a href="CamLoggerUnit.html#IS-CAM-LOGGER-UNIT-CLASS:CAPS">IS_CAM_LOGGER_UNIT_CLASS</a>            (klass)
-#define             <a href="CamLoggerUnit.html#CAM-LOGGER-UNIT-GET-CLASS:CAPS">CAM_LOGGER_UNIT_GET_CLASS</a>           (obj)
-                    <a href="CamLoggerUnit.html#CamLoggerUnit-struct">CamLoggerUnit</a>;
-GType               <a href="CamLoggerUnit.html#cam-logger-unit-get-type">cam_logger_unit_get_type</a>            (void);
-<a href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      <a href="CamLoggerUnit.html#cam-logger-unit-new">cam_logger_unit_new</a>                 (void);
-<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamLoggerUnit.html#cam-logger-unit-driver-new">cam_logger_unit_driver_new</a>          (void);
+                    <a class="link" href="CamLoggerUnit.html#CamLoggerUnit-struct">CamLoggerUnit</a>;
+<a class="link" href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      <a class="link" href="CamLoggerUnit.html#cam-logger-unit-new">cam_logger_unit_new</a>                 (void);
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamLoggerUnit.html#cam-logger-unit-driver-new">cam_logger_unit_driver_new</a>          (void);
+
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622484"></a><h2>Object Hierarchy</h2>
+<a name="id394510"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamLoggerUnit
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622520"></a><h2>Description</h2>
+<a name="id394546"></a><h2>Description</h2>
 <p>
 CamLoggerUnit can be used to log image streams to disk for later playback
 and analysis.  It is a core unit, always available with unit id
@@ -80,151 +78,27 @@ and analysis.  It is a core unit, always available with unit id
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2622542"></a><h2>Details</h2>
+<a name="id394567"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2622553"></a><h3>
-<a name="CAM-TYPE-LOGGER-UNIT:CAPS"></a>CAM_TYPE_LOGGER_UNIT</h3>
-<a class="indexterm" name="id2622564"></a><pre class="programlisting">#define CAM_TYPE_LOGGER_UNIT  cam_logger_unit_get_type()
-</pre>
-<p>
-
-</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2622580"></a><h3>
-<a name="CAM-LOGGER-UNIT:CAPS"></a>CAM_LOGGER_UNIT()</h3>
-<a class="indexterm" name="id2622592"></a><pre class="programlisting">#define             CAM_LOGGER_UNIT(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2622626"></a><h3>
-<a name="CAM-LOGGER-UNIT-CLASS:CAPS"></a>CAM_LOGGER_UNIT_CLASS()</h3>
-<a class="indexterm" name="id2622637"></a><pre class="programlisting">#define             CAM_LOGGER_UNIT_CLASS(klass)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2622672"></a><h3>
-<a name="IS-CAM-LOGGER-UNIT:CAPS"></a>IS_CAM_LOGGER_UNIT()</h3>
-<a class="indexterm" name="id2622683"></a><pre class="programlisting">#define             IS_CAM_LOGGER_UNIT(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2622718"></a><h3>
-<a name="IS-CAM-LOGGER-UNIT-CLASS:CAPS"></a>IS_CAM_LOGGER_UNIT_CLASS()</h3>
-<a class="indexterm" name="id2622729"></a><pre class="programlisting">#define             IS_CAM_LOGGER_UNIT_CLASS(klass)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2619978"></a><h3>
-<a name="CAM-LOGGER-UNIT-GET-CLASS:CAPS"></a>CAM_LOGGER_UNIT_GET_CLASS()</h3>
-<a class="indexterm" name="id2619989"></a><pre class="programlisting">#define             CAM_LOGGER_UNIT_GET_CLASS(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2620023"></a><h3>
+<a name="id395923"></a><h3>
 <a name="CamLoggerUnit-struct"></a>CamLoggerUnit</h3>
-<a class="indexterm" name="id2620035"></a><pre class="programlisting">typedef struct _CamLoggerUnit CamLoggerUnit;</pre>
+<a class="indexterm" name="id395935"></a><pre class="programlisting">typedef struct _CamLoggerUnit CamLoggerUnit;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620051"></a><h3>
-<a name="cam-logger-unit-get-type"></a>cam_logger_unit_get_type ()</h3>
-<a class="indexterm" name="id2620062"></a><pre class="programlisting">GType               cam_logger_unit_get_type            (void);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2620099"></a><h3>
+<a name="id395950"></a><h3>
 <a name="cam-logger-unit-new"></a>cam_logger_unit_new ()</h3>
-<a class="indexterm" name="id2620111"></a><pre class="programlisting"><a href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      cam_logger_unit_new                 (void);</pre>
+<a class="indexterm" name="id395962"></a><pre class="programlisting"><a class="link" href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      cam_logger_unit_new                 (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 
@@ -234,16 +108,16 @@ and analysis.  It is a core unit, always available with unit id
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620147"></a><h3>
+<a name="id340795"></a><h3>
 <a name="cam-logger-unit-driver-new"></a>cam_logger_unit_driver_new ()</h3>
-<a class="indexterm" name="id2620158"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_logger_unit_driver_new          (void);</pre>
+<a class="indexterm" name="id340806"></a><pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_logger_unit_driver_new          (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td>
 
 

@@ -22,20 +22,20 @@
 <th width="100%" align="center">libcam-gtk Reference Manual</th>
 <td><a accesskey="n" href="CamUnitChainGLWidget.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id360483" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id369845" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id367446" class="shortcut">Description</a>
+                  <a href="#id356890" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id357599" class="shortcut">Object Hierarchy</a>
+                  <a href="#id353736" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id367424" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id356869" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitChainWidget"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id360483"></a><span class="refentrytitle">CamUnitChainWidget</span>
+<a name="id369845"></a><span class="refentrytitle">CamUnitChainWidget</span>
 </h2>
 <p>CamUnitChainWidget</p>
 </td>
@@ -47,15 +47,7 @@
 
 
 
-#define             <a class="link" href="CamUnitChainWidget.html#CAM-TYPE-UNIT-CHAIN-WIDGET:CAPS">CAM_TYPE_UNIT_CHAIN_WIDGET</a>
-#define             <a class="link" href="CamUnitChainWidget.html#CAM-UNIT-CHAIN-WIDGET:CAPS">CAM_UNIT_CHAIN_WIDGET</a>               (obj)
-#define             <a class="link" href="CamUnitChainWidget.html#CAM-UNIT-CHAIN-WIDGET-CLASS:CAPS">CAM_UNIT_CHAIN_WIDGET_CLASS</a>         (klass)
-#define             <a class="link" href="CamUnitChainWidget.html#IS-CAM-UNIT-CHAIN-WIDGET:CAPS">IS_CAM_UNIT_CHAIN_WIDGET</a>            (obj)
-#define             <a class="link" href="CamUnitChainWidget.html#IS-CAM-UNIT-CHAIN-WIDGET-CLASS:CAPS">IS_CAM_UNIT_CHAIN_WIDGET_CLASS</a>      (klass)
                     <a class="link" href="CamUnitChainWidget.html#CamUnitChainWidget-struct">CamUnitChainWidget</a>;
-<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-get-type">cam_unit_chain_widget_get_type</a>      (void);
 <a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a>* <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-new">cam_unit_chain_widget_new</a>           (<a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);
@@ -71,10 +63,11 @@ href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
 <a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-find-unit-by-id">cam_unit_chain_widget_find_unit_by_id</a>
                                                         (const <a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          const char *unit_id);
+
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id357599"></a><h2>Object Hierarchy</h2>
+<a name="id353736"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   <a
@@ -102,139 +95,32 @@ href="/usr/share/gtk-doc/html/gtk/GtkEventBox.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367424"></a><h2>Implemented Interfaces</h2>
+<a name="id356869"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitChainWidget implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367446"></a><h2>Description</h2>
+<a name="id356890"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367462"></a><h2>Details</h2>
+<a name="id301703"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id367472"></a><h3>
-<a name="CAM-TYPE-UNIT-CHAIN-WIDGET:CAPS"></a>CAM_TYPE_UNIT_CHAIN_WIDGET</h3>
-<a class="indexterm" name="id367485"></a><pre class="programlisting">#define CAM_TYPE_UNIT_CHAIN_WIDGET  cam_unit_chain_widget_get_type()
-</pre>
-<p>
-
-</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id367501"></a><h3>
-<a name="CAM-UNIT-CHAIN-WIDGET:CAPS"></a>CAM_UNIT_CHAIN_WIDGET()</h3>
-<a class="indexterm" name="id367513"></a><pre class="programlisting">#define             CAM_UNIT_CHAIN_WIDGET(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id354562"></a><h3>
-<a name="CAM-UNIT-CHAIN-WIDGET-CLASS:CAPS"></a>CAM_UNIT_CHAIN_WIDGET_CLASS()</h3>
-<a class="indexterm" name="id354574"></a><pre class="programlisting">#define             CAM_UNIT_CHAIN_WIDGET_CLASS(klass)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id354608"></a><h3>
-<a name="IS-CAM-UNIT-CHAIN-WIDGET:CAPS"></a>IS_CAM_UNIT_CHAIN_WIDGET()</h3>
-<a class="indexterm" name="id354620"></a><pre class="programlisting">#define             IS_CAM_UNIT_CHAIN_WIDGET(obj)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>obj</code></em>&#160;:</span></p></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id354655"></a><h3>
-<a name="IS-CAM-UNIT-CHAIN-WIDGET-CLASS:CAPS"></a>IS_CAM_UNIT_CHAIN_WIDGET_CLASS()</h3>
-<a class="indexterm" name="id354667"></a><pre class="programlisting">#define             IS_CAM_UNIT_CHAIN_WIDGET_CLASS(klass)</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>klass</code></em>&#160;:</span></p></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id354701"></a><h3>
+<a name="id301714"></a><h3>
 <a name="CamUnitChainWidget-struct"></a>CamUnitChainWidget</h3>
-<a class="indexterm" name="id354714"></a><pre class="programlisting">typedef struct _CamUnitChainWidget CamUnitChainWidget;</pre>
+<a class="indexterm" name="id301725"></a><pre class="programlisting">typedef struct _CamUnitChainWidget CamUnitChainWidget;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id354729"></a><h3>
-<a name="cam-unit-chain-widget-get-type"></a>cam_unit_chain_widget_get_type ()</h3>
-<a class="indexterm" name="id354741"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a>               cam_unit_chain_widget_get_type      (void);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td>
-
-
-</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id354777"></a><h3>
+<a name="id301740"></a><h3>
 <a name="cam-unit-chain-widget-new"></a>cam_unit_chain_widget_new ()</h3>
-<a class="indexterm" name="id354790"></a><pre class="programlisting"><a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a>* cam_unit_chain_widget_new           (<a
+<a class="indexterm" name="id301752"></a><pre class="programlisting"><a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a>* cam_unit_chain_widget_new           (<a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
 <p>
@@ -260,9 +146,9 @@ href="../libcam/CamUnitChain.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378379"></a><h3>
+<a name="id301807"></a><h3>
 <a name="cam-unit-chain-widget-set-chain"></a>cam_unit_chain_widget_set_chain ()</h3>
-<a class="indexterm" name="id378389"></a><pre class="programlisting">int                 cam_unit_chain_widget_set_chain     (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
+<a class="indexterm" name="id301818"></a><pre class="programlisting">int                 cam_unit_chain_widget_set_chain     (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          <a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
@@ -294,9 +180,9 @@ href="../libcam/CamUnitChain.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378465"></a><h3>
+<a name="id366051"></a><h3>
 <a name="cam-unit-chain-widget-set-orientation"></a>cam_unit_chain_widget_set_orientation ()</h3>
-<a class="indexterm" name="id378478"></a><pre class="programlisting">void                cam_unit_chain_widget_set_orientation
+<a class="indexterm" name="id366064"></a><pre class="programlisting">void                cam_unit_chain_widget_set_orientation
                                                         (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          <a
 href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
@@ -324,9 +210,9 @@ href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378544"></a><h3>
+<a name="id366130"></a><h3>
 <a name="cam-unit-chain-widget-find-unit-by-id"></a>cam_unit_chain_widget_find_unit_by_id ()</h3>
-<a class="indexterm" name="id378556"></a><pre class="programlisting"><a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* cam_unit_chain_widget_find_unit_by_id
+<a class="indexterm" name="id366142"></a><pre class="programlisting"><a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* cam_unit_chain_widget_find_unit_by_id
                                                         (const <a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          const char *unit_id);</pre>
 <p>
