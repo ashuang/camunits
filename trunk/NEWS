@@ -1,3 +1,13 @@
+libcam 0.0.2
+============
+* Now builds under Mac OS X (tested on Leopard)
+* Tutorial and examples improvements
+* Documentation improvements
+* Update DC1394 plugin to use libdc1394-2.0.0-rc9
+* Allow DC1394 modes other than Format 7
+* Added additional colorspace conversions
+* Allow bayer demosaic code to work on non-SSE3 CPUs (still requires SSE2)
+
 libcam 0.0.1
 ============
 

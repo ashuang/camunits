@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 AC_INIT(libcam/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(libcam, 0.0.1)
+AM_INIT_AUTOMAKE(libcam, 0.0.2)
 
 case "$target_os" in
 	linux*) arch=linux;;
@@ -43,7 +43,7 @@ dnl  4. If the interface has removed elements, set AGE to 0.
 dnl ---------------------------------------------------------------------------
 LIBCAM_AGE=0
 LIBCAM_REVISION=0
-LIBCAM_CURRENT=0
+LIBCAM_CURRENT=1
 AC_SUBST(LIBCAM_AGE)
 AC_SUBST(LIBCAM_REVISION)
 AC_SUBST(LIBCAM_CURRENT)
@@ -52,7 +52,7 @@ AC_SUBST(LIBCAM_VERSION_INFO)
 
 LIBCAM_GTK_AGE=0
 LIBCAM_GTK_REVISION=0
-LIBCAM_GTK_CURRENT=0
+LIBCAM_GTK_CURRENT=1
 AC_SUBST(LIBCAM_GTK_AGE)
 AC_SUBST(LIBCAM_GTK_REVISION)
 AC_SUBST(LIBCAM_GTK_CURRENT)
