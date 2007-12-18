@@ -12,31 +12,34 @@ cam_convert_to_rgb8_get_type
 CAM_CONVERT_TO_RGB8_CLASS
 CAM_IS_CONVERT_TO_RGB8_CLASS
 CAM_CONVERT_TO_RGB8_GET_CLASS
+CamConvertToRgb8Class
 </SECTION>
 
 <SECTION>
 <FILE>input_v4l2</FILE>
-CAM_V4L2_DRIVER_TYPE
 <TITLE>CamV4L2Driver</TITLE>
 CamV4L2Driver
 cam_v4l2_driver_new
-CAM_TYPE_V4L2
-CAM_V4L2
-CAM_V4L2_CLASS
-CAM_IS_V4L2
-CAM_IS_V4L2_CLASS
-CAM_V4L2_GET_CLASS
 <TITLE>CamV4L2</TITLE>
 CamV4L2
-cam_v4l2_get_type
 cam_v4l2_new
 <SUBSECTION Standard>
+CAM_V4L2_DRIVER_TYPE
 CAM_V4L2_DRIVER
 CAM_IS_V4L2_DRIVER
 cam_v4l2_driver_get_type
 CAM_V4L2_DRIVER_CLASS
 CAM_IS_V4L2_DRIVER_CLASS
 CAM_V4L2_DRIVER_GET_CLASS
+CamV4L2Class
+CamV4L2DriverClass
+CAM_TYPE_V4L2
+CAM_V4L2
+CAM_V4L2_CLASS
+CAM_IS_V4L2
+CAM_IS_V4L2_CLASS
+CAM_V4L2_GET_CLASS
+cam_v4l2_get_type
 </SECTION>
 
 <SECTION>
@@ -53,6 +56,7 @@ cam_filter_gl_get_type
 CAM_FILTER_GL_CLASS
 CAM_IS_FILTER_GL_CLASS
 CAM_FILTER_GL_GET_CLASS
+CamFilterGLClass
 </SECTION>
 
 <SECTION>
@@ -60,16 +64,9 @@ CAM_FILTER_GL_GET_CLASS
 <TITLE>CamUnitDescription</TITLE>
 CamUnitDescription
 cam_unit_description_new
-CamUnitConstructor
-CAM_TYPE_UNIT_DRIVER
-CAM_UNIT_DRIVER
-CAM_UNIT_DRIVER_CLASS
-CAM_IS_UNIT_DRIVER
-CAM_IS_UNIT_DRIVER_CLASS
-CAM_UNIT_DRIVER_GET_CLASS
 <TITLE>CamUnitDriver</TITLE>
 CamUnitDriver
-cam_unit_driver_get_type
+CamUnitConstructor
 cam_unit_driver_new_stock
 cam_unit_driver_new_stock_full
 cam_unit_driver_create_unit
@@ -82,6 +79,7 @@ cam_unit_driver_add_unit_description
 cam_unit_driver_remove_unit_description
 cam_unit_driver_set_name
 <SUBSECTION Standard>
+cam_unit_driver_get_type
 CAM_UNIT_DESCRIPTION
 CAM_IS_UNIT_DESCRIPTION
 CAM_TYPE_UNIT_DESCRIPTION
@@ -89,6 +87,14 @@ cam_unit_description_get_type
 CAM_UNIT_DESCRIPTION_CLASS
 CAM_IS_UNIT_DESCRIPTION_CLASS
 CAM_UNIT_DESCRIPTION_GET_CLASS
+CAM_TYPE_UNIT_DRIVER
+CAM_UNIT_DRIVER
+CAM_UNIT_DRIVER_CLASS
+CAM_IS_UNIT_DRIVER
+CAM_IS_UNIT_DRIVER_CLASS
+CAM_UNIT_DRIVER_GET_CLASS
+CamUnitDescriptionClass
+CamUnitDriverClass
 </SECTION>
 
 <SECTION>
@@ -150,6 +156,7 @@ cam_unit_get_type
 CAM_UNIT_CLASS
 CAM_IS_UNIT_CLASS
 CAM_UNIT_GET_CLASS
+CamUnitClass
 </SECTION>
 
 <SECTION>
@@ -166,6 +173,7 @@ cam_unit_format_get_type
 CAM_UNIT_FORMAT_CLASS
 CAM_IS_UNIT_FORMAT_CLASS
 CAM_UNIT_FORMAT_GET_CLASS
+CamUnitFormatClass
 </SECTION>
 
 <SECTION>
@@ -192,6 +200,7 @@ cam_unit_chain_set_desired_status
 cam_unit_chain_get_desired_status
 cam_unit_chain_check_status_all_units
 cam_unit_chain_attach_glib
+cam_unit_chain_detach_glib
 <SUBSECTION Standard>
 CAM_UNIT_CHAIN
 CAM_IS_UNIT_CHAIN
@@ -200,23 +209,16 @@ cam_unit_chain_get_type
 CAM_UNIT_CHAIN_CLASS
 CAM_IS_UNIT_CHAIN_CLASS
 CAM_UNIT_CHAIN_GET_CLASS
+CamUnitChainClass
 </SECTION>
 
 <SECTION>
 <FILE>input_example</FILE>
-CAM_INPUT_EXAMPLE_DRIVER_TYPE
 <TITLE>CamInputExampleDriver</TITLE>
 CamInputExampleDriver
 cam_input_example_driver_new
-CAM_INPUT_EXAMPLE_TYPE
-CAM_INPUT_EXAMPLE
-CAM_INPUT_EXAMPLE_CLASS
-CAM_IS_INPUT_EXAMPLE
-CAM_IS_INPUT_EXAMPLE_CLASS
-CAM_INPUT_EXAMPLE_GET_CLASS
 <TITLE>CamInputExample</TITLE>
 CamInputExample
-cam_input_example_get_type
 cam_input_example_new
 <SUBSECTION Standard>
 CAM_INPUT_EXAMPLE_DRIVER
@@ -225,31 +227,43 @@ cam_input_example_driver_get_type
 CAM_INPUT_EXAMPLE_DRIVER_CLASS
 CAM_IS_INPUT_EXAMPLE_DRIVER_CLASS
 CAM_INPUT_EXAMPLE_DRIVER_GET_CLASS
+CAM_INPUT_EXAMPLE_DRIVER_TYPE
+CamInputExampleClass
+CamInputExampleDriverClass
+CAM_INPUT_EXAMPLE_TYPE
+CAM_INPUT_EXAMPLE
+CAM_INPUT_EXAMPLE_CLASS
+CAM_IS_INPUT_EXAMPLE
+CAM_IS_INPUT_EXAMPLE_CLASS
+CAM_INPUT_EXAMPLE_GET_CLASS
+cam_input_example_get_type
 </SECTION>
 
 <SECTION>
 <FILE>input_v4l</FILE>
-CAM_V4L_DRIVER_TYPE
 <TITLE>CamV4LDriver</TITLE>
 CamV4LDriver
 cam_v4l_driver_new
-CAM_TYPE_V4L
-CAM_V4L
-CAM_V4L_CLASS
-CAM_IS_V4L
-CAM_IS_V4L_CLASS
-CAM_V4L_GET_CLASS
 <TITLE>CamV4L</TITLE>
 CamV4L
-cam_v4l_get_type
 cam_v4l_new
 <SUBSECTION Standard>
+CAM_V4L_DRIVER_TYPE
 CAM_V4L_DRIVER
 CAM_IS_V4L_DRIVER
 cam_v4l_driver_get_type
 CAM_V4L_DRIVER_CLASS
 CAM_IS_V4L_DRIVER_CLASS
 CAM_V4L_DRIVER_GET_CLASS
+CAM_TYPE_V4L
+CAM_V4L
+CAM_V4L_CLASS
+CAM_IS_V4L
+CAM_IS_V4L_CLASS
+CAM_V4L_GET_CLASS
+cam_v4l_get_type
+CamV4LClass
+CamV4LDriverClass
 </SECTION>
 
 <SECTION>
@@ -266,6 +280,7 @@ cam_filter_jpeg_get_type
 CAM_FILTER_JPEG_CLASS
 CAM_IS_FILTER_JPEG_CLASS
 CAM_FILTER_JPEG_GET_CLASS
+CamFilterJpegClass
 </SECTION>
 
 <SECTION>
@@ -282,6 +297,7 @@ cam_fast_bayer_filter_get_type
 CAM_FAST_BAYER_FILTER_CLASS
 CAM_IS_FAST_BAYER_FILTER_CLASS
 CAM_FAST_BAYER_FILTER_GET_CLASS
+CamFastBayerFilterClass
 </SECTION>
 
 <SECTION>
@@ -306,6 +322,7 @@ cam_unit_manager_get_type
 CAM_UNIT_MANAGER_CLASS
 CAM_IS_UNIT_MANAGER_CLASS
 CAM_UNIT_MANAGER_GET_CLASS
+CamUnitManagerClass
 </SECTION>
 
 <SECTION>
@@ -315,12 +332,12 @@ CamUnitControlUIHint
 CamUnitControlCallback
 <TITLE>CamUnitControl</TITLE>
 CamUnitControl
-cam_unit_control_set_callback
 cam_unit_control_new_enum
 cam_unit_control_new_int
 cam_unit_control_new_float
 cam_unit_control_new_boolean
 cam_unit_control_new_string
+cam_unit_control_set_callback
 cam_unit_control_modify_int
 cam_unit_control_modify_float
 cam_unit_control_modify_enum
@@ -352,6 +369,7 @@ cam_unit_control_set_enabled
 cam_unit_control_get_enabled
 cam_unit_control_set_ui_hints
 cam_unit_control_get_ui_hints
+cam_unit_control_get_type_str
 <SUBSECTION Standard>
 CAM_UNIT_CONTROL
 CAM_IS_UNIT_CONTROL
@@ -360,6 +378,7 @@ cam_unit_control_get_type
 CAM_UNIT_CONTROL_CLASS
 CAM_IS_UNIT_CONTROL_CLASS
 CAM_UNIT_CONTROL_GET_CLASS
+CamUnitControlClass
 </SECTION>
 
 <SECTION>
@@ -376,6 +395,7 @@ cam_color_conversion_filter_get_type
 CAM_COLOR_CONVERSION_FILTER_CLASS
 CAM_IS_COLOR_CONVERSION_FILTER_CLASS
 CAM_COLOR_CONVERSION_FILTER_GET_CLASS
+CamColorConversionFilterClass
 </SECTION>
 
 <SECTION>
@@ -396,21 +416,24 @@ cam_framebuffer_get_type
 CAM_FRAMEBUFFER_CLASS
 CAM_IS_FRAMEBUFFER_CLASS
 CAM_FRAMEBUFFER_GET_CLASS
+CamFrameBufferClass
 </SECTION>
 
 <SECTION>
 <FILE>output_logger</FILE>
+<TITLE>CamLoggerUnit</TITLE>
+CamLoggerUnit
+cam_logger_unit_new
+cam_logger_unit_driver_new
+<SUBSECTION Standard>
+cam_logger_unit_get_type
 CAM_TYPE_LOGGER_UNIT
 CAM_LOGGER_UNIT
 CAM_LOGGER_UNIT_CLASS
 IS_CAM_LOGGER_UNIT
 IS_CAM_LOGGER_UNIT_CLASS
 CAM_LOGGER_UNIT_GET_CLASS
-<TITLE>CamLoggerUnit</TITLE>
-CamLoggerUnit
-cam_logger_unit_get_type
-cam_logger_unit_new
-cam_logger_unit_driver_new
+CamLoggerUnitClass
 </SECTION>
 
 <SECTION>
@@ -473,9 +496,12 @@ cam_pixel_convert_8u_yuv420p_to_8u_rgba
 cam_pixel_convert_8u_yuv420p_to_8u_bgr
 cam_pixel_convert_8u_yuv420p_to_8u_bgra
 cam_pixel_convert_8u_yuv420p_to_8u_gray
-cam_pixel_convert_8u_yuv422_to_8u_gray
-cam_pixel_convert_8u_yuv422_to_8u_bgra
-cam_pixel_convert_8u_yuv422_to_8u_rgb
+cam_pixel_convert_8u_uyvy_to_8u_bgra
+cam_pixel_convert_8u_uyvy_to_8u_gray
+cam_pixel_convert_8u_uyvy_to_8u_rgb
+cam_pixel_convert_8u_yuyv_to_8u_bgra
+cam_pixel_convert_8u_yuyv_to_8u_gray
+cam_pixel_convert_8u_yuyv_to_8u_rgb
 cam_pixel_replicate_border_8u
 cam_pixel_replicate_bayer_border_8u
 cam_pixel_split_bayer_planes_8u
@@ -545,27 +571,30 @@ cam_gl_texture_set_interp
 
 <SECTION>
 <FILE>input_log</FILE>
+<TITLE>CamInputLogDriver</TITLE>
+CamInputLogDriver
+cam_input_log_driver_new
+<TITLE>CamInputLog</TITLE>
+CamInputLog
+cam_input_log_new
+cam_log_set_file
+<SUBSECTION Standard>
 CAM_INPUT_LOG_DRIVER_TYPE
 CAM_INPUT_LOG_DRIVER
 CAM_INPUT_LOG_DRIVER_CLASS
 IS_CAM_INPUT_LOG_DRIVER
 IS_CAM_INPUT_LOG_DRIVER_CLASS
 CAM_INPUT_LOG_DRIVER_GET_CLASS
-<TITLE>CamInputLogDriver</TITLE>
-CamInputLogDriver
-cam_input_log_driver_get_type
-cam_input_log_driver_new
 CAM_INPUT_LOG_TYPE
 CAM_INPUT_LOG
 CAM_INPUT_LOG_CLASS
 IS_CAM_INPUT_LOG
 IS_CAM_INPUT_LOG_CLASS
 CAM_INPUT_LOG_GET_CLASS
-<TITLE>CamInputLog</TITLE>
-CamInputLog
+CamInputLogClass
+CamInputLogDriverClass
 cam_input_log_get_type
-cam_input_log_new
-cam_log_set_file
+cam_input_log_driver_get_type
 </SECTION>
 
 <SECTION>
