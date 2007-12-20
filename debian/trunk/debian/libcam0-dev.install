@@ -1,16 +1,4 @@
-debian/tmp/usr/include/libcam/cam.h
-debian/tmp/usr/include/libcam/unit.h
-debian/tmp/usr/include/libcam/unit_driver.h
-debian/tmp/usr/include/libcam/unit_manager.h
-debian/tmp/usr/include/libcam/unit_chain.h
-debian/tmp/usr/include/libcam/framebuffer.h
-debian/tmp/usr/include/libcam/unit_format.h
-debian/tmp/usr/include/libcam/unit_control.h
-debian/tmp/usr/include/libcam/libcam-gmarshal.h
-debian/tmp/usr/include/libcam/plugin.h
-debian/tmp/usr/include/libcam/pixels.h
-debian/tmp/usr/include/libcam/log.h
-debian/tmp/usr/include/libcam/gl_texture.h
+debian/tmp/usr/include/libcam/*.h
 debian/tmp/usr/lib/libcam.so
 debian/tmp/usr/lib/libcam.la
 debian/tmp/usr/lib/pkgconfig/libcam.pc

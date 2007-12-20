@@ -1,9 +1,4 @@
-debian/tmp/usr/include/libcam/cam_gtk.h
-debian/tmp/usr/include/libcam/unit_chain_gl_widget.h
-debian/tmp/usr/include/libcam/unit_chain_widget.h
-debian/tmp/usr/include/libcam/unit_control_widget.h
-debian/tmp/usr/include/libcam/unit_manager_widget.h
-debian/tmp/usr/include/libcam/gl_drawing_area.h
+debian/tmp/usr/include/libcam-gtk/*.h
 debian/tmp/usr/lib/libcam-gtk.so
 debian/tmp/usr/lib/libcam-gtk.la
 debian/tmp/usr/lib/pkgconfig/libcam-gtk.pc
