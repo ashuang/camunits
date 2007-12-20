@@ -1,3 +1,7 @@
+2007-12-20  David Moore  <dcm@acm.org>
+	* === Released 0.0.3 ===
+	* Renamed cam_gtk.h to cam-gtk.h
+
 2007-12-17  David Moore  <dcm@acm.org>
 	* === Released 0.0.2 ===
 	* Add colorspace conversion for UYVY and make naming more consistent

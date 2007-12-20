@@ -1,3 +1,8 @@
+libcam 0.0.3
+============
+* Fix installation directory of libcam-gtk headers and renamed cam_gtk.h to
+  cam-gtk.h.
+
 libcam 0.0.2
 ============
 * Now builds under Mac OS X (tested on Leopard)

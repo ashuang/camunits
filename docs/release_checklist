@@ -10,7 +10,7 @@
 7.  ./configure --enable-gtk-doc
 8.  make; make; make
 9.  make distcheck
-10. Fix any errors that appear in step 7, and repeat.
+10. Fix any errors that appear in step 9, and repeat.
 11. Take the resulting tarball, extract it, build it, install it, make sure
       the basic executables run.
 12. Upload the tarball to google code.
@@ -18,10 +18,11 @@
 14. Create a tag:
       svn copy https://libcam.googlecode.com/svn/trunk https://libcam.googlecode.com/svn/tags/libcam_x_y_z
 15. Copy built docs to www directory:
-      cd docs/reference
+      cd docs
       make install prefix=/somewhere_temporary
       cp -r /somewhere_temporary/share/gtk-doc/html/libcam www/reference
       cp -r /somewhere_temporary/share/gtk-doc/html/libcam-gtk www/reference
+      cp -r /somewhere_temporary/share/gtk-doc/html/libcam-tutorial/* www/tutorial
 16. Update any mime types if necessary:
       svn propset svn:mime-type text/html *.html
 17. Commit the docs
