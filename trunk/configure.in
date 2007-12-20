@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 AC_INIT(libcam/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(libcam, 0.0.2)
+AM_INIT_AUTOMAKE(libcam, 0.0.3)
 
 case "$target_os" in
 	linux*) arch=linux;;
