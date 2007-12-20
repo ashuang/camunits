@@ -7,7 +7,7 @@
 #include <gtk/gtk.h>
 
 #include <libcam/cam.h>
-#include <libcam-gtk/cam_gtk.h>
+#include <libcam-gtk/cam-gtk.h>
 
 #include "gtk_util.h"
 

@@ -1,4 +1,4 @@
-#include <libcam-gtk/cam_gtk.h>
+#include <libcam-gtk/cam-gtk.h>
 
 cam_tree_store_get_type
 cam_gl_drawing_area_get_type
