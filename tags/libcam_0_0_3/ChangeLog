@@ -1,0 +1,17 @@
+2007-12-20  David Moore  <dcm@acm.org>
+	* === Released 0.0.3 ===
+	* Renamed cam_gtk.h to cam-gtk.h
+
+2007-12-17  David Moore  <dcm@acm.org>
+	* === Released 0.0.2 ===
+	* Add colorspace conversion for UYVY and make naming more consistent
+
+2007-12-14  David Moore  <dcm@acm.org>
+	* Add non-format7 modes to input_dc1394
+	* Update input_dc1394 to use version 2.0.0-rc9 of libdc1394
+
+2007-12-05  David Moore  <dcm@acm.org>
+	* Detect SSE2 and SSE3 at runtime and act accordingly
+
+2007-12-02  David Moore  <dcm@acm.org>
+	* === Released 0.0.1 ===
