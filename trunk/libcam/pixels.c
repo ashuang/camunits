@@ -76,6 +76,8 @@ cam_pixel_format_str (CamPixelFormat p)
             return "RGB float-96bpp";
         case CAM_PIXEL_FORMAT_INVALID:
             return "Invalid / Unsupported";
+        case CAM_PIXEL_FORMAT_ANY:
+            return "Any Pixel Format";
     }
     return "Unknown";
 }
@@ -123,6 +125,7 @@ cam_pixel_format_bpp (CamPixelFormat p)
         case CAM_PIXEL_FORMAT_FLOAT_RGB32:
             return 96;
         case CAM_PIXEL_FORMAT_INVALID:
+        case CAM_PIXEL_FORMAT_ANY:
             return 0;
     }
     return 0;

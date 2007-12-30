@@ -39,6 +39,7 @@ typedef enum {
     CAM_PIXEL_FORMAT_RGBA=cam_pf_fourcc('R','G','B','4'),
     CAM_PIXEL_FORMAT_BGRA=cam_pf_fourcc('B','G','R','4'),
     CAM_PIXEL_FORMAT_BAYER_BGGR=cam_pf_fourcc('B','A','8','1'),
+
     /* Others */
     CAM_PIXEL_FORMAT_BAYER_GBRG=cam_pf_fourcc('X','X','X','2'),
     CAM_PIXEL_FORMAT_BAYER_GRBG=cam_pf_fourcc('X','X','X','3'),
@@ -51,7 +52,8 @@ typedef enum {
     CAM_PIXEL_FORMAT_SIGNED_RGB16,
     CAM_PIXEL_FORMAT_FLOAT_GRAY32,
     CAM_PIXEL_FORMAT_FLOAT_RGB32,
-    CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFF
+    CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFE,
+    CAM_PIXEL_FORMAT_ANY=0xFFFFFFFF,
 } CamPixelFormat;
 
 /**

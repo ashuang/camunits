@@ -71,7 +71,7 @@ cam_unit_init (CamUnit *self)
     self->output_formats = NULL;
     self->fmt = NULL;
 
-    self->requested_pixelformat = CAM_PIXEL_FORMAT_INVALID;
+    self->requested_pixelformat = CAM_PIXEL_FORMAT_ANY;
     self->requested_width = 0;
     self->requested_height = 0;
 }
@@ -566,7 +566,8 @@ cam_unit_stream_init_any_format (CamUnit *self)
         int64_t score = MIN (cfmt->width * cfmt->height, max_wh);
 
         if (self->requested_pixelformat != CAM_PIXEL_FORMAT_INVALID &&
-                self->requested_pixelformat == cfmt->pixelformat) {
+            self->requested_pixelformat != CAM_PIXEL_FORMAT_ANY &&
+            self->requested_pixelformat == cfmt->pixelformat) {
             score += max_wh * 3;
         }
         if (self->requested_width > 0 && 
@@ -593,6 +594,15 @@ cam_unit_set_preferred_format (CamUnit *self,
         CamPixelFormat pixelformat, int width, int height)
 {
     self->requested_pixelformat = pixelformat;
+
+    // TODO remove me
+    if (self->requested_pixelformat == CAM_PIXEL_FORMAT_INVALID) {
+        fprintf (stderr, 
+                "%s WARNING -- CAM_PIXEL_FORMAT_INVALID is deprecated\n"
+                "   use CAM_PIXEL_FORMAT_ANY instead.\n",
+                __FUNCTION__);
+    }
+
     self->requested_width = width;
     self->requested_height = height;
     return 0;
