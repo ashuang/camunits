@@ -13,6 +13,8 @@
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
 
+#define USE_ADVANCE_MODE
+
 // ============== CamInputLogDriver ===============
 
 static CamUnit * driver_create_unit (CamUnitDriver *super,
@@ -187,16 +189,20 @@ cam_log_set_file (CamInputLog *self, const char *fname)
     self->pause_ctl = cam_unit_add_control_boolean (super,
             "pause", "Pause", 0, 1);
 
-#if 0
-    const char *adv_mode_options[] = { "Soft", "Hard", NULL };
-    int adv_mode_options_enabled[] = { 1, 0, 0 };
+#ifdef USE_ADVANCE_MODE
+    const char *adv_mode_options[] = { 
+        "Never skip frames", 
+        "Skip if too slow", 
+        NULL 
+    };
+    int adv_mode_options_enabled[] = { 1, 1, 0 };
 
     self->adv_mode_ctl = cam_unit_add_control_enum (super,
             "mode", "Mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
 #endif
 
     self->adv_speed_ctl = cam_unit_add_control_float (super,
-            "speed", "Speed", 0.1, 20, 0.1, 1, 0);
+            "speed", "Playback Speed", 0.1, 20, 0.1, 1, 1);
 
     return 0;
 }
@@ -230,31 +236,46 @@ log_try_produce_frame (CamUnit *super)
     dbg (DBG_INPUT, "InputLog iterate [%"PRId64", %"PRId64", %"PRId64"]\n",
             now, self->next_frame_time, late);
 
-#if 0
-    int advance_mode = cam_unit_control_get_enum (self->adv_mode_ctl);
-#endif
     int paused = cam_unit_control_get_boolean (self->pause_ctl);
+    double speed = cam_unit_control_get_float (self->adv_speed_ctl);
 
-#if 0
-    switch (advance_mode) {
-        case CAM_INPUT_LOG_ADVANCE_MODE_SOFT:
-#endif
-            // paused?
-            if (paused && ! self->readone) { 
-                dbg (DBG_INPUT, "InputLog paused\n");
-                self->next_frame_time = now + 300000;
-                return FALSE; 
+    CamLogFrameInfo cur_info;
+    if (0 != cam_log_get_frame_info (self->camlog, &cur_info)) {
+        dbg (DBG_INPUT, "InputLog EOF?\n");
+        self->next_frame_time = now + 1000000;
+        return FALSE;
+    }
+
+    if (paused && ! self->readone) { 
+        dbg (DBG_INPUT, "InputLog paused\n");
+        self->next_frame_time = now + 300000;
+        return FALSE; 
+    }
+    if (paused && self->readone) {
+        dbg(DBG_INPUT, "InputLog paused, but reading one frame\n");
+    }
+
+#ifdef USE_ADVANCE_MODE
+    int advance_mode = cam_unit_control_get_enum (self->adv_mode_ctl);
+    // check the next frame and see if we should skip the current frame
+    // however, don't skip frames when paused
+    if (advance_mode == CAM_INPUT_LOG_ADVANCE_MODE_HARD && (! paused)) {
+        while (0 == cam_log_next_frame (self->camlog)) {
+            CamLogFrameInfo next_info;
+
+            cam_log_get_frame_info (self->camlog, &next_info);
+
+            int64_t dt = (int64_t) ((next_info.timestamp - 
+                        cur_info.timestamp) / speed);
+            int64_t expected_play_utime = self->next_frame_time + dt;
+
+            if (expected_play_utime <= now) {
+                cur_info = next_info;
+                self->next_frame_time = expected_play_utime;
+                break;
             }
-            if (paused && self->readone) {
-                dbg(DBG_INPUT, "InputLog paused, but reading one frame\n");
-            }
-#if 0
-            break;
-        case CAM_INPUT_LOG_ADVANCE_MODE_HARD:
-            err ("NYI");
-            // TODO
-            return;
-            break;
+        }
+        cam_log_seek_to_offset (self->camlog, cur_info.offset);
     }
 #endif
 
@@ -268,25 +289,24 @@ log_try_produce_frame (CamUnit *super)
     cam_log_get_frame_info (self->camlog, &frameinfo);
 
     // what is the timestamp of the next frame?
-    if (cam_log_next_frame (self->camlog) < 0)
+    int have_next_frame = (0 == cam_log_next_frame (self->camlog));
+    if (! have_next_frame) {
         self->next_frame_time = now + 300000;
-        // TODO handle EOF properly
-    else {
+    } else {
         // diff log timestamp that with the timestamp of the current
         // frame to get the next frame event time
         CamLogFrameInfo next_frameinfo;
         cam_log_get_frame_info (self->camlog, &next_frameinfo);
-        int64_t tdiff = 
-            next_frameinfo.timestamp - frameinfo.timestamp;
+        int64_t dt = 
+            (int64_t)((next_frameinfo.timestamp - frameinfo.timestamp) / speed);
 
-        self->next_frame_time = now + tdiff;
-        dbg (DBG_INPUT, "usec until next frame: %"PRId64"\n", tdiff);
+        self->next_frame_time = now + dt;
+        dbg (DBG_INPUT, "usec until next frame: %"PRId64"\n", dt);
     }
 
     cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
 
     self->readone = 0;
-    dbg (DBG_INPUT, "pushing buffer\n");
     cam_unit_produce_frame (super, buf, super->fmt);
     g_object_unref (buf);
     return TRUE;
@@ -321,11 +341,13 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
             self->readone = 1;
         }
         return TRUE;
+    } else if (ctl == self->adv_speed_ctl) {
+        g_value_copy (proposed, actual);
+        return TRUE;
     }
-#if 0
+#ifdef USE_ADVANCE_MODE
     else if (ctl == self->adv_mode_ctl) {
         g_value_copy (proposed, actual);
-
         return TRUE;
     }
 #endif
