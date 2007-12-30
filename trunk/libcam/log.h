@@ -23,9 +23,9 @@ typedef struct _CamLogFrameFormat {
 typedef struct _CamLogFrameInfo {
     uint64_t timestamp;
     uint64_t frameno;
-    uint64_t offset;
+    int64_t offset;
     uint64_t data_len;
-    uint64_t data_offset;
+    int64_t data_offset;
 } CamLogFrameInfo;
 
 /**
