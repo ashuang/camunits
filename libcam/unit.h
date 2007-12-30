@@ -274,7 +274,7 @@ int cam_unit_stream_init_any_format (CamUnit *self);
 
 /**
  * cam_unit_set_preferred_format:
- * @pixelformat: the preferred pixel format, or CAM_PIXEL_FORMAT_INVALID to
+ * @pixelformat: the preferred pixel format, or CAM_PIXEL_FORMAT_ANY to
  *               indicate that any pixel format is acceptable.
  * @width: the preferred image width, or 0 to indicate that any width is
  *         acceptable.
