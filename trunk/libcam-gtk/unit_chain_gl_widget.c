@@ -15,6 +15,12 @@
 
 #define err(args...) fprintf (stderr, args)
 
+enum {
+    GL_DRAW_FINISHED_SIGNAL,
+    LAST_SIGNAL
+};
+static guint _signals[LAST_SIGNAL] = { 0 };
+
 static void cam_unit_chain_gl_widget_finalize (GObject *obj);
 
 G_DEFINE_TYPE (CamUnitChainGLWidget, cam_unit_chain_gl_widget, 
@@ -70,6 +76,25 @@ cam_unit_chain_gl_widget_class_init (CamUnitChainGLWidgetClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     // add a class-specific destructor
     gobject_class->finalize = cam_unit_chain_gl_widget_finalize;
+
+    /**
+     * CamUnit::gl-draw-finished
+     * @widget: the CamUnitChainGLWidget emitting the signal
+     *
+     * Connect to this signal to insert custom OpenGL drawing code.
+     *
+     * The gl-draw-finished signal is emitted during the OpenGL drawing process
+     * after all of the CamUnit objects that can render to OpenGL have done so,
+     * but before the OpenGL buffers have been swapped.  At the time this
+     * signal is emitted, the current OpenGL context is still set to the one
+     * provided by this widget.
+     */
+    _signals[GL_DRAW_FINISHED_SIGNAL] = 
+        g_signal_new("gl-draw-finished",
+                G_TYPE_FROM_CLASS(klass),
+                G_SIGNAL_RUN_FIRST,
+                0, NULL, NULL, g_cclosure_marshal_VOID__VOID,
+                G_TYPE_NONE, 0);
 }
 
 // destructor (more or less)
@@ -232,6 +257,8 @@ on_gl_expose (GtkWidget * widget, GdkEventExpose * event,
     }
 
     render_renderable_units (self->chain);
+
+    g_signal_emit (G_OBJECT(self), _signals[GL_DRAW_FINISHED_SIGNAL], 0, NULL);
 
     cam_gl_drawing_area_swap_buffers (CAM_GL_DRAWING_AREA (self->gl_area));
 
