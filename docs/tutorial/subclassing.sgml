@@ -6,7 +6,7 @@
         framework.  Specifically, it describes how to create subclasses of
         <classname>CamUnit</classname> that can also be inserted into
         image processing chains and used in conjunction with other units.
-        <note><title>Caveat Emptor</title>
+        <note><title>Note</title>
         <para>
         While we believe strongly in building image procesing elements as
         subclasses of <classname>CamUnit</classname>,
@@ -134,8 +134,8 @@
             needed to implement an object, everything else is pretty
             straightforward.  For more information, see the <ulink
                 url="http://library.gnome.org/devel/gobject/">GObject
-                Reference Manual</ulink>.  There are also several tutorials on
-            GObject that can be found with some straightforward web searching.
+                Reference Manual</ulink> or the 
+                <ulink url="http://library.gnome.org/devel/gobject/unstable/howto-gobject.html">GObject Tutorial</ulink>.
         </para>
         <para>
             This tutorial will not focus on trying to explain how GObject

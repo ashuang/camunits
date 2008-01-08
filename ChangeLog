@@ -1,3 +1,10 @@
+2007-12-30  Albert Huang <ashuang@alum.mit.edu>
+	* add CAM_PIXEL_FORMAT_ANY
+	* implement advance mode control in input_log
+	* implement speed control in input_log
+	* log - change file offsets in CamLogFrameInfo from uint64_t to in64_t
+	* CamUnitChainGLWidget - add "gl-draw-finished" signal
+
 2007-12-20  David Moore  <dcm@acm.org>
 	* === Released 0.0.3 ===
 	* Renamed cam_gtk.h to cam-gtk.h
