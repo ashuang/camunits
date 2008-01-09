@@ -1,5 +1,10 @@
-libcam 0.0.3
-============
+libcam 0.0.4 - Jan 8, 2008
+==========================
+* Update DC1394 plugin to use libdc1394-2.0.0
+* Improvements to input.log
+
+libcam 0.0.3 - Dec 19, 2007
+==========================
 * Fix installation directory of libcam-gtk headers and renamed cam_gtk.h to
   cam-gtk.h.
 
