@@ -59,7 +59,7 @@ libcam has been split into the following packages.  If you just want to run camv
 
 || `libcam1` || core library ||
 || `libcam1-dev` || development files ||
-|| `libcam1-utils` || core library utilities, such as camlog ||
+|| `libcam-utils` || core library utilities, such as camlog ||
 || `libcam-gtk1` || library of GTK+ widgets for libcam ||
 || `libcam-gtk1-dev` || development files ||
 || `libcam-gtk-utils` || camview and other utilities ||
