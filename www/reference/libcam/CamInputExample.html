@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamInputExample</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamV4L.html" title="CamV4L">
@@ -24,18 +24,18 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamInputLog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id350619" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2603129" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id380568" class="shortcut">Description</a>
+                  <a href="#id2614980" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id347996" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2615144" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamInputExample"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id350619"></a><span class="refentrytitle">CamInputExample</span>
+<a name="id2603129"></a><span class="refentrytitle">CamInputExample</span>
 </h2>
 <p>CamInputExample &#8212; Debugging class, and also demonstration of how to create
 a simple CamUnitDriver and CamUnit</p>
@@ -48,40 +48,32 @@ a simple CamUnitDriver and CamUnit</p>
 
 
 
-                    <a class="link" href="CamInputExample.html#CamInputExampleDriver-struct">CamInputExampleDriver</a>;
-<a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* <a class="link" href="CamInputExample.html#cam-input-example-driver-new">cam_input_example_driver_new</a>     (void);
-                    <a class="link" href="CamInputExample.html#CamInputExample-struct">CamInputExample</a>;
-<a class="link" href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    <a class="link" href="CamInputExample.html#cam-input-example-new">cam_input_example_new</a>               (void);
+                    <a href="CamInputExample.html#CamInputExampleDriver-struct">CamInputExampleDriver</a>;
+<a href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* <a href="CamInputExample.html#cam-input-example-driver-new">cam_input_example_driver_new</a>     (void);
+                    <a href="CamInputExample.html#CamInputExample-struct">CamInputExample</a>;
+<a href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    <a href="CamInputExample.html#cam-input-example-new">cam_input_example_new</a>               (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id347996"></a><h2>Object Hierarchy</h2>
+<a name="id2615144"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
                +----CamInputExampleDriver
 </pre>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamInputExample
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id380568"></a><h2>Description</h2>
+<a name="id2614980"></a><h2>Description</h2>
 <p>
 CamInputExample serves as an always-present input unit (unit id:
 "input.example") that can be used for debugging when no other units are
@@ -96,27 +88,27 @@ for CamInputExampleDriver and CamInputExample (see libcam/input_example.h)</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id380595"></a><h2>Details</h2>
+<a name="id2615010"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id380605"></a><h3>
+<a name="id2615021"></a><h3>
 <a name="CamInputExampleDriver-struct"></a>CamInputExampleDriver</h3>
-<a class="indexterm" name="id380617"></a><pre class="programlisting">typedef struct _CamInputExampleDriver CamInputExampleDriver;</pre>
+<a class="indexterm" name="id2615032"></a><pre class="programlisting">typedef struct _CamInputExampleDriver CamInputExampleDriver;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id380632"></a><h3>
+<a name="id2615048"></a><h3>
 <a name="cam-input-example-driver-new"></a>cam_input_example_driver_new ()</h3>
-<a class="indexterm" name="id380643"></a><pre class="programlisting"><a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* cam_input_example_driver_new     (void);</pre>
+<a class="indexterm" name="id2615060"></a><pre class="programlisting"><a href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>* cam_input_example_driver_new     (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -126,18 +118,18 @@ for CamInputExampleDriver and CamInputExample (see libcam/input_example.h)</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id343373"></a><h3>
+<a name="id2620377"></a><h3>
 <a name="CamInputExample-struct"></a>CamInputExample</h3>
-<a class="indexterm" name="id343385"></a><pre class="programlisting">typedef struct _CamInputExample CamInputExample;</pre>
+<a class="indexterm" name="id2620389"></a><pre class="programlisting">typedef struct _CamInputExample CamInputExample;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id343400"></a><h3>
+<a name="id2620405"></a><h3>
 <a name="cam-input-example-new"></a>cam_input_example_new ()</h3>
-<a class="indexterm" name="id343412"></a><pre class="programlisting"><a class="link" href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    cam_input_example_new               (void);</pre>
+<a class="indexterm" name="id2620416"></a><pre class="programlisting"><a href="CamInputExample.html" title="CamInputExample">CamInputExample</a>*    cam_input_example_new               (void);</pre>
 <p>
 Constructor.  Don't call this function manually.  Instead, let the
 CamInputExampleDriver call it.</p>
@@ -147,7 +139,7 @@ CamInputExampleDriver call it.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamTreeStore</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam-gtk Reference Manual">
 <link rel="up" href="ch02.html" title="Subclasses of GTK Widgets">
 <link rel="prev" href="CamGLDrawingArea.html" title="CamGLDrawingArea">
@@ -21,20 +21,20 @@
 <th width="100%" align="center">libcam-gtk Reference Manual</th>
 <td>&#160;</td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id354770" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594296" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id363979" class="shortcut">Description</a>
+                  <a href="#id2557549" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id352004" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2557473" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id352033" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2557503" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamTreeStore"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id354770"></a><span class="refentrytitle">CamTreeStore</span>
+<a name="id2594296"></a><span class="refentrytitle">CamTreeStore</span>
 </h2>
 <p>CamTreeStore</p>
 </td>
@@ -46,68 +46,50 @@
 
 
 
-                    <a class="link" href="CamTreeStore.html#CamTreeStore-struct">CamTreeStore</a>;
-<a class="link" href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a>*       <a class="link" href="CamTreeStore.html#cam-tree-store-new">cam_tree_store_new</a>                  (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> n_columns,
+                    <a href="CamTreeStore.html#CamTreeStore-struct">CamTreeStore</a>;
+<a href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a>*       <a href="CamTreeStore.html#cam-tree-store-new">cam_tree_store_new</a>                  (gint n_columns,
                                                          ...);
-void                <a class="link" href="CamTreeStore.html#cam-tree-store-set-draggable-col">cam_tree_store_set_draggable_col</a>    (<a class="link" href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a> *store,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> col);
+void                <a href="CamTreeStore.html#cam-tree-store-set-draggable-col">cam_tree_store_set_draggable_col</a>    (<a href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a> *store,
+                                                         gint col);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id352004"></a><h2>Object Hierarchy</h2>
+<a name="id2557473"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeStore.html"
->GtkTreeStore</a>
+  GObject
+   +----GtkTreeStore
          +----CamTreeStore
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id352033"></a><h2>Implemented Interfaces</h2>
+<a name="id2557503"></a><h2>Implemented Interfaces</h2>
 <p>
 CamTreeStore implements
- <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html"
->GtkTreeModel</a>,  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragSource"
->GtkTreeDragSource</a>,  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragDest"
->GtkTreeDragDest</a> and  <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeSortable.html"
->GtkTreeSortable</a>.</p>
+ GtkTreeModel,  GtkTreeDragSource,  GtkTreeDragDest,  GtkTreeSortable and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id363979"></a><h2>Description</h2>
+<a name="id2557549"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id363995"></a><h2>Details</h2>
+<a name="id2557565"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id364005"></a><h3>
+<a name="id2557576"></a><h3>
 <a name="CamTreeStore-struct"></a>CamTreeStore</h3>
-<a class="indexterm" name="id364017"></a><pre class="programlisting">typedef struct _CamTreeStore CamTreeStore;</pre>
+<a class="indexterm" name="id2557588"></a><pre class="programlisting">typedef struct _CamTreeStore CamTreeStore;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id364032"></a><h3>
+<a name="id2600427"></a><h3>
 <a name="cam-tree-store-new"></a>cam_tree_store_new ()</h3>
-<a class="indexterm" name="id365169"></a><pre class="programlisting"><a class="link" href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a>*       cam_tree_store_new                  (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> n_columns,
+<a class="indexterm" name="id2600440"></a><pre class="programlisting"><a href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a>*       cam_tree_store_new                  (gint n_columns,
                                                          ...);</pre>
 <p>
 Creates a new tree store as with <em class="parameter"><code>n_columns</code></em> columns each of the types passed
@@ -116,12 +98,8 @@ are supported.
 </p>
 <p>
 As an example, <code class="literal">cam_tree_store_new (3, G_TYPE_INT, G_TYPE_STRING,
-GDK_TYPE_PIXBUF);</code> will create a new <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeStore.html"
-><span class="type">GtkTreeStore</span></a> with three columns, of type
-<span class="type">int</span>, <span class="type">string</span> and <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
-><span class="type">GdkPixbuf</span></a> respectively.</p>
+GDK_TYPE_PIXBUF);</code> will create a new <span class="type">GtkTreeStore</span> with three columns, of type
+<span class="type">int</span>, <span class="type">string</span> and <span class="type">GdkPixbuf</span> respectively.</p>
 <p>
 
 </p>
@@ -129,22 +107,18 @@ href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>n_columns</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>n_columns</code></em>&#160;:</span></td>
 <td> number of columns in the tree store
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></p></td>
-<td> all <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
-><span class="type">GType</span></a> types for the columns, from first to last
+<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td> all <span class="type">GType</span> types for the columns, from first to last
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> a new <a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeStore.html"
-><span class="type">GtkTreeStore</span></a>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> a new <span class="type">GtkTreeStore</span>
 </td>
 </tr>
 </tbody>
@@ -152,12 +126,10 @@ href="/usr/share/gtk-doc/html/gtk/GtkTreeStore.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id365293"></a><h3>
+<a name="id2583469"></a><h3>
 <a name="cam-tree-store-set-draggable-col"></a>cam_tree_store_set_draggable_col ()</h3>
-<a class="indexterm" name="id342410"></a><pre class="programlisting">void                cam_tree_store_set_draggable_col    (<a class="link" href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a> *store,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> col);</pre>
+<a class="indexterm" name="id2583480"></a><pre class="programlisting">void                cam_tree_store_set_draggable_col    (<a href="CamTreeStore.html" title="CamTreeStore">CamTreeStore</a> *store,
+                                                         gint col);</pre>
 <p>
 This function designates a column of the CamTreeStore to determine
 whether each row is draggable or not.  The column should have a
@@ -170,12 +142,12 @@ considered draggable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>store</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>store</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>col</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>col</code></em>&#160;:</span></td>
 <td> The column number of the CamTreeStore which is used to decide
       whether or not a row is draggable.
 </td>

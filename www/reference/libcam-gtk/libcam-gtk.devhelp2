@@ -33,6 +33,7 @@
     <keyword type="function" name="cam_unit_chain_gl_widget_set_chain ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-set-chain"/>
     <keyword type="function" name="cam_unit_chain_gl_widget_request_redraw ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-request-redraw"/>
     <keyword type="function" name="cam_unit_chain_gl_widget_get_gl_area ()" link="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area"/>
+    <keyword type="" name="The &quot;gl-draw-finished&quot; signal" link="CamUnitChainGLWidget.html#CamUnitChainGLWidget-gl-draw-finished"/>
     <keyword type="struct" name="CamUnitManagerWidget" link="CamUnitManagerWidget.html#CamUnitManagerWidget-struct"/>
     <keyword type="function" name="cam_unit_manager_widget_new ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-new"/>
     <keyword type="function" name="cam_unit_manager_widget_set_manager ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-set-manager"/>

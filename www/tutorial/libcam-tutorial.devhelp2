@@ -15,6 +15,7 @@
       <sub name="Specifying the output format of a Unit" link="ch-camunit.html#camunit-specify-output"/>
       <sub name="Conversion Units" link="camunit-motivation.html"/>
       <sub name="Unit Controls" link="camunit-controls.html"/>
+      <sub name="Summary" link="camunit-summary.html"/>
     </sub>
     <sub name="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver" link="ch-subclassing.html">
       <sub name="The GObject Type System" link="ch-subclassing.html#subclassing-gobject-type-system"/>

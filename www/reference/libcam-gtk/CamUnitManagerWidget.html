@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamUnitManagerWidget</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam-gtk Reference Manual">
 <link rel="up" href="ch01.html" title="GTK Widgets for libcam Types">
 <link rel="prev" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">
@@ -22,22 +22,22 @@
 <th width="100%" align="center">libcam-gtk Reference Manual</th>
 <td><a accesskey="n" href="CamUnitDescriptionWidget.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id350040" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2568791" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id367404" class="shortcut">Description</a>
+                  <a href="#id2585630" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id372539" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2570239" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id367359" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2570294" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id367381" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2570322" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitManagerWidget"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id350040"></a><span class="refentrytitle">CamUnitManagerWidget</span>
+<a name="id2568791"></a><span class="refentrytitle">CamUnitManagerWidget</span>
 </h2>
 <p>CamUnitManagerWidget</p>
 </td>
@@ -49,82 +49,70 @@
 
 
 
-                    <a class="link" href="CamUnitManagerWidget.html#CamUnitManagerWidget-struct">CamUnitManagerWidget</a>;
-<a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a>* <a class="link" href="CamUnitManagerWidget.html#cam-unit-manager-widget-new">cam_unit_manager_widget_new</a>       (<a
+                    <a href="CamUnitManagerWidget.html#CamUnitManagerWidget-struct">CamUnitManagerWidget</a>;
+<a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a>* <a href="CamUnitManagerWidget.html#cam-unit-manager-widget-new">cam_unit_manager_widget_new</a>       (<a
 href="../libcam/CamUnitManager.html"
 >CamUnitManager</a> *manager);
-int                 <a class="link" href="CamUnitManagerWidget.html#cam-unit-manager-widget-set-manager">cam_unit_manager_widget_set_manager</a> (<a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self,
+int                 <a href="CamUnitManagerWidget.html#cam-unit-manager-widget-set-manager">cam_unit_manager_widget_set_manager</a> (<a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self,
                                                          <a
 href="../libcam/CamUnitManager.html"
 >CamUnitManager</a> *manager);
 <a
 href="../libcam/CamUnitDriver.html#CamUnitDescription"
->CamUnitDescription</a>* <a class="link" href="CamUnitManagerWidget.html#cam-unit-manager-widget-get-selected-description">cam_unit_manager_widget_get_selected_description</a>
-                                                        (<a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self);
-extern              GtkTargetEntry <a class="link" href="CamUnitManagerWidget.html#cam-unit-manager-widget-target-entry">cam_unit_manager_widget_target_entry</a>;
-#define             <a class="link" href="CamUnitManagerWidget.html#CAM-UNIT-MANAGER-WIDGET-DND-ID:CAPS">CAM_UNIT_MANAGER_WIDGET_DND_ID</a>
+>CamUnitDescription</a>* <a href="CamUnitManagerWidget.html#cam-unit-manager-widget-get-selected-description">cam_unit_manager_widget_get_selected_description</a>
+                                                        (<a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self);
+extern              GtkTargetEntry <a href="CamUnitManagerWidget.html#cam-unit-manager-widget-target-entry">cam_unit_manager_widget_target_entry</a>;
+#define             <a href="CamUnitManagerWidget.html#CAM-UNIT-MANAGER-WIDGET-DND-ID:CAPS">CAM_UNIT_MANAGER_WIDGET_DND_ID</a>
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id372539"></a><h2>Object Hierarchy</h2>
+<a name="id2570239"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkTreeView.html"
->GtkTreeView</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkTreeView
                                  +----CamUnitManagerWidget
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367359"></a><h2>Implemented Interfaces</h2>
+<a name="id2570294"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitManagerWidget implements
- AtkImplementorIface.</p>
+ GtkBuildable and  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367381"></a><h2>Signals</h2>
+<a name="id2570322"></a><h2>Signals</h2>
 <pre class="synopsis">
 
-  "<a class="link" href="CamUnitManagerWidget.html#CamUnitManagerWidget-unit-description-activated">unit-description-activated</a>"                     : Run First
+  "<a href="CamUnitManagerWidget.html#CamUnitManagerWidget-unit-description-activated">unit-description-activated</a>"                     : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367404"></a><h2>Description</h2>
+<a name="id2585630"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id350338"></a><h2>Details</h2>
+<a name="id2585646"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id350348"></a><h3>
+<a name="id2585657"></a><h3>
 <a name="CamUnitManagerWidget-struct"></a>CamUnitManagerWidget</h3>
-<a class="indexterm" name="id350360"></a><pre class="programlisting">typedef struct _CamUnitManagerWidget CamUnitManagerWidget;</pre>
+<a class="indexterm" name="id2585668"></a><pre class="programlisting">typedef struct _CamUnitManagerWidget CamUnitManagerWidget;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id350375"></a><h3>
+<a name="id2585684"></a><h3>
 <a name="cam-unit-manager-widget-new"></a>cam_unit_manager_widget_new ()</h3>
-<a class="indexterm" name="id350386"></a><pre class="programlisting"><a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a>* cam_unit_manager_widget_new       (<a
+<a class="indexterm" name="id2585695"></a><pre class="programlisting"><a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a>* cam_unit_manager_widget_new       (<a
 href="../libcam/CamUnitManager.html"
 >CamUnitManager</a> *manager);</pre>
 <p>
@@ -134,12 +122,12 @@ href="../libcam/CamUnitManager.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -150,9 +138,9 @@ href="../libcam/CamUnitManager.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id350441"></a><h3>
+<a name="id2585750"></a><h3>
 <a name="cam-unit-manager-widget-set-manager"></a>cam_unit_manager_widget_set_manager ()</h3>
-<a class="indexterm" name="id350453"></a><pre class="programlisting">int                 cam_unit_manager_widget_set_manager (<a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self,
+<a class="indexterm" name="id2585762"></a><pre class="programlisting">int                 cam_unit_manager_widget_set_manager (<a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self,
                                                          <a
 href="../libcam/CamUnitManager.html"
 >CamUnitManager</a> *manager);</pre>
@@ -163,17 +151,17 @@ href="../libcam/CamUnitManager.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -184,12 +172,12 @@ href="../libcam/CamUnitManager.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id367137"></a><h3>
+<a name="id2562408"></a><h3>
 <a name="cam-unit-manager-widget-get-selected-description"></a>cam_unit_manager_widget_get_selected_description ()</h3>
-<a class="indexterm" name="id367149"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2562422"></a><pre class="programlisting"><a
 href="../libcam/CamUnitDriver.html#CamUnitDescription"
 >CamUnitDescription</a>* cam_unit_manager_widget_get_selected_description
-                                                        (<a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self);</pre>
+                                                        (<a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *self);</pre>
 <p>
 
 </p>
@@ -197,12 +185,12 @@ href="../libcam/CamUnitDriver.html#CamUnitDescription"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -213,9 +201,9 @@ href="../libcam/CamUnitDriver.html#CamUnitDescription"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id367205"></a><h3>
+<a name="id2562480"></a><h3>
 <a name="cam-unit-manager-widget-target-entry"></a>cam_unit_manager_widget_target_entry</h3>
-<a class="indexterm" name="id367217"></a><pre class="programlisting">extern GtkTargetEntry cam_unit_manager_widget_target_entry;
+<a class="indexterm" name="id2595875"></a><pre class="programlisting">extern GtkTargetEntry cam_unit_manager_widget_target_entry;
 </pre>
 <p>
 
@@ -223,9 +211,9 @@ href="../libcam/CamUnitDriver.html#CamUnitDescription"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id367233"></a><h3>
+<a name="id2595891"></a><h3>
 <a name="CAM-UNIT-MANAGER-WIDGET-DND-ID:CAPS"></a>CAM_UNIT_MANAGER_WIDGET_DND_ID</h3>
-<a class="indexterm" name="id367246"></a><pre class="programlisting">#define CAM_UNIT_MANAGER_WIDGET_DND_ID 100
+<a class="indexterm" name="id2595905"></a><pre class="programlisting">#define CAM_UNIT_MANAGER_WIDGET_DND_ID 100
 </pre>
 <p>
 
@@ -233,17 +221,15 @@ href="../libcam/CamUnitDriver.html#CamUnitDescription"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id367262"></a><h2>Signal Details</h2>
+<a name="id2595922"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id367273"></a><h3>
+<a name="id2595933"></a><h3>
 <a name="CamUnitManagerWidget-unit-description-activated"></a>The "unit-description-activated" signal</h3>
-<a class="indexterm" name="id367281"></a><pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *manager_widget,
+<a class="indexterm" name="id2595945"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">CamUnitManagerWidget</a> *manager_widget,
                                                         <a
 href="../libcam/CamUnitDriver.html#CamUnitDescription"
 >CamUnitDescription</a>   *udesc,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>              user_data)           : Run First</pre>
+                                                        gpointer              user_data)           : Run First</pre>
 <p>
 The unit-description-activated signal is emitted when the user
 double-clicks on a unit description</p>
@@ -254,17 +240,17 @@ double-clicks on a unit description</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>manager_widget</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>manager_widget</code></em>&#160;:</span></td>
 <td> CamUnitManagerWidget emitting the signal
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></td>
 <td> the CamUnitDescription that was activated
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>

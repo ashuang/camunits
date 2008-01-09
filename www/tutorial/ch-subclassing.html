@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Creating Custom Units -- Subclassing CamUnit and CamUnitDriver</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
 <link rel="start" href="index.html" title="libcam Tutorial">
 <link rel="up" href="index.html" title="libcam Tutorial">
-<link rel="prev" href="camunit-controls.html" title="Unit Controls">
+<link rel="prev" href="camunit-summary.html" title="Summary">
 <link rel="next" href="subclassing-class-relationships.html" title="The Relationship Between Libcam Classes">
 <meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -20,7 +20,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="camunit-controls.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="camunit-summary.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td>&#160;</td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libcam Tutorial</th>
@@ -50,7 +50,7 @@
         image processing chains and used in conjunction with other units.
         </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Caveat Emptor</h3>
+<h3 class="title">Note</h3>
 <p>
         While we believe strongly in building image procesing elements as
         subclasses of <code class="classname">CamUnit</code>,
@@ -74,7 +74,7 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Controls and Parameters</em></span></span></p></td>
+<td><span class="term"><span class="emphasis"><em>Controls and Parameters</em></span></span></td>
 <td>
 <p>
                         In our experience, most image processing 
@@ -111,7 +111,7 @@
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Visualization via OpenGL</em></span></span></p></td>
+<td><span class="term"><span class="emphasis"><em>Visualization via OpenGL</em></span></span></td>
 <td>
 <p>
                         When developing an image processing application, a
@@ -143,7 +143,7 @@
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Portability</em></span></span></p></td>
+<td><span class="term"><span class="emphasis"><em>Portability</em></span></span></td>
 <td><p>
                         This last bit almost need not be mentioned, but I'll
                         say it for emphasis.  By conforming to the
@@ -180,21 +180,21 @@
             and it can be easy to become mired in the implementation details,
             but once you've made it past the few dozen lines of boilerplate
             needed to implement an object, everything else is pretty
-            straightforward.  For more information, see the <a class="ulink" href="http://library.gnome.org/devel/gobject/" target="_top">GObject
-                Reference Manual</a>.  There are also several tutorials on
-            GObject that can be found with some straightforward web searching.
+            straightforward.  For more information, see the <a href="http://library.gnome.org/devel/gobject/" target="_top">GObject
+                Reference Manual</a> or the 
+                <a href="http://library.gnome.org/devel/gobject/unstable/howto-gobject.html" target="_top">GObject Tutorial</a>.
         </p>
 <p>
             This tutorial will not focus on trying to explain how GObject
             works.  For the most part, when we have to deal with the GObject
             type system in this tutorial, we'll say something like, "just do
             it this way" and expect that if you really want to know why,
-            you'll go look at the GObject documentation<sup>[<a name="id343436" href="#ftn.id343436" class="footnote">3</a>]</sup>.
+            you'll go look at the GObject documentation<sup>[<a name="id2559000" href="#ftn.id2559000">3</a>]</sup>.
         </p>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id343436" href="#id343436" class="para">3</a>] </sup><a class="ulink" href="http://library.gnome.org/devel/gobject/" target="_top">http://library.gnome.org/devel/gobject/</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2559000" href="#id2559000">3</a>] </sup><a href="http://library.gnome.org/devel/gobject/" target="_top">http://library.gnome.org/devel/gobject/</a></p></div>
 </div>
 </div>
 </body>

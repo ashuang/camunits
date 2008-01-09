@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Using a CamUnitChain</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
 <link rel="start" href="index.html" title="libcam Tutorial">
 <link rel="up" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
@@ -67,18 +67,18 @@
         </p>
 <p>
             The easiest way to find out what sort of units are available on
-            your system is to use the program <span class="command"><strong>camview</strong></span>,
+            your system is to use the program <span><strong class="command">camview</strong></span>,
             which comes with libcam.  When first loaded,
-            <span class="command"><strong>camview</strong></span> displays a list of units available to
-            libcam.  Clicking on a unit listed in <span class="command"><strong>camview</strong></span>
-            will reveal its unit ID.  <a class="xref" href="acquiring-unit-chain.html#acquiring-camview-unit-id" title="Figure&#160;1.&#160;Looking up Unit IDs in camview">Figure&#160;1, &#8220;Looking up Unit IDs in <span class="command">camview</span>&#8221;</a> illustrates this.
+            <span><strong class="command">camview</strong></span> displays a list of units available to
+            libcam.  Clicking on a unit listed in <span><strong class="command">camview</strong></span>
+            will reveal its unit ID.  <a href="acquiring-unit-chain.html#acquiring-camview-unit-id" title="Figure&#160;1.&#160;Looking up Unit IDs in camview">Figure&#160;1, &#8220;Looking up Unit IDs in <span>camview</span>&#8221;</a> illustrates this.
         </p>
 <div class="figure">
-<a name="acquiring-camview-unit-id"></a><p class="title"><b>Figure&#160;1.&#160;Looking up Unit IDs in <span class="command">camview</span></b></p>
+<a name="acquiring-camview-unit-id"></a><p class="title"><b>Figure&#160;1.&#160;Looking up Unit IDs in <span>camview</span></b></p>
 <div class="figure-contents"><div class="mediaobject">
 <img src="camview-unit-id.png" alt="Looking up Unit IDs in camview"><div class="caption"><p>
                 The easiest way to determine which units are available on a
-                system and their unit IDs is to run <span class="command"><strong>camview</strong></span>
+                system and their unit IDs is to run <span><strong class="command">camview</strong></span>
                 and inspect the list of units displayed in the "Manager" frame.
             </p></div>
 </div></div>
@@ -231,7 +231,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><code class="literal">pixelformat</code></span></p></td>
+<td><span class="term"><code class="literal">pixelformat</code></span></td>
 <td><p>A magic number identifying the pixel format of
                     the data.  Typical values are
                     <code class="literal">CAM_PIXEL_FORMAT_RGB</code>,
@@ -240,12 +240,12 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
                 </p></td>
 </tr>
 <tr>
-<td><p><span class="term"><code class="literal">width</code>, <code class="literal">height</code></span></p></td>
+<td><span class="term"><code class="literal">width</code>, <code class="literal">height</code></span></td>
 <td><p>The dimensions, in pixels, of the image.
                 </p></td>
 </tr>
 <tr>
-<td><p><span class="term"><code class="literal">row_stride</code></span></p></td>
+<td><span class="term"><code class="literal">row_stride</code></span></td>
 <td><p>Only meaningful for image formats with a fixed number of
                     bytes per pixel.  This stores the number of bytes
                     separating the first pixel of successive rows in the
@@ -264,7 +264,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
             8-bit RGB frames (pixelformat
             <code class="literal">CAM_PIXEL_FORMAT_RGB</code>) and so the example
             program is able to write the data directly to disk using the PPM
-            image file format<sup>[<a name="id341737" href="#ftn.id341737" class="footnote">2</a>]</sup>.
+            image file format<sup>[<a name="id2556984" href="#ftn.id2556984">2</a>]</sup>.
             If you decide to try this example with other units available on
             your system, you must ensure that they either output RGB directly,
             or you must insert a colorspace conversion unit (described in the
@@ -273,7 +273,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id341737" href="#id341737" class="para">2</a>] </sup><a class="ulink" href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2556984" href="#id2556984">2</a>] </sup><a href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
 </div>
 </div>
 </body>

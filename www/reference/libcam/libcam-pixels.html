@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>pixels</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch04.html" title="Other stuff">
 <link rel="prev" href="libcam-dbg.html" title="dbg">
@@ -24,16 +24,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-libcam-gmarshal.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id359545" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2510995" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id411211" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2632834" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-pixels"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id359545"></a><span class="refentrytitle">pixels</span>
+<a name="id2510995"></a><span class="refentrytitle">pixels</span>
 </h2>
 <p>pixels</p>
 </td>
@@ -45,194 +45,194 @@
 
 
 
-#define             <a class="link" href="libcam-pixels.html#cam-pf-fourcc">cam_pf_fourcc</a>                       (a,b,c,d)
-enum                <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a>;
-const char*         <a class="link" href="libcam-pixels.html#cam-pixel-format-str">cam_pixel_format_str</a>                (<a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-format-bpp">cam_pixel_format_bpp</a>                (<a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-format-stride-meaningful">cam_pixel_format_stride_meaningful</a>  (<a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-64f-gray">cam_pixel_convert_8u_gray_to_64f_gray</a>
+#define             <a href="libcam-pixels.html#cam-pf-fourcc">cam_pf_fourcc</a>                       (a,b,c,d)
+enum                <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a>;
+const char*         <a href="libcam-pixels.html#cam-pixel-format-str">cam_pixel_format_str</a>                (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);
+int                 <a href="libcam-pixels.html#cam-pixel-format-bpp">cam_pixel_format_bpp</a>                (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);
+int                 <a href="libcam-pixels.html#cam-pixel-format-stride-meaningful">cam_pixel_format_stride_meaningful</a>  (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-64f-gray">cam_pixel_convert_8u_gray_to_64f_gray</a>
                                                         (double *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGB">cam_pixel_convert_8u_gray_to_8u_RGB</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGB">cam_pixel_convert_8u_gray_to_8u_RGB</a> (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGBA">cam_pixel_convert_8u_gray_to_8u_RGBA</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGBA">cam_pixel_convert_8u_gray_to_8u_RGBA</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-apply-lut-8u">cam_pixel_apply_lut_8u</a>              (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-apply-lut-8u">cam_pixel_apply_lut_8u</a>              (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride,
                                                          const uint8_t *lut);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-rgb-to-8u-bgr">cam_pixel_convert_8u_rgb_to_8u_bgr</a>  (uint8_t *dst,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-rgb-to-8u-bgr">cam_pixel_convert_8u_rgb_to_8u_bgr</a>  (uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-rgb-to-8u-gray">cam_pixel_convert_8u_rgb_to_8u_gray</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-rgb-to-8u-gray">cam_pixel_convert_8u_rgb_to_8u_gray</a> (uint8_t *dest,
                                                          int dstride,
                                                          int width,
                                                          int height,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-bgr-to-8u-rgb">cam_pixel_convert_8u_bgr_to_8u_rgb</a>  (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-bgr-to-8u-rgb">cam_pixel_convert_8u_bgr_to_8u_rgb</a>  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-rgb-to-8u-bgra">cam_pixel_convert_8u_rgb_to_8u_bgra</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-rgb-to-8u-bgra">cam_pixel_convert_8u_rgb_to_8u_bgra</a> (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-bgra-to-8u-bgr">cam_pixel_convert_8u_bgra_to_8u_bgr</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-bgra-to-8u-bgr">cam_pixel_convert_8u_bgra_to_8u_bgr</a> (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-bgra-to-8u-rgb">cam_pixel_convert_8u_bgra_to_8u_rgb</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-bgra-to-8u-rgb">cam_pixel_convert_8u_bgra_to_8u_rgb</a> (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-rgb">cam_pixel_convert_8u_yuv420p_to_8u_rgb</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-rgb">cam_pixel_convert_8u_yuv420p_to_8u_rgb</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-rgba">cam_pixel_convert_8u_yuv420p_to_8u_rgba</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-rgba">cam_pixel_convert_8u_yuv420p_to_8u_rgba</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-bgr">cam_pixel_convert_8u_yuv420p_to_8u_bgr</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-bgr">cam_pixel_convert_8u_yuv420p_to_8u_bgr</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-bgra">cam_pixel_convert_8u_yuv420p_to_8u_bgra</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-bgra">cam_pixel_convert_8u_yuv420p_to_8u_bgra</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-gray">cam_pixel_convert_8u_yuv420p_to_8u_gray</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuv420p-to-8u-gray">cam_pixel_convert_8u_yuv420p_to_8u_gray</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-bgra">cam_pixel_convert_8u_uyvy_to_8u_bgra</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-bgra">cam_pixel_convert_8u_uyvy_to_8u_bgra</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-gray">cam_pixel_convert_8u_uyvy_to_8u_gray</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-gray">cam_pixel_convert_8u_uyvy_to_8u_gray</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-rgb">cam_pixel_convert_8u_uyvy_to_8u_rgb</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-uyvy-to-8u-rgb">cam_pixel_convert_8u_uyvy_to_8u_rgb</a> (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-bgra">cam_pixel_convert_8u_yuyv_to_8u_bgra</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-bgra">cam_pixel_convert_8u_yuyv_to_8u_bgra</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-gray">cam_pixel_convert_8u_yuyv_to_8u_gray</a>
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-gray">cam_pixel_convert_8u_yuyv_to_8u_gray</a>
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-rgb">cam_pixel_convert_8u_yuyv_to_8u_rgb</a> (uint8_t *dest,
+int                 <a href="libcam-pixels.html#cam-pixel-convert-8u-yuyv-to-8u-rgb">cam_pixel_convert_8u_yuyv_to_8u_rgb</a> (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-replicate-border-8u">cam_pixel_replicate_border_8u</a>       (uint8_t *src,
+int                 <a href="libcam-pixels.html#cam-pixel-replicate-border-8u">cam_pixel_replicate_border_8u</a>       (uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-replicate-bayer-border-8u">cam_pixel_replicate_bayer_border_8u</a> (uint8_t *src,
+int                 <a href="libcam-pixels.html#cam-pixel-replicate-bayer-border-8u">cam_pixel_replicate_bayer_border_8u</a> (uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-split-bayer-planes-8u">cam_pixel_split_bayer_planes_8u</a>     (uint8_t *dst[4],
+int                 <a href="libcam-pixels.html#cam-pixel-split-bayer-planes-8u">cam_pixel_split_bayer_planes_8u</a>     (uint8_t *dst[4],
                                                          int dstride,
                                                          const uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-bayer-interpolate-to-8u-bgra">cam_pixel_bayer_interpolate_to_8u_bgra</a>
+int                 <a href="libcam-pixels.html#cam-pixel-bayer-interpolate-to-8u-bgra">cam_pixel_bayer_interpolate_to_8u_bgra</a>
                                                         (uint8_t **src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-bayer-interpolate-to-8u-gray">cam_pixel_bayer_interpolate_to_8u_gray</a>
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
+int                 <a href="libcam-pixels.html#cam-pixel-bayer-interpolate-to-8u-gray">cam_pixel_bayer_interpolate_to_8u_gray</a>
                                                         (uint8_t *src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-bayer-to-8u-bgra">cam_pixel_convert_bayer_to_8u_bgra</a>  (uint8_t *dest,
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
+int                 <a href="libcam-pixels.html#cam-pixel-convert-bayer-to-8u-bgra">cam_pixel_convert_bayer_to_8u_bgra</a>  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-bayer-to-8u-gray">cam_pixel_convert_bayer_to_8u_gray</a>  (uint8_t *dest,
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
+int                 <a href="libcam-pixels.html#cam-pixel-convert-bayer-to-8u-gray">cam_pixel_convert_bayer_to_8u_gray</a>  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
-int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-generic">cam_pixel_copy_8u_generic</a>           (const uint8_t *src,
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);
+int                 <a href="libcam-pixels.html#cam-pixel-copy-8u-generic">cam_pixel_copy_8u_generic</a>           (const uint8_t *src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,
@@ -246,17 +246,17 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id411211"></a><h2>Description</h2>
+<a name="id2632834"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id411224"></a><h2>Details</h2>
+<a name="id2632849"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id411234"></a><h3>
+<a name="id2632860"></a><h3>
 <a name="cam-pf-fourcc"></a>cam_pf_fourcc()</h3>
-<a class="indexterm" name="id411244"></a><pre class="programlisting">#define             cam_pf_fourcc(a,b,c,d)</pre>
+<a class="indexterm" name="id2632873"></a><pre class="programlisting">#define             cam_pf_fourcc(a,b,c,d)</pre>
 <p>
 
 </p>
@@ -264,22 +264,22 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>a</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>a</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>c</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>c</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>d</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>d</code></em>&#160;:</span></td>
 <td>
 
 
@@ -290,9 +290,9 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411313"></a><h3>
+<a name="id2632951"></a><h3>
 <a name="CamPixelFormat"></a>enum CamPixelFormat</h3>
-<a class="indexterm" name="id411323"></a><pre class="programlisting">typedef enum {
+<a class="indexterm" name="id2632963"></a><pre class="programlisting">typedef enum {
     /* standard FourCCs */
     CAM_PIXEL_FORMAT_UYVY=cam_pf_fourcc('U','Y','V','Y'),  /* YUV 4:2:2 */
     CAM_PIXEL_FORMAT_YUYV=cam_pf_fourcc('Y','U','Y','V'),  /* YUV 4:2:2 reverse byte 
@@ -314,6 +314,7 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
     CAM_PIXEL_FORMAT_RGBA=cam_pf_fourcc('R','G','B','4'),
     CAM_PIXEL_FORMAT_BGRA=cam_pf_fourcc('B','G','R','4'),
     CAM_PIXEL_FORMAT_BAYER_BGGR=cam_pf_fourcc('B','A','8','1'),
+
     /* Others */
     CAM_PIXEL_FORMAT_BAYER_GBRG=cam_pf_fourcc('X','X','X','2'),
     CAM_PIXEL_FORMAT_BAYER_GRBG=cam_pf_fourcc('X','X','X','3'),
@@ -326,7 +327,8 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
     CAM_PIXEL_FORMAT_SIGNED_RGB16,
     CAM_PIXEL_FORMAT_FLOAT_GRAY32,
     CAM_PIXEL_FORMAT_FLOAT_RGB32,
-    CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFF
+    CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFE,
+    CAM_PIXEL_FORMAT_ANY=0xFFFFFFFF,
 } CamPixelFormat;
 </pre>
 <p>
@@ -335,9 +337,9 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411354"></a><h3>
+<a name="id2597150"></a><h3>
 <a name="cam-pixel-format-str"></a>cam_pixel_format_str ()</h3>
-<a class="indexterm" name="id411364"></a><pre class="programlisting">const char*         cam_pixel_format_str                (<a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
+<a class="indexterm" name="id2573975"></a><pre class="programlisting">const char*         cam_pixel_format_str                (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
 <p>
 </p>
 <p>
@@ -347,12 +349,12 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>a short, descriptive string that indicates the meaning of
 CamPixelFormat <em class="parameter"><code>p</code></em>, useful for debugging an UI elements.
 </td>
@@ -362,9 +364,9 @@ CamPixelFormat <em class="parameter"><code>p</code></em>, useful for debugging a
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411424"></a><h3>
+<a name="id2633063"></a><h3>
 <a name="cam-pixel-format-bpp"></a>cam_pixel_format_bpp ()</h3>
-<a class="indexterm" name="id411434"></a><pre class="programlisting">int                 cam_pixel_format_bpp                (<a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
+<a class="indexterm" name="id2633073"></a><pre class="programlisting">int                 cam_pixel_format_bpp                (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
 <p>
 </p>
 <p>
@@ -374,12 +376,12 @@ CamPixelFormat <em class="parameter"><code>p</code></em>, useful for debugging a
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>the number of bits per pixel of a given CamPixelFormat.  Note that
 if the format has multiple color components per pixel, the returned
 value is the total bits per pixel, not per component.
@@ -390,9 +392,9 @@ value is the total bits per pixel, not per component.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411488"></a><h3>
+<a name="id2633130"></a><h3>
 <a name="cam-pixel-format-stride-meaningful"></a>cam_pixel_format_stride_meaningful ()</h3>
-<a class="indexterm" name="id411499"></a><pre class="programlisting">int                 cam_pixel_format_stride_meaningful  (<a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
+<a class="indexterm" name="id2633143"></a><pre class="programlisting">int                 cam_pixel_format_stride_meaningful  (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
 <p>
 </p>
 <p>
@@ -402,12 +404,12 @@ value is the total bits per pixel, not per component.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> 1 if rowstride is meaningful for the pixelformat, 0 if not.
 </td>
 </tr>
@@ -416,9 +418,9 @@ value is the total bits per pixel, not per component.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411552"></a><h3>
+<a name="id2633198"></a><h3>
 <a name="cam-pixel-convert-8u-gray-to-64f-gray"></a>cam_pixel_convert_8u_gray_to_64f_gray ()</h3>
-<a class="indexterm" name="id411562"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_64f_gray
+<a class="indexterm" name="id2633211"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_64f_gray
                                                         (double *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -437,39 +439,39 @@ and height are modified accordingly.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -480,9 +482,9 @@ and height are modified accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411712"></a><h3>
+<a name="id2633372"></a><h3>
 <a name="cam-pixel-convert-8u-gray-to-8u-RGB"></a>cam_pixel_convert_8u_gray_to_8u_RGB ()</h3>
-<a class="indexterm" name="id411723"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGB (uint8_t *dest,
+<a class="indexterm" name="id2633385"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGB (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -499,39 +501,39 @@ the three color channels.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -542,9 +544,9 @@ the three color channels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id411871"></a><h3>
+<a name="id2633543"></a><h3>
 <a name="cam-pixel-convert-8u-gray-to-8u-RGBA"></a>cam_pixel_convert_8u_gray_to_8u_RGBA ()</h3>
-<a class="indexterm" name="id411882"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGBA
+<a class="indexterm" name="id2633556"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGBA
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -562,39 +564,39 @@ the three color channels and setting the alpha to 255.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -605,9 +607,9 @@ the three color channels and setting the alpha to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412031"></a><h3>
+<a name="id2633716"></a><h3>
 <a name="cam-pixel-apply-lut-8u"></a>cam_pixel_apply_lut_8u ()</h3>
-<a class="indexterm" name="id412042"></a><pre class="programlisting">int                 cam_pixel_apply_lut_8u              (uint8_t *dest,
+<a class="indexterm" name="id2633726"></a><pre class="programlisting">int                 cam_pixel_apply_lut_8u              (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -625,44 +627,44 @@ the result to a destination image.  The LUT is an array of length
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>lut</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>lut</code></em>&#160;:</span></td>
 <td> The lookup table (LUT) pre-allocated and populated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -673,9 +675,9 @@ the result to a destination image.  The LUT is an array of length
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412210"></a><h3>
+<a name="id2633905"></a><h3>
 <a name="cam-pixel-convert-8u-rgb-to-8u-bgr"></a>cam_pixel_convert_8u_rgb_to_8u_bgr ()</h3>
-<a class="indexterm" name="id412220"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgr  (uint8_t *dst,
+<a class="indexterm" name="id2633918"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgr  (uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
@@ -690,39 +692,39 @@ Reverses the order of channels in a 3-channel image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -733,9 +735,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412367"></a><h3>
+<a name="id2634074"></a><h3>
 <a name="cam-pixel-convert-8u-rgb-to-8u-gray"></a>cam_pixel_convert_8u_rgb_to_8u_gray ()</h3>
-<a class="indexterm" name="id412378"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest,
+<a class="indexterm" name="id2634087"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest,
                                                          int dstride,
                                                          int width,
                                                          int height,
@@ -748,37 +750,37 @@ Reverses the order of channels in a 3-channel image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -789,9 +791,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412520"></a><h3>
+<a name="id2634233"></a><h3>
 <a name="cam-pixel-convert-8u-bgr-to-8u-rgb"></a>cam_pixel_convert_8u_bgr_to_8u_rgb ()</h3>
-<a class="indexterm" name="id412530"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgr_to_8u_rgb  (uint8_t *dest,
+<a class="indexterm" name="id2634246"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgr_to_8u_rgb  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -806,39 +808,39 @@ Reverses the order of channels in a 3-channel image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -849,9 +851,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412677"></a><h3>
+<a name="id2634402"></a><h3>
 <a name="cam-pixel-convert-8u-rgb-to-8u-bgra"></a>cam_pixel_convert_8u_rgb_to_8u_bgra ()</h3>
-<a class="indexterm" name="id412688"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgra (uint8_t *dest,
+<a class="indexterm" name="id2634416"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgra (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -864,37 +866,37 @@ Reverses the order of channels in a 3-channel image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -905,9 +907,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412830"></a><h3>
+<a name="id2634561"></a><h3>
 <a name="cam-pixel-convert-8u-bgra-to-8u-bgr"></a>cam_pixel_convert_8u_bgra_to_8u_bgr ()</h3>
-<a class="indexterm" name="id412840"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_bgr (uint8_t *dest,
+<a class="indexterm" name="id2634575"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_bgr (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -923,39 +925,39 @@ channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -966,9 +968,9 @@ channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id412988"></a><h3>
+<a name="id2634731"></a><h3>
 <a name="cam-pixel-convert-8u-bgra-to-8u-rgb"></a>cam_pixel_convert_8u_bgra_to_8u_rgb ()</h3>
-<a class="indexterm" name="id412998"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_rgb (uint8_t *dest,
+<a class="indexterm" name="id2634744"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_rgb (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -981,37 +983,37 @@ channel.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1022,9 +1024,9 @@ channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id413140"></a><h3>
+<a name="id2634890"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-rgb"></a>cam_pixel_convert_8u_yuv420p_to_8u_rgb ()</h3>
-<a class="indexterm" name="id413151"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgb
+<a class="indexterm" name="id2634903"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgb
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1040,39 +1042,39 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td> The destination buffer pre-allocated by the caller.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      destination buffer. TODO
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td> Width of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td> Height of the destination image in pixels.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
      source buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1083,9 +1085,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id413299"></a><h3>
+<a name="id2635060"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-rgba"></a>cam_pixel_convert_8u_yuv420p_to_8u_rgba ()</h3>
-<a class="indexterm" name="id413309"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgba
+<a class="indexterm" name="id2635072"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgba
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1099,37 +1101,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1140,9 +1142,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id413452"></a><h3>
+<a name="id2635220"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-bgr"></a>cam_pixel_convert_8u_yuv420p_to_8u_bgr ()</h3>
-<a class="indexterm" name="id413463"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgr
+<a class="indexterm" name="id2635233"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgr
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1156,37 +1158,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1197,9 +1199,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id413608"></a><h3>
+<a name="id2635380"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-bgra"></a>cam_pixel_convert_8u_yuv420p_to_8u_bgra ()</h3>
-<a class="indexterm" name="id413622"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgra
+<a class="indexterm" name="id2635393"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgra
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1213,37 +1215,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1254,9 +1256,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id413782"></a><h3>
+<a name="id2635541"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-gray"></a>cam_pixel_convert_8u_yuv420p_to_8u_gray ()</h3>
-<a class="indexterm" name="id413796"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_gray
+<a class="indexterm" name="id2635554"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_gray
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1270,37 +1272,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1311,9 +1313,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id413955"></a><h3>
+<a name="id2635701"></a><h3>
 <a name="cam-pixel-convert-8u-uyvy-to-8u-bgra"></a>cam_pixel_convert_8u_uyvy_to_8u_bgra ()</h3>
-<a class="indexterm" name="id413968"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_bgra
+<a class="indexterm" name="id2635714"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_bgra
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1327,37 +1329,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1368,9 +1370,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id414128"></a><h3>
+<a name="id2635862"></a><h3>
 <a name="cam-pixel-convert-8u-uyvy-to-8u-gray"></a>cam_pixel_convert_8u_uyvy_to_8u_gray ()</h3>
-<a class="indexterm" name="id414141"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_gray
+<a class="indexterm" name="id2635874"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_gray
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1384,37 +1386,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1425,9 +1427,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id414302"></a><h3>
+<a name="id2636022"></a><h3>
 <a name="cam-pixel-convert-8u-uyvy-to-8u-rgb"></a>cam_pixel_convert_8u_uyvy_to_8u_rgb ()</h3>
-<a class="indexterm" name="id414315"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_rgb (uint8_t *dest,
+<a class="indexterm" name="id2636035"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_rgb (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -1440,37 +1442,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1481,9 +1483,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id414475"></a><h3>
+<a name="id2636181"></a><h3>
 <a name="cam-pixel-convert-8u-yuyv-to-8u-bgra"></a>cam_pixel_convert_8u_yuyv_to_8u_bgra ()</h3>
-<a class="indexterm" name="id414488"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_bgra
+<a class="indexterm" name="id2636194"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_bgra
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1497,37 +1499,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1538,9 +1540,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id414648"></a><h3>
+<a name="id2636351"></a><h3>
 <a name="cam-pixel-convert-8u-yuyv-to-8u-gray"></a>cam_pixel_convert_8u_yuyv_to_8u_gray ()</h3>
-<a class="indexterm" name="id414661"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_gray
+<a class="indexterm" name="id2636366"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_gray
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1554,37 +1556,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1595,9 +1597,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id414821"></a><h3>
+<a name="id2636530"></a><h3>
 <a name="cam-pixel-convert-8u-yuyv-to-8u-rgb"></a>cam_pixel_convert_8u_yuyv_to_8u_rgb ()</h3>
-<a class="indexterm" name="id414834"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_rgb (uint8_t *dest,
+<a class="indexterm" name="id2636545"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_rgb (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -1610,37 +1612,37 @@ TODO</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1651,9 +1653,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id414993"></a><h3>
+<a name="id2636708"></a><h3>
 <a name="cam-pixel-replicate-border-8u"></a>cam_pixel_replicate_border_8u ()</h3>
-<a class="indexterm" name="id415006"></a><pre class="programlisting">int                 cam_pixel_replicate_border_8u       (uint8_t *src,
+<a class="indexterm" name="id2636722"></a><pre class="programlisting">int                 cam_pixel_replicate_border_8u       (uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);</pre>
@@ -1670,32 +1672,32 @@ sufficient unused space between rows for the duplicated column.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> Pointer to the top-left pixel of the input image.  The output
     is written in-place, and thus the input buffer must be large enough
     to accomodate an image 2 pixels wider and higher than the input image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
     input/output buffer.  Must be larger than <em class="parameter"><code>width</code></em> to accomodate
     duplicated columns.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> Width of the input image.  Output image will have width <em class="parameter"><code>width</code></em>+2.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> Height of the input image.  Output image will have height
     <em class="parameter"><code>height</code></em>+2.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1706,9 +1708,9 @@ sufficient unused space between rows for the duplicated column.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id415164"></a><h3>
+<a name="id2636888"></a><h3>
 <a name="cam-pixel-replicate-bayer-border-8u"></a>cam_pixel_replicate_bayer_border_8u ()</h3>
-<a class="indexterm" name="id415177"></a><pre class="programlisting">int                 cam_pixel_replicate_bayer_border_8u (uint8_t *src,
+<a class="indexterm" name="id2636904"></a><pre class="programlisting">int                 cam_pixel_replicate_bayer_border_8u (uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);</pre>
@@ -1727,32 +1729,32 @@ exists in the image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> Pointer to the top-left pixel of the input image.  The output
     is written in-place, and thus the input buffer must be large enough
     to accomodate an image 4 pixels wider and higher than the input image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each image row in the
     input/output buffer.  Must be larger than <em class="parameter"><code>width</code></em> to accomodate
     duplicated columns.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> Width of the input image.  Output image will have width <em class="parameter"><code>width</code></em>+4.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> Height of the input image.  Output image will have height
     <em class="parameter"><code>height</code></em>+4.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1763,9 +1765,9 @@ exists in the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id415335"></a><h3>
+<a name="id2637071"></a><h3>
 <a name="cam-pixel-split-bayer-planes-8u"></a>cam_pixel_split_bayer_planes_8u ()</h3>
-<a class="indexterm" name="id415349"></a><pre class="programlisting">int                 cam_pixel_split_bayer_planes_8u     (uint8_t *dst[4],
+<a class="indexterm" name="id2637086"></a><pre class="programlisting">int                 cam_pixel_split_bayer_planes_8u     (uint8_t *dst[4],
                                                          int dstride,
                                                          const uint8_t *src,
                                                          int sstride,
@@ -1781,7 +1783,7 @@ four separate planes.  This function is SSE2 accelerated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></td>
 <td> Array of length 4 that contains destination pointers for the 4
     output planes.  Within the 2x2 bayer pattern, dst[0] is given the
     top-left set of pixels, dst[1] the top-right, dst[2] the bottom-left,
@@ -1790,35 +1792,35 @@ four separate planes.  This function is SSE2 accelerated.</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each row in the output
     buffers.  Each output buffer must have the same stride and it must
     be a multiple of 16 bytes.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source image.  Must be 16-byte aligned.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Number of bytes between the start of each row in the input
     image.  Must be a multiple of 16 bytes.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> Width of each output plane.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> Height of each output plane.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1829,16 +1831,16 @@ four separate planes.  This function is SSE2 accelerated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id415518"></a><h3>
+<a name="id2637265"></a><h3>
 <a name="cam-pixel-bayer-interpolate-to-8u-bgra"></a>cam_pixel_bayer_interpolate_to_8u_bgra ()</h3>
-<a class="indexterm" name="id415531"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_bgra
+<a class="indexterm" name="id2637280"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_bgra
                                                         (uint8_t **src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
 <p>
 Performs bayer interpolation on an image and produces a 4-channel BGRA
 image where alpha is set to 255.  The method used is described by:
@@ -1857,47 +1859,47 @@ This function is SSE2/SSE3 accelerated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> An array of length 4 that contains the pointers to the 4
     source image planes.  These are probably obtained via
-    <a class="link" href="libcam-pixels.html#cam-pixel-split-bayer-planes-8u"><code class="function">cam_pixel_split_bayer_planes_8u()</code></a>.  If an image of the same resolution
+    <a href="libcam-pixels.html#cam-pixel-split-bayer-planes-8u"><code class="function">cam_pixel_split_bayer_planes_8u()</code></a>.  If an image of the same resolution
     of the input image is desired, the border of each source plane
-    must be duplicated with <a class="link" href="libcam-pixels.html#cam-pixel-replicate-border-8u"><code class="function">cam_pixel_replicate_border_8u()</code></a>.
+    must be duplicated with <a href="libcam-pixels.html#cam-pixel-replicate-border-8u"><code class="function">cam_pixel_replicate_border_8u()</code></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Stride in bytes of each source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></td>
 <td> Destination image buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Stride in bytes of destination image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> Width in pixels of output image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> Height in pixels of output image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
 <td> Pixel format of the bayer-patterned image.  Must be one of
     the four 8u bayer pattern pixel formats.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1908,16 +1910,16 @@ This function is SSE2/SSE3 accelerated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id415748"></a><h3>
+<a name="id2637510"></a><h3>
 <a name="cam-pixel-bayer-interpolate-to-8u-gray"></a>cam_pixel_bayer_interpolate_to_8u_gray ()</h3>
-<a class="indexterm" name="id415762"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_gray
+<a class="indexterm" name="id2637524"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_gray
                                                         (uint8_t *src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
 <p>
 Performs bayer interpolation on an image and sums the red, green, and
 blue channels with weights 0.25, 0.50, and 0.25, respectively, to
@@ -1937,46 +1939,46 @@ This function is SSE2/SSE3 accelerated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td> The source bayer-patterned image.  If an image of the same
     resolution of the same resolution as the input image is desired,
     the border of the source image must be duplicated with
-    <a class="link" href="libcam-pixels.html#cam-pixel-replicate-bayer-border-8u"><code class="function">cam_pixel_replicate_bayer_border_8u()</code></a>.
+    <a href="libcam-pixels.html#cam-pixel-replicate-bayer-border-8u"><code class="function">cam_pixel_replicate_bayer_border_8u()</code></a>.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td> Stride in bytes of the source image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></td>
 <td> Destination image buffer.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td> Stride in bytes of destination image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> Width in pixels of output image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> Height in pixels of output image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
 <td> Pixel format of the bayer-patterned image.  Must be one of
     the four 8u bayer pattern pixel formats.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1987,15 +1989,15 @@ This function is SSE2/SSE3 accelerated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id415969"></a><h3>
+<a name="id2637745"></a><h3>
 <a name="cam-pixel-convert-bayer-to-8u-bgra"></a>cam_pixel_convert_bayer_to_8u_bgra ()</h3>
-<a class="indexterm" name="id415983"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_bgra  (uint8_t *dest,
+<a class="indexterm" name="id2637760"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_bgra  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
 <p>
 convenience function to perform bayer interpolation.  Thin wrapper around
 cam_pixel_bayer_interpolate_to_8u_bgra that does not require the source or
@@ -2007,42 +2009,42 @@ destination buffers to be 16-byte aligned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -2053,15 +2055,15 @@ destination buffers to be 16-byte aligned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id416168"></a><h3>
+<a name="id2637950"></a><h3>
 <a name="cam-pixel-convert-bayer-to-8u-gray"></a>cam_pixel_convert_bayer_to_8u_gray ()</h3>
-<a class="indexterm" name="id416181"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_gray  (uint8_t *dest,
+<a class="indexterm" name="id2637966"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_gray  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
                                                          const uint8_t *src,
                                                          int sstride,
-                                                         <a class="link" href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
+                                                         <a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> format);</pre>
 <p>
 convenience function to perform bayer interpolation.  Thin wrapper around
 cam_pixel_bayer_interpolate_to_8u_gray that does not require the source or
@@ -2073,42 +2075,42 @@ destination buffers to be 16-byte aligned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dwidth</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dheight</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -2119,9 +2121,9 @@ destination buffers to be 16-byte aligned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id416366"></a><h3>
+<a name="id2638156"></a><h3>
 <a name="cam-pixel-copy-8u-generic"></a>cam_pixel_copy_8u_generic ()</h3>
-<a class="indexterm" name="id416380"></a><pre class="programlisting">int                 cam_pixel_copy_8u_generic           (const uint8_t *src,
+<a class="indexterm" name="id2638171"></a><pre class="programlisting">int                 cam_pixel_copy_8u_generic           (const uint8_t *src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,
@@ -2139,62 +2141,62 @@ destination buffers to be 16-byte aligned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>sstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dstride</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst_x</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst_x</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dst_y</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>dst_y</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bits_per_pixel</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>bits_per_pixel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 

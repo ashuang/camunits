@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamUnitControl</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch01.html" title="Units">
 <link rel="prev" href="CamUnitFormat.html" title="CamUnitFormat">
@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamUnitDriver.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id374201" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586345" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id390264" class="shortcut">Description</a>
+                  <a href="#id2610854" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id390216" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2610797" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id390237" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2610821" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitControl"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id374201"></a><span class="refentrytitle">CamUnitControl</span>
+<a name="id2586345"></a><span class="refentrytitle">CamUnitControl</span>
 </h2>
 <p>CamUnitControl &#8212; User adjustable / automatically changing control value.</p>
 </td>
@@ -49,144 +49,130 @@
 
 
 
-enum                <a class="link" href="CamUnitControl.html#CamUnitControlType">CamUnitControlType</a>;
-enum                <a class="link" href="CamUnitControl.html#CamUnitControlUIHint">CamUnitControlUIHint</a>;
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            (<a class="link" href="CamUnitControl.html#CamUnitControlCallback">*CamUnitControlCallback</a>)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
-                                                         const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *proposed,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *actual,
+enum                <a href="CamUnitControl.html#CamUnitControlType">CamUnitControlType</a>;
+enum                <a href="CamUnitControl.html#CamUnitControlUIHint">CamUnitControlUIHint</a>;
+gboolean            (<a href="CamUnitControl.html#CamUnitControlCallback">*CamUnitControlCallback</a>)           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+                                                         const GValue *proposed,
+                                                         GValue *actual,
                                                          void *user_data);
-                    <a class="link" href="CamUnitControl.html#CamUnitControl-struct">CamUnitControl</a>;
-<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-enum">cam_unit_control_new_enum</a>           (const char *id,
+                    <a href="CamUnitControl.html#CamUnitControl-struct">CamUnitControl</a>;
+<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-enum">cam_unit_control_new_enum</a>           (const char *id,
                                                          const char *name,
                                                          int initial_index,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);
-<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-int">cam_unit_control_new_int</a>            (const char *id,
+<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-int">cam_unit_control_new_int</a>            (const char *id,
                                                          const char *name,
                                                          int min,
                                                          int max,
                                                          int step,
                                                          int initial_val,
                                                          int enabled);
-<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-float">cam_unit_control_new_float</a>          (const char *id,
+<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-float">cam_unit_control_new_float</a>          (const char *id,
                                                          const char *name,
                                                          float min,
                                                          float max,
                                                          float step,
                                                          float initial_val,
                                                          int enabled);
-<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-boolean">cam_unit_control_new_boolean</a>        (const char *id,
+<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-boolean">cam_unit_control_new_boolean</a>        (const char *id,
                                                          const char *name,
                                                          int initial_val,
                                                          int enabled);
-<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-string">cam_unit_control_new_string</a>         (const char *id,
+<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-string">cam_unit_control_new_string</a>         (const char *id,
                                                          const char *name,
                                                          const char *initial_val,
                                                          int enabled);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-callback">cam_unit_control_set_callback</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         <a class="link" href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
+void                <a href="CamUnitControl.html#cam-unit-control-set-callback">cam_unit_control_set_callback</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         <a href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
                                                          void *user_data);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-int">cam_unit_control_modify_int</a>         (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a href="CamUnitControl.html#cam-unit-control-modify-int">cam_unit_control_modify_int</a>         (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int min,
                                                          int max,
                                                          int step,
                                                          int enabled);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float">cam_unit_control_modify_float</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a href="CamUnitControl.html#cam-unit-control-modify-float">cam_unit_control_modify_float</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float min,
                                                          float max,
                                                          float step,
                                                          int enabled);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-enum">cam_unit_control_modify_enum</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a href="CamUnitControl.html#cam-unit-control-modify-enum">cam_unit_control_modify_enum</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-val">cam_unit_control_try_set_val</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-int">cam_unit_control_try_set_int</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-try-set-val">cam_unit_control_try_set_val</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         const GValue *val);
+int                 <a href="CamUnitControl.html#cam-unit-control-try-set-int">cam_unit_control_try_set_int</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-float">cam_unit_control_try_set_float</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-try-set-float">cam_unit_control_try_set_float</a>      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-enum">cam_unit_control_try_set_enum</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-try-set-enum">cam_unit_control_try_set_enum</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int index);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-boolean">cam_unit_control_try_set_boolean</a>    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-try-set-boolean">cam_unit_control_try_set_boolean</a>    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-string">cam_unit_control_try_set_string</a>     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-try-set-string">cam_unit_control_try_set_string</a>     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-val">cam_unit_control_force_set_val</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-int">cam_unit_control_force_set_int</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-force-set-val">cam_unit_control_force_set_val</a>      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         const GValue *value);
+int                 <a href="CamUnitControl.html#cam-unit-control-force-set-int">cam_unit_control_force_set_int</a>      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-float">cam_unit_control_force_set_float</a>    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-force-set-float">cam_unit_control_force_set_float</a>    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-enum">cam_unit_control_force_set_enum</a>     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-force-set-enum">cam_unit_control_force_set_enum</a>     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-boolean">cam_unit_control_force_set_boolean</a>  (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-force-set-boolean">cam_unit_control_force_set_boolean</a>  (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-string">cam_unit_control_force_set_string</a>   (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-force-set-string">cam_unit_control_force_set_string</a>   (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-get-val">cam_unit_control_get_val</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-int">cam_unit_control_get_int</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-float">cam_unit_control_get_float</a>          (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-enum">cam_unit_control_get_enum</a>           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-boolean">cam_unit_control_get_boolean</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-get-string">cam_unit_control_get_string</a>         (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-max-int">cam_unit_control_get_max_int</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-min-int">cam_unit_control_get_min_int</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-step-int">cam_unit_control_get_step_int</a>       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-max-float">cam_unit_control_get_max_float</a>      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-min-float">cam_unit_control_get_min_float</a>      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-step-float">cam_unit_control_get_step_float</a>     (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-enabled">cam_unit_control_set_enabled</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a href="CamUnitControl.html#cam-unit-control-get-val">cam_unit_control_get_val</a>            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         GValue *value);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-int">cam_unit_control_get_int</a>            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a href="CamUnitControl.html#cam-unit-control-get-float">cam_unit_control_get_float</a>          (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-enum">cam_unit_control_get_enum</a>           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-boolean">cam_unit_control_get_boolean</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+const char*         <a href="CamUnitControl.html#cam-unit-control-get-string">cam_unit_control_get_string</a>         (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-max-int">cam_unit_control_get_max_int</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-min-int">cam_unit_control_get_min_int</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-step-int">cam_unit_control_get_step_int</a>       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a href="CamUnitControl.html#cam-unit-control-get-max-float">cam_unit_control_get_max_float</a>      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a href="CamUnitControl.html#cam-unit-control-get-min-float">cam_unit_control_get_min_float</a>      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a href="CamUnitControl.html#cam-unit-control-get-step-float">cam_unit_control_get_step_float</a>     (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+void                <a href="CamUnitControl.html#cam-unit-control-set-enabled">cam_unit_control_set_enabled</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-enabled">cam_unit_control_get_enabled</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-ui-hints">cam_unit_control_set_ui_hints</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a href="CamUnitControl.html#cam-unit-control-get-enabled">cam_unit_control_get_enabled</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+void                <a href="CamUnitControl.html#cam-unit-control-set-ui-hints">cam_unit_control_set_ui_hints</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int flags);
-int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-ui-hints">cam_unit_control_get_ui_hints</a>       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-get-type-str">cam_unit_control_get_type_str</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);
+int                 <a href="CamUnitControl.html#cam-unit-control-get-ui-hints">cam_unit_control_get_ui_hints</a>       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+const char*         <a href="CamUnitControl.html#cam-unit-control-get-type-str">cam_unit_control_get_type_str</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id390216"></a><h2>Object Hierarchy</h2>
+<a name="id2610797"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
+  GObject
    +----CamUnitControl
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id390237"></a><h2>Signals</h2>
+<a name="id2610821"></a><h2>Signals</h2>
 <pre class="synopsis">
 
-  "<a class="link" href="CamUnitControl.html#CamUnitControl-parameters-changed">parameters-changed</a>"                             : Run First / Action
-  "<a class="link" href="CamUnitControl.html#CamUnitControl-value-changed">value-changed</a>"                                  : Run First / Action
+  "<a href="CamUnitControl.html#CamUnitControl-parameters-changed">parameters-changed</a>"                             : Run First / Action
+  "<a href="CamUnitControl.html#CamUnitControl-value-changed">value-changed</a>"                                  : Run First / Action
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id390264"></a><h2>Description</h2>
+<a name="id2610854"></a><h2>Description</h2>
 <p>
 CamUnitControl represents a control value that can both automatically change
 (e.g. the frame number of an advancing log playback unit) and can be
 adjusted by the user.
 </p>
 <p>
-Typically, a <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> will have a few of these controls that allow the user
+Typically, a <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> will have a few of these controls that allow the user
 to interact with the unit.  A control is strongly typed on construction, and
 the following types of controls are currently supported:  Integer, Boolean,
 Enum, String.  The current value of a control can be queried using
@@ -206,7 +192,7 @@ change, and the "value-changed" signal will be emitted.
 </p>
 <p>
 The polite way of setting a control involves using the
-<a class="link" href="CamUnitControl.html#cam-unit-control-set-callback"><span class="type">cam_unit_control_set_callback</span></a> and cam_unit_control_try_set_* methods.  
+<a href="CamUnitControl.html#cam-unit-control-set-callback"><span class="type">cam_unit_control_set_callback</span></a> and cam_unit_control_try_set_* methods.  
 The idea is that it is sometimes possible that the requested control value
 is not acceptable, and should either not change at all, or should change to
 a value other than what the user requested.  Each time a
@@ -227,11 +213,11 @@ widget.</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id390334"></a><h2>Details</h2>
+<a name="id2568186"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id390343"></a><h3>
+<a name="id2610932"></a><h3>
 <a name="CamUnitControlType"></a>enum CamUnitControlType</h3>
-<a class="indexterm" name="id390354"></a><pre class="programlisting">typedef enum {
+<a class="indexterm" name="id2610943"></a><pre class="programlisting">typedef enum {
     /* no valid control should every have this type */
     CAM_UNIT_CONTROL_TYPE_INVALID = 0,
 
@@ -260,9 +246,9 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390376"></a><h3>
+<a name="id2610972"></a><h3>
 <a name="CamUnitControlUIHint"></a>enum CamUnitControlUIHint</h3>
-<a class="indexterm" name="id390387"></a><pre class="programlisting">typedef enum {
+<a class="indexterm" name="id2610982"></a><pre class="programlisting">typedef enum {
     CAM_UNIT_CONTROL_CHECK_BOX = (1 &lt;&lt; 1),
     CAM_UNIT_CONTROL_TOGGLE_BUTTON = (1 &lt;&lt; 2),
     CAM_UNIT_CONTROL_MENU = (1 &lt;&lt; 3),
@@ -280,17 +266,11 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390404"></a><h3>
+<a name="id2611003"></a><h3>
 <a name="CamUnitControlCallback"></a>CamUnitControlCallback ()</h3>
-<a class="indexterm" name="id390414"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            (*CamUnitControlCallback)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
-                                                         const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *proposed,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *actual,
+<a class="indexterm" name="id2611013"></a><pre class="programlisting">gboolean            (*CamUnitControlCallback)           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+                                                         const GValue *proposed,
+                                                         GValue *actual,
                                                          void *user_data);</pre>
 <p>
 </p>
@@ -301,17 +281,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>ctl</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>ctl</code></em>&#160;:</span></td>
 <td>      the CamUnitControl in question
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>proposed</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>proposed</code></em>&#160;:</span></td>
 <td> the value passed in to cam_unit_control_try_set_val
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>actual</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>actual</code></em>&#160;:</span></td>
 <td>   output parameter.  If the control value is to change, the
            function must set actual to the new value for the control.
            Often, it is sufficient to simply call g_value_copy (proposed,
@@ -321,13 +301,13 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td> the user_data parameter passed in to
             cam_unit_control_set_callback
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> FALSE if the control value should not change.  TRUE if the control
          value should change to the output parameter actual.
 </td>
@@ -337,9 +317,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390528"></a><h3>
+<a name="id2611136"></a><h3>
 <a name="CamUnitControl-struct"></a>CamUnitControl</h3>
-<a class="indexterm" name="id390538"></a><pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
+<a class="indexterm" name="id2611146"></a><pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
 <p>
 A control option on a CamUnit that the user or a program can adjust.</p>
 <p>
@@ -348,9 +328,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390556"></a><h3>
+<a name="id2611165"></a><h3>
 <a name="cam-unit-control-new-enum"></a>cam_unit_control_new_enum ()</h3>
-<a class="indexterm" name="id390566"></a><pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
+<a class="indexterm" name="id2611176"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
                                                          const char *name,
                                                          int initial_index,
                                                          int enabled,
@@ -365,40 +345,40 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>initial_index</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>initial_index</code></em>&#160;:</span></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>entries</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>entries</code></em>&#160;:</span></td>
 <td> a NULL-terminated array of strings specifying the different
           options to present to the user.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>entries_enabled</code></em>&#160;:</span></td>
 <td> an array of integers indicating whether each entry
           in <em class="parameter"><code>entries</code></em> should be enabled.  1 indicates enabled, and 0
           disabled.  Specify NULL to implicitly enable all entries.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new enum control.
 </td>
 </tr>
@@ -407,9 +387,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390720"></a><h3>
+<a name="id2611339"></a><h3>
 <a name="cam-unit-control-new-int"></a>cam_unit_control_new_int ()</h3>
-<a class="indexterm" name="id390731"></a><pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_int            (const char *id,
+<a class="indexterm" name="id2611349"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_int            (const char *id,
                                                          const char *name,
                                                          int min,
                                                          int max,
@@ -425,42 +405,42 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td> the minimum value the control can take on
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td> the maximum value the control can take on
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
 <td> the step size with which the control is allowed to change.  
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new integer control
 </td>
 </tr>
@@ -469,9 +449,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390896"></a><h3>
+<a name="id2611524"></a><h3>
 <a name="cam-unit-control-new-float"></a>cam_unit_control_new_float ()</h3>
-<a class="indexterm" name="id390906"></a><pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_float          (const char *id,
+<a class="indexterm" name="id2611535"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_float          (const char *id,
                                                          const char *name,
                                                          float min,
                                                          float max,
@@ -487,42 +467,42 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td> the minimum value the control can take on
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td> the maximum value the control can take on
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
 <td> the step size with which the control is allowed to change.  
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new floating-point control
 </td>
 </tr>
@@ -531,9 +511,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391071"></a><h3>
+<a name="id2611710"></a><h3>
 <a name="cam-unit-control-new-boolean"></a>cam_unit_control_new_boolean ()</h3>
-<a class="indexterm" name="id391082"></a><pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_boolean        (const char *id,
+<a class="indexterm" name="id2611722"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_boolean        (const char *id,
                                                          const char *name,
                                                          int initial_val,
                                                          int enabled);</pre>
@@ -546,27 +526,27 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new boolean control
 </td>
 </tr>
@@ -575,9 +555,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391190"></a><h3>
+<a name="id2611838"></a><h3>
 <a name="cam-unit-control-new-string"></a>cam_unit_control_new_string ()</h3>
-<a class="indexterm" name="id391201"></a><pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_string         (const char *id,
+<a class="indexterm" name="id2611849"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_string         (const char *id,
                                                          const char *name,
                                                          const char *initial_val,
                                                          int enabled);</pre>
@@ -590,27 +570,27 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new string control
 </td>
 </tr>
@@ -619,18 +599,18 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391310"></a><h3>
+<a name="id2611963"></a><h3>
 <a name="cam-unit-control-set-callback"></a>cam_unit_control_set_callback ()</h3>
-<a class="indexterm" name="id391320"></a><pre class="programlisting">void                cam_unit_control_set_callback       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         <a class="link" href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
+<a class="indexterm" name="id2611976"></a><pre class="programlisting">void                cam_unit_control_set_callback       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         <a href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
                                                          void *user_data);</pre>
 <p>
 Sets the function which will be invoked when any of the
 cam_unit_control_try_set_* methods are called.  If the callback returns
 FALSE, then the control will not be set.  If the callback returns TRUE,
-then the control will be adjusted.  See <a class="link" href="CamUnitControl.html#CamUnitControlCallback"><span class="type">CamUnitControlCallback</span></a>.  In
-general, you shouldn't need to call this when subclassing from <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, as
-<a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> does it automagically.</p>
+then the control will be adjusted.  See <a href="CamUnitControl.html#CamUnitControlCallback"><span class="type">CamUnitControlCallback</span></a>.  In
+general, you shouldn't need to call this when subclassing from <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, as
+<a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> does it automagically.</p>
 <p>
 
 </p>
@@ -638,18 +618,18 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td> the callback function to invoke when using the
            cam_unit_control_try_set_* methods.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -660,9 +640,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391423"></a><h3>
+<a name="id2612085"></a><h3>
 <a name="cam-unit-control-modify-int"></a>cam_unit_control_modify_int ()</h3>
-<a class="indexterm" name="id391433"></a><pre class="programlisting">void                cam_unit_control_modify_int         (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612096"></a><pre class="programlisting">void                cam_unit_control_modify_int         (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int min,
                                                          int max,
                                                          int step,
@@ -674,27 +654,27 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td>
 
 
@@ -705,9 +685,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391547"></a><h3>
+<a name="id2612213"></a><h3>
 <a name="cam-unit-control-modify-float"></a>cam_unit_control_modify_float ()</h3>
-<a class="indexterm" name="id391557"></a><pre class="programlisting">void                cam_unit_control_modify_float       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612225"></a><pre class="programlisting">void                cam_unit_control_modify_float       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float min,
                                                          float max,
                                                          float step,
@@ -719,27 +699,27 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td>
 
 
@@ -750,9 +730,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391671"></a><h3>
+<a name="id2612343"></a><h3>
 <a name="cam-unit-control-modify-enum"></a>cam_unit_control_modify_enum ()</h3>
-<a class="indexterm" name="id391682"></a><pre class="programlisting">void                cam_unit_control_modify_enum        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612355"></a><pre class="programlisting">void                cam_unit_control_modify_enum        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);</pre>
@@ -763,22 +743,22 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>entries</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>entries</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>entries_enabled</code></em>&#160;:</span></td>
 <td>
 
 
@@ -789,12 +769,10 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391777"></a><h3>
+<a name="id2612454"></a><h3>
 <a name="cam-unit-control-try-set-val"></a>cam_unit_control_try_set_val ()</h3>
-<a class="indexterm" name="id391788"></a><pre class="programlisting">int                 cam_unit_control_try_set_val        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *val);</pre>
+<a class="indexterm" name="id2612467"></a><pre class="programlisting">int                 cam_unit_control_try_set_val        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         const GValue *val);</pre>
 <p>
 
 </p>
@@ -802,17 +780,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -823,9 +801,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391855"></a><h3>
+<a name="id2612537"></a><h3>
 <a name="cam-unit-control-try-set-int"></a>cam_unit_control_try_set_int ()</h3>
-<a class="indexterm" name="id391866"></a><pre class="programlisting">int                 cam_unit_control_try_set_int        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612549"></a><pre class="programlisting">int                 cam_unit_control_try_set_int        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -834,17 +812,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -855,9 +833,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391934"></a><h3>
+<a name="id2612620"></a><h3>
 <a name="cam-unit-control-try-set-float"></a>cam_unit_control_try_set_float ()</h3>
-<a class="indexterm" name="id391944"></a><pre class="programlisting">int                 cam_unit_control_try_set_float      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612632"></a><pre class="programlisting">int                 cam_unit_control_try_set_float      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);</pre>
 <p>
 
@@ -866,17 +844,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -887,9 +865,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392012"></a><h3>
+<a name="id2612702"></a><h3>
 <a name="cam-unit-control-try-set-enum"></a>cam_unit_control_try_set_enum ()</h3>
-<a class="indexterm" name="id392022"></a><pre class="programlisting">int                 cam_unit_control_try_set_enum       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612714"></a><pre class="programlisting">int                 cam_unit_control_try_set_enum       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int index);</pre>
 <p>
 
@@ -898,17 +876,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>index</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>index</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -919,9 +897,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392090"></a><h3>
+<a name="id2612785"></a><h3>
 <a name="cam-unit-control-try-set-boolean"></a>cam_unit_control_try_set_boolean ()</h3>
-<a class="indexterm" name="id392101"></a><pre class="programlisting">int                 cam_unit_control_try_set_boolean    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612797"></a><pre class="programlisting">int                 cam_unit_control_try_set_boolean    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -930,17 +908,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -951,9 +929,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392168"></a><h3>
+<a name="id2612867"></a><h3>
 <a name="cam-unit-control-try-set-string"></a>cam_unit_control_try_set_string ()</h3>
-<a class="indexterm" name="id392179"></a><pre class="programlisting">int                 cam_unit_control_try_set_string     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2612880"></a><pre class="programlisting">int                 cam_unit_control_try_set_string     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);</pre>
 <p>
 
@@ -962,17 +940,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -983,12 +961,10 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392247"></a><h3>
+<a name="id2612950"></a><h3>
 <a name="cam-unit-control-force-set-val"></a>cam_unit_control_force_set_val ()</h3>
-<a class="indexterm" name="id392257"></a><pre class="programlisting">int                 cam_unit_control_force_set_val      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value);</pre>
+<a class="indexterm" name="id2612962"></a><pre class="programlisting">int                 cam_unit_control_force_set_val      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         const GValue *value);</pre>
 <p>
 
 </p>
@@ -996,17 +972,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1017,9 +993,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392325"></a><h3>
+<a name="id2613032"></a><h3>
 <a name="cam-unit-control-force-set-int"></a>cam_unit_control_force_set_int ()</h3>
-<a class="indexterm" name="id392335"></a><pre class="programlisting">int                 cam_unit_control_force_set_int      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2613045"></a><pre class="programlisting">int                 cam_unit_control_force_set_int      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1028,17 +1004,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1049,9 +1025,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392403"></a><h3>
+<a name="id2613115"></a><h3>
 <a name="cam-unit-control-force-set-float"></a>cam_unit_control_force_set_float ()</h3>
-<a class="indexterm" name="id392414"></a><pre class="programlisting">int                 cam_unit_control_force_set_float    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2613127"></a><pre class="programlisting">int                 cam_unit_control_force_set_float    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);</pre>
 <p>
 
@@ -1060,17 +1036,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1081,9 +1057,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392482"></a><h3>
+<a name="id2613198"></a><h3>
 <a name="cam-unit-control-force-set-enum"></a>cam_unit_control_force_set_enum ()</h3>
-<a class="indexterm" name="id392492"></a><pre class="programlisting">int                 cam_unit_control_force_set_enum     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2613210"></a><pre class="programlisting">int                 cam_unit_control_force_set_enum     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1092,17 +1068,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1113,9 +1089,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392560"></a><h3>
+<a name="id2613280"></a><h3>
 <a name="cam-unit-control-force-set-boolean"></a>cam_unit_control_force_set_boolean ()</h3>
-<a class="indexterm" name="id392570"></a><pre class="programlisting">int                 cam_unit_control_force_set_boolean  (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2613293"></a><pre class="programlisting">int                 cam_unit_control_force_set_boolean  (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1124,17 +1100,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1145,9 +1121,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392638"></a><h3>
+<a name="id2613363"></a><h3>
 <a name="cam-unit-control-force-set-string"></a>cam_unit_control_force_set_string ()</h3>
-<a class="indexterm" name="id392648"></a><pre class="programlisting">int                 cam_unit_control_force_set_string   (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2613376"></a><pre class="programlisting">int                 cam_unit_control_force_set_string   (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);</pre>
 <p>
 
@@ -1156,17 +1132,17 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1177,12 +1153,10 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392720"></a><h3>
+<a name="id2613446"></a><h3>
 <a name="cam-unit-control-get-val"></a>cam_unit_control_get_val ()</h3>
-<a class="indexterm" name="id392733"></a><pre class="programlisting">void                cam_unit_control_get_val            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value);</pre>
+<a class="indexterm" name="id2613456"></a><pre class="programlisting">void                cam_unit_control_get_val            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         GValue *value);</pre>
 <p>
 
 </p>
@@ -1190,12 +1164,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1206,9 +1180,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392799"></a><h3>
+<a name="id2613516"></a><h3>
 <a name="cam-unit-control-get-int"></a>cam_unit_control_get_int ()</h3>
-<a class="indexterm" name="id392812"></a><pre class="programlisting">int                 cam_unit_control_get_int            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613526"></a><pre class="programlisting">int                 cam_unit_control_get_int            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1216,12 +1190,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1232,9 +1206,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392868"></a><h3>
+<a name="id2613577"></a><h3>
 <a name="cam-unit-control-get-float"></a>cam_unit_control_get_float ()</h3>
-<a class="indexterm" name="id392881"></a><pre class="programlisting">float               cam_unit_control_get_float          (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613588"></a><pre class="programlisting">float               cam_unit_control_get_float          (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1242,12 +1216,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1258,9 +1232,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392937"></a><h3>
+<a name="id2613638"></a><h3>
 <a name="cam-unit-control-get-enum"></a>cam_unit_control_get_enum ()</h3>
-<a class="indexterm" name="id392951"></a><pre class="programlisting">int                 cam_unit_control_get_enum           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613649"></a><pre class="programlisting">int                 cam_unit_control_get_enum           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1268,12 +1242,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1284,9 +1258,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393007"></a><h3>
+<a name="id2613700"></a><h3>
 <a name="cam-unit-control-get-boolean"></a>cam_unit_control_get_boolean ()</h3>
-<a class="indexterm" name="id393020"></a><pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613712"></a><pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1294,12 +1268,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1310,9 +1284,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393076"></a><h3>
+<a name="id2613763"></a><h3>
 <a name="cam-unit-control-get-string"></a>cam_unit_control_get_string ()</h3>
-<a class="indexterm" name="id393089"></a><pre class="programlisting">const char*         cam_unit_control_get_string         (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613777"></a><pre class="programlisting">const char*         cam_unit_control_get_string         (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1320,12 +1294,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1336,9 +1310,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393147"></a><h3>
+<a name="id2613835"></a><h3>
 <a name="cam-unit-control-get-max-int"></a>cam_unit_control_get_max_int ()</h3>
-<a class="indexterm" name="id393160"></a><pre class="programlisting">int                 cam_unit_control_get_max_int        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613849"></a><pre class="programlisting">int                 cam_unit_control_get_max_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1346,12 +1320,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1362,9 +1336,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393216"></a><h3>
+<a name="id2613907"></a><h3>
 <a name="cam-unit-control-get-min-int"></a>cam_unit_control_get_min_int ()</h3>
-<a class="indexterm" name="id393229"></a><pre class="programlisting">int                 cam_unit_control_get_min_int        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613920"></a><pre class="programlisting">int                 cam_unit_control_get_min_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1372,12 +1346,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1388,9 +1362,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393286"></a><h3>
+<a name="id2613978"></a><h3>
 <a name="cam-unit-control-get-step-int"></a>cam_unit_control_get_step_int ()</h3>
-<a class="indexterm" name="id393299"></a><pre class="programlisting">int                 cam_unit_control_get_step_int       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2613992"></a><pre class="programlisting">int                 cam_unit_control_get_step_int       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1398,12 +1372,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1414,9 +1388,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393355"></a><h3>
+<a name="id2614049"></a><h3>
 <a name="cam-unit-control-get-max-float"></a>cam_unit_control_get_max_float ()</h3>
-<a class="indexterm" name="id393368"></a><pre class="programlisting">float               cam_unit_control_get_max_float      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2614063"></a><pre class="programlisting">float               cam_unit_control_get_max_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1424,12 +1398,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1440,9 +1414,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393425"></a><h3>
+<a name="id2614120"></a><h3>
 <a name="cam-unit-control-get-min-float"></a>cam_unit_control_get_min_float ()</h3>
-<a class="indexterm" name="id393438"></a><pre class="programlisting">float               cam_unit_control_get_min_float      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2614134"></a><pre class="programlisting">float               cam_unit_control_get_min_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1450,12 +1424,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1466,9 +1440,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393494"></a><h3>
+<a name="id2614191"></a><h3>
 <a name="cam-unit-control-get-step-float"></a>cam_unit_control_get_step_float ()</h3>
-<a class="indexterm" name="id393507"></a><pre class="programlisting">float               cam_unit_control_get_step_float     (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2614205"></a><pre class="programlisting">float               cam_unit_control_get_step_float     (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1476,12 +1450,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1492,9 +1466,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393564"></a><h3>
+<a name="id2614262"></a><h3>
 <a name="cam-unit-control-set-enabled"></a>cam_unit_control_set_enabled ()</h3>
-<a class="indexterm" name="id393576"></a><pre class="programlisting">void                cam_unit_control_set_enabled        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2614276"></a><pre class="programlisting">void                cam_unit_control_set_enabled        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled);</pre>
 <p>
 
@@ -1503,12 +1477,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1519,9 +1493,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393643"></a><h3>
+<a name="id2614344"></a><h3>
 <a name="cam-unit-control-get-enabled"></a>cam_unit_control_get_enabled ()</h3>
-<a class="indexterm" name="id393656"></a><pre class="programlisting">int                 cam_unit_control_get_enabled        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2614358"></a><pre class="programlisting">int                 cam_unit_control_get_enabled        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1529,12 +1503,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1545,12 +1519,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393712"></a><h3>
+<a name="id2614416"></a><h3>
 <a name="cam-unit-control-set-ui-hints"></a>cam_unit_control_set_ui_hints ()</h3>
-<a class="indexterm" name="id393725"></a><pre class="programlisting">void                cam_unit_control_set_ui_hints       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id2614429"></a><pre class="programlisting">void                cam_unit_control_set_ui_hints       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int flags);</pre>
 <p>
-See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
+See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
 <p>
 
 </p>
@@ -1558,13 +1532,13 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span 
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
-<td> a logical OR of <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td> a logical OR of <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
 </td>
 </tr>
 </tbody>
@@ -1572,11 +1546,11 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393807"></a><h3>
+<a name="id2614515"></a><h3>
 <a name="cam-unit-control-get-ui-hints"></a>cam_unit_control_get_ui_hints ()</h3>
-<a class="indexterm" name="id393820"></a><pre class="programlisting">int                 cam_unit_control_get_ui_hints       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id2614529"></a><pre class="programlisting">int                 cam_unit_control_get_ui_hints       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
-See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
+See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
 <p>
 
 </p>
@@ -1584,13 +1558,13 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span 
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> a logical OR of <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> a logical OR of <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
 </td>
 </tr>
 </tbody>
@@ -1598,9 +1572,9 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id393893"></a><h3>
+<a name="id2614604"></a><h3>
 <a name="cam-unit-control-get-type-str"></a>cam_unit_control_get_type_str ()</h3>
-<a class="indexterm" name="id393907"></a><pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
+<a class="indexterm" name="id2614618"></a><pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
 <p>
 
 </p>
@@ -1608,12 +1582,12 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span 
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>ctl</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>ctl</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1624,19 +1598,17 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint"><span 
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id393965"></a><h2>Signal Details</h2>
+<a name="id2614677"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id393976"></a><h3>
+<a name="id2614688"></a><h3>
 <a name="CamUnitControl-parameters-changed"></a>The "parameters-changed" signal</h3>
-<a class="indexterm" name="id393985"></a><pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>        user_data)      : Run First / Action</pre>
+<a class="indexterm" name="id2614698"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
+                                                        gpointer        user_data)      : Run First / Action</pre>
 <p>
 The parameters-changed signal is emitted when properties of a
 control are changed, such as min, max, step, or enabled by
-<a class="link" href="CamUnitControl.html#cam-unit-control-set-enabled"><code class="function">cam_unit_control_set_enabled()</code></a>, <a class="link" href="CamUnitControl.html#cam-unit-control-modify-int"><code class="function">cam_unit_control_modify_int()</code></a>,
-or <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float"><code class="function">cam_unit_control_modify_float()</code></a>.</p>
+<a href="CamUnitControl.html#cam-unit-control-set-enabled"><code class="function">cam_unit_control_set_enabled()</code></a>, <a href="CamUnitControl.html#cam-unit-control-modify-int"><code class="function">cam_unit_control_modify_int()</code></a>,
+or <a href="CamUnitControl.html#cam-unit-control-modify-float"><code class="function">cam_unit_control_modify_float()</code></a>.</p>
 <p>
 
 </p>
@@ -1644,12 +1616,12 @@ or <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float"><cod
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
 <td> the CamUnit emitting the signal
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -1657,12 +1629,10 @@ or <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float"><cod
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id394084"></a><h3>
+<a name="id2614803"></a><h3>
 <a name="CamUnitControl-value-changed"></a>The "value-changed" signal</h3>
-<a class="indexterm" name="id394094"></a><pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>        user_data)      : Run First / Action</pre>
+<a class="indexterm" name="id2614814"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
+                                                        gpointer        user_data)      : Run First / Action</pre>
 <p>
 The value-changed signal is emitted when the value of the control is
 changed.  This will always happen when any of cam_unit_control_force_set 
@@ -1675,12 +1645,12 @@ functions are called</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
 <td> the CamUnit emitting the signal
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>

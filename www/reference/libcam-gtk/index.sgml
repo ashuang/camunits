@@ -19,6 +19,7 @@
 <ANCHOR id="cam-unit-chain-gl-widget-set-chain" href="libcam-gtk/CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-set-chain">
 <ANCHOR id="cam-unit-chain-gl-widget-request-redraw" href="libcam-gtk/CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-request-redraw">
 <ANCHOR id="cam-unit-chain-gl-widget-get-gl-area" href="libcam-gtk/CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area">
+<ANCHOR id="CamUnitChainGLWidget-gl-draw-finished" href="libcam-gtk/CamUnitChainGLWidget.html#CamUnitChainGLWidget-gl-draw-finished">
 <ANCHOR id="CamUnitManagerWidget" href="libcam-gtk/CamUnitManagerWidget.html">
 <ANCHOR id="CamUnitManagerWidget-struct" href="libcam-gtk/CamUnitManagerWidget.html#CamUnitManagerWidget-struct">
 <ANCHOR id="cam-unit-manager-widget-new" href="libcam-gtk/CamUnitManagerWidget.html#cam-unit-manager-widget-new">

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>CamInputLog</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamInputExample.html" title="CamInputExample">
@@ -24,18 +24,18 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamConvertToRgb8.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id373922" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570751" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id378617" class="shortcut">Description</a>
+                  <a href="#id2558676" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id374663" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id2617280" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamInputLog"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id373922"></a><span class="refentrytitle">CamInputLog</span>
+<a name="id2570751"></a><span class="refentrytitle">CamInputLog</span>
 </h2>
 <p>CamInputLog &#8212; input unit for libcam log files</p>
 </td>
@@ -47,42 +47,34 @@
 
 
 
-                    <a class="link" href="CamInputLog.html#CamInputLogDriver-struct">CamInputLogDriver</a>;
-<a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  <a class="link" href="CamInputLog.html#cam-input-log-driver-new">cam_input_log_driver_new</a>            (void);
-                    <a class="link" href="CamInputLog.html#CamInputLog-struct">CamInputLog</a>;
-<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        <a class="link" href="CamInputLog.html#cam-input-log-new">cam_input_log_new</a>                   (const char *fname);
-int                 <a class="link" href="CamInputLog.html#cam-log-set-file">cam_log_set_file</a>                    (<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
+                    <a href="CamInputLog.html#CamInputLogDriver-struct">CamInputLogDriver</a>;
+<a href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  <a href="CamInputLog.html#cam-input-log-driver-new">cam_input_log_driver_new</a>            (void);
+                    <a href="CamInputLog.html#CamInputLog-struct">CamInputLog</a>;
+<a href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        <a href="CamInputLog.html#cam-input-log-new">cam_input_log_new</a>                   (const char *fname);
+int                 <a href="CamInputLog.html#cam-log-set-file">cam_log_set_file</a>                    (<a href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
                                                          const char *fname);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id374663"></a><h2>Object Hierarchy</h2>
+<a name="id2617280"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>
                +----CamInputLogDriver
 </pre>
 <pre class="synopsis">
 
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamInputLog
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id378617"></a><h2>Description</h2>
+<a name="id2558676"></a><h2>Description</h2>
 <p>
 </p>
 <p>
@@ -90,27 +82,27 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id378637"></a><h2>Details</h2>
+<a name="id2558696"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id378647"></a><h3>
+<a name="id2558707"></a><h3>
 <a name="CamInputLogDriver-struct"></a>CamInputLogDriver</h3>
-<a class="indexterm" name="id378659"></a><pre class="programlisting">typedef struct _CamInputLogDriver CamInputLogDriver;</pre>
+<a class="indexterm" name="id2558718"></a><pre class="programlisting">typedef struct _CamInputLogDriver CamInputLogDriver;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id357803"></a><h3>
+<a name="id2558735"></a><h3>
 <a name="cam-input-log-driver-new"></a>cam_input_log_driver_new ()</h3>
-<a class="indexterm" name="id357814"></a><pre class="programlisting"><a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  cam_input_log_driver_new            (void);</pre>
+<a class="indexterm" name="id2558746"></a><pre class="programlisting"><a href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>*  cam_input_log_driver_new            (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -120,18 +112,18 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitial
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id357849"></a><h3>
+<a name="id2558782"></a><h3>
 <a name="CamInputLog-struct"></a>CamInputLog</h3>
-<a class="indexterm" name="id357861"></a><pre class="programlisting">typedef struct _CamInputLog CamInputLog;</pre>
+<a class="indexterm" name="id2558795"></a><pre class="programlisting">typedef struct _CamInputLog CamInputLog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id357876"></a><h3>
+<a name="id2558810"></a><h3>
 <a name="cam-input-log-new"></a>cam_input_log_new ()</h3>
-<a class="indexterm" name="id357888"></a><pre class="programlisting"><a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        cam_input_log_new                   (const char *fname);</pre>
+<a class="indexterm" name="id2558822"></a><pre class="programlisting"><a href="CamInputLog.html" title="CamInputLog">CamInputLog</a>*        cam_input_log_new                   (const char *fname);</pre>
 <p>
 Constructor.  don't call this function manually.  Instead, let the
 CamInputLogDriver call it.</p>
@@ -142,12 +134,12 @@ CamInputLogDriver call it.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -158,9 +150,9 @@ CamInputLogDriver call it.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id358221"></a><h3>
+<a name="id2558884"></a><h3>
 <a name="cam-log-set-file"></a>cam_log_set_file ()</h3>
-<a class="indexterm" name="id358233"></a><pre class="programlisting">int                 cam_log_set_file                    (<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
+<a class="indexterm" name="id2558896"></a><pre class="programlisting">int                 cam_log_set_file                    (<a href="CamInputLog.html" title="CamInputLog">CamInputLog</a> *self,
                                                          const char *fname);</pre>
 <p>
 
@@ -169,17 +161,17 @@ CamInputLogDriver call it.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
