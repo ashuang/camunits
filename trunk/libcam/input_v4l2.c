@@ -594,12 +594,14 @@ v4l2_stream_shutdown (CamUnit * super)
 {
     CamV4L2 * self = CAM_V4L2 (super);
 
-    int i;
-    for (i = 0; i < self->num_buffers; i++) {
-        munmap (self->buffers[i], self->buffer_length);
+    if (self->buffers) {
+        int i;
+        for (i = 0; i < self->num_buffers; i++) {
+            munmap (self->buffers[i], self->buffer_length);
+        }
+        free (self->buffers);
+        self->buffers = NULL;
     }
-    free (self->buffers);
-    self->buffers = NULL;
 
 #if 0
     CamFrameBuffer *buf = NULL;

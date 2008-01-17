@@ -22,6 +22,10 @@
 #define MALLOC_ALIGNED(s) memalign(16,s)
 #endif
 
+static int cpuid_detected = 0;
+static int has_sse2;
+static int has_sse3;
+
 const char *
 cam_pixel_format_str (CamPixelFormat p)
 {
@@ -215,7 +219,9 @@ cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest, int dstride, int width,
         uint8_t *drow = dest + i * dstride;
         const uint8_t *srow = src + i * sstride;
         for (j=0; j<width; j++) {
-            drow[j] = (srow[j*3+0] + srow[j*3+1] + srow[j*3+2]) / 3;
+            drow[j] = 0.2125 * srow[j*3+0] + 
+                      0.7154 * srow[j*3+1] + 
+                      0.0721 * srow[j*3+2];
         }
     }
     return 0;
@@ -764,10 +770,6 @@ cam_pixel_replicate_bayer_border_8u (uint8_t * src, int sstride, int width,
     }
     return 0;
 }
-
-static int cpuid_detected = 0;
-static int has_sse2;
-static int has_sse3;
 
 int
 cam_pixel_split_bayer_planes_8u (uint8_t *dst[4], int dstride,
