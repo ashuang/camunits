@@ -86,6 +86,8 @@ AC_SUBST(libcamplugindir)
 libcampixmapdir="$datadir/pixmaps/$PACKAGE"
 AC_SUBST(libcampixmapdir)
 
+libcamdatadir="$datadir/$PACKAGE"
+AC_SUBST(libcamdatadir)
 
 dnl ---------------------------------------------------------------------------
 dnl Warnings
@@ -107,6 +109,7 @@ AC_OUTPUT([
   camview/Makefile
   camlog/Makefile
   m4/Makefile
+  m4macros/Makefile
   libcam/libcam.pc
   libcam-gtk/libcam-gtk.pc
   libcam-gtk/pixmaps/Makefile
