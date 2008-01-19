@@ -2,6 +2,10 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
+datarootdir=@datarootdir@
+
+libcamlibdir=@libcamplugindir@
+libcamdatadir=@libcamdatadir@
 
 Name: libcam
 Description: Image acquisition library for machine vision researchers
