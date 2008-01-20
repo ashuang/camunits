@@ -48,7 +48,9 @@ AC_SUBST(LIBCAM_LCM_VERSION_INFO)
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-libcamplugindir="$LIBCAM_PLUGIN_DIR"
+libcamdatadir="$datadir/libcam"
+AC_SUBST(libcamplugindir)
+libcamplugindir="$libdir/libcam"
 AC_SUBST(libcamplugindir)
 
 dnl ---------------------------------------------------------------------------
