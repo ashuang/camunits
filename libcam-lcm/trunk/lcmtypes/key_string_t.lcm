@@ -1,0 +1,6 @@
+package camlcm;
+
+struct key_string_t {
+    string key;
+    string value;
+}

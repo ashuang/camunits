@@ -1,0 +1,6 @@
+package camlcm;
+
+struct sync_t
+{
+    int64_t utime;
+}

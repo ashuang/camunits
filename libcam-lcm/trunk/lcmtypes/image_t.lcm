@@ -1,0 +1,23 @@
+package camlcm;
+
+struct image_t
+{
+    // microseconds since the epoch
+    int64_t  utime;
+
+    int32_t  width;
+    int32_t  height;
+
+    // CamPixelFormat
+    int32_t  pixelformat;
+
+    int32_t  size;
+    byte     data[size];
+
+    // metadata dictionary
+    int32_t ns;
+    camlcm.key_string_t metadata_string[ns];
+
+    int32_t nb;
+    camlcm.key_byte_t metadata_byte[nb];
+}
