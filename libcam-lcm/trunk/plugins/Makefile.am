@@ -12,17 +12,15 @@ lcmtypes_hfiles = camlcm_announce_t.h \
 		   camlcm_key_string_t.h \
 		   camlcm_image_t.h
 
-INCLUDES = \
-	-I$(top_srcdir) \
-	$(GLIB_CFLAGS) $(LIBCAM_CFLAGS)
+INCLUDES = $(GLIB_CFLAGS) $(LIBCAM_CFLAGS) $(LCM_CFLAGS)
 
 unit_publish_la_SOURCES = \
 	$(lcmtypes_cfiles) $(lcmtypes_hfiles) \
 	unit_publish.c \
 	unit_publish.h 
 
-unit_publish_la_LDFLAGS = -avoid-version -module `pkg-config --libs lcm`
-unit_publish_la_LIBADD = $(LIBCAM_LIBS) 
+unit_publish_la_LDFLAGS = -avoid-version -module 
+unit_publish_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
 
 unit_publish.c unit_publish.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
 

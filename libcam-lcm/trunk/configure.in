@@ -19,8 +19,14 @@ AM_PATH_GTK_2_0
 AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
              [AC_MSG_ERROR([GL not found, but is required by libcam.])])
 PKG_PROG_PKG_CONFIG
+
+dnl check for libcam
 AM_PATH_LIBCAM(,,
                [AC_MSG_ERROR([libcam is not found, but is required by libcam-lcm.])])
+
+dnl check for lcm
+AM_PATH_LCM(,,
+               [AC_MSG_ERROR([lcm is not found, but is required by libcam-lcm.])])
 
 AC_SUBST(GL_LIBS)
 AM_CONDITIONAL(HAVE_GL, test "x$GL_LIBS" != x)
