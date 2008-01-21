@@ -58,6 +58,8 @@ libcamdatadir="$datadir/libcam"
 AC_SUBST(libcamplugindir)
 libcamplugindir="$libdir/libcam"
 AC_SUBST(libcamplugindir)
+lcmtypesdir="$datadir/libcam-lcm"
+AC_SUBST(lcmtypesdir)
 
 dnl ---------------------------------------------------------------------------
 dnl i18n support
@@ -90,6 +92,7 @@ AC_SUBST(LIBTOOL)
 AC_OUTPUT([
   Makefile
   plugins/Makefile
+  lcmtypes/Makefile
   po/Makefile.in
 ])
 
