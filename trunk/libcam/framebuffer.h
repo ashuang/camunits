@@ -145,8 +145,10 @@ void cam_framebuffer_metadata_set (CamFrameBuffer *self, const char *key,
  * metadata dictionary.  The list should be freed with g_list_free().  Note
  * that the pointers to the keys themselves reference the dictionary and
  * are only valid as long as the dictionary is not modified.
+ *
+ * Do not modify the strings in the returned list.
  */
-GList * cam_framebuffer_metadata_list_keys (CamFrameBuffer * self);
+GList * cam_framebuffer_metadata_list_keys (const CamFrameBuffer * self);
 
 #ifdef __cplusplus
 }

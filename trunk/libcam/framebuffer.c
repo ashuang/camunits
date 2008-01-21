@@ -156,7 +156,7 @@ append_key (void * key, void * value, void * user)
 }
 
 GList *
-cam_framebuffer_metadata_list_keys (CamFrameBuffer * self)
+cam_framebuffer_metadata_list_keys (const CamFrameBuffer * self)
 {
     GList * list = NULL;
     g_hash_table_foreach (self->metadata, append_key, &list);
