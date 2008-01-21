@@ -7,26 +7,112 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
-#include <dc1394/control.h>
-#include <dc1394/vendor/avt.h>
 #include <math.h>
 
-//#define USE_CONFIG
-#ifdef USE_CONFIG
-#include <dgc/config_util.h>
-#endif
+#include <glib-object.h>
+
+#include <dc1394/control.h>
+#include <dc1394/vendor/avt.h>
 
 #include <libcam/dbg.h>
 #include <libcam/pixels.h>
 #include <libcam/plugin.h>
+#include <libcam/unit.h>
+#include <libcam/unit_driver.h>
 #include "input_dc1394.h"
 
 #define NUM_BUFFERS 10
 
 #define VENDOR_ID_POINT_GREY 0xb09d
 
-
 #define err(args...) fprintf (stderr, args)
+
+/*
+ * CamDC1394Driver
+ */
+
+typedef struct _CamDC1394Driver CamDC1394Driver;
+typedef struct _CamDC1394DriverClass CamDC1394DriverClass;
+
+// boilerplate
+#define CAM_DC1394_DRIVER_TYPE  cam_dc1394_driver_get_type()
+#define CAM_DC1394_DRIVER(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        CAM_DC1394_DRIVER_TYPE, CamDC1394Driver))
+#define CAM_DC1394_DRIVER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
+            CAM_DC1394_DRIVER_TYPE, CamDC1394DriverClass ))
+#define CAM_IS_DC1394_DRIVER(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            CAM_DC1394_DRIVER_TYPE ))
+#define CAM_IS_DC1394_DRIVER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
+            (klass), CAM_DC1394_DRIVER_TYPE))
+#define CAM_DC1394_DRIVER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
+            CAM_DC1394_DRIVER_TYPE, CamDC1394DriverClass))
+
+struct _CamDC1394Driver {
+    CamUnitDriver parent;
+
+    dc1394_t * dc1394;
+    dc1394camera_list_t * list;
+};
+
+struct _CamDC1394DriverClass {
+    CamUnitDriverClass parent_class;
+};
+
+GType cam_dc1394_driver_get_type (void);
+
+/**
+ * Constructor
+ */
+CamUnitDriver * cam_dc1394_driver_new(void);
+
+
+// =========================================================================
+
+/*
+ * CamDC1394
+ */
+
+typedef struct _CamDC1394 CamDC1394;
+typedef struct _CamDC1394Class CamDC1394Class;
+
+// boilerplate
+#define CAM_DC1394_TYPE  cam_dc1394_get_type()
+#define CAM_DC1394(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        CAM_DC1394_TYPE, CamDC1394))
+#define CAM_DC1394_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
+            CAM_DC1394_TYPE, CamDC1394Class ))
+#define CAM_IS_DC1394(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            CAM_DC1394_TYPE ))
+#define CAM_IS_DC1394_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
+            (klass), CAM_DC1394_TYPE))
+#define CAM_DC1394_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
+            CAM_DC1394_TYPE, CamDC1394Class))
+
+struct _CamDC1394 {
+    CamUnit parent;
+
+    dc1394camera_t * cam;
+    unsigned int packet_size;
+    int fd;
+    int num_buffers;
+};
+
+struct _CamDC1394Class {
+    CamUnitClass parent_class;
+};
+
+GType cam_dc1394_get_type (void);
+
+void cam_plugin_initialize (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+
+/** 
+ * cam_dc1394_new:
+ *
+ * Constructor.  don't call this function manually.  Instead, let the
+ * CamDC1394Driver call it.
+ */
+CamDC1394 * cam_dc1394_new( dc1394camera_t * camera );
 
 static CamUnit * driver_create_unit (CamUnitDriver * super,
         const CamUnitDescription * udesc);

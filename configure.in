@@ -82,6 +82,8 @@ GTK_DOC_CHECK([1.4])
 
 libcamplugindir="$libdir/$PACKAGE"
 AC_SUBST(libcamplugindir)
+libcampluginincludedir="$includedir/$PACKAGE/plugins"
+AC_SUBST(libcampluginincludedir)
 
 libcampixmapdir="$datadir/pixmaps/$PACKAGE"
 AC_SUBST(libcampixmapdir)
