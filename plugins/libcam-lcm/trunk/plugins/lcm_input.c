@@ -18,7 +18,7 @@
 #include "lcm_input.h"
 #include "lcm_publish.h"
 
-#define err(...) fprintf (stderr, args)
+#define err(...) fprintf (stderr, __VA_ARGS__)
 //#define dbg(...) fprintf (stderr, args)
 //#define dbgi(...) fprintf (stderr, args)
 #define dbg(...)
