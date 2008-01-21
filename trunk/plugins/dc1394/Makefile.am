@@ -12,3 +12,6 @@ input_dc1394_la_SOURCES = \
 
 input_dc1394_la_LDFLAGS = -avoid-version -module
 input_dc1394_la_LIBADD = $(DC1394_LIBS)
+
+libcamplugininclude_HEADERS = \
+	input_dc1394.h
