@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <sys/time.h>
 
 #include <libcam/plugin.h>
 #include <lcm/lcm.h>
@@ -26,7 +28,7 @@ struct _CamlcmPublish {
 
     lcm_t * lcm;
 
-    CamUnitControl * publish_ctl;
+    CamUnitControl *publish_ctl;
     CamUnitControl *lc_name_ctl;
     CamUnitControl *data_rate_ctl;
 
@@ -44,6 +46,13 @@ struct _CamlcmPublishClass {
 };
 
 GType camlcm_publish_get_type (void);
+
+static inline int64_t timestamp_now()
+{
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    return (int64_t) tv.tv_sec * 1000000 + tv.tv_usec;
+}
 
 static CamlcmPublish * camlcm_publish_new(void);
 static void camlcm_publish_finalize( GObject *obj );
@@ -83,7 +92,7 @@ camlcm_publish_init( CamlcmPublish *self )
     self->publish_ctl = cam_unit_add_control_boolean (super, CONTROL_PUBLISH, 
                 "Publish", 1, 1); 
     self->lc_name_ctl = cam_unit_add_control_string (super, CONTROL_CHANNEL,
-            "Channel", "???", 0);
+            "Channel", "CAMLCM_IMAGE", 1);
     self->data_rate_ctl = cam_unit_add_control_string (super, 
             CONTROL_DATA_RATE_INFO, "Data Rate", "0", 0);
     self->data_rate = 0;
@@ -127,7 +136,10 @@ camlcm_publish_new()
     }
 
     // initialize LCM
-    if (0 != lcm_init (self->lcm, NULL)) {
+    lcm_params_t params;
+    lcm_params_init_defaults (&params);
+    params.transmit_only = 1;
+    if (0 != lcm_init (self->lcm, &params)) {
         err ("%s:%d Couldn't initialize LCM\n", __FILE__, __LINE__);
         goto fail;
     }
@@ -166,80 +178,74 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         return;
     }
 
-//        char channel[256];
-//        char cam_name[256];
-//
-////        int max_data_bytes_per_fragment = 4000;
-//        int max_data_bytes_per_fragment = 
-//            64000 - sizeof (image_fragment_t) - 100; // XXX er... yeah...
-//
-//        cam_unit_control_force_set_string (self->lc_name_ctl, channel);
-//
-//        int nfragments = inbuf->bytesused / max_data_bytes_per_fragment;
-//        if (inbuf->bytesused % max_data_bytes_per_fragment) nfragments ++;
-//
-//        image_fragment_t msg;
-//
-//        msg.utime = inbuf->timestamp;
-//        msg.width = infmt->width;
-//        msg.height = infmt->height;
-//        msg.stride = infmt->row_stride;
-//        msg.pixelformat = infmt->pixelformat;
-//        msg.source_uid = inbuf->source_uid;
-//        msg.nfragments = nfragments;
-//        msg.data = self->msg_buffer;
-//
-//        for (int sent = 0; sent < inbuf->bytesused; ) {
-//            msg.data_offset = sent;
-//            msg.data_size = 
-//                MIN (max_data_bytes_per_fragment, inbuf->bytesused-sent);
-//
-//            memcpy (msg.data, inbuf->data + msg.data_offset, msg.data_size);
-//
-//            image_fragment_t_lc_publish (self->lc, channel, &msg);
-//            sent += msg.data_size;
-//        }
-//
-//        int64_t now = timestamp_now ();
-//        if (now > self->next_announce_time) {
-//            image_fragment_announce_t announce = {
-//                .utime = now,
-//                .width = infmt->width,
-//                .height = infmt->height,
-//                .stride = infmt->row_stride,
-//                .pixelformat = infmt->pixelformat,
-//                .max_data_size = infmt->max_data_size,
-//                .source_uid = inbuf->source_uid,
-//                .channel = 
-//                    (char*)cam_unit_control_get_string (self->lc_name_ctl)
-//            };
-//
-//            image_fragment_announce_t_lc_publish (self->lc, 
-//                    "CAM_IMAGE_FRAGMENT_ANNOUNCE", &announce);
-//
-//            self->next_announce_time = now + self->announce_interval;
-//        }
-//
-//        self->bytes_transferred_since_last_data_rate_update += 
-//            inbuf->bytesused;
-//        if (now > self->last_data_rate_time + self->data_rate_update_interval) {
-//            int64_t dt_usec = now - self->last_data_rate_time;
-//            double dt = dt_usec * 1e-6;
-//            double data_rate_instant = 
-//                self->bytes_transferred_since_last_data_rate_update * 1e-6 / dt;
-//            self->data_rate = data_rate_instant * DATA_RATE_UPDATE_ALPHA + 
-//                (1-DATA_RATE_UPDATE_ALPHA) * self->data_rate;
-//
-//            char text[80];
-//            snprintf (text, sizeof (text), "%5.3f MB/s", self->data_rate);
-//
-//            self->last_data_rate_time = now;
-//            self->bytes_transferred_since_last_data_rate_update = 0;
-//
-//            cam_unit_control_force_set_string (self->data_rate_ctl, text);
-//        }
-//    }
+    camlcm_image_t msg;
+    msg.utime = inbuf->timestamp;
+    msg.width = infmt->width;
+    msg.height = infmt->height;
+    msg.row_stride = infmt->row_stride;
+    msg.pixelformat = infmt->pixelformat;
+    msg.size = inbuf->bytesused;
+    msg.data = inbuf->data;
+
+    msg.nb = 0;
+    msg.metadata_byte = NULL;
+
+    GList *md_keys = cam_framebuffer_metadata_list_keys (inbuf);
+    msg.nb = g_list_length (md_keys);
+    camlcm_key_byte_t kbpairs[msg.nb];
+    msg.metadata_byte = kbpairs;
+
+    int i=0; 
+    for (GList *kiter=md_keys; kiter; kiter=kiter->next) {
+        int vlen = 0;
+        const char *key = kiter->data;
+        uint8_t *value = cam_framebuffer_metadata_get (inbuf, key, &vlen);
+        kbpairs[i].key = key;
+        kbpairs[i].n = vlen;
+        kbpairs[i].value = value;
+        i++;
+    }
+    g_list_free (md_keys);
+
+    const char *channel = cam_unit_control_get_string (self->lc_name_ctl);
+
+    camlcm_image_t_publish (self->lcm, channel, &msg);
+
+    int64_t now = timestamp_now ();
+    if (now > self->next_announce_time) {
+        camlcm_announce_t announce = {
+            .utime = now,
+            .width = infmt->width,
+            .height = infmt->height,
+            .stride = infmt->row_stride,
+            .pixelformat = infmt->pixelformat,
+            .max_data_size = infmt->max_data_size,
+            .channel = (char*)channel
+        };
+
+        camlcm_announce_t_publish (self->lcm, CAMLCM_ANNOUNCE_CHANNEL,
+                &announce);
+        self->next_announce_time = now + self->announce_interval;
+    }
+
+    self->bytes_transferred_since_last_data_rate_update += 
+        inbuf->bytesused;
+    if (now > self->last_data_rate_time + self->data_rate_update_interval) {
+        int64_t dt_usec = now - self->last_data_rate_time;
+        double dt = dt_usec * 1e-6;
+        double data_rate_instant = 
+            self->bytes_transferred_since_last_data_rate_update * 1e-6 / dt;
+        self->data_rate = data_rate_instant * DATA_RATE_UPDATE_ALPHA + 
+            (1-DATA_RATE_UPDATE_ALPHA) * self->data_rate;
+
+        char text[80];
+        snprintf (text, sizeof (text), "%5.3f MB/s", self->data_rate);
+
+        self->last_data_rate_time = now;
+        self->bytes_transferred_since_last_data_rate_update = 0;
+
+        cam_unit_control_force_set_string (self->data_rate_ctl, text);
+    }
 
     return;
 }
-
