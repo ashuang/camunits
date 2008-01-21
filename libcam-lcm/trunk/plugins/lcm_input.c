@@ -15,8 +15,8 @@
 #include <camlcm_announce_t.h>
 #include <camlcm_image_t.h>
 
-#include "unit_input.h"
-#include "unit_publish.h"
+#include "lcm_input.h"
+#include "lcm_publish.h"
 
 #define err(args...) fprintf (stderr, args)
 #define dbg(args...) fprintf (stderr, args)

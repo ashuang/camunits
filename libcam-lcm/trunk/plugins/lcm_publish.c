@@ -10,7 +10,7 @@
 #include "camlcm_announce_t.h"
 #include "camlcm_image_t.h"
 
-#include "unit_publish.h"
+#include "lcm_publish.h"
 
 #define err(args...) fprintf(stderr, args)
 
@@ -200,7 +200,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         int vlen = 0;
         const char *key = kiter->data;
         uint8_t *value = cam_framebuffer_metadata_get (inbuf, key, &vlen);
-        kbpairs[i].key = key;
+        kbpairs[i].key = (char*)key;
         kbpairs[i].n = vlen;
         kbpairs[i].value = value;
         i++;
@@ -246,6 +246,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
         cam_unit_control_force_set_string (self->data_rate_ctl, text);
     }
+
+    cam_unit_produce_frame (super, inbuf, infmt);
 
     return;
 }

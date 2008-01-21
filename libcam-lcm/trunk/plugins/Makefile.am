@@ -1,28 +1,28 @@
-libcamplugin_LTLIBRARIES = unit_publish.la unit_input.la
+libcamplugin_LTLIBRARIES = lcm_publish.la lcm_input.la
 
 INCLUDES = $(GLIB_CFLAGS) $(LIBCAM_CFLAGS) $(LCM_CFLAGS)
 
 # publish unit
-unit_publish_la_SOURCES = \
+lcm_publish_la_SOURCES = \
 	$(lcmtypes_cfiles) $(lcmtypes_hfiles) \
-	unit_publish.c \
-	unit_publish.h 
+	lcm_publish.c \
+	lcm_publish.h 
 
-unit_publish_la_LDFLAGS = -avoid-version -module 
-unit_publish_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
+lcm_publish_la_LDFLAGS = -avoid-version -module 
+lcm_publish_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
 
-unit_publish.c unit_publish.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
+lcm_publish.c lcm_publish.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
 
 # input unit
-unit_input_la_SOURCES = \
+lcm_input_la_SOURCES = \
 	$(lcmtypes_cfiles) $(lcmtypes_hfiles) \
-	unit_input.c \
-	unit_input.h 
+	lcm_input.c \
+	lcm_input.h 
 
-unit_input_la_LDFLAGS = -avoid-version -module 
-unit_input_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
+lcm_input_la_LDFLAGS = -avoid-version -module 
+lcm_input_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
 
-unit_input.c unit_input.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
+lcm_input.c lcm_input.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
 
 
 # lcmtypes
