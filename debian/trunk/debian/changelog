@@ -1,3 +1,15 @@
+libcam (0.0.4-1) gutsy; urgency=low
+
+  * New upstream release
+
+ -- Albert Huang <albert@csail.mit.edu>  Tue, 08 Jan 2008 19:28:54 -0500
+
+libcam (0.0.3-2) unstable; urgency=low
+
+  * Require libdc1394 >= 2.0.0 for building source and for dc1394 plugin
+
+ -- Albert Huang <albert@csail.mit.edu>  Mon, 07 Jan 2008 20:05:33 -0500
+
 libcam (0.0.3-1) gutsy; urgency=low
 
   * New upstream release
