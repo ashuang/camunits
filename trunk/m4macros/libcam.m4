@@ -13,7 +13,7 @@ dnl
 AC_ARG_ENABLE(libcamtest, [  --disable-libcamtest      do not try to compile and run a test libcam program],, enable_libcamtest=yes)
 
   pkg_name=libcam
-  pkg_config_args="$pkg_name"
+  pkg_config_args="$pkg_name glib-2.0"
 
   no_libcam=""
 
@@ -24,11 +24,11 @@ AC_ARG_ENABLE(libcamtest, [  --disable-libcamtest      do not try to compile and
       :
     else
       echo *** pkg-config too old; version 0.7 or better required.
-      no_gimp=yes
+      no_libcam=yes
       PKG_CONFIG=no
     fi
   else
-    no_gimp=yes
+    no_libcam=yes
   fi
 
   min_libcam_version=ifelse([$1], ,0.0.4,$1)
@@ -63,8 +63,8 @@ AC_ARG_ENABLE(libcamtest, [  --disable-libcamtest      do not try to compile and
     if test "x$enable_libcamtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
-      CFLAGS="$CFLAGS $GIMP_CFLAGS"
-      LIBS="$GIMP_LIBS $LIBS"
+      CFLAGS="$CFLAGS $LIBCAM_CFLAGS"
+      LIBS="$LIBCAM_LIBS $LIBS"
 
 dnl
 dnl Now check if the installed libcam is sufficiently new. (Also sanity
