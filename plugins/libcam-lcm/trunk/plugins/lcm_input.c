@@ -18,11 +18,11 @@
 #include "lcm_input.h"
 #include "lcm_publish.h"
 
-#define err(args...) fprintf (stderr, args)
-#define dbg(args...) fprintf (stderr, args)
-#define dbgi(args...) fprintf (stderr, args)
-
-#define CAMLCM_INPUT_DRIVER_NAME "input.lc_frag"
+#define err(...) fprintf (stderr, args)
+//#define dbg(...) fprintf (stderr, args)
+//#define dbgi(...) fprintf (stderr, args)
+#define dbg(...)
+#define dbgi(...)
 
 static void driver_finalize (GObject *obj);
 static int on_announce (const char *channel, 
@@ -70,7 +70,7 @@ cam_plugin_create (GTypeModule * module)
 
     // initialize LCM
     if (0 != lcm_init (self->lcm, &lcp)) {
-        err ("LCFragment: Couldn't initialize LC\n");
+        err ("%s:d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
         goto fail;
     }
 
@@ -249,7 +249,7 @@ camlcm_input_driver_check_for_new_units (CamlcmInputDriver *self)
         }
 
         if (!old_announce) {
-            dbg ("LC Fragment: adding new unit description [%s]\n",
+            dbg ("CamlcmInput: adding new unit description [%s]\n",
                     unit_id);
             cam_unit_driver_add_unit_description (CAM_UNIT_DRIVER (self),
                     msg->channel, msg->channel, 
@@ -319,7 +319,7 @@ static int on_image (const char *channel, const camlcm_image_t *ann,
 static void
 camlcm_input_init (CamlcmInput *self)
 {
-    dbgi ("LCFragments constructor\n");
+    dbgi ("CamlcmInput: constructor\n");
     // constructor.  Initialize the unit with some reasonable defaults here.
 
     self->lcm = NULL;
@@ -335,7 +335,7 @@ camlcm_input_init (CamlcmInput *self)
 static void
 camlcm_input_class_init (CamlcmInputClass *klass)
 {
-    dbgi ("LCFragments class initializer\n");
+    dbgi ("CamlcmInput: class initializer\n");
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = camlcm_input_finalize;
     klass->parent_class.try_produce_frame = camlcm_input_try_produce_frame;
@@ -349,7 +349,7 @@ camlcm_input_class_init (CamlcmInputClass *klass)
 static void
 camlcm_input_finalize (GObject *obj)
 {
-    dbgi ("LCFragments finalize\n");
+    dbgi ("CamlcmInput: finalize\n");
     CamlcmInput * self = CAMLCM_INPUT (obj);
 
     if (self->lcm) {
@@ -419,9 +419,6 @@ fail:
 static int
 camlcm_input_stream_on (CamUnit *super)
 {
-    /* chain up to parent, which handles most of the error checking */
-    if (CAM_UNIT_CLASS (camlcm_input_parent_class)->stream_on (super) < 0)
-        return -1;
     CamlcmInput *self = CAMLCM_INPUT (super);
     g_mutex_lock (self->buffer_mutex);
     self->unhandled_frame = 0;
