@@ -1,0 +1,45 @@
+This package contains libcam plugins for using libcam in conjunction with LCM
+
+Description
+===========
+
+LCM can be found at:
+    http://lcm.googlecode.com
+
+
+The plugins provided in this package are:
+
+    LCM.Publish
+        Publishes images using the LCM interprocess-communications library.
+
+    input.LCM
+        Receives images published by LCM.Publish
+
+Installation
+============
+
+To install from subversion:
+    $ autoreconf -i
+    $ ./configure
+    $ make 
+    $ make install
+
+To install from a tarball (.tar.gz):
+    $ ./configure
+    $ make
+    $ make install
+
+Notes
+=====
+
+For images of any reasonable resolution, you must configure your operating
+system kernel to use larger UDP receive buffers.  Otherwise, you will observe a
+large number of dropped frames.  A 2MB receive buffer is sufficient for VGA
+resolution cameras, although you may want to experiment with this number on
+your own system.
+
+For more information on configuring the kernel UDP receive buffer maximum size,
+see the LCM documentation (http://lcm.googlecode.com) or the 29west.com 
+article [1].
+
+[1] http://www.29west.com/docs/THPM/udp-buffer-sizing.html

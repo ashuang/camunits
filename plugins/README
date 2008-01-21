@@ -1,0 +1,8 @@
+this directory contains libcam plugins that are not part of the main libcam
+distribution, but are hosted in the libcam svn repository for the convenience
+of the libcam developers.
+
+plugins hosted in this directory may not be as well supported or documented as
+those in the main libcam distribution.  Additionally, they may have external
+dependencies on third party libraries, as well as intellectual property
+restrictions.
