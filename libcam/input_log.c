@@ -13,14 +13,14 @@
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
 
-#define USE_ADVANCE_MODE
-
 // ============== CamInputLogDriver ===============
 
 static CamUnit * driver_create_unit (CamUnitDriver *super,
         const CamUnitDescription * udesc);
 static CamUnitDescription * driver_search_unit_description(
         CamUnitDriver *driver, const char *id);
+
+static int _log_set_file (CamInputLog *self, const char *fname);
 
 G_DEFINE_TYPE (CamInputLogDriver, cam_input_log_driver, CAM_TYPE_UNIT_DRIVER);
 
@@ -30,6 +30,9 @@ cam_input_log_driver_init (CamInputLogDriver *self)
     dbg (DBG_DRIVER, "log driver constructor\n");
     CamUnitDriver *super = CAM_UNIT_DRIVER (self);
     cam_unit_driver_set_name (super, "input", "log");
+
+    cam_unit_driver_add_unit_description (super, 
+            "Log Input", NULL, CAM_UNIT_EVENT_METHOD_TIMEOUT);
 }
 
 static void
@@ -80,7 +83,7 @@ driver_search_unit_description (CamUnitDriver *super,
         gchar * basename = g_path_get_basename (words[1]);
         CamUnitDescription *desc = 
             cam_unit_driver_add_unit_description (super,
-                basename, words[1], 
+                "Log Input", words[1], 
                 CAM_UNIT_EVENT_METHOD_TIMEOUT);
         g_free (basename);
         g_strfreev (words);
@@ -106,12 +109,35 @@ static void
 cam_input_log_init (CamInputLog *self)
 {
     dbg (DBG_INPUT, "log constructor\n");
+    CamUnit *super = CAM_UNIT (self);
     self->camlog = NULL;
-    self->filename = NULL;
 
     self->next_frame_time = 0;
     self->nframes = 0;
     self->readone = 0;
+
+    self->fname_ctl = cam_unit_add_control_string (super, "filename", 
+            "Filename", "", 1);
+    cam_unit_control_set_ui_hints (self->fname_ctl, CAM_UNIT_CONTROL_FILENAME);
+
+    self->frame_ctl = cam_unit_add_control_int (super,
+            "frame", "Frame", 0, 1, 1, 0, 0);
+    self->pause_ctl = cam_unit_add_control_boolean (super,
+            "pause", "Pause", 0, 1);
+
+    const char *adv_mode_options[] = { 
+        "Never skip frames", 
+        "Skip if too slow", 
+        NULL 
+    };
+    int adv_mode_options_enabled[] = { 1, 1, 0 };
+
+    self->adv_mode_ctl = cam_unit_add_control_enum (super,
+            "mode", "Mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
+
+    self->adv_speed_ctl = cam_unit_add_control_float (super,
+            "speed", "Playback Speed", 0.1, 20, 0.1, 1, 1);
+
 }
 
 static void
@@ -136,7 +162,6 @@ log_finalize (GObject *obj)
     CamInputLog *self = CAM_INPUT_LOG (obj);
 
     if (self->camlog) { cam_log_destroy (self->camlog); }
-    if (self->filename) { free (self->filename); }
     G_OBJECT_CLASS (cam_input_log_parent_class)->finalize (obj);
 }
 
@@ -145,30 +170,29 @@ cam_input_log_new (const char *fname)
 {
     CamInputLog *self = CAM_INPUT_LOG (g_object_new (CAM_INPUT_LOG_TYPE, NULL));
 
-    int status = cam_log_set_file (self, fname);
-    if (0 != status) {
-        g_object_unref (self);
-        return NULL;
+    if (fname && strlen (fname)) {
+        if (0 == _log_set_file (self, fname)) {
+            cam_unit_control_force_set_string (self->fname_ctl, fname);
+        }
     }
- 
     return self;
 }
 
-int 
-cam_log_set_file (CamInputLog *self, const char *fname)
+static int 
+_log_set_file (CamInputLog *self, const char *fname)
 {
-    if (self->camlog)
-        return -1;
+    CamUnit *super = CAM_UNIT (self);
+    if (self->camlog) cam_log_destroy (self->camlog);
+    cam_unit_remove_all_output_formats (super);
 
     self->camlog = cam_log_new (fname, "r");
-    if (!self->camlog)
-        return -1;
+    if (!self->camlog) {
+        goto fail;
+    }
 
     CamLogFrameFormat format;
     if (cam_log_get_frame_format (self->camlog, &format) < 0) {
-        cam_log_destroy (self->camlog);
-        self->camlog = NULL;
-        return -1;
+        goto fail;
     }
 
     int max_data_size;
@@ -177,34 +201,22 @@ cam_log_set_file (CamInputLog *self, const char *fname)
     else
         max_data_size = format.width * format.height * 4;
 
-    CamUnit *super = CAM_UNIT (self);
     cam_unit_add_output_format_full (super, format.pixelformat, NULL, 
             format.width, format.height, format.stride, max_data_size);
 
-    self->filename = strdup (fname);
-
     self->nframes = cam_log_count_frames (self->camlog);
-    self->frame_ctl = cam_unit_add_control_int (super,
-            "frame", "Frame", 0, self->nframes-1, 1, 0, 1);
-    self->pause_ctl = cam_unit_add_control_boolean (super,
-            "pause", "Pause", 0, 1);
-
-#ifdef USE_ADVANCE_MODE
-    const char *adv_mode_options[] = { 
-        "Never skip frames", 
-        "Skip if too slow", 
-        NULL 
-    };
-    int adv_mode_options_enabled[] = { 1, 1, 0 };
-
-    self->adv_mode_ctl = cam_unit_add_control_enum (super,
-            "mode", "Mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
-#endif
-
-    self->adv_speed_ctl = cam_unit_add_control_float (super,
-            "speed", "Playback Speed", 0.1, 20, 0.1, 1, 1);
+    cam_unit_control_modify_int (self->frame_ctl, 0, self->nframes-1, 1, 1);
+    cam_unit_control_force_set_int (self->frame_ctl, 0);
 
     return 0;
+
+fail:
+    if (self->camlog) {
+        cam_log_destroy (self->camlog);
+        self->camlog = NULL;
+    }
+    cam_unit_control_modify_int (self->frame_ctl, 0, 1, 1, 0);
+    return -1;
 }
 
 static inline int64_t _timestamp_now()
@@ -255,7 +267,6 @@ log_try_produce_frame (CamUnit *super)
         dbg(DBG_INPUT, "InputLog paused, but reading one frame\n");
     }
 
-#ifdef USE_ADVANCE_MODE
     int advance_mode = cam_unit_control_get_enum (self->adv_mode_ctl);
     // check the next frame and see if we should skip the current frame
     // however, don't skip frames when paused
@@ -277,7 +288,6 @@ log_try_produce_frame (CamUnit *super)
         }
         cam_log_seek_to_offset (self->camlog, cur_info.offset);
     }
-#endif
 
     CamFrameBuffer * buf = cam_log_get_frame (self->camlog);
     if (!buf) {
@@ -333,8 +343,9 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     } else if (ctl == self->frame_ctl) {
         int next_frameno = g_value_get_int (proposed);
-        dbg (DBG_INPUT, "seeking to frame %d\n", next_frameno);
+        if (! self->camlog) return FALSE;
 
+        dbg (DBG_INPUT, "seeking to frame %d\n", next_frameno);
         if (cam_log_seek_to_frame (self->camlog, next_frameno) == 0) {
             g_value_set_int (actual, next_frameno);
             self->next_frame_time = _timestamp_now ();
@@ -345,11 +356,26 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         g_value_copy (proposed, actual);
         return TRUE;
     }
-#ifdef USE_ADVANCE_MODE
     else if (ctl == self->adv_mode_ctl) {
         g_value_copy (proposed, actual);
         return TRUE;
     }
-#endif
+    else if (ctl == self->fname_ctl) {
+        CamUnitStatus old_status = cam_unit_get_status (super);
+        if (old_status != CAM_UNIT_STATUS_IDLE) {
+            cam_unit_stream_shutdown (super);
+        }
+        const char *fname = g_value_get_string (proposed);
+        int fstatus = _log_set_file (self, fname);
+        if (0 == fstatus) {
+            cam_unit_stream_init_any_format (super);
+            cam_unit_stream_on (super);
+            g_value_copy (proposed, actual);
+            return TRUE;
+        } else {
+            g_value_set_string (actual, "");
+            return FALSE;
+        }
+    }
     return FALSE;
 }

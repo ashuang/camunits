@@ -38,30 +38,6 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit, const CamFrameBuffer *buf,
 }
 
 static void
-on_open_menu_item_activate (GtkWidget *widget, void * user)
-{
-    state_t *self = user;
-
-    GtkWidget *dialog;
-    dialog = gtk_file_chooser_dialog_new ("Log File",
-            self->window,
-            GTK_FILE_CHOOSER_ACTION_OPEN,
-            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-            NULL);
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-        char *filename;
-        filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-        char *unit_id = g_strjoin ("", "input.log:", filename, NULL);
-        cam_unit_manager_find_unit_description (self->chain->manager, unit_id);
-        free (unit_id);
-        g_free (filename);
-    }
-
-    gtk_widget_hide (dialog);
-}
-
-static void
 on_show_manager_mi_toggled (GtkCheckMenuItem *mi, void *user_data)
 {
     state_t *self = user_data;
@@ -116,12 +92,6 @@ setup_gtk (state_t *self)
     GtkWidget *file_menu = gtk_menu_new ();
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (file_menu_item), file_menu);
     
-    GtkWidget *open_mi = 
-        gtk_image_menu_item_new_from_stock (GTK_STOCK_OPEN, NULL);
-    gtk_menu_append (GTK_MENU (file_menu), open_mi);
-    gtk_signal_connect (GTK_OBJECT (open_mi), "activate", 
-            GTK_SIGNAL_FUNC (on_open_menu_item_activate), self);
-
     GtkWidget *quit_mi = 
         gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
     gtk_menu_append (GTK_MENU (file_menu), quit_mi);

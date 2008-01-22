@@ -690,7 +690,7 @@ on_file_entry_choser_bt_clicked(GtkButton *button, CamUnitControlWidget *self)
     GtkWidget *dialog;
     dialog = gtk_file_chooser_dialog_new ("New Log File",
             GTK_WINDOW( gtk_widget_get_toplevel(GTK_WIDGET(self)) ),
-            GTK_FILE_CHOOSER_ACTION_SAVE,
+            GTK_FILE_CHOOSER_ACTION_OPEN,
             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
             GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
             NULL);
@@ -936,8 +936,57 @@ on_control_parameters_changed(CamUnit *unit, CamUnitControl *ctl,
 //    printf("control enabled changed [%s] to %d\n", ctl->name, enabled);
 
     ControlWidgetInfo *ci = g_hash_table_lookup( self->ctl_info, ctl );
-    if( ci )
+    if( ci ) {
         control_set_sensitive (ci);
+
+        switch (ctl->type) {
+            case CAM_UNIT_CONTROL_TYPE_INT:
+                {
+                    int min = cam_unit_control_get_min_int (ctl);
+                    int max = cam_unit_control_get_max_int (ctl);
+                    int step = cam_unit_control_get_step_int (ctl);
+
+                    if (GTK_IS_SPIN_BUTTON (ci->widget)) {
+                        GtkSpinButton *sb = GTK_SPIN_BUTTON (ci->widget);
+                        gtk_spin_button_set_range (sb, min, max);
+                        gtk_spin_button_set_increments (sb, step, step * 10);
+                    } else if (GTK_IS_RANGE (ci->widget)) {
+                        gtk_range_set_range (GTK_RANGE(ci->widget), min, max);
+                        gtk_range_set_increments (GTK_RANGE(ci->widget),
+                                step, step * 10);
+                    } else {
+                        err ("wtf?? %s:%d", __FILE__, __LINE__);
+                    }
+                break;
+                }
+            case CAM_UNIT_CONTROL_TYPE_FLOAT:
+                {
+                    float min = cam_unit_control_get_min_int (ctl);
+                    float max = cam_unit_control_get_max_int (ctl);
+                    float step = cam_unit_control_get_step_int (ctl);
+
+                    if (GTK_IS_SPIN_BUTTON (ci->widget)) {
+                        GtkSpinButton *sb = GTK_SPIN_BUTTON (ci->widget);
+                        gtk_spin_button_set_range (sb, min, max);
+                        gtk_spin_button_set_increments (sb, step, step * 10);
+                    } else if (GTK_IS_RANGE (ci->widget)) {
+                        gtk_range_set_range (GTK_RANGE(ci->widget), min, max);
+                        gtk_range_set_increments (GTK_RANGE(ci->widget),
+                                step, step * 10);
+                    } else {
+                        err ("wtf?? %s:%d", __FILE__, __LINE__);
+                    }
+                }
+                break;
+            case CAM_UNIT_CONTROL_TYPE_ENUM:
+                err  ("%s:%d -- Modify enum not yet implemented\n",
+                        __FILE__, __LINE__);
+                // TODO
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 static void
