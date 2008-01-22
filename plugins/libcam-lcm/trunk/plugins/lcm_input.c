@@ -70,7 +70,7 @@ cam_plugin_create (GTypeModule * module)
 
     // initialize LCM
     if (0 != lcm_init (self->lcm, &lcp)) {
-        err ("%s:d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
+        err ("%s:%d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
         goto fail;
     }
 
