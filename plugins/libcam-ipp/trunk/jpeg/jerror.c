@@ -42,12 +42,12 @@
  */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_std_message_table  jMsgTable
+#define jpegipp_std_message_table  jMsgTable
 #endif
 
 #define JMESSAGE(code,string) string ,
 
-const char * const jpeg_std_message_table[] = {
+const char * const jpegipp_std_message_table[] = {
 #include "jerror.h"
   NULL
 };
@@ -62,8 +62,8 @@ const char * const jpeg_std_message_table[] = {
  * handler object.  Note that the info needed to generate an error message
  * is stored in the error object, so you can generate the message now or
  * later, at your convenience.
- * You should make sure that the JPEG object is cleaned up (with jpeg_abort
- * or jpeg_destroy) at some point.
+ * You should make sure that the JPEG object is cleaned up (with jpegipp_abort
+ * or jpegipp_destroy) at some point.
  */
 
 METHODDEF(void)
@@ -73,7 +73,7 @@ error_exit (j_common_ptr cinfo)
   (*cinfo->err->output_message) (cinfo);
 
   /* Let the memory manager delete any temp files before we die */
-  jpeg_destroy(cinfo);
+  jpegipp_destroy(cinfo);
 
   exit(EXIT_FAILURE);
 }
@@ -127,7 +127,7 @@ output_message (j_common_ptr cinfo)
 METHODDEF(void)
 emit_message (j_common_ptr cinfo, int msg_level)
 {
-  struct jpeg_error_mgr * err = cinfo->err;
+  struct jpegipp_error_mgr * err = cinfo->err;
 
   if (msg_level < 0) {
     /* It's a warning message.  Since corrupt files may generate many warnings,
@@ -156,7 +156,7 @@ emit_message (j_common_ptr cinfo, int msg_level)
 METHODDEF(void)
 format_message (j_common_ptr cinfo, char * buffer)
 {
-  struct jpeg_error_mgr * err = cinfo->err;
+  struct jpegipp_error_mgr * err = cinfo->err;
   int msg_code = err->msg_code;
   const char * msgtext = NULL;
   const char * msgptr;
@@ -164,8 +164,8 @@ format_message (j_common_ptr cinfo, char * buffer)
   boolean isstring;
 
   /* Look up message string in proper table */
-  if (msg_code > 0 && msg_code <= err->last_jpeg_message) {
-    msgtext = err->jpeg_message_table[msg_code];
+  if (msg_code > 0 && msg_code <= err->last_jpegipp_message) {
+    msgtext = err->jpegipp_message_table[msg_code];
   } else if (err->addon_message_table != NULL &&
        msg_code >= err->first_addon_message &&
        msg_code <= err->last_addon_message) {
@@ -175,7 +175,7 @@ format_message (j_common_ptr cinfo, char * buffer)
   /* Defend against bogus message number */
   if (msgtext == NULL) {
     err->msg_parm.i[0] = msg_code;
-    msgtext = err->jpeg_message_table[0];
+    msgtext = err->jpegipp_message_table[0];
   }
 
   /* Check for string parameter, as indicated by %s in the message text */
@@ -218,17 +218,17 @@ reset_error_mgr (j_common_ptr cinfo)
 
 
 /*
- * Fill in the standard error-handling methods in a jpeg_error_mgr object.
+ * Fill in the standard error-handling methods in a jpegipp_error_mgr object.
  * Typical call is:
- *  struct jpeg_compress_struct cinfo;
- *  struct jpeg_error_mgr err;
+ *  struct jpegipp_compress_struct cinfo;
+ *  struct jpegipp_error_mgr err;
  *
- *  cinfo.err = jpeg_std_error(&err);
+ *  cinfo.err = jpegipp_std_error(&err);
  * after which the application may override some of the methods.
  */
 
-GLOBAL(struct jpeg_error_mgr *)
-jpeg_std_error (struct jpeg_error_mgr * err)
+GLOBAL(struct jpegipp_error_mgr *)
+jpegipp_std_error (struct jpegipp_error_mgr * err)
 {
   err->error_exit = error_exit;
   err->emit_message = emit_message;
@@ -241,8 +241,8 @@ jpeg_std_error (struct jpeg_error_mgr * err)
   err->msg_code = 0;    /* may be useful as a flag for "no error" */
 
   /* Initialize message table pointers */
-  err->jpeg_message_table = jpeg_std_message_table;
-  err->last_jpeg_message = (int) JMSG_LASTMSGCODE - 1;
+  err->jpegipp_message_table = jpegipp_std_message_table;
+  err->last_jpegipp_message = (int) JMSG_LASTMSGCODE - 1;
 
   err->addon_message_table = NULL;
   err->first_addon_message = 0; /* for safety */

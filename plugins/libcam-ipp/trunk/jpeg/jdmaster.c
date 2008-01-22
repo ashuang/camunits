@@ -19,7 +19,7 @@
 /* Private state */
 
 typedef struct {
-  struct jpeg_decomp_master pub; /* public fields */
+  struct jpegipp_decomp_master pub; /* public fields */
 
   int pass_number;    /* # of passes completed */
 
@@ -28,8 +28,8 @@ typedef struct {
   /* Saved references to initialized quantizer modules,
    * in case we need to switch modes.
    */
-  struct jpeg_color_quantizer * quantizer_1pass;
-  struct jpeg_color_quantizer * quantizer_2pass;
+  struct jpegipp_color_quantizer * quantizer_1pass;
+  struct jpegipp_color_quantizer * quantizer_2pass;
 } my_decomp_master;
 
 typedef my_decomp_master * my_master_ptr;
@@ -48,7 +48,7 @@ use_merged_upsample (j_decompress_ptr cinfo)
   if (cinfo->do_fancy_upsampling || cinfo->CCIR601_sampling)
     return FALSE;
   /* jdmerge.c only supports YCC=>RGB color conversion */
-  if (cinfo->jpeg_color_space != JCS_YCbCr || cinfo->num_components != 3 ||
+  if (cinfo->jpegipp_color_space != JCS_YCbCr || cinfo->num_components != 3 ||
       cinfo->out_color_space != JCS_RGB ||
       cinfo->out_color_components != RGB_PIXELSIZE)
     return FALSE;
@@ -81,12 +81,12 @@ use_merged_upsample (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
+jpegipp_calc_output_dimensions (j_decompress_ptr cinfo)
 /* Do computations that are needed before master selection phase */
 {
 #ifdef IDCT_SCALING_SUPPORTED
   int ci;
-  jpeg_component_info *compptr;
+  jpegipp_component_info *compptr;
 #endif
 
   /* Prevent application from calling me at wrong times */
@@ -275,11 +275,11 @@ prepare_range_limit_table (j_decompress_ptr cinfo)
 
 /*
  * Master selection of decompression modules.
- * This is done once at jpeg_start_decompress time.  We determine
+ * This is done once at jpegipp_start_decompress time.  We determine
  * which modules will be used and give them appropriate initialization calls.
  * We also initialize the decompressor input side to begin consuming data.
  *
- * Since jpeg_read_header has finished, we know what is in the SOF
+ * Since jpegipp_read_header has finished, we know what is in the SOF
  * and (first) SOS markers.  We also have all the application parameter
  * settings.
  */
@@ -293,7 +293,7 @@ master_selection (j_decompress_ptr cinfo)
   JDIMENSION jd_samplesperrow;
 
   /* Initialize dimensions and other stuff */
-  jpeg_calc_output_dimensions(cinfo);
+  jpegipp_calc_output_dimensions(cinfo);
   prepare_range_limit_table(cinfo);
 
   /* Width of an output scanline must be representable as JDIMENSION. */
@@ -334,7 +334,7 @@ master_selection (j_decompress_ptr cinfo)
 
     if (cinfo->enable_1pass_quant) {
 #ifdef QUANT_1PASS_SUPPORTED
-      jinit_1pass_quantizer(cinfo);
+      jinitipp_1pass_quantizer(cinfo);
       master->quantizer_1pass = cinfo->cquantize;
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -344,7 +344,7 @@ master_selection (j_decompress_ptr cinfo)
     /* We use the 2-pass code to map to external colormaps. */
     if (cinfo->enable_2pass_quant || cinfo->enable_external_quant) {
 #ifdef QUANT_2PASS_SUPPORTED
-      jinit_2pass_quantizer(cinfo);
+      jinitipp_2pass_quantizer(cinfo);
       master->quantizer_2pass = cinfo->cquantize;
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -359,38 +359,38 @@ master_selection (j_decompress_ptr cinfo)
   if (! cinfo->raw_data_out) {
     if (master->using_merged_upsample) {
 #ifdef UPSAMPLE_MERGING_SUPPORTED
-      jinit_merged_upsampler(cinfo); /* does color conversion too */
+      jinitipp_merged_upsampler(cinfo); /* does color conversion too */
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else {
-      jinit_color_deconverter(cinfo);
-      jinit_upsampler(cinfo);
+      jinitipp_color_deconverter(cinfo);
+      jinitipp_upsampler(cinfo);
     }
-    jinit_d_post_controller(cinfo, cinfo->enable_2pass_quant);
+    jinitipp_d_post_controller(cinfo, cinfo->enable_2pass_quant);
   }
   /* Inverse DCT */
-  jinit_inverse_dct(cinfo);
+  jinitipp_inverse_dct(cinfo);
   /* Entropy decoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code) {
     ERREXIT(cinfo, JERR_ARITH_NOTIMPL);
   } else {
     if (cinfo->progressive_mode) {
 #ifdef D_PROGRESSIVE_SUPPORTED
-      jinit_phuff_decoder(cinfo);
+      jinitipp_phuff_decoder(cinfo);
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else
-      jinit_huff_decoder(cinfo);
+      jinitipp_huff_decoder(cinfo);
   }
 
   /* Initialize principal buffer controllers. */
   use_c_buffer = cinfo->inputctl->has_multiple_scans || cinfo->buffered_image;
-  jinit_d_coef_controller(cinfo, use_c_buffer);
+  jinitipp_d_coef_controller(cinfo, use_c_buffer);
 
   if (! cinfo->raw_data_out)
-    jinit_d_main_controller(cinfo, FALSE /* never need full buffer here */);
+    jinitipp_d_main_controller(cinfo, FALSE /* never need full buffer here */);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
@@ -399,7 +399,7 @@ master_selection (j_decompress_ptr cinfo)
   (*cinfo->inputctl->start_input_pass) (cinfo);
 
 #ifdef D_MULTISCAN_FILES_SUPPORTED
-  /* If jpeg_start_decompress will read the whole file, initialize
+  /* If jpegipp_start_decompress will read the whole file, initialize
    * progress monitoring appropriately.  The input step is counted
    * as one pass.
    */
@@ -512,7 +512,7 @@ finish_output_pass (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_new_colormap (j_decompress_ptr cinfo)
+jpegipp_new_colormap (j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
 
@@ -536,18 +536,18 @@ jpeg_new_colormap (j_decompress_ptr cinfo)
 
 /*
  * Initialize master decompression control and select active modules.
- * This is performed at the start of jpeg_start_decompress.
+ * This is performed at the start of jpegipp_start_decompress.
  */
 
 GLOBAL(void)
-jinit_master_decompress (j_decompress_ptr cinfo)
+jinitipp_master_decompress (j_decompress_ptr cinfo)
 {
   my_master_ptr master;
 
   master = (my_master_ptr)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
           SIZEOF(my_decomp_master));
-  cinfo->master = (struct jpeg_decomp_master *) master;
+  cinfo->master = (struct jpegipp_decomp_master *) master;
   master->pub.prepare_for_output_pass = prepare_for_output_pass;
   master->pub.finish_output_pass = finish_output_pass;
 

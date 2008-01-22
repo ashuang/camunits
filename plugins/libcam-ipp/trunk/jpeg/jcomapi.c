@@ -26,7 +26,7 @@
  */
 
 GLOBAL(void)
-jpeg_abort (j_common_ptr cinfo)
+jpegipp_abort (j_common_ptr cinfo)
 {
   int pool;
 
@@ -57,7 +57,7 @@ jpeg_abort (j_common_ptr cinfo)
 /*
  * Destruction of a JPEG object.
  *
- * Everything gets deallocated except the master jpeg_compress_struct itself
+ * Everything gets deallocated except the master jpegipp_compress_struct itself
  * and the error manager struct.  Both of these are supplied by the application
  * and must be freed, if necessary, by the application.  (Often they are on
  * the stack and so don't need to be freed anyway.)
@@ -66,13 +66,13 @@ jpeg_abort (j_common_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_destroy (j_common_ptr cinfo)
+jpegipp_destroy (j_common_ptr cinfo)
 {
   /* We need only tell the memory manager to release everything. */
   /* NB: mem pointer is NULL if memory mgr failed to initialize. */
   if (cinfo->mem != NULL)
     (*cinfo->mem->self_destruct) (cinfo);
-  cinfo->mem = NULL;    /* be safe if jpeg_destroy is called twice */
+  cinfo->mem = NULL;    /* be safe if jpegipp_destroy is called twice */
   cinfo->global_state = 0;  /* mark it destroyed */
 }
 
@@ -83,7 +83,7 @@ jpeg_destroy (j_common_ptr cinfo)
  */
 
 GLOBAL(JQUANT_TBL *)
-jpeg_alloc_quant_table (j_common_ptr cinfo)
+jpegipp_alloc_quant_table (j_common_ptr cinfo)
 {
   JQUANT_TBL *tbl;
 
@@ -95,7 +95,7 @@ jpeg_alloc_quant_table (j_common_ptr cinfo)
 
 
 GLOBAL(JHUFF_TBL *)
-jpeg_alloc_huff_table (j_common_ptr cinfo)
+jpegipp_alloc_huff_table (j_common_ptr cinfo)
 {
   JHUFF_TBL *tbl;
 

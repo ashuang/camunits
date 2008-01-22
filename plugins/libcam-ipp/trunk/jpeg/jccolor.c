@@ -17,7 +17,7 @@
 /* Private subobject */
 
 typedef struct {
-  struct jpeg_color_converter pub; /* public fields */
+  struct jpegipp_color_converter pub; /* public fields */
 
   /* Private state for RGB->YCC conversion */
   INT32 * rgb_ycc_tab;    /* => table for RGB to YCbCr conversion */
@@ -451,14 +451,14 @@ null_method (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_color_converter (j_compress_ptr cinfo)
+jinitipp_color_converter (j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;
 
   cconvert = (my_cconvert_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_color_converter));
-  cinfo->cconvert = (struct jpeg_color_converter *) cconvert;
+  cinfo->cconvert = (struct jpegipp_color_converter *) cconvert;
   /* set start_pass to null method until we find out differently */
   cconvert->pub.start_pass = null_method;
 
@@ -494,7 +494,7 @@ jinit_color_converter (j_compress_ptr cinfo)
   }
 
   /* Check num_components, set conversion method based on requested space */
-  switch (cinfo->jpeg_color_space) {
+  switch (cinfo->jpegipp_color_space) {
   case JCS_GRAYSCALE:
     if (cinfo->num_components != 1)
       ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
@@ -570,7 +570,7 @@ jinit_color_converter (j_compress_ptr cinfo)
     break;
 
   default:      /* allow null conversion of JCS_UNKNOWN */
-    if (cinfo->jpeg_color_space != cinfo->in_color_space ||
+    if (cinfo->jpegipp_color_space != cinfo->in_color_space ||
       cinfo->num_components != cinfo->input_components)
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     cconvert->pub.color_convert = null_convert;

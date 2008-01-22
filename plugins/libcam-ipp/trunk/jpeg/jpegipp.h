@@ -85,7 +85,7 @@ cmyk_ycck_convert_intellib(
 METHODDEF(void)
 forward_DCT_intellib(
   j_compress_ptr       cinfo,
-  jpeg_component_info* compptr,
+  jpegipp_component_info* compptr,
   JSAMPARRAY           sample_data,
   JBLOCKROW            coef_blocks,
   JDIMENSION           start_row,
@@ -94,9 +94,9 @@ forward_DCT_intellib(
 
 /* inverse DCT */
 GLOBAL(void)
-jpeg_idct_islow_intellib(
+jpegipp_idct_islow_intellib(
   j_decompress_ptr     cinfo,
-  jpeg_component_info* compptr,
+  jpegipp_component_info* compptr,
   JCOEFPTR             coef_block,
   JSAMPARRAY           output_buf,
   JDIMENSION           output_col);
@@ -126,7 +126,7 @@ ycck_cmyk_convert_intellib(
 METHODDEF(void)
 h2v1_downsample_intellib(
   j_compress_ptr       cinfo,
-  jpeg_component_info* compptr,
+  jpegipp_component_info* compptr,
   JSAMPARRAY           input_data,
   JSAMPARRAY           output_data);
 
@@ -144,7 +144,7 @@ htest_one_block_intellib(
   long           ac_counts[]);
 
 GLOBAL(void)
-jpeg_gen_optimal_table_intellib(
+jpegipp_gen_optimal_table_intellib(
   j_compress_ptr cinfo,
   JHUFF_TBL*     htbl,
   long           freq[]);

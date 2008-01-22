@@ -41,24 +41,24 @@ typedef struct {
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_make_c_derived_tbl jMkCDerived
-#define jpeg_gen_optimal_table  jGenOptTbl
+#define jpegipp_make_c_derived_tbl jMkCDerived
+#define jpegipp_gen_optimal_table  jGenOptTbl
 #endif /* NEED_SHORT_EXTERNAL_NAMES */
 
 /* Expand a Huffman table definition into the derived format */
-EXTERN(void) jpeg_make_c_derived_tbl
+EXTERN(void) jpegipp_make_c_derived_tbl
   JPP((j_compress_ptr cinfo, boolean isDC, int tblno,
        c_derived_tbl ** pdtbl));
 #ifdef IPPJ_HUFF
-EXTERN(void) jpeg_make_c_derived_tbl_intellib
+EXTERN(void) jpegipp_make_c_derived_tbl_intellib
   JPP((j_compress_ptr cinfo, boolean isDC, int tblno,
        c_derived_tbl ** pdtbl));
 #endif
 
 /* Generate an optimal table definition given the specified counts */
-EXTERN(void) jpeg_gen_optimal_table
+EXTERN(void) jpegipp_gen_optimal_table
   JPP((j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[]));
 #ifdef IPPJ_HUFF
-EXTERN(void) jpeg_gen_optimal_table_intellib
+EXTERN(void) jpegipp_gen_optimal_table_intellib
   JPP((j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[]));
 #endif

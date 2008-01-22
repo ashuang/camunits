@@ -76,7 +76,7 @@ extern char * getenv JPP((const char * name));
 
 /*
  * We allocate objects from "pools", where each pool is gotten with a single
- * request to jpeg_get_small() or jpeg_get_large().  There is no per-object
+ * request to jpegipp_get_small() or jpegipp_get_large().  There is no per-object
  * overhead within a pool, except for alignment padding.  Each pool has a
  * header with a link to the next pool of the same class.
  * Small and large pool headers are identical except that the latter's
@@ -114,7 +114,7 @@ typedef union large_pool_struct {
  */
 
 typedef struct {
-  struct jpeg_memory_mgr pub; /* public fields */
+  struct jpegipp_memory_mgr pub; /* public fields */
 
   /* Each pool identifier (lifetime class) names a linked list of pools. */
   small_pool_ptr small_list[JPOOL_NUMPOOLS];
@@ -128,7 +128,7 @@ typedef struct {
   jvirt_sarray_ptr virt_sarray_list;
   jvirt_barray_ptr virt_barray_list;
 
-  /* This counts total space obtained from jpeg_get_small/large */
+  /* This counts total space obtained from jpegipp_get_small/large */
   long total_space_allocated;
 
   /* alloc_sarray and alloc_barray set this value for use by virtual
@@ -296,12 +296,12 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       slop = (size_t) (MAX_ALLOC_CHUNK-min_request);
     /* Try to get space, if fail reduce slop and try again */
     for (;;) {
-      hdr_ptr = (small_pool_ptr) jpeg_get_small(cinfo, min_request + slop);
+      hdr_ptr = (small_pool_ptr) jpegipp_get_small(cinfo, min_request + slop);
       if (hdr_ptr != NULL)
         break;
       slop /= 2;
       if (slop < MIN_SLOP)  /* give up when it gets real small */
-        out_of_memory(cinfo, 2); /* jpeg_get_small failed */
+        out_of_memory(cinfo, 2); /* jpegipp_get_small failed */
     }
     mem->total_space_allocated += min_request + slop;
     /* Success, initialize the new pool header and add to end of list */
@@ -331,7 +331,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  * except that FAR pointers are used on 80x86.  However the pool
  * management heuristics are quite different.  We assume that each
  * request is large enough that it may as well be passed directly to
- * jpeg_get_large; the pool management just links everything together
+ * jpegipp_get_large; the pool management just links everything together
  * so that we can free it all on demand.
  * Note: the major use of "large" objects is in JSAMPARRAY and JBLOCKARRAY
  * structures.  The routines that create these structures (see below)
@@ -359,10 +359,10 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
     ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id); /* safety check */
 
-  hdr_ptr = (large_pool_ptr) jpeg_get_large(cinfo, sizeofobject +
+  hdr_ptr = (large_pool_ptr) jpegipp_get_large(cinfo, sizeofobject +
               SIZEOF(large_pool_hdr));
   if (hdr_ptr == NULL)
-    out_of_memory(cinfo, 4);  /* jpeg_get_large failed */
+    out_of_memory(cinfo, 4);  /* jpegipp_get_large failed */
   mem->total_space_allocated += sizeofobject + SIZEOF(large_pool_hdr);
 
   /* Success, initialize the new pool header and add to list */
@@ -591,7 +591,7 @@ realize_virt_arrays (j_common_ptr cinfo)
 
   /* Compute the minimum space needed (maxaccess rows in each buffer)
    * and the maximum space needed (full image height in each buffer).
-   * These may be of use to the system-dependent jpeg_mem_available routine.
+   * These may be of use to the system-dependent jpegipp_mem_available routine.
    */
   space_per_minheight = 0;
   maximum_space = 0;
@@ -616,7 +616,7 @@ realize_virt_arrays (j_common_ptr cinfo)
     return;     /* no unrealized arrays, no work */
 
   /* Determine amount of memory to actually use; this is system-dependent. */
-  avail_mem = jpeg_mem_available(cinfo, space_per_minheight, maximum_space,
+  avail_mem = jpegipp_mem_available(cinfo, space_per_minheight, maximum_space,
          mem->total_space_allocated);
 
   /* If the maximum space needed is available, make all the buffers full
@@ -628,7 +628,7 @@ realize_virt_arrays (j_common_ptr cinfo)
   else {
     max_minheights = avail_mem / space_per_minheight;
     /* If there doesn't seem to be enough space, try to get the minimum
-     * anyway.  This allows a "stub" implementation of jpeg_mem_available().
+     * anyway.  This allows a "stub" implementation of jpegipp_mem_available().
      */
     if (max_minheights <= 0)
       max_minheights = 1;
@@ -645,7 +645,7 @@ realize_virt_arrays (j_common_ptr cinfo)
       } else {
   /* It doesn't fit in memory, create backing store. */
   sptr->rows_in_mem = (JDIMENSION) (max_minheights * sptr->maxaccess);
-  jpeg_open_backing_store(cinfo, & sptr->b_s_info,
+  jpegipp_open_backing_store(cinfo, & sptr->b_s_info,
         (long) sptr->rows_in_array *
         (long) sptr->samplesperrow *
         (long) SIZEOF(JSAMPLE));
@@ -669,7 +669,7 @@ realize_virt_arrays (j_common_ptr cinfo)
       } else {
         /* It doesn't fit in memory, create backing store. */
         bptr->rows_in_mem = (JDIMENSION) (max_minheights * bptr->maxaccess);
-        jpeg_open_backing_store(cinfo, & bptr->b_s_info,
+        jpegipp_open_backing_store(cinfo, & bptr->b_s_info,
             (long) bptr->rows_in_array *
             (long) bptr->blocksperrow *
             (long) SIZEOF(JBLOCK));
@@ -972,7 +972,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     space_freed = lhdr_ptr->hdr.bytes_used +
       lhdr_ptr->hdr.bytes_left +
       SIZEOF(large_pool_hdr);
-    jpeg_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
+    jpegipp_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     lhdr_ptr = next_lhdr_ptr;
   }
@@ -986,7 +986,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     space_freed = shdr_ptr->hdr.bytes_used +
       shdr_ptr->hdr.bytes_left +
       SIZEOF(small_pool_hdr);
-    jpeg_free_small(cinfo, (void *) shdr_ptr, space_freed);
+    jpegipp_free_small(cinfo, (void *) shdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     shdr_ptr = next_shdr_ptr;
   }
@@ -1012,10 +1012,10 @@ self_destruct (j_common_ptr cinfo)
   }
 
   /* Release the memory manager control block too. */
-  jpeg_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
+  jpegipp_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
   cinfo->mem = NULL;    /* ensures I will be called only once */
 
-  jpeg_mem_term(cinfo);   /* system-dependent cleanup */
+  jpegipp_mem_term(cinfo);   /* system-dependent cleanup */
 }
 
 
@@ -1025,7 +1025,7 @@ self_destruct (j_common_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_memory_mgr (j_common_ptr cinfo)
+jinitipp_memory_mgr (j_common_ptr cinfo)
 {
   my_mem_ptr mem;
   long max_to_use;
@@ -1053,13 +1053,13 @@ jinit_memory_mgr (j_common_ptr cinfo)
       (MAX_ALLOC_CHUNK % SIZEOF(ALIGN_TYPE)) != 0)
     ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
 
-  max_to_use = jpeg_mem_init(cinfo); /* system-dependent initialization */
+  max_to_use = jpegipp_mem_init(cinfo); /* system-dependent initialization */
 
   /* Attempt to allocate memory manager's control block */
-  mem = (my_mem_ptr) jpeg_get_small(cinfo, SIZEOF(my_memory_mgr));
+  mem = (my_mem_ptr) jpegipp_get_small(cinfo, SIZEOF(my_memory_mgr));
 
   if (mem == NULL) {
-    jpeg_mem_term(cinfo); /* system-dependent cleanup */
+    jpegipp_mem_term(cinfo); /* system-dependent cleanup */
     ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 0);
   }
 
@@ -1095,7 +1095,7 @@ jinit_memory_mgr (j_common_ptr cinfo)
   cinfo->mem = & mem->pub;
 
   /* Check for an environment variable JPEGMEM; if found, override the
-   * default max_memory setting from jpeg_mem_init.  Note that the
+   * default max_memory setting from jpegipp_mem_init.  Note that the
    * surrounding application may again override this value.
    * If your system doesn't support getenv(), define NO_GETENV to disable
    * this feature.

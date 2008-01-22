@@ -24,7 +24,7 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_d_post_controller pub; /* public fields */
+  struct jpegipp_d_post_controller pub; /* public fields */
 
   /* Color quantization source buffer: this holds output data from
    * the upsample/color conversion step to be passed to the quantizer.
@@ -80,7 +80,7 @@ start_pass_dpost (j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
       /* Single-pass processing with color quantization. */
       post->pub.post_process_data = post_process_1pass;
       /* We could be doing buffered-image output before starting a 2-pass
-       * color quantization; in that case, jinit_d_post_controller did not
+       * color quantization; in that case, jinitipp_d_post_controller did not
        * allocate a strip buffer.  Use the virtual-array buffer as workspace.
        */
       if (post->buffer == NULL) {
@@ -247,14 +247,14 @@ post_process_2pass (j_decompress_ptr cinfo,
  */
 
 GLOBAL(void)
-jinit_d_post_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
+jinitipp_d_post_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 {
   my_post_ptr post;
 
   post = (my_post_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_post_controller));
-  cinfo->post = (struct jpeg_d_post_controller *) post;
+  cinfo->post = (struct jpegipp_d_post_controller *) post;
   post->pub.start_pass = start_pass_dpost;
   post->whole_image = NULL; /* flag for no virtual arrays */
   post->buffer = NULL;    /* flag for no strip buffer */

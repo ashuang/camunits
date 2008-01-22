@@ -146,7 +146,7 @@
  */
 
 GLOBAL(void)
-jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+jpegipp_idct_islow (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
      JCOEFPTR coef_block,
      JSAMPARRAY output_buf, JDIMENSION output_col)
 {
@@ -390,9 +390,9 @@ jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 
 
 GLOBAL(void)
-jpeg_idct_islow_intellib(
+jpegipp_idct_islow_intellib(
   j_decompress_ptr     cinfo,
-  jpeg_component_info* compptr,
+  jpegipp_component_info* compptr,
   JCOEFPTR             coef_block,
   JSAMPARRAY           output_buf,
   JDIMENSION           output_col)
@@ -428,7 +428,7 @@ jpeg_idct_islow_intellib(
   }
 
   return;
-} /* jpeg_idct_islow_intellib() */
+} /* jpegipp_idct_islow_intellib() */
 
 
 #endif /* DCT_ISLOW_SUPPORTED */

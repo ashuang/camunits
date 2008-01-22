@@ -27,17 +27,17 @@
  */
 
 GLOBAL(void)
-jpeg_CreateCompress (j_compress_ptr cinfo, int version, size_t structsize)
+jpegipp_CreateCompress (j_compress_ptr cinfo, int version, size_t structsize)
 {
   int i;
 
   /* Guard against version mismatches between library and caller. */
-  cinfo->mem = NULL;    /* so jpeg_destroy knows mem mgr not called */
+  cinfo->mem = NULL;    /* so jpegipp_destroy knows mem mgr not called */
   if (version != JPEG_LIB_VERSION)
     ERREXIT2(cinfo, JERR_BAD_LIB_VERSION, JPEG_LIB_VERSION, version);
-  if (structsize != SIZEOF(struct jpeg_compress_struct))
+  if (structsize != SIZEOF(struct jpegipp_compress_struct))
     ERREXIT2(cinfo, JERR_BAD_STRUCT_SIZE,
-       (int) SIZEOF(struct jpeg_compress_struct), (int) structsize);
+       (int) SIZEOF(struct jpegipp_compress_struct), (int) structsize);
 
   /* For debugging purposes, we zero the whole master structure.
    * But the application has already set the err pointer, and may have set
@@ -46,16 +46,16 @@ jpeg_CreateCompress (j_compress_ptr cinfo, int version, size_t structsize)
    * complain here.
    */
   {
-    struct jpeg_error_mgr * err = cinfo->err;
+    struct jpegipp_error_mgr * err = cinfo->err;
     void * client_data = cinfo->client_data; /* ignore Purify complaint here */
-    MEMZERO(cinfo, SIZEOF(struct jpeg_compress_struct));
+    MEMZERO(cinfo, SIZEOF(struct jpegipp_compress_struct));
     cinfo->err = err;
     cinfo->client_data = client_data;
   }
   cinfo->is_decompressor = FALSE;
 
   /* Initialize a memory manager instance for this object */
-  jinit_memory_mgr((j_common_ptr) cinfo);
+  jinitipp_memory_mgr((j_common_ptr) cinfo);
 
   /* Zero out pointers to permanent structures. */
   cinfo->progress = NULL;
@@ -86,9 +86,9 @@ jpeg_CreateCompress (j_compress_ptr cinfo, int version, size_t structsize)
  */
 
 GLOBAL(void)
-jpeg_destroy_compress (j_compress_ptr cinfo)
+jpegipp_destroy_compress (j_compress_ptr cinfo)
 {
-  jpeg_destroy((j_common_ptr) cinfo); /* use common routine */
+  jpegipp_destroy((j_common_ptr) cinfo); /* use common routine */
 }
 
 
@@ -98,9 +98,9 @@ jpeg_destroy_compress (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_abort_compress (j_compress_ptr cinfo)
+jpegipp_abort_compress (j_compress_ptr cinfo)
 {
-  jpeg_abort((j_common_ptr) cinfo); /* use common routine */
+  jpegipp_abort((j_common_ptr) cinfo); /* use common routine */
 }
 
 
@@ -108,16 +108,16 @@ jpeg_abort_compress (j_compress_ptr cinfo)
  * Forcibly suppress or un-suppress all quantization and Huffman tables.
  * Marks all currently defined tables as already written (if suppress)
  * or not written (if !suppress).  This will control whether they get emitted
- * by a subsequent jpeg_start_compress call.
+ * by a subsequent jpegipp_start_compress call.
  *
  * This routine is exported for use by applications that want to produce
  * abbreviated JPEG datastreams.  It logically belongs in jcparam.c, but
- * since it is called by jpeg_start_compress, we put it here --- otherwise
+ * since it is called by jpegipp_start_compress, we put it here --- otherwise
  * jcparam.o would be linked whether the application used it or not.
  */
 
 GLOBAL(void)
-jpeg_suppress_tables (j_compress_ptr cinfo, boolean suppress)
+jpegipp_suppress_tables (j_compress_ptr cinfo, boolean suppress)
 {
   int i;
   JQUANT_TBL * qtbl;
@@ -145,7 +145,7 @@ jpeg_suppress_tables (j_compress_ptr cinfo, boolean suppress)
  */
 
 GLOBAL(void)
-jpeg_finish_compress (j_compress_ptr cinfo)
+jpegipp_finish_compress (j_compress_ptr cinfo)
 {
   JDIMENSION iMCU_row;
 
@@ -177,20 +177,20 @@ jpeg_finish_compress (j_compress_ptr cinfo)
   /* Write EOI, do final cleanup */
   (*cinfo->marker->write_file_trailer) (cinfo);
   (*cinfo->dest->term_destination) (cinfo);
-  /* We can use jpeg_abort to release memory and reset global_state */
-  jpeg_abort((j_common_ptr) cinfo);
+  /* We can use jpegipp_abort to release memory and reset global_state */
+  jpegipp_abort((j_common_ptr) cinfo);
 }
 
 
 /*
  * Write a special marker.
  * This is only recommended for writing COM or APPn markers.
- * Must be called after jpeg_start_compress() and before
- * first call to jpeg_write_scanlines() or jpeg_write_raw_data().
+ * Must be called after jpegipp_start_compress() and before
+ * first call to jpegipp_write_scanlines() or jpegipp_write_raw_data().
  */
 
 GLOBAL(void)
-jpeg_write_marker (j_compress_ptr cinfo, int marker,
+jpegipp_write_marker (j_compress_ptr cinfo, int marker,
        const JOCTET *dataptr, unsigned int datalen)
 {
   JMETHOD(void, write_marker_byte, (j_compress_ptr info, int val));
@@ -212,7 +212,7 @@ jpeg_write_marker (j_compress_ptr cinfo, int marker,
 /* Same, but piecemeal. */
 
 GLOBAL(void)
-jpeg_write_m_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
+jpegipp_write_m_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
 {
   if (cinfo->next_scanline != 0 ||
       (cinfo->global_state != CSTATE_SCANNING &&
@@ -224,7 +224,7 @@ jpeg_write_m_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
 }
 
 GLOBAL(void)
-jpeg_write_m_byte (j_compress_ptr cinfo, int val)
+jpegipp_write_m_byte (j_compress_ptr cinfo, int val)
 {
   (*cinfo->marker->write_marker_byte) (cinfo, val);
 }
@@ -240,19 +240,19 @@ jpeg_write_m_byte (j_compress_ptr cinfo, int val)
  *    initialize JPEG object
  *    set JPEG parameters
  *    set destination to table file
- *    jpeg_write_tables(cinfo);
+ *    jpegipp_write_tables(cinfo);
  *    set destination to image file
- *    jpeg_start_compress(cinfo, FALSE);
+ *    jpegipp_start_compress(cinfo, FALSE);
  *    write data...
- *    jpeg_finish_compress(cinfo);
+ *    jpegipp_finish_compress(cinfo);
  *
- * jpeg_write_tables has the side effect of marking all tables written
- * (same as jpeg_suppress_tables(..., TRUE)).  Thus a subsequent start_compress
+ * jpegipp_write_tables has the side effect of marking all tables written
+ * (same as jpegipp_suppress_tables(..., TRUE)).  Thus a subsequent start_compress
  * will not re-emit the tables unless it is passed write_all_tables=TRUE.
  */
 
 GLOBAL(void)
-jpeg_write_tables (j_compress_ptr cinfo)
+jpegipp_write_tables (j_compress_ptr cinfo)
 {
   if (cinfo->global_state != CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
@@ -261,13 +261,13 @@ jpeg_write_tables (j_compress_ptr cinfo)
   (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
   /* Initialize the marker writer ... bit of a crock to do it here. */
-  jinit_marker_writer(cinfo);
+  jinitipp_marker_writer(cinfo);
   /* Write them tables! */
   (*cinfo->marker->write_tables_only) (cinfo);
   /* And clean up. */
   (*cinfo->dest->term_destination) (cinfo);
   /*
-   * In library releases up through v6a, we called jpeg_abort() here to free
+   * In library releases up through v6a, we called jpegipp_abort() here to free
    * any working memory allocated by the destination manager and marker
    * writer.  Some applications had a problem with that: they allocated space
    * of their own from the library memory manager, and didn't want it to go
@@ -275,7 +275,7 @@ jpeg_write_tables (j_compress_ptr cinfo)
    * memory leak if an app calls write_tables repeatedly without doing a full
    * compression cycle or otherwise resetting the JPEG object.  However, that
    * seems less bad than unexpectedly freeing memory in the normal case.
-   * An app that prefers the old behavior can call jpeg_abort for itself after
-   * each call to jpeg_write_tables().
+   * An app that prefers the old behavior can call jpegipp_abort for itself after
+   * each call to jpegipp_write_tables().
    */
 }

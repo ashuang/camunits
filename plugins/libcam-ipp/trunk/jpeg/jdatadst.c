@@ -26,7 +26,7 @@
 /* Expanded data destination object for stdio output */
 
 typedef struct {
-  struct jpeg_destination_mgr pub; /* public fields */
+  struct jpegipp_destination_mgr pub; /* public fields */
 
   FILE * outfile;   /* target stream */
   JOCTET * buffer;    /* start of buffer */
@@ -38,7 +38,7 @@ typedef my_destination_mgr * my_dest_ptr;
 
 
 /*
- * Initialize destination --- called by jpeg_start_compress
+ * Initialize destination --- called by jpegipp_start_compress
  * before any data is actually written.
  */
 
@@ -124,10 +124,10 @@ empty_output_buffer_intellib(j_compress_ptr cinfo)
 #endif
 
 /*
- * Terminate destination --- called by jpeg_finish_compress
+ * Terminate destination --- called by jpegipp_finish_compress
  * after all data has been written.  Usually needs to flush buffer.
  *
- * NB: *not* called by jpeg_abort or jpeg_destroy; surrounding
+ * NB: *not* called by jpegipp_abort or jpegipp_destroy; surrounding
  * application must deal with any cleanup that should happen even
  * for error exit.
  */
@@ -157,18 +157,18 @@ term_destination (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
+jpegipp_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
 {
   my_dest_ptr dest;
 
   /* The destination object is made permanent so that multiple JPEG images
-   * can be written to the same file without re-executing jpeg_stdio_dest.
+   * can be written to the same file without re-executing jpegipp_stdio_dest.
    * This makes it dangerous to use this manager and a different destination
    * manager serially with the same JPEG object, because their private object
    * sizes may be different.  Caveat programmer.
    */
   if (cinfo->dest == NULL) {  /* first time for this JPEG object? */
-    cinfo->dest = (struct jpeg_destination_mgr *)
+    cinfo->dest = (struct jpegipp_destination_mgr *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
           SIZEOF(my_destination_mgr));
   }

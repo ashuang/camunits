@@ -34,7 +34,7 @@ typedef enum {      /* Operating modes for buffer controllers */
 #define CSTATE_START  100 /* after create_compress */
 #define CSTATE_SCANNING 101 /* start_compress done, write_scanlines OK */
 #define CSTATE_RAW_OK 102 /* start_compress done, write_raw_data OK */
-#define CSTATE_WRCOEFS  103 /* jpeg_write_coefficients done */
+#define CSTATE_WRCOEFS  103 /* jpegipp_write_coefficients done */
 #define DSTATE_START  200 /* after create_decompress */
 #define DSTATE_INHEADER 201 /* reading header markers, no SOS yet */
 #define DSTATE_READY  202 /* found SOS, ready for start_decompress */
@@ -42,16 +42,16 @@ typedef enum {      /* Operating modes for buffer controllers */
 #define DSTATE_PRESCAN  204 /* performing dummy pass for 2-pass quant */
 #define DSTATE_SCANNING 205 /* start_decompress done, read_scanlines OK */
 #define DSTATE_RAW_OK 206 /* start_decompress done, read_raw_data OK */
-#define DSTATE_BUFIMAGE 207 /* expecting jpeg_start_output */
-#define DSTATE_BUFPOST  208 /* looking for SOS/EOI in jpeg_finish_output */
-#define DSTATE_RDCOEFS  209 /* reading file in jpeg_read_coefficients */
-#define DSTATE_STOPPING 210 /* looking for EOI in jpeg_finish_decompress */
+#define DSTATE_BUFIMAGE 207 /* expecting jpegipp_start_output */
+#define DSTATE_BUFPOST  208 /* looking for SOS/EOI in jpegipp_finish_output */
+#define DSTATE_RDCOEFS  209 /* reading file in jpegipp_read_coefficients */
+#define DSTATE_STOPPING 210 /* looking for EOI in jpegipp_finish_decompress */
 
 
 /* Declarations for compression modules */
 
 /* Master control module */
-struct jpeg_comp_master {
+struct jpegipp_comp_master {
   JMETHOD(void, prepare_for_pass, (j_compress_ptr cinfo));
   JMETHOD(void, pass_startup, (j_compress_ptr cinfo));
   JMETHOD(void, finish_pass, (j_compress_ptr cinfo));
@@ -62,7 +62,7 @@ struct jpeg_comp_master {
 };
 
 /* Main buffer control (downsampled-data buffer) */
-struct jpeg_c_main_controller {
+struct jpegipp_c_main_controller {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo, J_BUF_MODE pass_mode));
   JMETHOD(void, process_data, (j_compress_ptr cinfo,
              JSAMPARRAY input_buf, JDIMENSION *in_row_ctr,
@@ -70,7 +70,7 @@ struct jpeg_c_main_controller {
 };
 
 /* Compression preprocessing (downsampling input buffer control) */
-struct jpeg_c_prep_controller {
+struct jpegipp_c_prep_controller {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo, J_BUF_MODE pass_mode));
   JMETHOD(void, pre_process_data, (j_compress_ptr cinfo,
            JSAMPARRAY input_buf,
@@ -82,14 +82,14 @@ struct jpeg_c_prep_controller {
 };
 
 /* Coefficient buffer control */
-struct jpeg_c_coef_controller {
+struct jpegipp_c_coef_controller {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo, J_BUF_MODE pass_mode));
   JMETHOD(boolean, compress_data, (j_compress_ptr cinfo,
            JSAMPIMAGE input_buf));
 };
 
 /* Colorspace conversion */
-struct jpeg_color_converter {
+struct jpegipp_color_converter {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo));
   JMETHOD(void, color_convert, (j_compress_ptr cinfo,
         JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
@@ -97,7 +97,7 @@ struct jpeg_color_converter {
 };
 
 /* Downsampling */
-struct jpeg_downsampler {
+struct jpegipp_downsampler {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo));
   JMETHOD(void, downsample, (j_compress_ptr cinfo,
            JSAMPIMAGE input_buf, JDIMENSION in_row_index,
@@ -108,25 +108,25 @@ struct jpeg_downsampler {
 };
 
 /* Forward DCT (also controls coefficient quantization) */
-struct jpeg_forward_dct {
+struct jpegipp_forward_dct {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo));
   /* perhaps this should be an array??? */
   JMETHOD(void, forward_DCT, (j_compress_ptr cinfo,
-            jpeg_component_info * compptr,
+            jpegipp_component_info * compptr,
             JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
             JDIMENSION start_row, JDIMENSION start_col,
             JDIMENSION num_blocks));
 };
 
 /* Entropy encoding */
-struct jpeg_entropy_encoder {
+struct jpegipp_entropy_encoder {
   JMETHOD(void, start_pass, (j_compress_ptr cinfo, boolean gather_statistics));
   JMETHOD(boolean, encode_mcu, (j_compress_ptr cinfo, JBLOCKROW *MCU_data));
   JMETHOD(void, finish_pass, (j_compress_ptr cinfo));
 };
 
 /* Marker writing */
-struct jpeg_marker_writer {
+struct jpegipp_marker_writer {
   JMETHOD(void, write_file_header, (j_compress_ptr cinfo));
   JMETHOD(void, write_frame_header, (j_compress_ptr cinfo));
   JMETHOD(void, write_scan_header, (j_compress_ptr cinfo));
@@ -143,7 +143,7 @@ struct jpeg_marker_writer {
 /* Declarations for decompression modules */
 
 /* Master control module */
-struct jpeg_decomp_master {
+struct jpegipp_decomp_master {
   JMETHOD(void, prepare_for_output_pass, (j_decompress_ptr cinfo));
   JMETHOD(void, finish_output_pass, (j_decompress_ptr cinfo));
 
@@ -152,7 +152,7 @@ struct jpeg_decomp_master {
 };
 
 /* Input control module */
-struct jpeg_input_controller {
+struct jpegipp_input_controller {
   JMETHOD(int, consume_input, (j_decompress_ptr cinfo));
   JMETHOD(void, reset_input_controller, (j_decompress_ptr cinfo));
   JMETHOD(void, start_input_pass, (j_decompress_ptr cinfo));
@@ -164,7 +164,7 @@ struct jpeg_input_controller {
 };
 
 /* Main buffer control (downsampled-data buffer) */
-struct jpeg_d_main_controller {
+struct jpegipp_d_main_controller {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo, J_BUF_MODE pass_mode));
   JMETHOD(void, process_data, (j_decompress_ptr cinfo,
              JSAMPARRAY output_buf, JDIMENSION *out_row_ctr,
@@ -172,7 +172,7 @@ struct jpeg_d_main_controller {
 };
 
 /* Coefficient buffer control */
-struct jpeg_d_coef_controller {
+struct jpegipp_d_coef_controller {
   JMETHOD(void, start_input_pass, (j_decompress_ptr cinfo));
   JMETHOD(int, consume_data, (j_decompress_ptr cinfo));
   JMETHOD(void, start_output_pass, (j_decompress_ptr cinfo));
@@ -183,7 +183,7 @@ struct jpeg_d_coef_controller {
 };
 
 /* Decompression postprocessing (color quantization buffer control) */
-struct jpeg_d_post_controller {
+struct jpegipp_d_post_controller {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo, J_BUF_MODE pass_mode));
   JMETHOD(void, post_process_data, (j_decompress_ptr cinfo,
             JSAMPIMAGE input_buf,
@@ -195,15 +195,15 @@ struct jpeg_d_post_controller {
 };
 
 /* Marker reading & parsing */
-struct jpeg_marker_reader {
+struct jpegipp_marker_reader {
   JMETHOD(void, reset_marker_reader, (j_decompress_ptr cinfo));
   /* Read markers until SOS or EOI.
-   * Returns same codes as are defined for jpeg_consume_input:
+   * Returns same codes as are defined for jpegipp_consume_input:
    * JPEG_SUSPENDED, JPEG_REACHED_SOS, or JPEG_REACHED_EOI.
    */
   JMETHOD(int, read_markers, (j_decompress_ptr cinfo));
   /* Read a restart marker --- exported for use by entropy decoder only */
-  jpeg_marker_parser_method read_restart_marker;
+  jpegipp_marker_parser_method read_restart_marker;
 
   /* State of marker reader --- nominally internal, but applications
    * supplying COM or APPn handlers might like to know the state.
@@ -215,7 +215,7 @@ struct jpeg_marker_reader {
 };
 
 /* Entropy decoding */
-struct jpeg_entropy_decoder {
+struct jpegipp_entropy_decoder {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo));
   JMETHOD(boolean, decode_mcu, (j_decompress_ptr cinfo,
         JBLOCKROW *MCU_data));
@@ -227,18 +227,18 @@ struct jpeg_entropy_decoder {
 
 /* Inverse DCT (also performs dequantization) */
 typedef JMETHOD(void, inverse_DCT_method_ptr,
-    (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+    (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
      JCOEFPTR coef_block,
      JSAMPARRAY output_buf, JDIMENSION output_col));
 
-struct jpeg_inverse_dct {
+struct jpegipp_inverse_dct {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo));
   /* It is useful to allow each component to have a separate IDCT method. */
   inverse_DCT_method_ptr inverse_DCT[MAX_COMPONENTS];
 };
 
 /* Upsampling (note that upsampler must also call color converter) */
-struct jpeg_upsampler {
+struct jpegipp_upsampler {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo));
   JMETHOD(void, upsample, (j_decompress_ptr cinfo,
          JSAMPIMAGE input_buf,
@@ -252,7 +252,7 @@ struct jpeg_upsampler {
 };
 
 /* Colorspace conversion */
-struct jpeg_color_deconverter {
+struct jpegipp_color_deconverter {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo));
   JMETHOD(void, color_convert, (j_decompress_ptr cinfo,
         JSAMPIMAGE input_buf, JDIMENSION input_row,
@@ -260,7 +260,7 @@ struct jpeg_color_deconverter {
 };
 
 /* Color quantization or color precision reduction */
-struct jpeg_color_quantizer {
+struct jpegipp_color_quantizer {
   JMETHOD(void, start_pass, (j_decompress_ptr cinfo, boolean is_pre_scan));
   JMETHOD(void, color_quantize, (j_decompress_ptr cinfo,
          JSAMPARRAY input_buf, JSAMPARRAY output_buf,
@@ -303,78 +303,78 @@ struct jpeg_color_quantizer {
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jinit_compress_master jICompress
-#define jinit_c_master_control  jICMaster
-#define jinit_c_main_controller jICMainC
-#define jinit_c_prep_controller jICPrepC
-#define jinit_c_coef_controller jICCoefC
-#define jinit_color_converter jICColor
-#define jinit_downsampler jIDownsampler
-#define jinit_forward_dct jIFDCT
-#define jinit_huff_encoder  jIHEncoder
-#define jinit_phuff_encoder jIPHEncoder
-#define jinit_marker_writer jIMWriter
-#define jinit_master_decompress jIDMaster
-#define jinit_d_main_controller jIDMainC
-#define jinit_d_coef_controller jIDCoefC
-#define jinit_d_post_controller jIDPostC
-#define jinit_input_controller  jIInCtlr
-#define jinit_marker_reader jIMReader
-#define jinit_huff_decoder  jIHDecoder
-#define jinit_phuff_decoder jIPHDecoder
-#define jinit_inverse_dct jIIDCT
-#define jinit_upsampler   jIUpsampler
-#define jinit_color_deconverter jIDColor
-#define jinit_1pass_quantizer jI1Quant
-#define jinit_2pass_quantizer jI2Quant
-#define jinit_merged_upsampler  jIMUpsampler
-#define jinit_memory_mgr  jIMemMgr
+#define jinitipp_compress_master jICompress
+#define jinitipp_c_master_control  jICMaster
+#define jinitipp_c_main_controller jICMainC
+#define jinitipp_c_prep_controller jICPrepC
+#define jinitipp_c_coef_controller jICCoefC
+#define jinitipp_color_converter jICColor
+#define jinitipp_downsampler jIDownsampler
+#define jinitipp_forward_dct jIFDCT
+#define jinitipp_huff_encoder  jIHEncoder
+#define jinitipp_phuff_encoder jIPHEncoder
+#define jinitipp_marker_writer jIMWriter
+#define jinitipp_master_decompress jIDMaster
+#define jinitipp_d_main_controller jIDMainC
+#define jinitipp_d_coef_controller jIDCoefC
+#define jinitipp_d_post_controller jIDPostC
+#define jinitipp_input_controller  jIInCtlr
+#define jinitipp_marker_reader jIMReader
+#define jinitipp_huff_decoder  jIHDecoder
+#define jinitipp_phuff_decoder jIPHDecoder
+#define jinitipp_inverse_dct jIIDCT
+#define jinitipp_upsampler   jIUpsampler
+#define jinitipp_color_deconverter jIDColor
+#define jinitipp_1pass_quantizer jI1Quant
+#define jinitipp_2pass_quantizer jI2Quant
+#define jinitipp_merged_upsampler  jIMUpsampler
+#define jinitipp_memory_mgr  jIMemMgr
 #define jdiv_round_up   jDivRound
 #define jround_up   jRound
 #define jcopy_sample_rows jCopySamples
 #define jcopy_block_row   jCopyBlocks
 #define jzero_far   jZeroFar
-#define jpeg_zigzag_order jZIGTable
-#define jpeg_natural_order  jZAGTable
+#define jpegipp_zigzag_order jZIGTable
+#define jpegipp_natural_order  jZAGTable
 #endif /* NEED_SHORT_EXTERNAL_NAMES */
 
 
 /* Compression module initialization routines */
-EXTERN(void) jinit_compress_master JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_c_master_control JPP((j_compress_ptr cinfo,
+EXTERN(void) jinitipp_compress_master JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_c_master_control JPP((j_compress_ptr cinfo,
            boolean transcode_only));
-EXTERN(void) jinit_c_main_controller JPP((j_compress_ptr cinfo,
+EXTERN(void) jinitipp_c_main_controller JPP((j_compress_ptr cinfo,
             boolean need_full_buffer));
-EXTERN(void) jinit_c_prep_controller JPP((j_compress_ptr cinfo,
+EXTERN(void) jinitipp_c_prep_controller JPP((j_compress_ptr cinfo,
             boolean need_full_buffer));
-EXTERN(void) jinit_c_coef_controller JPP((j_compress_ptr cinfo,
+EXTERN(void) jinitipp_c_coef_controller JPP((j_compress_ptr cinfo,
             boolean need_full_buffer));
-EXTERN(void) jinit_color_converter JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_downsampler JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_forward_dct JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_huff_encoder JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_phuff_encoder JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_marker_writer JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_color_converter JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_downsampler JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_forward_dct JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_huff_encoder JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_phuff_encoder JPP((j_compress_ptr cinfo));
+EXTERN(void) jinitipp_marker_writer JPP((j_compress_ptr cinfo));
 /* Decompression module initialization routines */
-EXTERN(void) jinit_master_decompress JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_d_main_controller JPP((j_decompress_ptr cinfo,
+EXTERN(void) jinitipp_master_decompress JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_d_main_controller JPP((j_decompress_ptr cinfo,
             boolean need_full_buffer));
-EXTERN(void) jinit_d_coef_controller JPP((j_decompress_ptr cinfo,
+EXTERN(void) jinitipp_d_coef_controller JPP((j_decompress_ptr cinfo,
             boolean need_full_buffer));
-EXTERN(void) jinit_d_post_controller JPP((j_decompress_ptr cinfo,
+EXTERN(void) jinitipp_d_post_controller JPP((j_decompress_ptr cinfo,
             boolean need_full_buffer));
-EXTERN(void) jinit_input_controller JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_marker_reader JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_huff_decoder JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_phuff_decoder JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_inverse_dct JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_upsampler JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_color_deconverter JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_1pass_quantizer JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_2pass_quantizer JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_merged_upsampler JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_input_controller JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_marker_reader JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_huff_decoder JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_phuff_decoder JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_inverse_dct JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_upsampler JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_color_deconverter JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_1pass_quantizer JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_2pass_quantizer JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinitipp_merged_upsampler JPP((j_decompress_ptr cinfo));
 /* Memory manager initialization */
-EXTERN(void) jinit_memory_mgr JPP((j_common_ptr cinfo));
+EXTERN(void) jinitipp_memory_mgr JPP((j_common_ptr cinfo));
 
 /* Utility routines in jutils.c */
 EXTERN(long) jdiv_round_up JPP((long a, long b));
@@ -387,9 +387,9 @@ EXTERN(void) jcopy_block_row JPP((JBLOCKROW input_row, JBLOCKROW output_row,
 EXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
 /* Constant tables in jutils.c */
 #if 0       /* This table is not actually needed in v6a */
-extern const int jpeg_zigzag_order[]; /* natural coef order to zigzag order */
+extern const int jpegipp_zigzag_order[]; /* natural coef order to zigzag order */
 #endif
-extern const int jpeg_natural_order[]; /* zigzag coef order to natural order */
+extern const int jpegipp_natural_order[]; /* zigzag coef order to natural order */
 
 /* Suppress undefined-structure complaints if necessary. */
 

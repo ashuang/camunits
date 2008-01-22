@@ -71,7 +71,7 @@ typedef struct {
 
 
 typedef struct {
-  struct jpeg_entropy_decoder pub; /* public fields */
+  struct jpegipp_entropy_decoder pub; /* public fields */
 
   /* These fields are loaded into local variables at start of each MCU.
    * In case of suspension, we exit WITHOUT updating them.
@@ -108,7 +108,7 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci, blkn, dctbl, actbl;
-  jpeg_component_info * compptr;
+  jpegipp_component_info * compptr;
 
   /* Check that the scan parameters Ss, Se, Ah/Al are OK for sequential JPEG.
    * This ought to be an error condition, but we make it a warning because
@@ -125,14 +125,14 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
     /* Compute derived values for Huffman tables */
     /* We may do this more than once for a table, but it's not expensive */
 #ifndef IPPJ_HUFF
-    jpeg_make_d_derived_tbl(cinfo, TRUE, dctbl,
+    jpegipp_make_d_derived_tbl(cinfo, TRUE, dctbl,
           & entropy->dc_derived_tbls[dctbl]);
-    jpeg_make_d_derived_tbl(cinfo, FALSE, actbl,
+    jpegipp_make_d_derived_tbl(cinfo, FALSE, actbl,
           & entropy->ac_derived_tbls[actbl]);
 #else
-      jpeg_make_d_derived_tbl_intellib(cinfo, TRUE, dctbl,
+      jpegipp_make_d_derived_tbl_intellib(cinfo, TRUE, dctbl,
             & entropy->dc_derived_tbls[dctbl]);
-      jpeg_make_d_derived_tbl_intellib(cinfo, FALSE, actbl,
+      jpegipp_make_d_derived_tbl_intellib(cinfo, FALSE, actbl,
             & entropy->ac_derived_tbls[actbl]);
 #endif
     /* Initialize DC predictions to 0 */
@@ -188,7 +188,7 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
+jpegipp_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
        d_derived_tbl ** pdtbl)
 {
   JHUFF_TBL *htbl;
@@ -267,7 +267,7 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
       dtbl->maxcode[l] = -1;  /* -1 if no codes of this length */
     }
   }
-  dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpeg_huff_decode terminates */
+  dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpegipp_huff_decode terminates */
 
   /* Compute lookahead tables to speed up decoding.
    * First we set all the table entries to 0, indicating "too long";
@@ -309,7 +309,7 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
 
 #ifdef IPPJ_HUFF
 GLOBAL(void)
-jpeg_make_d_derived_tbl_intellib(
+jpegipp_make_d_derived_tbl_intellib(
   j_decompress_ptr cinfo,
   boolean          isDC,
   int              tblno,
@@ -360,7 +360,7 @@ jpeg_make_d_derived_tbl_intellib(
   dtbl = *pdtbl;
 
   return;
-} /* jpeg_make_d_derived_tbl_intellib() */
+} /* jpegipp_make_d_derived_tbl_intellib() */
 #endif
 
 /*
@@ -375,7 +375,7 @@ jpeg_make_d_derived_tbl_intellib(
  * quite slow and take time proportional to the number of places shifted.
  * (This is true with most PC compilers, for instance.)  In this case it may
  * be a win to set MIN_GET_BITS to the minimum value of 15.  This reduces the
- * average shift distance at the cost of more calls to jpeg_fill_bit_buffer.
+ * average shift distance at the cost of more calls to jpegipp_fill_bit_buffer.
  */
 
 #ifdef SLOW_SHIFT_32
@@ -385,7 +385,7 @@ jpeg_make_d_derived_tbl_intellib(
 #endif
 
 GLOBAL(boolean)
-jpeg_fill_bit_buffer (bitread_working_state * state,
+jpegipp_fill_bit_buffer (bitread_working_state * state,
           register bit_buf_type get_buffer, register int bits_left,
           int nbits)
 /* Load up the bit buffer to a depth of at least nbits */
@@ -490,7 +490,7 @@ jpeg_fill_bit_buffer (bitread_working_state * state,
  * See jdhuff.h for info about usage.
  */
 GLOBAL(int)
-jpeg_huff_decode (bitread_working_state * state,
+jpegipp_huff_decode (bitread_working_state * state,
       register bit_buf_type get_buffer, register int bits_left,
       d_derived_tbl * htbl, int min_bits)
 {
@@ -659,7 +659,7 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
         int ci = cinfo->MCU_membership[blkn];
         s += state.last_dc_val[ci];
         state.last_dc_val[ci] = s;
-        /* Output the DC coefficient (assumes jpeg_natural_order[0] = 0) */
+        /* Output the DC coefficient (assumes jpegipp_natural_order[0] = 0) */
         (*block)[0] = (JCOEF) s;
       }
 
@@ -679,10 +679,10 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
             r = GET_BITS(s);
             s = HUFF_EXTEND(r, s);
             /* Output coefficient in natural (dezigzagged) order.
-             * Note: the extra entries in jpeg_natural_order[] will save us
+             * Note: the extra entries in jpegipp_natural_order[] will save us
              * if k >= DCTSIZE2, which could happen if the data is corrupted.
              */
-            (*block)[jpeg_natural_order[k]] = (JCOEF) s;
+            (*block)[jpegipp_natural_order[k]] = (JCOEF) s;
           } else {
             if (r != 15)
               break;
@@ -808,7 +808,7 @@ decode_mcu_intellib(
  */
 
 GLOBAL(void)
-jinit_huff_decoder (j_decompress_ptr cinfo)
+jinitipp_huff_decoder (j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;
@@ -816,7 +816,7 @@ jinit_huff_decoder (j_decompress_ptr cinfo)
   entropy = (huff_entropy_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(huff_entropy_decoder));
-  cinfo->entropy = (struct jpeg_entropy_decoder *) entropy;
+  cinfo->entropy = (struct jpegipp_entropy_decoder *) entropy;
   entropy->pub.start_pass = start_pass_huff_decoder;
 #ifndef IPPJ_HUFF
   entropy->pub.decode_mcu = decode_mcu;

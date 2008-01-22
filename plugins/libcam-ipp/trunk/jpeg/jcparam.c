@@ -20,7 +20,7 @@
  */
 
 GLOBAL(void)
-jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
+jpegipp_add_quant_table (j_compress_ptr cinfo, int which_tbl,
           const unsigned int *basic_table,
           int scale_factor, boolean force_baseline)
 /* Define a quantization table equal to the basic_table times
@@ -43,7 +43,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
   qtblptr = & cinfo->quant_tbl_ptrs[which_tbl];
 
   if (*qtblptr == NULL)
-    *qtblptr = jpeg_alloc_quant_table((j_common_ptr) cinfo);
+    *qtblptr = jpegipp_alloc_quant_table((j_common_ptr) cinfo);
 
   for (i = 0; i < DCTSIZE2; i++) {
     temp = ((long) basic_table[i] * scale_factor + 50L) / 100L;
@@ -61,11 +61,11 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
 
 
 GLOBAL(void)
-jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
+jpegipp_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
        boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables
  * and a straight percentage-scaling quality scale.  In most cases it's better
- * to use jpeg_set_quality (below); this entry point is provided for
+ * to use jpegipp_set_quality (below); this entry point is provided for
  * applications that insist on a linear percentage scaling.
  */
 {
@@ -95,15 +95,15 @@ jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
   };
 
   /* Set up two quantization tables using the specified scaling */
-  jpeg_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
+  jpegipp_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
            scale_factor, force_baseline);
-  jpeg_add_quant_table(cinfo, 1, std_chrominance_quant_tbl,
+  jpegipp_add_quant_table(cinfo, 1, std_chrominance_quant_tbl,
            scale_factor, force_baseline);
 }
 
 
 GLOBAL(int)
-jpeg_quality_scaling (int quality)
+jpegipp_quality_scaling (int quality)
 /* Convert a user-specified quality rating to a percentage scaling factor
  * for an underlying quantization table, using our recommended scaling curve.
  * The input 'quality' factor should be 0 (terrible) to 100 (very good).
@@ -115,7 +115,7 @@ jpeg_quality_scaling (int quality)
 
   /* The basic table is used as-is (scaling 100) for a quality of 50.
    * Qualities 50..100 are converted to scaling percentage 200 - 2*Q;
-   * note that at Q=100 the scaling is 0, which will cause jpeg_add_quant_table
+   * note that at Q=100 the scaling is 0, which will cause jpegipp_add_quant_table
    * to make all the table entries 1 (hence, minimum quantization loss).
    * Qualities 1..50 are converted to scaling percentage 5000/Q.
    */
@@ -129,7 +129,7 @@ jpeg_quality_scaling (int quality)
 
 
 GLOBAL(void)
-jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
+jpegipp_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables.
  * This is the standard quality-adjusting entry point for typical user
  * interfaces; only those who want detailed control over quantization tables
@@ -137,10 +137,10 @@ jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
  */
 {
   /* Convert user 0-100 rating to percentage scaling */
-  quality = jpeg_quality_scaling(quality);
+  quality = jpegipp_quality_scaling(quality);
 
   /* Set up standard quality tables */
-  jpeg_set_linear_quality(cinfo, quality, force_baseline);
+  jpegipp_set_linear_quality(cinfo, quality, force_baseline);
 }
 
 
@@ -156,7 +156,7 @@ add_huff_table (j_compress_ptr cinfo,
   int nsymbols, len;
 
   if (*htblptr == NULL)
-    *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+    *htblptr = jpegipp_alloc_huff_table((j_common_ptr) cinfo);
 
   /* Copy the number-of-symbols-of-each-code-length counts */
   MEMCOPY((*htblptr)->bits, bits, SIZEOF((*htblptr)->bits));
@@ -265,7 +265,7 @@ std_huff_tables (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_set_defaults (j_compress_ptr cinfo)
+jpegipp_set_defaults (j_compress_ptr cinfo)
 {
   int i;
 
@@ -278,15 +278,15 @@ jpeg_set_defaults (j_compress_ptr cinfo)
    * multiple images at same param settings.
    */
   if (cinfo->comp_info == NULL)
-    cinfo->comp_info = (jpeg_component_info *)
+    cinfo->comp_info = (jpegipp_component_info *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-          MAX_COMPONENTS * SIZEOF(jpeg_component_info));
+          MAX_COMPONENTS * SIZEOF(jpegipp_component_info));
 
   /* Initialize everything not dependent on the color space */
 
   cinfo->data_precision = BITS_IN_JSAMPLE;
   /* Set up two quantization tables using default quality of 75 */
-  jpeg_set_quality(cinfo, 75, TRUE);
+  jpegipp_set_quality(cinfo, 75, TRUE);
   /* Set up two Huffman tables */
   std_huff_tables(cinfo);
 
@@ -331,7 +331,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
   cinfo->restart_in_rows = 0;
 
   /* Fill in default JFIF marker parameters.  Note that whether the marker
-   * will actually be written is determined by jpeg_set_colorspace.
+   * will actually be written is determined by jpegipp_set_colorspace.
    *
    * By default, the library emits JFIF version code 1.01.
    * An application that wants to emit JFIF 1.02 extension markers should set
@@ -347,7 +347,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
 
   /* Choose JPEG colorspace based on input space, set defaults accordingly */
 
-  jpeg_default_colorspace(cinfo);
+  jpegipp_default_colorspace(cinfo);
 }
 
 
@@ -356,26 +356,26 @@ jpeg_set_defaults (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_default_colorspace (j_compress_ptr cinfo)
+jpegipp_default_colorspace (j_compress_ptr cinfo)
 {
   switch (cinfo->in_color_space) {
   case JCS_GRAYSCALE:
-    jpeg_set_colorspace(cinfo, JCS_GRAYSCALE);
+    jpegipp_set_colorspace(cinfo, JCS_GRAYSCALE);
     break;
   case JCS_RGB:
-    jpeg_set_colorspace(cinfo, JCS_YCbCr);
+    jpegipp_set_colorspace(cinfo, JCS_YCbCr);
     break;
   case JCS_YCbCr:
-    jpeg_set_colorspace(cinfo, JCS_YCbCr);
+    jpegipp_set_colorspace(cinfo, JCS_YCbCr);
     break;
   case JCS_CMYK:
-    jpeg_set_colorspace(cinfo, JCS_CMYK); /* By default, no translation */
+    jpegipp_set_colorspace(cinfo, JCS_CMYK); /* By default, no translation */
     break;
   case JCS_YCCK:
-    jpeg_set_colorspace(cinfo, JCS_YCCK);
+    jpegipp_set_colorspace(cinfo, JCS_YCCK);
     break;
   case JCS_UNKNOWN:
-    jpeg_set_colorspace(cinfo, JCS_UNKNOWN);
+    jpegipp_set_colorspace(cinfo, JCS_UNKNOWN);
     break;
   default:
     ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
@@ -388,9 +388,9 @@ jpeg_default_colorspace (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
+jpegipp_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 {
-  jpeg_component_info * compptr;
+  jpegipp_component_info * compptr;
   int ci;
 
 #define SET_COMP(index,id,hsamp,vsamp,quant,dctbl,actbl)  \
@@ -410,7 +410,7 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
    * tables 1 for chrominance components.
    */
 
-  cinfo->jpeg_color_space = colorspace;
+  cinfo->jpegipp_color_space = colorspace;
 
   cinfo->write_JFIF_header = FALSE; /* No marker for non-JFIF colorspaces */
   cinfo->write_Adobe_marker = FALSE; /* write no Adobe marker by default */
@@ -471,8 +471,8 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 
 #ifdef C_PROGRESSIVE_SUPPORTED
 
-LOCAL(jpeg_scan_info *)
-fill_a_scan (jpeg_scan_info * scanptr, int ci,
+LOCAL(jpegipp_scan_info *)
+fill_a_scan (jpegipp_scan_info * scanptr, int ci,
        int Ss, int Se, int Ah, int Al)
 /* Support routine: generate one scan for specified component */
 {
@@ -486,8 +486,8 @@ fill_a_scan (jpeg_scan_info * scanptr, int ci,
   return scanptr;
 }
 
-LOCAL(jpeg_scan_info *)
-fill_scans (jpeg_scan_info * scanptr, int ncomps,
+LOCAL(jpegipp_scan_info *)
+fill_scans (jpegipp_scan_info * scanptr, int ncomps,
       int Ss, int Se, int Ah, int Al)
 /* Support routine: generate one scan for each component */
 {
@@ -505,8 +505,8 @@ fill_scans (jpeg_scan_info * scanptr, int ncomps,
   return scanptr;
 }
 
-LOCAL(jpeg_scan_info *)
-fill_dc_scans (jpeg_scan_info * scanptr, int ncomps, int Ah, int Al)
+LOCAL(jpegipp_scan_info *)
+fill_dc_scans (jpegipp_scan_info * scanptr, int ncomps, int Ah, int Al)
 /* Support routine: generate interleaved DC scan if possible, else N scans */
 {
   int ci;
@@ -530,22 +530,22 @@ fill_dc_scans (jpeg_scan_info * scanptr, int ncomps, int Ah, int Al)
 
 /*
  * Create a recommended progressive-JPEG script.
- * cinfo->num_components and cinfo->jpeg_color_space must be correct.
+ * cinfo->num_components and cinfo->jpegipp_color_space must be correct.
  */
 
 GLOBAL(void)
-jpeg_simple_progression (j_compress_ptr cinfo)
+jpegipp_simple_progression (j_compress_ptr cinfo)
 {
   int ncomps = cinfo->num_components;
   int nscans;
-  jpeg_scan_info * scanptr;
+  jpegipp_scan_info * scanptr;
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Figure space needed for script.  Calculation must match code below! */
-  if (ncomps == 3 && cinfo->jpeg_color_space == JCS_YCbCr) {
+  if (ncomps == 3 && cinfo->jpegipp_color_space == JCS_YCbCr) {
     /* Custom script for YCbCr color images. */
     nscans = 10;
   } else {
@@ -559,21 +559,21 @@ jpeg_simple_progression (j_compress_ptr cinfo)
   /* Allocate space for script.
    * We need to put it in the permanent pool in case the application performs
    * multiple compressions without changing the settings.  To avoid a memory
-   * leak if jpeg_simple_progression is called repeatedly for the same JPEG
+   * leak if jpegipp_simple_progression is called repeatedly for the same JPEG
    * object, we try to re-use previously allocated space, and we allocate
    * enough space to handle YCbCr even if initially asked for grayscale.
    */
   if (cinfo->script_space == NULL || cinfo->script_space_size < nscans) {
     cinfo->script_space_size = MAX(nscans, 10);
-    cinfo->script_space = (jpeg_scan_info *)
+    cinfo->script_space = (jpegipp_scan_info *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-      cinfo->script_space_size * SIZEOF(jpeg_scan_info));
+      cinfo->script_space_size * SIZEOF(jpegipp_scan_info));
   }
   scanptr = cinfo->script_space;
   cinfo->scan_info = scanptr;
   cinfo->num_scans = nscans;
 
-  if (ncomps == 3 && cinfo->jpeg_color_space == JCS_YCbCr) {
+  if (ncomps == 3 && cinfo->jpegipp_color_space == JCS_YCbCr) {
     /* Custom script for YCbCr color images. */
     /* Initial DC scan */
     scanptr = fill_dc_scans(scanptr, ncomps, 0, 1);

@@ -165,7 +165,7 @@
  */
 
 GLOBAL(void)
-jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+jpegipp_idct_ifast (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
      JCOEFPTR coef_block,
      JSAMPARRAY output_buf, JDIMENSION output_col)
 {

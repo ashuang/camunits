@@ -18,15 +18,15 @@
 #define FILTER_JPEG_LABEL "IPP JPEG"
 #endif
 
-static int _jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
+static int _jpegipp_decompress_to_8u_rgb (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride);
-static int _jpeg_compress_8u_gray (const uint8_t * src, int width, int height, 
+static int _jpegipp_compress_8u_gray (const uint8_t * src, int width, int height, 
         int stride, uint8_t * dest, int * destsize, int quality);
-static int _jpeg_compress_8u_rgb (const uint8_t * src, int width, int height, 
+static int _jpegipp_compress_8u_rgb (const uint8_t * src, int width, int height, 
         int stride, uint8_t * dest, int * destsize, int quality);
-static int _jpeg_compress_8u_bgra (const uint8_t * src, int width, int height, 
+static int _jpegipp_compress_8u_bgra (const uint8_t * src, int width, int height, 
         int stride, uint8_t * dest, int * destsize, int quality);
-static void _jpeg_std_huff_tables (j_decompress_ptr cinfo);
+static void _jpegipp_std_huff_tables (j_decompress_ptr cinfo);
 
 CamUnitDriver *
 camipp_jpeg_driver_new()
@@ -104,16 +104,16 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     CamippJpeg * self = CAMIPP_JPEG (super);
     int quality = cam_unit_control_get_int (self->quality_control);
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB)
-        _jpeg_compress_8u_rgb (inbuf->data, width, height, infmt->row_stride,
+        _jpegipp_compress_8u_rgb (inbuf->data, width, height, infmt->row_stride,
                 outbuf->data, &outsize, quality);
     else if (infmt->pixelformat == CAM_PIXEL_FORMAT_BGRA)
-        _jpeg_compress_8u_bgra (inbuf->data, width, height, infmt->row_stride,
+        _jpegipp_compress_8u_bgra (inbuf->data, width, height, infmt->row_stride,
                 outbuf->data, &outsize, quality);
     else if (infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY)
-        _jpeg_compress_8u_gray (inbuf->data, width, height, infmt->row_stride,
+        _jpegipp_compress_8u_gray (inbuf->data, width, height, infmt->row_stride,
                 outbuf->data, &outsize, quality);
     else if (infmt->pixelformat == CAM_PIXEL_FORMAT_MJPEG) {
-        _jpeg_decompress_to_8u_rgb (inbuf->data, inbuf->bytesused,
+        _jpegipp_decompress_to_8u_rgb (inbuf->data, inbuf->bytesused,
                 outbuf->data, infmt->width, infmt->height, outfmt->row_stride);
         outsize = outfmt->row_stride * infmt->height;
     }
@@ -177,71 +177,71 @@ term_source (j_decompress_ptr cinfo)
 {
 }
 
-struct _my_jpeg_error_mgr {
-    struct jpeg_error_mgr pub;
+struct _my_jpegipp_error_mgr {
+    struct jpegipp_error_mgr pub;
     jmp_buf setjmp_buffer;
 };
-typedef struct _my_jpeg_error_mgr my_jpeg_error_mgr_t;
+typedef struct _my_jpegipp_error_mgr my_jpegipp_error_mgr_t;
 
 static void
 _error_exit (j_common_ptr cinfo)
 {
-    my_jpeg_error_mgr_t *err = (my_jpeg_error_mgr_t*) cinfo->err;
+    my_jpegipp_error_mgr_t *err = (my_jpegipp_error_mgr_t*) cinfo->err;
     fprintf (stderr, "JPEG decoding error (%s:%d) - ", __FILE__, __LINE__);
     (*cinfo->err->output_message) (cinfo);
     longjmp(err->setjmp_buffer, 1);
 }
 
 static int
-_jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
+_jpegipp_decompress_to_8u_rgb (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride)
 {
-    struct jpeg_decompress_struct cinfo;
-    struct jpeg_source_mgr jsrc;
-    my_jpeg_error_mgr_t jerr;
+    struct jpegipp_decompress_struct cinfo;
+    struct jpegipp_source_mgr jsrc;
+    my_jpegipp_error_mgr_t jerr;
 
-    cinfo.err = jpeg_std_error (&jerr.pub);
+    cinfo.err = jpegipp_std_error (&jerr.pub);
     jerr.pub.error_exit = _error_exit;
     if (setjmp(jerr.setjmp_buffer)) {
         // code execution starts here if the _error_exit handler was called
-        jpeg_destroy_decompress(&cinfo);
+        jpegipp_destroy_decompress(&cinfo);
         return -1;
     }
 
-    jpeg_create_decompress (&cinfo);
+    jpegipp_create_decompress (&cinfo);
 
     jsrc.next_input_byte = src;
     jsrc.bytes_in_buffer = src_size;
     jsrc.init_source = init_source;
     jsrc.fill_input_buffer = fill_input_buffer;
     jsrc.skip_input_data = skip_input_data;
-    jsrc.resync_to_restart = jpeg_resync_to_restart;
+    jsrc.resync_to_restart = jpegipp_resync_to_restart;
     jsrc.term_source = term_source;
     cinfo.src = &jsrc;
 
-    jpeg_read_header (&cinfo, TRUE);
+    jpegipp_read_header (&cinfo, TRUE);
     cinfo.out_color_space = JCS_RGB;
 
     if (! (cinfo.dc_huff_tbl_ptrs[0] || cinfo.dc_huff_tbl_ptrs[1] ||
            cinfo.ac_huff_tbl_ptrs[0] || cinfo.ac_huff_tbl_ptrs[1])) {
-        _jpeg_std_huff_tables(&cinfo);
+        _jpegipp_std_huff_tables(&cinfo);
     }
 
-    jpeg_start_decompress (&cinfo);
+    jpegipp_start_decompress (&cinfo);
 
     if (cinfo.output_height != height || cinfo.output_width != width) {
         fprintf (stderr, "Error: Buffer was %dx%d but JPEG image is %dx%d\n",
                 width, height, cinfo.output_width, cinfo.output_height);
-        jpeg_destroy_decompress (&cinfo);
+        jpegipp_destroy_decompress (&cinfo);
         return -1;
     }
 
     while (cinfo.output_scanline < height) {
         uint8_t * row = dest + cinfo.output_scanline * stride;
-        jpeg_read_scanlines (&cinfo, &row, 1);
+        jpegipp_read_scanlines (&cinfo, &row, 1);
     }
-    jpeg_finish_decompress (&cinfo);
-    jpeg_destroy_decompress (&cinfo);
+    jpegipp_finish_decompress (&cinfo);
+    jpegipp_destroy_decompress (&cinfo);
     return 0;
 }
 
@@ -265,16 +265,16 @@ term_destination (j_compress_ptr cinfo)
 }
 
 static int 
-_jpeg_compress_8u_gray (const uint8_t * src, int width, int height, int stride,
+_jpegipp_compress_8u_gray (const uint8_t * src, int width, int height, int stride,
         uint8_t * dest, int * destsize, int quality)
 {
-    struct jpeg_compress_struct cinfo;
-    struct jpeg_error_mgr jerr;
-    struct jpeg_destination_mgr jdest;
+    struct jpegipp_compress_struct cinfo;
+    struct jpegipp_error_mgr jerr;
+    struct jpegipp_destination_mgr jdest;
     int out_size = *destsize;
 
-    cinfo.err = jpeg_std_error (&jerr);
-    jpeg_create_compress (&cinfo);
+    cinfo.err = jpegipp_std_error (&jerr);
+    jpegipp_create_compress (&cinfo);
     jdest.next_output_byte = dest;
     jdest.free_in_buffer = out_size;
     jdest.init_destination = init_destination;
@@ -286,31 +286,31 @@ _jpeg_compress_8u_gray (const uint8_t * src, int width, int height, int stride,
     cinfo.image_height = height;
     cinfo.input_components = 1;
     cinfo.in_color_space = JCS_GRAYSCALE;
-    jpeg_set_defaults (&cinfo);
-    jpeg_set_quality (&cinfo, quality, TRUE);
+    jpegipp_set_defaults (&cinfo);
+    jpegipp_set_quality (&cinfo, quality, TRUE);
 
-    jpeg_start_compress (&cinfo, TRUE);
+    jpegipp_start_compress (&cinfo, TRUE);
     while (cinfo.next_scanline < height) {
         JSAMPROW row = (JSAMPROW)(src + cinfo.next_scanline * stride);
-        jpeg_write_scanlines (&cinfo, &row, 1);
+        jpegipp_write_scanlines (&cinfo, &row, 1);
     }
-    jpeg_finish_compress (&cinfo);
+    jpegipp_finish_compress (&cinfo);
     *destsize = out_size - jdest.free_in_buffer;
-    jpeg_destroy_compress (&cinfo);
+    jpegipp_destroy_compress (&cinfo);
     return 0;
 }
 
 static int 
-_jpeg_compress_8u_rgb (const uint8_t * src, int width, int height, int stride,
+_jpegipp_compress_8u_rgb (const uint8_t * src, int width, int height, int stride,
         uint8_t * dest, int * destsize, int quality)
 {
-    struct jpeg_compress_struct cinfo;
-    struct jpeg_error_mgr jerr;
-    struct jpeg_destination_mgr jdest;
+    struct jpegipp_compress_struct cinfo;
+    struct jpegipp_error_mgr jerr;
+    struct jpegipp_destination_mgr jdest;
     int out_size = *destsize;
 
-    cinfo.err = jpeg_std_error (&jerr);
-    jpeg_create_compress (&cinfo);
+    cinfo.err = jpegipp_std_error (&jerr);
+    jpegipp_create_compress (&cinfo);
     jdest.next_output_byte = dest;
     jdest.free_in_buffer = out_size;
     jdest.init_destination = init_destination;
@@ -322,31 +322,31 @@ _jpeg_compress_8u_rgb (const uint8_t * src, int width, int height, int stride,
     cinfo.image_height = height;
     cinfo.input_components = 3;
     cinfo.in_color_space = JCS_RGB;
-    jpeg_set_defaults (&cinfo);
-    jpeg_set_quality (&cinfo, quality, TRUE);
+    jpegipp_set_defaults (&cinfo);
+    jpegipp_set_quality (&cinfo, quality, TRUE);
 
-    jpeg_start_compress (&cinfo, TRUE);
+    jpegipp_start_compress (&cinfo, TRUE);
     while (cinfo.next_scanline < height) {
         JSAMPROW row = (JSAMPROW)(src + cinfo.next_scanline * stride);
-        jpeg_write_scanlines (&cinfo, &row, 1);
+        jpegipp_write_scanlines (&cinfo, &row, 1);
     }
-    jpeg_finish_compress (&cinfo);
+    jpegipp_finish_compress (&cinfo);
     *destsize = out_size - jdest.free_in_buffer;
-    jpeg_destroy_compress (&cinfo);
+    jpegipp_destroy_compress (&cinfo);
     return 0;
 }
 
 static int 
-_jpeg_compress_8u_bgra (const uint8_t * src, int width, int height, int stride,
+_jpegipp_compress_8u_bgra (const uint8_t * src, int width, int height, int stride,
         uint8_t * dest, int * destsize, int quality)
 {
-    struct jpeg_compress_struct cinfo;
-    struct jpeg_error_mgr jerr;
-    struct jpeg_destination_mgr jdest;
+    struct jpegipp_compress_struct cinfo;
+    struct jpegipp_error_mgr jerr;
+    struct jpegipp_destination_mgr jdest;
     int out_size = *destsize;
 
-    cinfo.err = jpeg_std_error (&jerr);
-    jpeg_create_compress (&cinfo);
+    cinfo.err = jpegipp_std_error (&jerr);
+    jpegipp_create_compress (&cinfo);
     jdest.next_output_byte = dest;
     jdest.free_in_buffer = out_size;
     jdest.init_destination = init_destination;
@@ -358,20 +358,20 @@ _jpeg_compress_8u_bgra (const uint8_t * src, int width, int height, int stride,
     cinfo.image_height = height;
     cinfo.input_components = 3;
     cinfo.in_color_space = JCS_RGB;
-    jpeg_set_defaults (&cinfo);
-    jpeg_set_quality (&cinfo, quality, TRUE);
+    jpegipp_set_defaults (&cinfo);
+    jpegipp_set_quality (&cinfo, quality, TRUE);
 
-    jpeg_start_compress (&cinfo, TRUE);
+    jpegipp_start_compress (&cinfo, TRUE);
     while (cinfo.next_scanline < height) {
         uint8_t buf[width*3];
         cam_pixel_convert_8u_bgra_to_8u_rgb (buf, 0, width, 1,
                 src + cinfo.next_scanline * stride, 0);
         JSAMPROW row = (JSAMPROW) buf;
-        jpeg_write_scanlines (&cinfo, &row, 1);
+        jpegipp_write_scanlines (&cinfo, &row, 1);
     }
-    jpeg_finish_compress (&cinfo);
+    jpegipp_finish_compress (&cinfo);
     *destsize = out_size - jdest.free_in_buffer;
-    jpeg_destroy_compress (&cinfo);
+    jpegipp_destroy_compress (&cinfo);
     return 0;
 }
 
@@ -390,7 +390,7 @@ add_huff_table (j_decompress_ptr cinfo,
     int nsymbols, len;
 
     if (*htblptr == NULL)
-        *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+        *htblptr = jpegipp_alloc_huff_table((j_common_ptr) cinfo);
 
     /* Copy the number-of-symbols-of-each-code-length counts */
     memcpy((*htblptr)->bits, bits, sizeof((*htblptr)->bits));
@@ -413,7 +413,7 @@ add_huff_table (j_decompress_ptr cinfo,
 
 
 static void
-_jpeg_std_huff_tables (j_decompress_ptr cinfo)
+_jpegipp_std_huff_tables (j_decompress_ptr cinfo)
 /* Set up the standard Huffman tables (cf. JPEG standard section K.3) */
 /* IMPORTANT: these are only valid for 8-bit data precision! */
 {

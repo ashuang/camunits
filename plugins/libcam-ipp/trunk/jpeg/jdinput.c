@@ -19,7 +19,7 @@
 /* Private state */
 
 typedef struct {
-  struct jpeg_input_controller pub; /* public fields */
+  struct jpegipp_input_controller pub; /* public fields */
 
   boolean inheaders;    /* TRUE until first SOS is reached */
 } my_input_controller;
@@ -40,7 +40,7 @@ initial_setup (j_decompress_ptr cinfo)
 /* Called once, when first SOS marker is reached */
 {
   int ci;
-  jpeg_component_info *compptr;
+  jpegipp_component_info *compptr;
 
   /* Make sure image isn't bigger than I can handle */
   if ((long) cinfo->image_height > (long) JPEG_MAX_DIMENSION ||
@@ -123,7 +123,7 @@ per_scan_setup (j_decompress_ptr cinfo)
 /* cinfo->comps_in_scan and cinfo->cur_comp_info[] were set from SOS marker */
 {
   int ci, mcublks, tmp;
-  jpeg_component_info *compptr;
+  jpegipp_component_info *compptr;
 
   if (cinfo->comps_in_scan == 1) {
 
@@ -220,7 +220,7 @@ LOCAL(void)
 latch_quant_tables (j_decompress_ptr cinfo)
 {
   int ci, qtblno;
-  jpeg_component_info *compptr;
+  jpegipp_component_info *compptr;
   JQUANT_TBL * qtbl;
 
   for (ci = 0; ci < cinfo->comps_in_scan; ci++) {
@@ -246,7 +246,7 @@ latch_quant_tables (j_decompress_ptr cinfo)
 /*
  * Initialize the input modules to read a scan of compressed data.
  * The first call to this is done by jdmaster.c after initializing
- * the entire decompressor (during jpeg_start_decompress).
+ * the entire decompressor (during jpegipp_start_decompress).
  * Subsequent calls come from consume_markers, below.
  */
 
@@ -358,7 +358,7 @@ reset_input_controller (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_input_controller (j_decompress_ptr cinfo)
+jinitipp_input_controller (j_decompress_ptr cinfo)
 {
   my_inputctl_ptr inputctl;
 
@@ -366,7 +366,7 @@ jinit_input_controller (j_decompress_ptr cinfo)
   inputctl = (my_inputctl_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
         SIZEOF(my_input_controller));
-  cinfo->inputctl = (struct jpeg_input_controller *) inputctl;
+  cinfo->inputctl = (struct jpegipp_input_controller *) inputctl;
   /* Initialize method pointers */
   inputctl->pub.consume_input = consume_markers;
   inputctl->pub.reset_input_controller = reset_input_controller;

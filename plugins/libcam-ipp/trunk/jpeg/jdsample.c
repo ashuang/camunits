@@ -26,13 +26,13 @@
 
 /* Pointer to routine to upsample a single component */
 typedef JMETHOD(void, upsample1_ptr,
-    (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+    (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
      JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr));
 
 /* Private subobject */
 
 typedef struct {
-  struct jpeg_upsampler pub;  /* public fields */
+  struct jpegipp_upsampler pub;  /* public fields */
 
   /* Color conversion buffer.  When using separate upsampling and color
    * conversion steps, this buffer holds one upsampled row group until it
@@ -95,7 +95,7 @@ sep_upsample (j_decompress_ptr cinfo,
 {
   my_upsample_ptr upsample = (my_upsample_ptr) cinfo->upsample;
   int ci;
-  jpeg_component_info * compptr;
+  jpegipp_component_info * compptr;
   JDIMENSION num_rows;
 
   /* Fill the conversion buffer, if it's empty */
@@ -155,7 +155,7 @@ sep_upsample (j_decompress_ptr cinfo,
  */
 
 METHODDEF(void)
-fullsize_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+fullsize_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
        JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   *output_data_ptr = input_data;
@@ -168,7 +168,7 @@ fullsize_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 METHODDEF(void)
-noop_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+noop_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
          JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   *output_data_ptr = NULL;  /* safety check */
@@ -187,7 +187,7 @@ noop_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 METHODDEF(void)
-int_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+int_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
         JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   my_upsample_ptr upsample = (my_upsample_ptr) cinfo->upsample;
@@ -231,7 +231,7 @@ int_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 METHODDEF(void)
-h2v1_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+h2v1_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
          JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   JSAMPARRAY output_data = *output_data_ptr;
@@ -259,7 +259,7 @@ h2v1_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 METHODDEF(void)
-h2v2_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+h2v2_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
          JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   JSAMPARRAY output_data = *output_data_ptr;
@@ -302,7 +302,7 @@ h2v2_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 METHODDEF(void)
-h2v1_fancy_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+h2v1_fancy_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
          JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   JSAMPARRAY output_data = *output_data_ptr;
@@ -337,7 +337,7 @@ h2v1_fancy_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 METHODDEF(void)
 h2v1_fancy_upsample_intellib(
   j_decompress_ptr     cinfo,
-  jpeg_component_info* compptr,
+  jpegipp_component_info* compptr,
   JSAMPARRAY           input_data,
   JSAMPARRAY*          output_data_ptr)
 {
@@ -367,7 +367,7 @@ h2v1_fancy_upsample_intellib(
  */
 
 METHODDEF(void)
-h2v2_fancy_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+h2v2_fancy_upsample (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
          JSAMPARRAY input_data, JSAMPARRAY * output_data_ptr)
 {
   JSAMPARRAY output_data = *output_data_ptr;
@@ -419,7 +419,7 @@ h2v2_fancy_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 METHODDEF(void)
 h2v2_fancy_upsample_intellib(
   j_decompress_ptr     cinfo,
-  jpeg_component_info* compptr,
+  jpegipp_component_info* compptr,
   JSAMPARRAY           input_data,
   JSAMPARRAY*          output_data_ptr)
 {
@@ -461,18 +461,18 @@ h2v2_fancy_upsample_intellib(
  */
 
 GLOBAL(void)
-jinit_upsampler (j_decompress_ptr cinfo)
+jinitipp_upsampler (j_decompress_ptr cinfo)
 {
   my_upsample_ptr upsample;
   int ci;
-  jpeg_component_info * compptr;
+  jpegipp_component_info * compptr;
   boolean need_buffer, do_fancy;
   int h_in_group, v_in_group, h_out_group, v_out_group;
 
   upsample = (my_upsample_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
     SIZEOF(my_upsampler));
-  cinfo->upsample = (struct jpeg_upsampler *) upsample;
+  cinfo->upsample = (struct jpegipp_upsampler *) upsample;
   upsample->pub.start_pass = start_pass_upsample;
   upsample->pub.upsample = sep_upsample;
   upsample->pub.need_context_rows = FALSE; /* until we find out differently */

@@ -21,19 +21,19 @@ LOCAL(void) transdecode_master_selection JPP((j_decompress_ptr cinfo));
 
 /*
  * Read the coefficient arrays from a JPEG file.
- * jpeg_read_header must be completed before calling this.
+ * jpegipp_read_header must be completed before calling this.
  *
  * The entire image is read into a set of virtual coefficient-block arrays,
  * one per component.  The return value is a pointer to the array of
  * virtual-array descriptors.  These can be manipulated directly via the
- * JPEG memory manager, or handed off to jpeg_write_coefficients().
+ * JPEG memory manager, or handed off to jpegipp_write_coefficients().
  * To release the memory occupied by the virtual arrays, call
- * jpeg_finish_decompress() when done with the data.
+ * jpegipp_finish_decompress() when done with the data.
  *
  * An alternative usage is to simply obtain access to the coefficient arrays
  * during a buffered-image-mode decompression operation.  This is allowed
- * after any jpeg_finish_output() call.  The arrays can be accessed until
- * jpeg_finish_decompress() is called.  (Note that any call to the library
+ * after any jpegipp_finish_output() call.  The arrays can be accessed until
+ * jpegipp_finish_decompress() is called.  (Note that any call to the library
  * may reposition the arrays, so don't rely on access_virt_barray() results
  * to stay valid across library calls.)
  *
@@ -42,7 +42,7 @@ LOCAL(void) transdecode_master_selection JPP((j_decompress_ptr cinfo));
  */
 
 GLOBAL(jvirt_barray_ptr *)
-jpeg_read_coefficients (j_decompress_ptr cinfo)
+jpegipp_read_coefficients (j_decompress_ptr cinfo)
 {
   if (cinfo->global_state == DSTATE_READY) {
     /* First call: initialize active modules */
@@ -71,7 +71,7 @@ jpeg_read_coefficients (j_decompress_ptr cinfo)
         }
       }
     }
-    /* Set state so that jpeg_finish_decompress does the right thing */
+    /* Set state so that jpegipp_finish_decompress does the right thing */
     cinfo->global_state = DSTATE_STOPPING;
   }
   /* At this point we should be in state DSTATE_STOPPING if being used
@@ -105,16 +105,16 @@ transdecode_master_selection (j_decompress_ptr cinfo)
   } else {
     if (cinfo->progressive_mode) {
 #ifdef D_PROGRESSIVE_SUPPORTED
-      jinit_phuff_decoder(cinfo);
+      jinitipp_phuff_decoder(cinfo);
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else
-      jinit_huff_decoder(cinfo);
+      jinitipp_huff_decoder(cinfo);
   }
 
   /* Always get a full-image coefficient buffer. */
-  jinit_d_coef_controller(cinfo, TRUE);
+  jinitipp_d_coef_controller(cinfo, TRUE);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
