@@ -78,7 +78,6 @@ struct _CamInputLog {
     CamUnit parent;
 
     CamLog *camlog;
-    char *filename;
 
     int64_t next_frame_time;
 
@@ -88,6 +87,7 @@ struct _CamInputLog {
     CamUnitControl *pause_ctl;
     CamUnitControl *adv_mode_ctl;
     CamUnitControl *adv_speed_ctl;
+    CamUnitControl *fname_ctl;
 
     int readone;
 };
@@ -105,8 +105,6 @@ GType cam_input_log_get_type (void);
  * CamInputLogDriver call it.
  */
 CamInputLog * cam_input_log_new (const char *fname);
-
-int cam_log_set_file (CamInputLog *self, const char *fname);
 
 enum {
     CAM_INPUT_LOG_ADVANCE_MODE_SOFT = 0,
