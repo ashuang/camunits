@@ -34,7 +34,7 @@
  * units may simply pass the image through while doing something else (e.g.
  * #CamFilterGL)
  *
- * A CamUnit object exists in one of three states: idle, ready, or streaming.
+ * A CamUnit object exists in one of states: idle or ready.
  * See: #CamUnitStatus
  *
  * Filter units must have an associated input unit, set using
@@ -51,23 +51,19 @@ extern "C" {
 /**
  * CamUnitStatus:
  *
- * A CamUnit object is always on one of these three states.  In the
+ * A CamUnit object is always on one of these states.  In the
  * CAM_UNIT_STATUS_IDLE state, a unit has not reserved any system resources for
  * image acquisition or processing, is not bound to an output format, and is
  * not capable of image acquisition or processing.
  *
  * In the CAM_UNIT_STATUS_READY state, a unit has reserved the system resources
- * it needs for image acquisition/processing, but is not actually acquiring or
+ * it needs for image acquisition/processing, and may be actively acquiring or
  * processing images.  Such units are bound to a specific output format that
  * cannot change until the unit is idle again.
- *
- * In the CAM_UNIT_STATUS_STREAMING state, a unit is fully "active", and is
- * acquiring and processing images.
  */
 typedef enum {
     CAM_UNIT_STATUS_IDLE = 0,
     CAM_UNIT_STATUS_READY,
-    CAM_UNIT_STATUS_STREAMING,
     CAM_UNIT_STATUS_MAX
 } CamUnitStatus;
 
@@ -107,7 +103,6 @@ struct _CamUnit {
     
     // the actual output format used.  borrowed pointer that points to a format
     // contained within the output_formats list.  NULL if the unit is not READY
-    // or STREAMING
     const CamUnitFormat *fmt;
 
     /*< private >*/
@@ -120,7 +115,7 @@ struct _CamUnit {
 
     GList *output_formats;
 
-    // If the unit is initialized with cam_unit_stream_init_any_format, then
+    // If the unit is initialized with a NULL format, then
     // image formats matching these requests are preferred
     CamPixelFormat requested_pixelformat;
     int requested_width;
@@ -131,8 +126,6 @@ struct _CamUnit {
  * CamUnitClass:
  * @stream_init:
  * @stream_shutdown:
- * @stream_on:
- * @stream_off:
  * @try_produce_frame: return TRUE if a frame is produced, FALSE if not.
  * @get_fileno:
  * @get_next_event_time:
@@ -148,10 +141,8 @@ struct _CamUnitClass {
 
     // ========== CamUnit virtual methods ============
     int (*stream_init)(CamUnit *self, const CamUnitFormat *format);
-    int (*stream_on)(CamUnit *self);
 
     int (*stream_shutdown)(CamUnit *self);
-    int (*stream_off)(CamUnit *self);
 
     // Input units should override these methods
     gboolean (*try_produce_frame) (CamUnit *self);
@@ -255,22 +246,13 @@ GList * cam_unit_get_output_formats(CamUnit *self);
  * cam_unit_stream_init:
  * @format: the format to use in initialization
  *
- * Initializes a unit, reserves buffers and system resources, and prepares it
- * for streaming.  Must be called before cam_unit_stream_on
+ * Initializes a unit, reserves buffers and system resources.
+ *
+ * If %format is NULL, then the first available format is used.
  *
  * Returns: 0 on success, < 0 on failure
  */
 int cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format);
-
-/**
- * cam_unit_stream_init_any_format:
- *
- * convenience method to invoke cam_unit_stream_init with any format supported
- * by the unit.
- *
- * Returns: 0 on success, < 0 on failure
- */
-int cam_unit_stream_init_any_format (CamUnit *self);
 
 /**
  * cam_unit_set_preferred_format:
@@ -281,9 +263,9 @@ int cam_unit_stream_init_any_format (CamUnit *self);
  * @height: the preferred image height, or 0 to indicate that any height is
  *          acceptable.
  *
- * Sets the preferred format when initializing the stream via
- * cam_unit_stream_init_any_format.  If a format matching the requested
- * parameters is not found, then an arbitrary format is chosen.
+ * Sets the preferred format when initializing the unit with a NULL format.  If
+ * a format matching the requested parameters is not found, then an arbitrary
+ * format is chosen.
  */
 int cam_unit_set_preferred_format (CamUnit *self, 
         CamPixelFormat pixelformat, int width, int height);
@@ -297,23 +279,6 @@ int cam_unit_set_preferred_format (CamUnit *self,
 int cam_unit_stream_shutdown (CamUnit * self);
 
 /**
- * cam_unit_stream_on:
- *
- * Starts the image acquisition/processing capabilities of the unit.  The unit
- * must be first be initialized.
- *
- * Returns: 0 on success, < 0 on failure
- */
-int cam_unit_stream_on (CamUnit * self);
-
-/**
- * cam_unit_stream_off:
- *
- * Halts the image acquisition/processing capabilities of the unit.
- */
-int cam_unit_stream_off (CamUnit * self);
-
-/**
  * cam_unit_try_produce_frame:
  * @timeout_ms: timeout (milliseconds)  If set to 0, then this method will
  * not block.  If set to a negative number, then this method blocks
@@ -324,8 +289,8 @@ int cam_unit_stream_off (CamUnit * self);
  * mainloop instead of calling this directly.  This method may block, but
  * should never spin.
  *
- * If the unit is misconfigured, not streaming, or otherwise not in a good
- * state, then this method may return immediately.
+ * If the unit is misconfigured or otherwise not in a good state, then this
+ * method may return immediately.
  *
  * Returns: TRUE if a frame was produced, FALSE if not
  */

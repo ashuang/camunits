@@ -87,11 +87,11 @@ int main(int argc, char **argv)
     CamUnit *to_rgb8 = cam_unit_chain_add_unit_by_id (chain, "convert.to_rgb8");
 
     // start the image processing chain
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_READY);
 
     // did everything start up correctly?
     CamUnit *faulty_unit = cam_unit_chain_check_status_all_units (chain, 
-                CAM_UNIT_STATUS_STREAMING);
+                CAM_UNIT_STATUS_READY);
     if (faulty_unit) {
         fprintf (stderr, "Unit [%s] is not streaming, aborting...\n",
                 cam_unit_get_name (faulty_unit));

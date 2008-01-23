@@ -192,8 +192,6 @@ cam_v4l2_init (CamV4L2 * self)
 static void v4l2_finalize (GObject * obj);
 static int v4l2_stream_init (CamUnit * super, const CamUnitFormat * format);
 static int v4l2_stream_shutdown (CamUnit * super);
-static int v4l2_stream_on (CamUnit * super);
-static int v4l2_stream_off (CamUnit * super);
 static gboolean v4l2_try_produce_frame (CamUnit * super);
 static int v4l2_get_fileno (CamUnit * super);
 static gboolean v4l2_try_set_control(CamUnit *super,
@@ -209,8 +207,6 @@ cam_v4l2_class_init (CamV4L2Class * klass)
 
     klass->parent_class.stream_init = v4l2_stream_init;
     klass->parent_class.stream_shutdown = v4l2_stream_shutdown;
-    klass->parent_class.stream_on = v4l2_stream_on;
-    klass->parent_class.stream_off = v4l2_stream_off;
     klass->parent_class.try_produce_frame = v4l2_try_produce_frame;
     klass->parent_class.get_fileno = v4l2_get_fileno;
     klass->parent_class.try_set_control = v4l2_try_set_control;
@@ -478,6 +474,19 @@ fail:
     return NULL;
 }
 
+static void
+_unmap_buffers (CamV4L2 *self)
+{
+    if (!self->buffers) return;
+
+    int i;
+    for (i = 0; i < self->num_buffers; i++) {
+        munmap (self->buffers[i], self->buffer_length);
+    }
+    free (self->buffers);
+    self->buffers = NULL;
+}
+
 static int
 v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
 {
@@ -586,6 +595,14 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
     dbg (DBG_INPUT, "v4l2 mapped %d buffers of size %d\n", 
             self->num_buffers, self->buffer_length);
 
+    int streamontype = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    if (-1 == ioctl (self->fd, VIDIOC_STREAMON, &streamontype)) {
+        perror ("VIDIOC_STREAMON");
+        err ("v4l2: couldn't start streaming images\n");
+        _unmap_buffers (self);
+        return -1;
+    }
+
     return 0;
 }
 
@@ -594,14 +611,14 @@ v4l2_stream_shutdown (CamUnit * super)
 {
     CamV4L2 * self = CAM_V4L2 (super);
 
-    if (self->buffers) {
-        int i;
-        for (i = 0; i < self->num_buffers; i++) {
-            munmap (self->buffers[i], self->buffer_length);
-        }
-        free (self->buffers);
-        self->buffers = NULL;
+    int type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    if (-1 == ioctl (self->fd, VIDIOC_STREAMOFF, &type)) {
+        perror ("VIDIOC_STREAMOFF");
+        err ("v4l2: couldn't stop streaming images\n");
+        return -1;
     }
+
+    _unmap_buffers (self);
 
 #if 0
     CamFrameBuffer *buf = NULL;
@@ -641,37 +658,6 @@ v4l2_stream_shutdown (CamUnit * super)
     return 0;
 }
 
-static int
-v4l2_stream_on (CamUnit * super)
-{
-    CamV4L2 * self = CAM_V4L2 (super);
-
-    int streamontype = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if (-1 == ioctl (self->fd, VIDIOC_STREAMON, &streamontype)) {
-        perror ("VIDIOC_STREAMON");
-        err ("v4l2: couldn't start streaming images\n");
-        return -1;
-    }
-
-    return 0;
-}
-
-static int
-v4l2_stream_off (CamUnit * super)
-{
-    dbg (DBG_INPUT, "v4l2 stream off\n");
-    CamV4L2 * self = CAM_V4L2 (super);
-
-    int type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if (-1 == ioctl (self->fd, VIDIOC_STREAMOFF, &type)) {
-        perror ("VIDIOC_STREAMOFF");
-        err ("v4l2: couldn't start streaming images\n");
-        return -1;
-    }
-
-    return 0;
-}
-
 static gboolean
 v4l2_try_produce_frame (CamUnit * super)
 {
@@ -697,7 +683,6 @@ v4l2_try_produce_frame (CamUnit * super)
         const CamUnitFormat * fmt = cam_unit_get_output_format (super);
         v4l2_stream_shutdown (super);
         v4l2_stream_init (super, fmt);
-        v4l2_stream_on (super);
         return FALSE;
     }
 

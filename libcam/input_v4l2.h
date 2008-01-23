@@ -86,6 +86,7 @@ struct _CamV4L2 {
     int buffers_outstanding;
 
     CamUnitControl *standard_ctl;
+//    CamUnitControl *stream_ctl;
 };
 
 struct _CamV4L2Class {

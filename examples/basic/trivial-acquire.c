@@ -36,8 +36,8 @@ int main(int argc, char **argv)
     CamUnitChain * chain = cam_unit_chain_new ();
     cam_unit_chain_add_unit_by_id (chain, "input.example");
 
-    // start the chain streaming
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+    // start the chain
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_READY);
 
     // attach the chain to the glib event loop.
     cam_unit_chain_attach_glib (chain, 1000, NULL);

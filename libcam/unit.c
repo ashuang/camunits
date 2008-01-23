@@ -32,8 +32,6 @@ static void cam_unit_finalize (GObject *obj);
 static int cam_unit_default_stream_init (CamUnit *self, 
         const CamUnitFormat *format);
 static int cam_unit_default_stream_shutdown (CamUnit *self);
-static int cam_unit_default_stream_on (CamUnit *self);
-static int cam_unit_default_stream_off (CamUnit *self);
 static int cam_unit_default_get_fileno (CamUnit *self);
 static int64_t cam_unit_default_get_next_event_time (CamUnit *self);
 static int cam_unit_default_draw_gl_init (CamUnit * self);
@@ -111,8 +109,6 @@ cam_unit_class_init (CamUnitClass *klass)
 
     klass->stream_init = cam_unit_default_stream_init;
     klass->stream_shutdown = cam_unit_default_stream_shutdown;
-    klass->stream_on = cam_unit_default_stream_on;
-    klass->stream_off = cam_unit_default_stream_off;
 
     klass->try_produce_frame = NULL;
     klass->get_fileno = cam_unit_default_get_fileno;
@@ -323,10 +319,7 @@ on_input_unit_status_changed (CamUnit *input_unit, int old_status,
                     infmt);
         }
     } else if (input_unit->status == CAM_UNIT_STATUS_IDLE) {
-        if (self->status == CAM_UNIT_STATUS_STREAMING) {
-            cam_unit_stream_off (self);
-            cam_unit_stream_shutdown (self);
-        } else if (self->status == CAM_UNIT_STATUS_READY) {
+        if (self->status == CAM_UNIT_STATUS_READY) {
             cam_unit_stream_shutdown (self);
         }
         g_signal_emit (G_OBJECT (self), 
@@ -342,7 +335,7 @@ on_input_frame_ready (CamUnit *input_unit, const CamFrameBuffer *inbuf,
     CamUnit *self = CAM_UNIT (user_data);
     CamUnitClass *klass = CAM_UNIT_GET_CLASS (self);
     if (klass->on_input_frame_ready && 
-            self->status == CAM_UNIT_STATUS_STREAMING) {
+            self->status == CAM_UNIT_STATUS_READY) {
         klass->on_input_frame_ready (self, inbuf, infmt);
     }
 }
@@ -369,8 +362,34 @@ cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
     }
 
     if (! format) {
-        err("Unit: [%s] cannot initialize without a format\n", self->unit_id);
-        return -1;
+        if (! self->output_formats) return -1;
+
+        int64_t best_score = 0;
+        int64_t max_wh = 10000 * 10000;
+
+        for (GList *fiter=self->output_formats; fiter; fiter=fiter->next) {
+            CamUnitFormat *cfmt = CAM_UNIT_FORMAT(fiter->data);
+            int64_t score = MIN (cfmt->width * cfmt->height, max_wh);
+
+            if (self->requested_pixelformat != CAM_PIXEL_FORMAT_INVALID &&
+                    self->requested_pixelformat != CAM_PIXEL_FORMAT_ANY &&
+                    self->requested_pixelformat == cfmt->pixelformat) {
+                score += max_wh * 3;
+            }
+            if (self->requested_width > 0 && 
+                    self->requested_width == cfmt->width) {
+                score += max_wh;
+            }
+            if (self->requested_height > 0 &&
+                    self->requested_height == cfmt->height) {
+                score += max_wh;
+            }
+
+            if (!format || score > best_score) {
+                best_score = score;
+                format = cfmt;
+            }
+        }
     }
 
     // check that the format belongs to this unit
@@ -393,50 +412,9 @@ cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
 }
 
 int
-cam_unit_stream_on (CamUnit * self)
-{ 
-    if (self->status == CAM_UNIT_STATUS_STREAMING) return 0;
-    if (self->status != CAM_UNIT_STATUS_READY) {
-        err("Unit: cannot stream_on.  status is not READY\n");
-        return -1;
-    }
-    if (0 == CAM_UNIT_GET_CLASS (self)->stream_on (self)) {
-        cam_unit_set_status (self, CAM_UNIT_STATUS_STREAMING);
-        return 0;
-    } else {
-        return -1;
-    }
-}
-
-int
-cam_unit_stream_off (CamUnit * self)
-{ 
-    if (self->status == CAM_UNIT_STATUS_READY) return 0;
-    if (self->status != CAM_UNIT_STATUS_STREAMING) {
-        err("Unit: cannot stream_off.  status is not STREAMING\n");
-        return -1;
-    }
-    if (0 == CAM_UNIT_GET_CLASS (self)->stream_off (self)) {
-        cam_unit_set_status (self, CAM_UNIT_STATUS_READY);
-        return 0;
-    } else { 
-        return -1;
-    }
-}
-
-int
 cam_unit_stream_shutdown (CamUnit * self)
 { 
     if (self->status == CAM_UNIT_STATUS_IDLE) return 0;
-    if (self->status == CAM_UNIT_STATUS_STREAMING) {
-        if (0 != cam_unit_stream_off (self)) {
-            return -1;
-        }
-    }
-    if (self->status != CAM_UNIT_STATUS_READY) {
-        err("Unit: cannot shut down a unit that is not READY\n");
-        return -1;
-    }
     if (0 == CAM_UNIT_GET_CLASS (self)->stream_shutdown (self)) {
         cam_unit_set_status (self, CAM_UNIT_STATUS_IDLE);
         self->fmt = NULL;
@@ -481,8 +459,8 @@ cam_unit_try_produce_frame (CamUnit *self, int timeout_ms)
         g_warning ("Unit does not provide try_produce_frame\n");
         return FALSE;
     }
-    if (self->status != CAM_UNIT_STATUS_STREAMING) {
-        g_warning ("Unit is not streaming!");
+    if (self->status != CAM_UNIT_STATUS_READY) {
+        g_warning ("Unit is not ready!");
         return FALSE;
     }
 
@@ -535,8 +513,6 @@ cam_unit_try_produce_frame (CamUnit *self, int timeout_ms)
 static int cam_unit_default_stream_init (CamUnit *self, 
         const CamUnitFormat *format) { return 0; }
 static int cam_unit_default_stream_shutdown (CamUnit *self) { return 0; }
-static int cam_unit_default_stream_on (CamUnit *self) { return 0; }
-static int cam_unit_default_stream_off (CamUnit *self) { return 0; }
 
 static int cam_unit_default_get_fileno (CamUnit *self) { return -1; }
 
@@ -551,43 +527,6 @@ static int cam_unit_default_draw_gl_shutdown (CamUnit * self) { return -1; }
 
 CamUnit * 
 cam_unit_get_input (CamUnit *self) { return self->input_unit; }
-
-int
-cam_unit_stream_init_any_format (CamUnit *self)
-{
-    if (! self->output_formats) return -1;
-
-    const CamUnitFormat *fmt = NULL;
-    int64_t best_score = 0;
-    int64_t max_wh = 10000 * 10000;
-
-    for (GList *fiter=self->output_formats; fiter; fiter=fiter->next) {
-        CamUnitFormat *cfmt = CAM_UNIT_FORMAT(fiter->data);
-        int64_t score = MIN (cfmt->width * cfmt->height, max_wh);
-
-        if (self->requested_pixelformat != CAM_PIXEL_FORMAT_INVALID &&
-            self->requested_pixelformat != CAM_PIXEL_FORMAT_ANY &&
-            self->requested_pixelformat == cfmt->pixelformat) {
-            score += max_wh * 3;
-        }
-        if (self->requested_width > 0 && 
-                self->requested_width == cfmt->width) {
-            score += max_wh;
-        }
-        if (self->requested_height > 0 &&
-                self->requested_height == cfmt->height) {
-            score += max_wh;
-        }
-
-        if (!fmt || score > best_score) {
-            best_score = score;
-            fmt = cfmt;
-        }
-    }
-
-    cam_unit_stream_init (self, fmt);
-    return 0;
-}
 
 int 
 cam_unit_set_preferred_format (CamUnit *self, 
@@ -860,7 +799,6 @@ cam_unit_status_to_str (CamUnitStatus status)
     char *a[] = {
         "Idle",
         "Ready",
-        "Streaming",
         "INVALID"
     };
     if ((status < 0) || (status >= CAM_UNIT_STATUS_MAX)) return NULL;

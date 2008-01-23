@@ -251,8 +251,6 @@ cam_dc1394_init (CamDC1394 * self)
 static void dc1394_finalize (GObject * obj);
 static int dc1394_stream_init (CamUnit * super, const CamUnitFormat * format);
 static int dc1394_stream_shutdown (CamUnit * super);
-static int dc1394_stream_on (CamUnit * super);
-static int dc1394_stream_off (CamUnit * super);
 static gboolean dc1394_try_produce_frame (CamUnit * super);
 static int dc1394_get_fileno (CamUnit * super);
 static gboolean dc1394_try_set_control(CamUnit *super,
@@ -267,8 +265,6 @@ cam_dc1394_class_init (CamDC1394Class * klass)
 
     klass->parent_class.stream_init = dc1394_stream_init;
     klass->parent_class.stream_shutdown = dc1394_stream_shutdown;
-    klass->parent_class.stream_on = dc1394_stream_on;
-    klass->parent_class.stream_off = dc1394_stream_off;
     klass->parent_class.try_produce_frame = dc1394_try_produce_frame;
     klass->parent_class.get_fileno = dc1394_get_fileno;
     klass->parent_class.try_set_control = dc1394_try_set_control;
@@ -526,6 +522,10 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
                 DC1394_CAPTURE_FLAGS_DEFAULT) != DC1394_SUCCESS)
         goto fail;
 
+    if (dc1394_video_set_transmission (self->cam, DC1394_ON) !=
+            DC1394_SUCCESS)
+        goto fail;
+
     self->fd = dc1394_capture_get_fileno (self->cam);
 
     return 0;
@@ -545,35 +545,11 @@ dc1394_stream_shutdown (CamUnit * super)
 
     dbg (DBG_INPUT, "Shutting down DC1394 stream\n");
 
+    dc1394_video_set_transmission (self->cam, DC1394_OFF);
+
     dc1394_capture_stop (self->cam);
 
     /* chain up to parent, which handles some of the work */
-    return CAM_UNIT_CLASS (cam_dc1394_parent_class)->stream_shutdown (super);
-}
-
-static int
-dc1394_stream_on (CamUnit * super)
-{
-    CamDC1394 * self = CAM_DC1394 (super);
-
-    dbg (DBG_INPUT, "DC1394 stream on\n");
-
-    if (dc1394_video_set_transmission (self->cam, DC1394_ON) !=
-            DC1394_SUCCESS)
-        return -1;
-
-    return 0;
-}
-
-static int
-dc1394_stream_off (CamUnit * super)
-{
-    CamDC1394 * self = CAM_DC1394 (super);
-
-    dbg (DBG_INPUT, "DC1394 stream off\n");
-
-    dc1394_video_set_transmission (self->cam, DC1394_OFF);
-
     return 0;
 }
 
@@ -609,7 +585,7 @@ dc1394_try_produce_frame (CamUnit * super)
     CamDC1394 * self = CAM_DC1394 (super);
     dbg (DBG_INPUT, "DC1394 stream iterate\n");
 
-    if (super->status != CAM_UNIT_STATUS_STREAMING) return FALSE;
+    if (super->status != CAM_UNIT_STATUS_READY) return FALSE;
 
     dc1394video_frame_t * frame;
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)

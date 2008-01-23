@@ -110,9 +110,9 @@ int cam_unit_chain_has_unit (const CamUnitChain *self, const CamUnit *unit);
  * @position: the position within the chain to place the unit.
  *
  * Inserts a unit into the chain at the specified position.  Also invokes
- * unit_set_input on affected units.  If the chain is streaming
+ * unit_set_input on affected units.  If the chain is ready
  * (i.e. cam_unit_chain_set_desired_status has been called with
- * CAM_UNIT_STATUS_STREAMING), then all the units after the insertion position
+ * CAM_UNIT_STATUS_READY), then all the units after the insertion position
  * will be automatically restarted.  Calls g_object_ref_sink on the unit
  *
  * Returns: 0 on success, -1 on failure
@@ -221,14 +221,13 @@ int cam_unit_chain_reorder_unit (CamUnitChain *self, CamUnit *unit,
  * @status: the desired CamUnitStatus
  *
  * Sets the desired status for every unit in the chain.  Upon calling this, the
- * chain will attempt to call stream_{init_any_format,on,off,shutdown} on each
+ * chain will attempt to call stream_{init,shutdown} on each
  * unit if necessary.  When new units are added to the chain, the chain will
  * also do this.  If the status of a unit changes on its own, the chain will
  * not try to force the unit back to the desired status.
  *
- * Returns: 0 if status is valid, -1 if status is not one of
- *          CAM_UNIT_STATUS_IDLE, CAM_UNIT_STATUS_READY, or
- *          CAM_UNIT_STATUS_STREAMING
+ * Returns: 0 if status is valid, -1 if status is not 
+ *          CAM_UNIT_STATUS_IDLE or CAM_UNIT_STATUS_READY
  */
 int cam_unit_chain_set_desired_status (CamUnitChain *self, 
         CamUnitStatus status);

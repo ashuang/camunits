@@ -164,7 +164,7 @@ int main(int argc, char **argv)
         goto done;
     }
 
-    cam_unit_stream_init_any_format (input);
+    cam_unit_stream_init (input, NULL);
 
     CamUnit *logger_unit = NULL;
     if (do_logging) {
@@ -184,13 +184,13 @@ int main(int argc, char **argv)
     }
 
     // start the chain streaming
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_READY);
 
     // did everything start up correctly?
     CamUnit *faulty_unit = cam_unit_chain_check_status_all_units (chain, 
-                CAM_UNIT_STATUS_STREAMING);
+                CAM_UNIT_STATUS_READY);
     if (faulty_unit) {
-        fprintf (stderr, "Unit [%s] is not streaming, aborting...\n",
+        fprintf (stderr, "Unit [%s] is not ready, aborting...\n",
                 cam_unit_get_name (faulty_unit));
         goto done;
     }

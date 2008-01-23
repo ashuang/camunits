@@ -97,7 +97,7 @@ driver_search_unit_description (CamUnitDriver *super,
 
 // ============== CamInputLog ===============
 static void log_finalize (GObject *obj);
-static int log_stream_on (CamUnit *super);
+static int log_stream_init (CamUnit *super, const CamUnitFormat *fmt);
 static gboolean log_try_produce_frame (CamUnit * super);
 static int64_t log_get_next_event_time (CamUnit *super);
 static gboolean log_try_set_control (CamUnit *super, const CamUnitControl *ctl, 
@@ -147,7 +147,7 @@ cam_input_log_class_init (CamInputLogClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = log_finalize;
 
-    klass->parent_class.stream_on = log_stream_on;
+    klass->parent_class.stream_init = log_stream_init;
     klass->parent_class.try_produce_frame = log_try_produce_frame;
     klass->parent_class.get_next_event_time = 
         log_get_next_event_time;
@@ -227,9 +227,9 @@ static inline int64_t _timestamp_now()
 }
 
 static int
-log_stream_on (CamUnit *super)
+log_stream_init (CamUnit *super, const CamUnitFormat *fmt)
 {
-    dbg (DBG_INPUT, "log stream on\n");
+    dbg (DBG_INPUT, "log stream init\n");
     CamInputLog *self = CAM_INPUT_LOG (super);
 
     self->next_frame_time = _timestamp_now ();
@@ -368,8 +368,7 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         const char *fname = g_value_get_string (proposed);
         int fstatus = _log_set_file (self, fname);
         if (0 == fstatus) {
-            cam_unit_stream_init_any_format (super);
-            cam_unit_stream_on (super);
+            cam_unit_stream_init (super, NULL);
             g_value_copy (proposed, actual);
             return TRUE;
         } else {
