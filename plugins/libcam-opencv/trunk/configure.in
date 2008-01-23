@@ -1,0 +1,87 @@
+AC_PREREQ(2.50)
+AC_INIT(plugins/demo_harris.h)
+AM_CONFIG_HEADER(config.h)
+AC_CANONICAL_SYSTEM
+AM_INIT_AUTOMAKE(libcam-opencv, 0.0.1)
+
+AC_PROG_CC
+
+dnl check for GLib
+AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
+PKG_PROG_PKG_CONFIG
+
+dnl check for libcam
+AM_PATH_LIBCAM(,,
+       [AC_MSG_ERROR([libcam is not found, but is required by libcam-opencv.])])
+
+dnl check for opencv
+AM_PATH_OPENCV(,,
+       [AC_MSG_ERROR([OpenCV is not found, but is required by libcam-opencv.])])
+
+dnl ---------------------------------------------------------------------------
+dnl When making a release:
+dnl  1. If the library source code has changed at all since the last release,
+dnl     then increment REVISION.
+dnl  2. If the interface has been changed since the last release, increment
+dnl     CURRENT, and set REVISION to 0.
+dnl  3. If the interface changes consist solely of additions, increment AGE.
+dnl  4. If the interface has removed elements, set AGE to 0.
+dnl ---------------------------------------------------------------------------
+LIBCAM_OPENCV_AGE=1
+LIBCAM_OPENCV_REVISION=0
+LIBCAM_OPENCV_CURRENT=2
+AC_SUBST(LIBCAM_OPENCV_AGE)
+AC_SUBST(LIBCAM_OPENCV_REVISION)
+AC_SUBST(LIBCAM_OPENCV_CURRENT)
+LIBCAM_OPENCV_VERSION_INFO=$LIBCAM_OPENCV_CURRENT:$LIBCAM_OPENCV_REVISION:$LIBCAM_OPENCV_AGE
+AC_SUBST(LIBCAM_OPENCV_VERSION_INFO)
+
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+libcamdatadir="$datadir/libcam"
+AC_SUBST(libcamplugindir)
+libcamplugindir="$libdir/libcam"
+AC_SUBST(libcamplugindir)
+lcmtypesdir="$datadir/libcam-opencv"
+AC_SUBST(lcmtypesdir)
+
+dnl ---------------------------------------------------------------------------
+dnl i18n support
+dnl ---------------------------------------------------------------------------
+ALL_LINGUAS=""
+
+dnl The gettext domain of the library
+GETTEXT_PACKAGE=${PACKAGE}
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[The gettext domain for the library])
+AC_SUBST(GETTEXT_PACKAGE)
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.14.3)
+
+AM_ICONV()
+
+dnl ---------------------------------------------------------------------------
+dnl Warnings
+dnl ---------------------------------------------------------------------------
+if test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+    LDFLAGS="$LDFLAGS -g -Wall"
+    AC_SUBST(CFLAGS)
+    AC_SUBST(LDFLAGS)
+fi
+LIBTOOL="$LIBTOOL --silent"
+AC_SUBST(LIBTOOL)
+
+AC_OUTPUT([
+  Makefile
+  plugins/Makefile
+  po/Makefile.in
+])
+
+echo "
+
+Configuration (libcam-opencv):
+
+	Source code location:  ${srcdir}
+	Compiler:              ${CC}
+"
