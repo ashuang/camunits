@@ -103,9 +103,10 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     IplImage *cvout = cvCreateImage (img_size, IPL_DEPTH_8U, 1);
 
-    cvCornerHarris (cvimg, cvout, 3, 3, 0.04);
+//    cvCornerHarris (cvimg, cvout, 3, 3, 0.04);
+//    cvCanny(cvimg,cvout,0.1,1.0,5); 
 
-#if 1
+#if 0
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (infmt->height * infmt->row_stride);
     for (int r=0; r<infmt->height; r++) {
