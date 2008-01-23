@@ -1,4 +1,4 @@
-libcamplugin_LTLIBRARIES = lcm_publish.la lcm_input.la
+libcamplugin_LTLIBRARIES = lcm_publish.la lcm_input.la lcm_sync_publish.la
 
 INCLUDES = $(GLIB_CFLAGS) $(LIBCAM_CFLAGS) $(LCM_CFLAGS)
 
@@ -23,6 +23,17 @@ lcm_input_la_LDFLAGS = -avoid-version -module
 lcm_input_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
 
 lcm_input.c lcm_input.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
+
+# sync publish unit
+lcm_sync_publish_la_SOURCES = \
+	$(lcmtypes_cfiles) $(lcmtypes_hfiles) \
+	lcm_sync_publish.c \
+	lcm_sync_publish.h 
+
+lcm_sync_publish_la_LDFLAGS = -avoid-version -module 
+lcm_sync_publish_la_LIBADD = $(LIBCAM_LIBS) $(LCM_LIBS)
+
+lcm_sync_publish.c lcm_sync_publish.h: $(lcmtypes_cfiles) $(lcmtypes_hfiles)
 
 
 # lcmtypes
