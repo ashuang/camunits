@@ -1,5 +1,5 @@
 AC_PREREQ(2.50)
-AC_INIT(plugins/demo_harris.h)
+AC_INIT(plugins/demo_canny.c)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(libcam-opencv, 0.0.1)
