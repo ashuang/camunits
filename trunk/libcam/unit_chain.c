@@ -256,12 +256,17 @@ cam_unit_chain_insert_unit (CamUnitChain *self, CamUnit *unit,
         dbg (DBG_CHAIN, "invalid position %d for insert_unit\n", position);
         return -1;
     }
+
     self->units = g_list_insert (self->units, unit, position);
     dbgl (DBG_REF, "ref_sink unit [%s]\n", cam_unit_get_id (unit));
     g_object_ref_sink (unit);
 
     GList *link = g_list_nth (self->units, position);
     assert (link->data == unit);
+
+    // subscribe to be notified when the status of the unit changes.
+    g_signal_connect (G_OBJECT (unit), "status-changed",
+            G_CALLBACK (on_unit_status_changed), self);
 
     // if the new unit has an input unit, then set it.
     if (link->prev) {
@@ -270,10 +275,6 @@ cam_unit_chain_insert_unit (CamUnitChain *self, CamUnit *unit,
         cam_unit_set_input (unit, prev_unit);
     }
     update_unit_status (self, unit, self->desired_unit_status);
-
-    // subscribe to be notified when the status of the unit changes.
-    g_signal_connect (G_OBJECT (unit), "status-changed",
-            G_CALLBACK (on_unit_status_changed), self);
 
     // if the new unit comes before the end of the chain, then set the next
     // unit's input
@@ -469,7 +470,6 @@ cam_unit_chain_set_desired_status (CamUnitChain *self,
         CamUnitStatus status)
 {
     if (status == CAM_UNIT_STATUS_READY ||
-        status == CAM_UNIT_STATUS_STREAMING ||
         status == CAM_UNIT_STATUS_IDLE) {
         int changing = status != self->desired_unit_status;
 
@@ -505,69 +505,12 @@ cam_unit_chain_check_status_all_units (const CamUnitChain *self,
     return NULL;
 }
 
-static int
-stream_on (CamUnitChain *self, CamUnit *unit)
-{
-    CamUnitStatus status = cam_unit_get_status (unit);
-
-    if (status == CAM_UNIT_STATUS_STREAMING) return 0;
-
-    if (status == CAM_UNIT_STATUS_READY) {
-        int res = cam_unit_stream_on (unit);
-        if (0 != res) {
-            err ("Chain: Unit %s did not start streaming!\n", 
-                    cam_unit_get_id (unit));
-            return -1;
-        }
-        dbg (DBG_CHAIN, "Unit %s started streaming\n", cam_unit_get_id (unit));
-
-        // if the unit provides a file descriptor, then attach it to the
-        // chain event source
-        if ((cam_unit_get_flags (unit) & CAM_UNIT_EVENT_METHOD_FD) &&
-                self->event_source) {
-            GPollFD *pfd = (GPollFD*) malloc (sizeof (GPollFD));
-
-            pfd->fd = cam_unit_get_fileno (unit);
-            pfd->events = G_IO_IN | G_IO_HUP | G_IO_ERR;
-            pfd->revents = 0;
-
-            g_object_set_data (G_OBJECT (unit), "ChainPollFD", pfd);
-
-            g_source_add_poll ( (GSource *)self->event_source, pfd);
-        }
-
-        return 0;
-    }
-
-    return -1;
-}
-
-static int
-stream_off (CamUnitChain *self, CamUnit *unit)
-{
-    int res = cam_unit_stream_off (unit);
-    if (0 != res) {
-        err ("Chain:  Error %d while trying to stop unit %s\n", 
-                res, cam_unit_get_id (unit));
-    }
-
-    // remove a GPollFD if it was setup by stream_on
-    GPollFD *pfd = (GPollFD*) g_object_get_data (G_OBJECT (unit), "ChainPollFD");
-    if (pfd) {
-        if (self->event_source)
-            g_source_remove_poll ( (GSource*)self->event_source, pfd);
-        g_object_set_data (G_OBJECT (unit), "ChainPollFD", NULL);
-        free (pfd);
-    }
-    return res;
-}
-
 static void
 try_produce_frame (CamUnitChain *self, GList *unit_link)
 {
     CamUnit *unit = CAM_UNIT (unit_link->data);
 
-    if (cam_unit_get_status (unit) == CAM_UNIT_STATUS_STREAMING) {
+    if (cam_unit_get_status (unit) == CAM_UNIT_STATUS_READY) {
         cam_unit_try_produce_frame (unit, 0);
     }
 
@@ -580,30 +523,14 @@ update_unit_status (CamUnitChain *self, CamUnit *unit, CamUnitStatus desired)
     CamUnitStatus status = cam_unit_get_status (unit);
     if (status == desired) return;
     const char *unit_id = cam_unit_get_id (unit);
-    dbg (DBG_CHAIN, "checking status of unit [%s]\n", unit_id);
 
-    if (status == CAM_UNIT_STATUS_IDLE) {
+    if (CAM_UNIT_STATUS_READY == desired) {
         dbg (DBG_CHAIN, "stream_init on [%s]\n", unit_id);
-        cam_unit_stream_init_any_format (unit);
-        status = cam_unit_get_status (unit);
-        if (status == desired) return;
-    }
+        cam_unit_stream_init (unit, NULL);
 
-    if (status == CAM_UNIT_STATUS_STREAMING) {
-        dbg (DBG_CHAIN, "stream_off on [%s]\n", unit_id);
-        stream_off (self, unit);
-        status = cam_unit_get_status (unit);
-        if (status == desired) return;
-    }
-
-    if (status == CAM_UNIT_STATUS_READY) {
-        if (desired == CAM_UNIT_STATUS_IDLE) {
-            dbg (DBG_CHAIN, "stream_shutdown on [%s]\n", unit_id);
-            cam_unit_stream_shutdown (unit);
-        } else {
-            dbg (DBG_CHAIN, "stream_on on [%s]\n", unit_id);
-            stream_on (self, unit);
-        }
+    } else if (CAM_UNIT_STATUS_IDLE == desired) {
+        dbg (DBG_CHAIN, "stream_shutdown on [%s]\n", unit_id);
+        cam_unit_stream_shutdown (unit);
     }
 }
 
@@ -614,7 +541,7 @@ update_unit_statuses (CamUnitChain *self)
 
     GList *uiter;
     for (uiter=self->units; uiter; uiter=uiter->next) {
-        // all units must be either ready or streaming to proceed
+        // all units must be ready to proceed
         CamUnit *unit = CAM_UNIT (uiter->data);
         update_unit_status (self, unit, self->desired_unit_status);
     }
@@ -638,7 +565,7 @@ cam_unit_chain_source_prepare (GSource *source, gint *timeout)
         uint32_t uflags = cam_unit_get_flags (unit);
 
         if (uflags & CAM_UNIT_EVENT_METHOD_TIMEOUT &&
-            cam_unit_get_status (unit) == CAM_UNIT_STATUS_STREAMING) {
+            cam_unit_get_status (unit) == CAM_UNIT_STATUS_READY) {
 
             GTimeVal t;
             g_source_get_current_time (source, &t);
@@ -684,7 +611,7 @@ cam_unit_chain_source_check (GSource *source)
         CamUnit *unit = CAM_UNIT (uiter->data);
         uint32_t uflags = cam_unit_get_flags (unit);
 
-        if (cam_unit_get_status (unit) != CAM_UNIT_STATUS_STREAMING) {
+        if (cam_unit_get_status (unit) != CAM_UNIT_STATUS_READY) {
             continue;
         }
 
@@ -767,9 +694,23 @@ on_unit_status_changed (CamUnit *unit, int old_status, CamUnitChain *self)
     dbg (DBG_CHAIN, "status of [%s] changed to %s\n", 
             cam_unit_get_id (unit),
             cam_unit_status_to_str (cam_unit_get_status (unit)));
-    CamUnitStatus newstatus = cam_unit_get_status (unit);
+    CamUnitStatus new_status = cam_unit_get_status (unit);
+
     if (old_status == CAM_UNIT_STATUS_IDLE && 
-        newstatus == CAM_UNIT_STATUS_READY) {
+        new_status == CAM_UNIT_STATUS_READY) {
+        // if the unit provides a file descriptor, then attach it to the
+        // chain event source
+        if ((cam_unit_get_flags (unit) & CAM_UNIT_EVENT_METHOD_FD) &&
+                self->event_source) {
+            GPollFD *pfd = (GPollFD*) malloc (sizeof (GPollFD));
+
+            pfd->fd = cam_unit_get_fileno (unit);
+            pfd->events = G_IO_IN | G_IO_HUP | G_IO_ERR;
+            pfd->revents = 0;
+
+            g_object_set_data (G_OBJECT (unit), "ChainPollFD", pfd);
+            g_source_add_poll ( (GSource *)self->event_source, pfd);
+        }
 
         // If we detect that a unit has re-initialized, then we must restart
         // all the units after that unit, because the output format of the unit
@@ -789,6 +730,17 @@ on_unit_status_changed (CamUnit *unit, int old_status, CamUnitChain *self)
                         on_unit_status_changed, self);
             }
             if (cunit == unit) restart = 1;
+        }
+    }
+    else if (old_status == CAM_UNIT_STATUS_READY && 
+             new_status == CAM_UNIT_STATUS_IDLE) {
+        // remove a GPollFD if it was setup earlier
+        GPollFD *pfd = g_object_get_data (G_OBJECT (unit), "ChainPollFD");
+        if (pfd) {
+            if (self->event_source)
+                g_source_remove_poll ( (GSource*)self->event_source, pfd);
+            g_object_set_data (G_OBJECT (unit), "ChainPollFD", NULL);
+            free (pfd);
         }
     }
 }

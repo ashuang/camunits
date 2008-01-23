@@ -94,7 +94,8 @@ cam_input_example_driver_create_unit(CamUnitDriver *super,
 // ============== CamInputExample ===============
 
 static void cam_input_example_finalize (GObject *obj);
-static int cam_input_example_stream_on (CamUnit *super);
+static int cam_input_example_stream_init (CamUnit *super, 
+        const CamUnitFormat *fmt);
 static gboolean cam_input_example_try_produce_frame (CamUnit * super);
 static int64_t cam_input_example_get_next_event_time (CamUnit *super);
 static gboolean cam_example_try_set_control(CamUnit *super, 
@@ -109,7 +110,7 @@ cam_input_example_class_init (CamInputExampleClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
     gobject_class->finalize = cam_input_example_finalize;
 
-    klass->parent_class.stream_on = cam_input_example_stream_on;
+    klass->parent_class.stream_init = cam_input_example_stream_init;
     klass->parent_class.try_produce_frame = cam_input_example_try_produce_frame;
     klass->parent_class.get_next_event_time = 
         cam_input_example_get_next_event_time;
@@ -162,9 +163,9 @@ cam_input_example_new()
 }
 
 static int
-cam_input_example_stream_on (CamUnit *super)
+cam_input_example_stream_init (CamUnit *super, const CamUnitFormat *fmt)
 {
-    dbg(DBG_INPUT, "example stream on\n");
+    dbg(DBG_INPUT, "example stream init\n");
     CamInputExample *self = CAM_INPUT_EXAMPLE (super);
     self->next_frame_time = _timestamp_now();
     

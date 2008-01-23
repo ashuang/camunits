@@ -181,8 +181,6 @@ lb2_ladybug2_init (LB2Ladybug2 * self)
 static void dc1394_finalize (GObject * obj);
 static int dc1394_stream_init (CamUnit * super, const CamUnitFormat * format);
 static int dc1394_stream_shutdown (CamUnit * super);
-static int dc1394_stream_on (CamUnit * super);
-static int dc1394_stream_off (CamUnit * super);
 static gboolean dc1394_try_produce_frame (CamUnit * super);
 static int dc1394_get_fileno (CamUnit * super);
 //static gboolean dc1394_try_set_control(CamUnit *super,
@@ -197,8 +195,6 @@ lb2_ladybug2_class_init (LB2Ladybug2Class * klass)
 
     klass->parent_class.stream_init = dc1394_stream_init;
     klass->parent_class.stream_shutdown = dc1394_stream_shutdown;
-    klass->parent_class.stream_on = dc1394_stream_on;
-    klass->parent_class.stream_off = dc1394_stream_off;
     klass->parent_class.try_produce_frame = dc1394_try_produce_frame;
     klass->parent_class.get_fileno = dc1394_get_fileno;
 //    klass->parent_class.try_set_control = dc1394_try_set_control;
@@ -356,6 +352,9 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
             != DC1394_SUCCESS)
         goto fail;
 
+    if (dc1394_video_set_transmission (self->cam, DC1394_ON) != DC1394_SUCCESS)
+        goto fail;
+
     self->fd = dc1394_capture_get_fileno (self->cam);
     dbg(DBG_INPUT, "dc1394 capture fileno: %d\n", self->fd);
 
@@ -369,26 +368,8 @@ dc1394_stream_shutdown (CamUnit * super)
 {
     dbg (DBG_INPUT, "Shutting down Ladybug2 stream\n");
     LB2Ladybug2 * self = LB2_LADYBUG2 (super);
-    dc1394_capture_stop (self->cam);
-    return 0;
-}
-
-static int
-dc1394_stream_on (CamUnit * super)
-{
-    dbg (DBG_INPUT, "Ladybug2 stream on\n");
-    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
-    if (dc1394_video_set_transmission (self->cam, DC1394_ON) != DC1394_SUCCESS)
-        return -1;
-    return 0;
-}
-
-static int
-dc1394_stream_off (CamUnit * super)
-{
-    dbg (DBG_INPUT, "Ladybug2 stream off\n");
-    LB2Ladybug2 * self = LB2_LADYBUG2 (super);
     dc1394_video_set_transmission (self->cam, DC1394_OFF);
+    dc1394_capture_stop (self->cam);
     return 0;
 }
 

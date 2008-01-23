@@ -17,8 +17,6 @@ cam_convert_to_rgb8_driver_new()
 
 // ============== CamConvertToRgb8 ===============
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
-static int _stream_on (CamUnit * super);
-static int _stream_off (CamUnit * super);
 static int _stream_shutdown (CamUnit * super);
 static void _finalize (GObject * obj);
 
@@ -38,8 +36,6 @@ cam_convert_to_rgb8_class_init( CamConvertToRgb8Class *klass )
     gobject_class->finalize = _finalize;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
     klass->parent_class.stream_init = _stream_init;
-    klass->parent_class.stream_on = _stream_on;
-    klass->parent_class.stream_off = _stream_off;
     klass->parent_class.stream_shutdown = _stream_shutdown;
 }
 
@@ -87,28 +83,6 @@ _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
         return cam_unit_stream_init (self->worker, wfmt);
     } else {
         return -1;
-    }
-}
-
-static int
-_stream_on (CamUnit *super)
-{
-    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
-    if (self->worker) {
-        return cam_unit_stream_on (self->worker);
-    } else {
-        return 0;
-    }
-}
-
-static int
-_stream_off (CamUnit * super)
-{
-    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
-    if (self->worker) {
-        return cam_unit_stream_off (self->worker);
-    } else {
-        return 0;
     }
 }
 
@@ -225,16 +199,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         g_list_free (worker_formats);
     }
 
-    switch (desired_status) {
-        case CAM_UNIT_STATUS_READY:
-            cam_unit_stream_init_any_format (super);
-            break;
-        case CAM_UNIT_STATUS_STREAMING:
-            if (0 == cam_unit_stream_init_any_format (super)) {
-                cam_unit_stream_on (super);
-            }
-            break;
-        default:
-            break;
+    if (CAM_UNIT_STATUS_READY == desired_status) {
+        cam_unit_stream_init (super, NULL);
     }
 }

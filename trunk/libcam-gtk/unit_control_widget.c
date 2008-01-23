@@ -1165,10 +1165,8 @@ on_formats_combo_changed( GtkComboBox *combo, CamUnitControlWidget *self )
                 cfmt->pixelformat, cfmt->width, cfmt->height);
         if (orig_status != CAM_UNIT_STATUS_IDLE) {
             cam_unit_stream_shutdown (self->unit);
-            cam_unit_stream_init_any_format (self->unit);
+            cam_unit_stream_init (self->unit, NULL);
         }
-        if (orig_status == CAM_UNIT_STATUS_STREAMING)
-            cam_unit_stream_on (self->unit);
     }
     g_list_free (output_formats);
 }
