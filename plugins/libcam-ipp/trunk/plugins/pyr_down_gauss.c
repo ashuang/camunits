@@ -62,7 +62,7 @@ CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("filter.ipp", "pyr-down-gauss",
-            "Pyramid Down Gaussian", CAM_UNIT_RENDERS_GL, 
+            "Pyramid Down Gaussian", 0, 
             (CamUnitConstructor)camipp_pyr_down_gauss_new,
             module);
 }
