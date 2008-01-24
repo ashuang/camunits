@@ -139,8 +139,6 @@ struct _CamUnitDriverClass {
 
     int (*start) (CamUnitDriver *self);
     int (*stop) (CamUnitDriver *self);
-    CamUnitDescription* (*search_unit_description) (CamUnitDriver *self, 
-            const char *unit_id);
     CamUnit* (*create_unit) (CamUnitDriver *self, 
             const CamUnitDescription *udesc);
 };
@@ -219,8 +217,7 @@ const char * cam_unit_driver_get_package (const CamUnitDriver *self);
  * cam_unit_driver_find_unit_description:
  *
  * Looks for a #CamUnitDescription provided by the driver that matches the 
- * specified @unit_id.  If no such unit description is found, then
- * search_unit_description is invoked to specifically query the unit driver.
+ * specified @unit_id.
  *
  * Returns: the matching #CamUnitDescription, or NULL if no such description 
  * was found

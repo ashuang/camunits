@@ -73,8 +73,6 @@ static guint cam_unit_driver_signals[LAST_SIGNAL] = { 0 };
 static void cam_unit_driver_finalize (GObject *obj);
 static int cam_unit_driver_default_start (CamUnitDriver *self);
 static int cam_unit_driver_default_stop (CamUnitDriver *self);
-static CamUnitDescription* cam_unit_driver_default_search_unit_description (
-        CamUnitDriver *self, const char *id);
 
 G_DEFINE_TYPE (CamUnitDriver, cam_unit_driver, G_TYPE_INITIALLY_UNOWNED);
 
@@ -95,10 +93,7 @@ cam_unit_driver_class_init (CamUnitDriverClass *klass)
     gobject_class->finalize = cam_unit_driver_finalize;
 
     klass->start = cam_unit_driver_default_start;
-    klass->start = cam_unit_driver_default_start;
     klass->stop = cam_unit_driver_default_stop;
-    klass->search_unit_description = 
-        cam_unit_driver_default_search_unit_description;
 
     // pure virtual
     klass->create_unit = cam_unit_driver_default_create_unit;
@@ -237,15 +232,13 @@ cam_unit_driver_find_unit_description (CamUnitDriver *self, const char *id)
 {
     dbg (DBG_DRIVER, "[%s] searching for unit description [%s]\n", 
             self->package, id);
-    CamUnitDescription *result = NULL;
     GList *uditer;
     for (uditer=self->udescs; uditer; uditer=uditer->next) {
         CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION (uditer->data);
-        if (!strcmp (udesc->unit_id, id)) return udesc;
+        if (!strcmp (udesc->unit_id, id))
+            return udesc;
     }
-    result = 
-        CAM_UNIT_DRIVER_GET_CLASS (self)->search_unit_description (self, id);
-    return result;
+    return NULL;
 }
 
 GList *
@@ -288,13 +281,6 @@ cam_unit_driver_default_stop (CamUnitDriver *self)
     self->udescs = NULL;
     
     return 0;
-}
-
-static CamUnitDescription* 
-cam_unit_driver_default_search_unit_description (CamUnitDriver *self, 
-        const char *unit_id)
-{
-    return NULL;
 }
 
 CamUnitDescription *

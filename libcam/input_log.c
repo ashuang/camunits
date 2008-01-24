@@ -17,8 +17,6 @@
 
 static CamUnit * driver_create_unit (CamUnitDriver *super,
         const CamUnitDescription * udesc);
-static CamUnitDescription * driver_search_unit_description(
-        CamUnitDriver *driver, const char *id);
 
 static int _log_set_file (CamInputLog *self, const char *fname);
 
@@ -40,8 +38,6 @@ cam_input_log_driver_class_init (CamInputLogDriverClass *klass)
 {
     dbg (DBG_DRIVER, "log driver class initializer\n");
     klass->parent_class.create_unit = driver_create_unit;
-    klass->parent_class.search_unit_description = 
-        driver_search_unit_description;
 }
 
 CamInputLogDriver *
@@ -65,34 +61,6 @@ driver_create_unit (CamUnitDriver *super,
     g_strfreev (words);
 
     return CAM_UNIT (result);
-}
-
-static CamUnitDescription * 
-driver_search_unit_description (CamUnitDriver *super, 
-        const char *id)
-{
-//    CamInputLogDriver *self = CAM_INPUT_LOG_DRIVER (super);
-    char **words = g_strsplit (id, ":", 2);
-    if (strcmp (words[0], "input.log")) {
-        dbg (DBG_DRIVER, "driver name [%s] did not match expected [%s]\n",
-                words[0], "input.log");
-        g_strfreev (words);
-        return NULL;
-    }
-    if (g_file_test (words[1], G_FILE_TEST_EXISTS)) {
-        gchar * basename = g_path_get_basename (words[1]);
-        CamUnitDescription *desc = 
-            cam_unit_driver_add_unit_description (super,
-                "Log Input", words[1], 
-                CAM_UNIT_EVENT_METHOD_TIMEOUT);
-        g_free (basename);
-        g_strfreev (words);
-        return desc;
-    }
-    dbg (DBG_DRIVER, "file [%s] not found\n", words[1]);
-    g_strfreev (words);
-
-    return NULL;
 }
 
 // ============== CamInputLog ===============

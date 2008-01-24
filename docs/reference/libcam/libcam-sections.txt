@@ -112,11 +112,8 @@ cam_unit_get_id
 cam_unit_get_output_format
 cam_unit_get_output_formats
 cam_unit_stream_init
-cam_unit_stream_init_any_format
 cam_unit_set_preferred_format
 cam_unit_stream_shutdown
-cam_unit_stream_on
-cam_unit_stream_off
 cam_unit_try_produce_frame
 cam_unit_get_fileno
 cam_unit_get_next_event_time
@@ -568,7 +565,6 @@ cam_input_log_driver_new
 <TITLE>CamInputLog</TITLE>
 CamInputLog
 cam_input_log_new
-cam_log_set_file
 <SUBSECTION Standard>
 CAM_INPUT_LOG_DRIVER_TYPE
 CAM_INPUT_LOG_DRIVER
