@@ -72,6 +72,7 @@ AC_SUBST(LIBTOOL)
 AC_OUTPUT([
   Makefile
   jpeg/Makefile
+  plugins/Makefile
   po/Makefile.in
 ])
 

@@ -12,12 +12,6 @@
 
 #define err(args...) fprintf(stderr, args)
 
-#define PLUGIN_UNIT
-
-#ifndef FILTER_JPEG_LABEL
-#define FILTER_JPEG_LABEL "IPP JPEG"
-#endif
-
 static int _jpegipp_decompress_to_8u_rgb (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride);
 static int _jpegipp_compress_8u_gray (const uint8_t * src, int width, int height, 
@@ -28,24 +22,16 @@ static int _jpegipp_compress_8u_bgra (const uint8_t * src, int width, int height
         int stride, uint8_t * dest, int * destsize, int quality);
 static void _jpegipp_std_huff_tables (j_decompress_ptr cinfo);
 
-CamUnitDriver *
-camipp_jpeg_driver_new()
-{
-    return cam_unit_driver_new_stock ("ipp", "jpeg",
-            FILTER_JPEG_LABEL, 0,
-            (CamUnitConstructor)camipp_jpeg_new);
-}
-
 // ============== CamippJpeg ===============
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
-#ifndef PLUGIN_UNIT
-G_DEFINE_TYPE (CamippJpeg, camipp_jpeg, CAM_TYPE_UNIT);
-#else
 CAM_PLUGIN_TYPE (CamippJpeg, camipp_jpeg, CAM_TYPE_UNIT);
+
+void cam_plugin_initialize (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
@@ -58,11 +44,9 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("ipp", "jpeg",
-            FILTER_JPEG_LABEL, 0,
-            (CamUnitConstructor)camipp_jpeg_new, module);
+    return cam_unit_driver_new_stock_full ("convert.ipp", "jpeg",
+            "IPP JPEG", 0, (CamUnitConstructor)camipp_jpeg_new, module);
 }
-#endif
 
 static void
 camipp_jpeg_init (CamippJpeg *self)

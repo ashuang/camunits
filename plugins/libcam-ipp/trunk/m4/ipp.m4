@@ -21,20 +21,24 @@ case "$target_cpu" in
         IPP_JPEG_STATIC_LIBS="-lippjemerged -lippjmerged -lippiemerged -lippimerged -lippsemerged -lippsmerged -lippcore"
         IPP_JPEG_LIBS="-lippj -lippi -lipps -lippcore"
         IPP_ARCH="ia32"
+        IPP_LIBS="-lguide -lippcore -lippi -lippcc -lippcv"
     ;;
     ia64*) 
         IPP_JPEG_STATIC_LIBS="-lippji7 -lippii7 -lippsi7 -lippcore64"
         IPP_JPEG_LIBS="-lippj64 -lippi64 -lipps64 -lippcore64"
         IPP_ARCH="ia64"
+        IPP_LIBS="-lguide -lippcore64 -lippi64 -lippj64 -lippcc64 -lippcv64 -lpthread -lipps64"
     ;;
 	x86_64*) 
         IPP_JPEG_STATIC_LIBS="-lippjemergedem64t -lippjmergedem64t -lippiemergedem64t -lippimergedem64t -lippsemergedem64t -lippsmergedem64t -lippcoreem64t"
         IPP_JPEG_LIBS="-lippjem64t -lippiem64t -lippsem64t -lippcoreem64t"
         IPP_ARCH="em64t"
+        IPP_LIBS="-lguide -lippcoreem64t -lippiem64t -lippjem64t -lippccem64t -lippcvem64t -lpthread -lippsem64t"
     ;;
 	*) 
         IPP_JPEG_STATIC_LIBS="-lippjemerged -lippjmerged -lippiemerged -lippimerged -lippsemerged -lippsmerged -lippcore"
         IPP_JPEG_LIBS="-lippj -lippi -lipps -lippcore"
+        IPP_LIBS="-lguide -lippcore -lippi -lippcc -lippcv"
     ;;
 esac
 
@@ -88,6 +92,7 @@ else
     AC_SUBST(IPP_LDFLAGS)
     AC_SUBST(IPP_JPEG_STATIC_LIBS)
     AC_SUBST(IPP_JPEG_LIBS)
+    AC_SUBST(IPP_LIBS)
     ifelse([$2], , :, [$2])
 fi
 
