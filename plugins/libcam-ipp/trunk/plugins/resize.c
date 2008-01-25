@@ -278,10 +278,7 @@ _try_set_control (CamUnit *super,
         const CamUnitFormat *infmt = 
             cam_unit_get_output_format (super->input_unit);
         if ((old_width != new_width || old_height != new_height) && infmt) {
-
-            if (CAM_UNIT_STATUS_READY == cam_unit_get_status (super)) {
-                cam_unit_stream_shutdown (super);
-            }
+            cam_unit_stream_shutdown (super);
 
             update_output_format (self, new_width, new_height, infmt);
 
