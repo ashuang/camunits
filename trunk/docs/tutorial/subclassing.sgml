@@ -1091,12 +1091,9 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 format and resolution.
             </para>
             <para>
-                We have not demonstrated how to use the OpenGL rendering
-                framework of <classname>CamUnit</classname>, and we have
-                glossed over the unit status (i.e. idle, ready, streaming).
-                As always, if these are not well documented elsewhere in our
-                tutorial, the best place to look is the source code that is
-                distributed with libcam.
+                As always, if some parts of libcam are not well documented
+                elsewhere in our tutorial, the best place to look is the source
+                code that is distributed with libcam.
             </para>
         </sect2>
     </sect1>

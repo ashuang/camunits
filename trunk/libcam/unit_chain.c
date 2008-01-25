@@ -21,7 +21,6 @@ enum {
     UNIT_ADDED_SIGNAL,
     UNIT_REMOVED_SIGNAL,
     UNIT_REORDERED_SIGNAL,
-    DESIRED_STATUS_CHANGED_SIGNAL,
     FRAME_READY_SIGNAL,
     LAST_SIGNAL
 };
@@ -29,18 +28,16 @@ enum {
 static guint chain_signals[LAST_SIGNAL] = { 0 };
 
 static void cam_unit_chain_finalize (GObject *obj);
-static int are_all_units_status (CamUnitChain *self, int status);
-static void update_unit_status (CamUnitChain *self, CamUnit *unit,
-       CamUnitStatus desired);
-static void update_unit_statuses (CamUnitChain *self);
+static gboolean update_unit_status (CamUnitChain *self, CamUnit *unit,
+       gboolean streaming_desired);
+static CamUnit * update_unit_statuses (CamUnitChain *self);
 
 static gboolean cam_unit_chain_source_prepare (GSource *source, gint *timeout);
 static gboolean cam_unit_chain_source_check (GSource *source);
 static gboolean cam_unit_chain_source_dispatch (GSource *source, 
         GSourceFunc callback, void *user_data);
 static void cam_unit_chain_source_finalize (GSource *source);
-static void on_unit_status_changed (CamUnit *unit, int old_status, 
-        CamUnitChain *self);
+static void on_unit_status_changed (CamUnit *unit, CamUnitChain *self);
 
 G_DEFINE_TYPE (CamUnitChain, cam_unit_chain, G_TYPE_OBJECT);
 
@@ -54,7 +51,7 @@ cam_unit_chain_init (CamUnitChain *self)
     self->source_funcs.check    = cam_unit_chain_source_check;
     self->source_funcs.dispatch = cam_unit_chain_source_dispatch;
     self->source_funcs.finalize = cam_unit_chain_source_finalize;
-    self->desired_unit_status = CAM_UNIT_STATUS_IDLE;
+    self->streaming_desired = FALSE;
 
     self->event_source = (CamUnitChainSource*) g_source_new (
             &self->source_funcs, sizeof (CamUnitChainSource));
@@ -100,23 +97,6 @@ cam_unit_chain_class_init (CamUnitChainClass *klass)
             g_cclosure_marshal_VOID__OBJECT,
             G_TYPE_NONE, 1,
             CAM_TYPE_UNIT);
-    /**
-     * CamUnitChain::desired-status-changed
-     * @chain: the CamUnitChain emitting the signal
-     * 
-     * The desired-status-changed signal is emitted when the desired status of
-     * every unit in the chain changes.
-     * See also #cam_unit_chain_set_desired_status
-     */
-    chain_signals[DESIRED_STATUS_CHANGED_SIGNAL] = 
-        g_signal_new ("desired-status-changed",
-            G_TYPE_FROM_CLASS (klass),
-            G_SIGNAL_RUN_FIRST,
-            0,
-            NULL,
-            NULL,
-            g_cclosure_marshal_VOID__VOID,
-            G_TYPE_NONE, 0);
     /**
      * CamUnitChain::unit-reordered
      * @chain: the CamUnitChain emitting the signal
@@ -171,15 +151,14 @@ cam_unit_chain_finalize (GObject *obj)
         g_object_unref (self->manager);
     }
 
-    // if units are not all idle, then it's not terrible, but it is poor form.
-    if (! are_all_units_status (self, CAM_UNIT_STATUS_IDLE)) {
-        err ("Chain:  Destroying a chain with non-idle units!!!!\n");
-    }
-
     // release units in the chain
     GList *uiter;
     for (uiter=self->units; uiter; uiter=uiter->next) {
         CamUnit *unit = CAM_UNIT (uiter->data);
+        if (cam_unit_is_streaming (unit)) {
+            g_warning ("%s:%d -- Unit [%s] is still streaming!\n",
+                    __FILE__, __LINE__, cam_unit_get_id (unit));
+        }
         dbgl (DBG_REF, "unref unit\n");
         g_object_unref (unit);
     }
@@ -208,18 +187,6 @@ cam_unit_chain_new_with_manager (CamUnitManager *manager)
         g_object_ref (manager);
     }
     return self;
-}
-
-static int
-are_all_units_status (CamUnitChain *self, int status) 
-{
-    GList *uiter;
-    for (uiter=self->units; uiter; uiter=uiter->next) {
-        CamUnit *unit = CAM_UNIT (uiter->data);
-        if (cam_unit_get_status (unit) != status) 
-            return 0;
-    }
-    return 1;
 }
 
 CamUnitManager *
@@ -271,18 +238,18 @@ cam_unit_chain_insert_unit (CamUnitChain *self, CamUnit *unit,
     // if the new unit has an input unit, then set it.
     if (link->prev) {
         CamUnit *prev_unit = (CamUnit*) link->prev->data;
-        update_unit_status (self, unit, CAM_UNIT_STATUS_IDLE);
+        update_unit_status (self, unit, FALSE);
         cam_unit_set_input (unit, prev_unit);
     }
-    update_unit_status (self, unit, self->desired_unit_status);
+    update_unit_status (self, unit, self->streaming_desired);
 
     // if the new unit comes before the end of the chain, then set the next
     // unit's input
     if (link->next) {
         CamUnit *next_unit = (CamUnit*) link->next->data;
-        update_unit_status (self, next_unit, CAM_UNIT_STATUS_IDLE);
+        update_unit_status (self, next_unit, FALSE);
         cam_unit_set_input (next_unit, unit);
-        update_unit_status (self, next_unit, self->desired_unit_status);
+        update_unit_status (self, next_unit, self->streaming_desired);
     } else {
         // if the new unit is the last unit in the chain, then subscribe to its
         // frame-ready event and unsubscribe to the previous last unit's event.
@@ -343,14 +310,14 @@ cam_unit_chain_remove_unit (CamUnitChain *self, CamUnit *unit)
     g_signal_emit (G_OBJECT (self), chain_signals[UNIT_REMOVED_SIGNAL],
             0, unit);
     dbgl (DBG_REF, "unref unit [%s]\n", cam_unit_get_id (unit));
-    update_unit_status (self, unit, CAM_UNIT_STATUS_IDLE);
+    update_unit_status (self, unit, FALSE);
     cam_unit_set_input (unit, NULL);
     g_object_unref (unit);
 
     if (next) {
-        update_unit_status (self, next, CAM_UNIT_STATUS_IDLE);
+        update_unit_status (self, next, FALSE);
         cam_unit_set_input (next, prev);
-        update_unit_status (self, next, self->desired_unit_status);
+        update_unit_status (self, next, self->streaming_desired);
     } else if (prev) {
         // if this unit was the last in the chain, and it has a predecessor,
         // then subscribe to its predecessor's frame-ready signal
@@ -434,9 +401,9 @@ cam_unit_chain_reorder_unit (CamUnitChain *self, CamUnit *unit,
         CamUnit *oldprev = oldlink->prev ? 
             CAM_UNIT (oldlink->prev->data) : 
             NULL;
-        update_unit_status (self, oldnext, CAM_UNIT_STATUS_IDLE);
+        update_unit_status (self, oldnext, FALSE);
         cam_unit_set_input (oldnext, oldprev);
-        update_unit_status (self, oldnext, self->desired_unit_status);
+        update_unit_status (self, oldnext, self->streaming_desired);
     }
 
     self->units = g_list_remove (self->units, unit);
@@ -444,19 +411,19 @@ cam_unit_chain_reorder_unit (CamUnitChain *self, CamUnit *unit,
     self->units = g_list_insert (self->units, unit, new_index);
     GList *link = g_list_nth (self->units, new_index);
 
-    update_unit_status (self, unit, CAM_UNIT_STATUS_IDLE);
+    update_unit_status (self, unit, FALSE);
     if (link->prev) {
         CamUnit *prev_unit = CAM_UNIT (link->prev->data);
         cam_unit_set_input (unit, prev_unit);
     } else {
         cam_unit_set_input (unit, NULL);
     }
-    update_unit_status (self, unit, self->desired_unit_status);
+    update_unit_status (self, unit, self->streaming_desired);
     if (link->next) {
         CamUnit *next_unit = CAM_UNIT (link->next->data);
-        update_unit_status (self, next_unit, CAM_UNIT_STATUS_IDLE);
+        update_unit_status (self, next_unit, FALSE);
         cam_unit_set_input (next_unit, unit);
-        update_unit_status (self, next_unit, self->desired_unit_status);
+        update_unit_status (self, next_unit, self->streaming_desired);
     }
 
     g_signal_emit (G_OBJECT (self), chain_signals[UNIT_REORDERED_SIGNAL],
@@ -465,86 +432,47 @@ cam_unit_chain_reorder_unit (CamUnitChain *self, CamUnit *unit,
     return 0;
 }
 
-int 
-cam_unit_chain_set_desired_status (CamUnitChain *self, 
-        CamUnitStatus status)
+CamUnit * 
+cam_unit_chain_all_units_stream_init (CamUnitChain *self) 
 {
-    if (status == CAM_UNIT_STATUS_READY ||
-        status == CAM_UNIT_STATUS_IDLE) {
-        int changing = status != self->desired_unit_status;
+    self->streaming_desired = TRUE;
+    return update_unit_statuses (self);
+} 
 
-        self->desired_unit_status = status;
-        update_unit_statuses (self);
-
-        if (changing) {
-            g_signal_emit (G_OBJECT (self), 
-                    chain_signals[DESIRED_STATUS_CHANGED_SIGNAL], 0);
-        }
-        return 0;
-    } 
-    return -1;
-}
-
-
-CamUnitStatus 
-cam_unit_chain_get_desired_status (const CamUnitChain *self)
+CamUnit * 
+cam_unit_chain_all_units_stream_shutdown (CamUnitChain *self) 
 {
-    return self->desired_unit_status;
-}
+    self->streaming_desired = FALSE;
+    return update_unit_statuses (self);
+} 
 
-CamUnit *
-cam_unit_chain_check_status_all_units (const CamUnitChain *self,
-        CamUnitStatus status)
+static gboolean
+update_unit_status (CamUnitChain *self, CamUnit *unit, gboolean desired)
 {
-    for (const GList *uiter=self->units; uiter; uiter=uiter->next) {
-        CamUnit *unit = CAM_UNIT (uiter->data);
-        if (cam_unit_get_status (unit) != status) {
-            return unit;
-        }
-    }
-    return NULL;
-}
-
-static void
-try_produce_frame (CamUnitChain *self, GList *unit_link)
-{
-    CamUnit *unit = CAM_UNIT (unit_link->data);
-
-    if (cam_unit_get_status (unit) == CAM_UNIT_STATUS_READY) {
-        cam_unit_try_produce_frame (unit, 0);
-    }
-
-    return;
-}
-
-static void
-update_unit_status (CamUnitChain *self, CamUnit *unit, CamUnitStatus desired)
-{
-    CamUnitStatus status = cam_unit_get_status (unit);
-    if (status == desired) return;
+    if (cam_unit_is_streaming (unit) == desired) return TRUE;
     const char *unit_id = cam_unit_get_id (unit);
-
-    if (CAM_UNIT_STATUS_READY == desired) {
+    if (desired) {
         dbg (DBG_CHAIN, "stream_init on [%s]\n", unit_id);
         cam_unit_stream_init (unit, NULL);
-
-    } else if (CAM_UNIT_STATUS_IDLE == desired) {
+    } else {
         dbg (DBG_CHAIN, "stream_shutdown on [%s]\n", unit_id);
         cam_unit_stream_shutdown (unit);
     }
+    return cam_unit_is_streaming (unit) == desired;
 }
 
-static void
+static CamUnit *
 update_unit_statuses (CamUnitChain *self)
 {
-    if (! self->units) return;
-
-    GList *uiter;
-    for (uiter=self->units; uiter; uiter=uiter->next) {
-        // all units must be ready to proceed
+    if (! self->units) return NULL;
+    CamUnit *first_offender = NULL;
+    for (GList *uiter=self->units; uiter; uiter=uiter->next) {
         CamUnit *unit = CAM_UNIT (uiter->data);
-        update_unit_status (self, unit, self->desired_unit_status);
+        if (! update_unit_status (self, unit, self->streaming_desired) &&
+            !first_offender)
+            first_offender = unit;
     }
+    return first_offender;
 }
 
 static gboolean
@@ -565,7 +493,7 @@ cam_unit_chain_source_prepare (GSource *source, gint *timeout)
         uint32_t uflags = cam_unit_get_flags (unit);
 
         if (uflags & CAM_UNIT_EVENT_METHOD_TIMEOUT &&
-            cam_unit_get_status (unit) == CAM_UNIT_STATUS_READY) {
+            cam_unit_is_streaming (unit)) {
 
             GTimeVal t;
             g_source_get_current_time (source, &t);
@@ -611,7 +539,7 @@ cam_unit_chain_source_check (GSource *source)
         CamUnit *unit = CAM_UNIT (uiter->data);
         uint32_t uflags = cam_unit_get_flags (unit);
 
-        if (cam_unit_get_status (unit) != CAM_UNIT_STATUS_READY) {
+        if (! cam_unit_is_streaming (unit)) {
             continue;
         }
 
@@ -654,7 +582,9 @@ cam_unit_chain_source_dispatch (GSource *source, GSourceFunc callback,
         return FALSE;
     }
 
-    try_produce_frame (self, self->pending_unit_link);
+    CamUnit *unit = CAM_UNIT (self->pending_unit_link->data);
+    if (cam_unit_is_streaming (unit))
+        cam_unit_try_produce_frame (unit, 0);
     self->pending_unit_link = NULL;
 
     return TRUE;
@@ -689,15 +619,13 @@ cam_unit_chain_detach_glib (CamUnitChain *self)
 }
 
 static void
-on_unit_status_changed (CamUnit *unit, int old_status, CamUnitChain *self)
+on_unit_status_changed (CamUnit *unit, CamUnitChain *self)
 {
-    dbg (DBG_CHAIN, "status of [%s] changed to %s\n", 
-            cam_unit_get_id (unit),
-            cam_unit_status_to_str (cam_unit_get_status (unit)));
-    CamUnitStatus new_status = cam_unit_get_status (unit);
+    gboolean is_streaming = cam_unit_is_streaming (unit) ;
+    dbg (DBG_CHAIN, "[%s] %s streaming\n", 
+            cam_unit_get_id (unit), is_streaming ? "started" : "stopped");
 
-    if (old_status == CAM_UNIT_STATUS_IDLE && 
-        new_status == CAM_UNIT_STATUS_READY) {
+    if (is_streaming) {
         // if the unit provides a file descriptor, then attach it to the
         // chain event source
         if ((cam_unit_get_flags (unit) & CAM_UNIT_EVENT_METHOD_FD) &&
@@ -723,17 +651,16 @@ on_unit_status_changed (CamUnit *unit, int old_status, CamUnitChain *self)
                 dbg (DBG_CHAIN, "Restarting [%s]\n", cam_unit_get_id (cunit));
                 g_signal_handlers_block_by_func (cunit, 
                         on_unit_status_changed, self);
-                update_unit_status (self, cunit, CAM_UNIT_STATUS_IDLE);
+                update_unit_status (self, cunit, FALSE);
                 cam_unit_set_input (cunit, cam_unit_get_input (cunit));
-                update_unit_status (self, cunit, self->desired_unit_status);
+                update_unit_status (self, cunit, self->streaming_desired);
                 g_signal_handlers_unblock_by_func (cunit,
                         on_unit_status_changed, self);
             }
             if (cunit == unit) restart = 1;
         }
     }
-    else if (old_status == CAM_UNIT_STATUS_READY && 
-             new_status == CAM_UNIT_STATUS_IDLE) {
+    else {
         // remove a GPollFD if it was setup earlier
         GPollFD *pfd = g_object_get_data (G_OBJECT (unit), "ChainPollFD");
         if (pfd) {

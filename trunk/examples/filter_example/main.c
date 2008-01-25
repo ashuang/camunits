@@ -115,8 +115,7 @@ int main (int argc, char **argv)
     }
 
     // create a unit to convert the input data to 8-bit RGB
-    CamUnit *to_rgb8 = cam_unit_chain_add_unit_by_id (self->chain, 
-            "convert.to_rgb8");
+    cam_unit_chain_add_unit_by_id (self->chain, "convert.to_rgb8");
 
     // add our custom unit
     cam_unit_chain_add_unit_by_id (self->chain, "filter.example");
@@ -127,7 +126,15 @@ int main (int argc, char **argv)
     // setup the GUI
     setup_gtk (self);
 
-    cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_READY);
+    // start the image processing chain
+    CamUnit *faulty_unit = cam_unit_chain_all_units_stream_init (self->chain);
+
+    // did everything start up correctly?
+    if (faulty_unit) {
+        fprintf (stderr, "Unit [%s] is not streaming, aborting...\n",
+                cam_unit_get_name (faulty_unit));
+        goto failed;
+    }
     cam_unit_chain_attach_glib (self->chain, 1000, NULL);
     g_signal_connect (G_OBJECT (self->chain), "frame-ready",
             G_CALLBACK (on_frame_ready), self);
@@ -136,13 +143,13 @@ int main (int argc, char **argv)
     gtk_main ();
 
     // halt and destroy chain
-    cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_IDLE);
+    cam_unit_chain_all_units_stream_shutdown (self->chain);
     g_object_unref (self->chain);
     free (self);
     return 0;
 
 failed:
-    cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_IDLE);
+    cam_unit_chain_all_units_stream_shutdown (self->chain);
     g_object_unref (self->chain);
     free (self);
     return 1;

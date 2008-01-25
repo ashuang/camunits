@@ -279,7 +279,7 @@ dc1394_finalize (GObject * obj)
     CamUnit * super = CAM_UNIT (obj);
     CamDC1394 * self = CAM_DC1394 (super);
 
-    if (super->status != CAM_UNIT_STATUS_IDLE) {
+    if (super->is_streaming) {
         dbg (DBG_INPUT, "forcibly shutting down dc1394 unit\n");
         dc1394_stream_shutdown (super);
     }
@@ -585,7 +585,7 @@ dc1394_try_produce_frame (CamUnit * super)
     CamDC1394 * self = CAM_DC1394 (super);
     dbg (DBG_INPUT, "DC1394 stream iterate\n");
 
-    if (super->status != CAM_UNIT_STATUS_READY) return FALSE;
+    if (! super->is_streaming) return FALSE;
 
     dc1394video_frame_t * frame;
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)
@@ -709,7 +709,7 @@ dc1394_get_fileno (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
 
-    if (super->status != CAM_UNIT_STATUS_IDLE)
+    if (super->is_streaming)
         return self->fd;
     else
         return -1;

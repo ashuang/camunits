@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     cam_unit_chain_add_unit_by_id (chain, "input.example");
 
     // start the chain
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_READY);
+    cam_unit_chain_all_units_stream_init (chain);
 
     // attach the chain to the glib event loop.
     cam_unit_chain_attach_glib (chain, 1000, NULL);

@@ -185,7 +185,7 @@ state_setup (state_t *self)
 {
     // create the image processing chain
     self->chain = cam_unit_chain_new ();
-    cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_READY);
+    cam_unit_chain_all_units_stream_init (self->chain);
     cam_unit_chain_attach_glib (self->chain, 1000, NULL);
     g_signal_connect (G_OBJECT (self->chain), "frame-ready",
             G_CALLBACK (on_frame_ready), self);
@@ -205,7 +205,7 @@ static int
 state_cleanup (state_t *self)
 {
     // halt and destroy chain
-    cam_unit_chain_set_desired_status (self->chain, CAM_UNIT_STATUS_IDLE);
+    cam_unit_chain_all_units_stream_shutdown (self->chain);
     g_object_unref (self->chain);
 
     if (self->cmdline_input_id) free (self->cmdline_input_id);
