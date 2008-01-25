@@ -184,11 +184,9 @@ int main(int argc, char **argv)
     }
 
     // start the chain streaming
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_READY);
+    CamUnit *faulty_unit = cam_unit_chain_all_units_stream_init (chain);
 
     // did everything start up correctly?
-    CamUnit *faulty_unit = cam_unit_chain_check_status_all_units (chain, 
-                CAM_UNIT_STATUS_READY);
     if (faulty_unit) {
         fprintf (stderr, "Unit [%s] is not ready, aborting...\n",
                 cam_unit_get_name (faulty_unit));
@@ -212,7 +210,7 @@ int main(int argc, char **argv)
 done:
     if (mainloop) g_main_loop_unref (mainloop);
     if (chain) {
-        cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_IDLE);
+        cam_unit_chain_all_units_stream_shutdown (chain);
         g_object_unref (chain);
     }
     if (input_id) free(input_id);

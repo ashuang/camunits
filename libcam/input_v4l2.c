@@ -220,7 +220,7 @@ v4l2_finalize (GObject * obj)
     dbg (DBG_INPUT, "v4l2 finalize\n");
     CamUnit * super = CAM_UNIT (obj);
 
-    if (super->status != CAM_UNIT_STATUS_IDLE) {
+    if (super->is_streaming) {
         dbg (DBG_INPUT, "forcibly shutting down v4l2 unit\n");
         v4l2_stream_shutdown (super);
     }

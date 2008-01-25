@@ -26,8 +26,7 @@
         it is unable to produce any output formats with its current input.
     </para>
     <para>
-        When a <classname>CamUnit</classname> is initialized (i.e. its status
-        is set to <literal>CAM_UNIT_STATUS_READY</literal>), a specific output
+        When a <classname>CamUnit</classname> is initialized, a specific output
         format must be chosen.  The unit itself can arbitrarily pick one of
         its output formats (this is the default when using a
         <classname>CamUnitChain</classname>), or an application can

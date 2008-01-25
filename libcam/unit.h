@@ -34,8 +34,9 @@
  * units may simply pass the image through while doing something else (e.g.
  * #CamFilterGL)
  *
- * A CamUnit object exists in one of states: idle or ready.
- * See: #CamUnitStatus
+ * A CamUnit object is either streaming or not.  A streaming unit has been
+ * bound to an output format and is expected to be generating images of that
+ * format.
  *
  * Filter units must have an associated input unit, set using
  * cam_unit_set_input().  This method is typically invoked by the
@@ -47,25 +48,6 @@ extern "C" {
 #endif
 
 // ========= enums and constants
-
-/**
- * CamUnitStatus:
- *
- * A CamUnit object is always on one of these states.  In the
- * CAM_UNIT_STATUS_IDLE state, a unit has not reserved any system resources for
- * image acquisition or processing, is not bound to an output format, and is
- * not capable of image acquisition or processing.
- *
- * In the CAM_UNIT_STATUS_READY state, a unit has reserved the system resources
- * it needs for image acquisition/processing, and may be actively acquiring or
- * processing images.  Such units are bound to a specific output format that
- * cannot change until the unit is idle again.
- */
-typedef enum {
-    CAM_UNIT_STATUS_IDLE = 0,
-    CAM_UNIT_STATUS_READY,
-    CAM_UNIT_STATUS_MAX
-} CamUnitStatus;
 
 typedef enum {
     CAM_UNIT_RENDERS_GL         = (1<<2),
@@ -107,8 +89,8 @@ struct _CamUnit {
 
     /*< private >*/
 
-    // do not modify this directly.  Instead, use cam_unit_set_status
-    CamUnitStatus status;
+    // do not modify this directly.
+    gboolean is_streaming;
 
     GHashTable *controls;
     GList *controls_list;
@@ -192,7 +174,7 @@ GType cam_unit_get_type(void);
  * the chain should take care of invoking this method when appropriate.
  *
  * The CamUnit (on which this method is being invoked, not the input unit) must
- * in state CAM_UNIT_STATUS_IDLE.
+ * not be streaming.
  *
  * Returns: 0 on success, -1 on failure (e.g. if the unit is not idle).
  */
@@ -205,7 +187,7 @@ int cam_unit_set_input (CamUnit * self, CamUnit * input);
  */
 CamUnit * cam_unit_get_input (CamUnit *self);
 
-CamUnitStatus cam_unit_get_status (const CamUnit * self);
+gboolean cam_unit_is_streaming (const CamUnit * self);
 uint32_t cam_unit_get_flags (const CamUnit *self);
 
 /**
@@ -553,16 +535,6 @@ void cam_unit_remove_output_format (CamUnit *self, CamUnitFormat *fmt);
 void cam_unit_remove_all_output_formats (CamUnit *self);
 
 /**
- * cam_unit_set_status:
- * @newstatus: the new status of the Unit.
- *
- * Protected method.  Subclasses of CamUnit should invoke this to change the
- * status of the unit.  Invoking this methods emits the "status-changed"
- * signal.
- */
-void cam_unit_set_status (CamUnit *self, CamUnitStatus newstatus);
-
-/**
  * cam_unit_produce_frame:
  *
  * Protected method.  Subclasses of CamUnit shuld invoke this to signal that
@@ -571,10 +543,6 @@ void cam_unit_set_status (CamUnit *self, CamUnitStatus newstatus);
  */
 void cam_unit_produce_frame (CamUnit *self, 
         const CamFrameBuffer *buffer, const CamUnitFormat *fmt);
-
-// ================== utility functions ==================
-
-const char *cam_unit_status_to_str (CamUnitStatus status);
 
 #ifdef __cplusplus
 }

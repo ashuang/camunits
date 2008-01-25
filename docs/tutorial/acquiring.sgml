@@ -58,11 +58,11 @@ int main(int argc, char **argv)
     CamUnitChain * chain = cam_unit_chain_new ();
     cam_unit_chain_add_unit_by_id (chain, "input.example");
 
-    // start the chain streaming
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+    // start the chain
+    cam_unit_chain_all_units_stream_init (chain);
 
     // attach the chain to the glib event loop.
-    cam_unit_chain_attach_glib (chain, G_PRIORITY_DEFAULT, NULL);
+    cam_unit_chain_attach_glib (chain, 1000, NULL);
 
     // subscribe to be notified when an image has made its way through the
     // chain
@@ -187,22 +187,14 @@ int main(int argc, char **argv)
         </para>
     </sect2>
     <sect2 id="acqruigin-statuses">
-        <title>Unit states - IDLE, READY, STREAMING</title>
+        <title>Unit State</title>
         <para>
-            A <classname>CamUnit</classname> can be in one of three general
-            states: <literal>CAM_UNIT_STATUS_IDLE</literal>,
-            <literal>CAM_UNIT_STATUS_READY</literal>, or
-            <literal>CAM_UNIT_STATUS_STREAMING</literal>.  This distinction is
-            made mostly for units that consume hardware resources.  Roughly
-            speaking, an <emphasis>idle</emphasis> unit is one that is not
-            consuming system
-            resources and is not able to produce any frames.  A
-            <emphasis>ready</emphasis> unit is
-            one that has been initialized and is holding all the resources it
-            needs to produce frames, but is simply not doing so.  Finally, a
-            <emphasis>streaming</emphasis> unit is one that has been
-            initialized and is actively
-            producing or processing image frames.
+            A <classname>CamUnit</classname> can be either
+            <emphasis>streaming</emphasis> or not.  A streaming unit is one
+            that has all the resources it needs to produce frames, and is
+            actively doing so.  Additionally, a streaming unit has been bound
+            to a particular output format (see <xref
+                    linkend="acquiring-buffer-format"/>).
         </para>
         <para>
             <classname>CamUnit</classname> exposes methods for changing the
@@ -211,7 +203,8 @@ int main(int argc, char **argv)
             that attempts to set every unit in the chain to the
             desired status.
 <programlisting>
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+    cam_unit_chain_all_units_stream_init (chain);
+    cam_unit_chain_all_units_stream_shutdown (chain);
 </programlisting>
             This causes the <classname>CamUnitChain</classname> to iterate
             through each unit in the chain and adjust the unit accordingly.

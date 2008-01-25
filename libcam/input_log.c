@@ -329,8 +329,7 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
     else if (ctl == self->fname_ctl) {
-        CamUnitStatus old_status = cam_unit_get_status (super);
-        if (old_status != CAM_UNIT_STATUS_IDLE) {
+        if (super->is_streaming) {
             cam_unit_stream_shutdown (super);
         }
         const char *fname = g_value_get_string (proposed);

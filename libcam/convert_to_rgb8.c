@@ -132,7 +132,7 @@ static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
     CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
-    CamUnitStatus desired_status = cam_unit_get_status (super);
+    gboolean was_streaming = super->is_streaming;
     cam_unit_stream_shutdown (super);
 
     if (self->worker) {
@@ -199,7 +199,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         g_list_free (worker_formats);
     }
 
-    if (CAM_UNIT_STATUS_READY == desired_status) {
+    if (was_streaming) {
         cam_unit_stream_init (super, NULL);
     }
 }

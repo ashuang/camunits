@@ -38,8 +38,9 @@ static int cam_unit_default_draw_gl_init (CamUnit * self);
 static int cam_unit_default_draw_gl (CamUnit *self);
 static int cam_unit_default_draw_gl_shutdown (CamUnit * self);
 
-static void on_input_unit_status_changed (CamUnit *input_unit, int old_status,
-        void *user_data);
+static void cam_unit_set_is_streaming (CamUnit *self, gboolean is_streaming);
+
+static void on_input_unit_status_changed (CamUnit *input_unit, void *user_data);
 static void on_input_frame_ready (CamUnit *input_unit, 
         const CamFrameBuffer *buf, const CamUnitFormat *infmt, 
         void *user_data);
@@ -55,7 +56,7 @@ cam_unit_init (CamUnit *self)
     self->unit_id = NULL;
 
     self->input_unit = NULL;
-    self->status = CAM_UNIT_STATUS_IDLE;
+    self->is_streaming = FALSE;
 
     // create a hash table for the controls that automatically frees the 
     // memory used by a value when the value is removed
@@ -170,17 +171,16 @@ cam_unit_class_init (CamUnitClass *klass)
     /**
      * CamUnit::status-changed
      * @unit: the CamUnit emitting the signal
-     * @old_status: the previous status of the unit.  The new status can be
-     *              obtained via cam_unit_get_status
      *
-     * The status-changed signal is emitted when the unit's status changes.
+     * The status-changed signal is emitted when the unit either starts
+     * streaming, or stops streaming.
      */
     cam_unit_signals[STATUS_CHANGED_SIGNAL] = 
         g_signal_new("status-changed",
                 G_TYPE_FROM_CLASS(klass),
                 G_SIGNAL_RUN_FIRST,
-                0, NULL, NULL, g_cclosure_marshal_VOID__INT,
-                G_TYPE_NONE, 1, G_TYPE_INT);
+                0, NULL, NULL, g_cclosure_marshal_VOID__VOID,
+                G_TYPE_NONE, 0);
     /**
      * CamUnit::input-changed
      * @unit: the CamUnit emitting the signal
@@ -226,8 +226,8 @@ cam_unit_class_init (CamUnitClass *klass)
                 CAM_TYPE_UNIT_FORMAT);
 }
 
-CamUnitStatus
-cam_unit_get_status (const CamUnit * self) { return self->status; }
+gboolean
+cam_unit_is_streaming (const CamUnit * self) { return self->is_streaming; }
 
 const char *
 cam_unit_get_name (const CamUnit *self) { return self->name; }
@@ -255,9 +255,8 @@ cam_unit_set_input (CamUnit * self, CamUnit * input)
     dbg(DBG_UNIT, "setting input of %s to %s\n", self->name, 
             input ? input->name : "<NULL>");
 
-    if (self->status != CAM_UNIT_STATUS_IDLE) {
-        err("Unit: refusing to set unit input when not in IDLE state. (%d)\n",
-                self->status);
+    if (self->is_streaming) {
+        err("Unit: refusing to set unit input when streaming.\n");
         return -1;
     }
 
@@ -300,17 +299,14 @@ cam_unit_set_input (CamUnit * self, CamUnit * input)
 }
 
 static void
-on_input_unit_status_changed (CamUnit *input_unit, int old_status,
-        void *user_data)
+on_input_unit_status_changed (CamUnit *input_unit, void *user_data)
 {
     CamUnit *self = CAM_UNIT (user_data);
-    dbg (DBG_UNIT, "[%s] input unit status changed (%s)\n", self->unit_id,
-            cam_unit_status_to_str (input_unit->status));
-    // if the input unit was just initialized, then its frame format
-    // may have changed, so emit a signal
-    // if it's set.
-    if (old_status == CAM_UNIT_STATUS_IDLE &&
-        input_unit->status == CAM_UNIT_STATUS_READY) {
+    dbg (DBG_UNIT, "[%s] input unit %s streaming.\n", self->unit_id,
+            input_unit->is_streaming ? "started" : "stopped");
+    // if the input unit started streaming, then its frame format
+    // may have changed, so emit a signal if it's set.
+    if (input_unit->is_streaming) {
         const CamUnitFormat *infmt = 
             cam_unit_get_output_format (self->input_unit);
         if (infmt) {
@@ -318,13 +314,12 @@ on_input_unit_status_changed (CamUnit *input_unit, int old_status,
                     cam_unit_signals[INPUT_FORMAT_CHANGED_SIGNAL], 0,
                     infmt);
         }
-    } else if (input_unit->status == CAM_UNIT_STATUS_IDLE) {
-        if (self->status == CAM_UNIT_STATUS_READY) {
+    } else {
+        if (self->is_streaming) {
             cam_unit_stream_shutdown (self);
         }
         g_signal_emit (G_OBJECT (self), 
-                cam_unit_signals[INPUT_FORMAT_CHANGED_SIGNAL], 0,
-                NULL);
+                cam_unit_signals[INPUT_FORMAT_CHANGED_SIGNAL], 0, NULL);
     }
 }
 
@@ -334,8 +329,7 @@ on_input_frame_ready (CamUnit *input_unit, const CamFrameBuffer *inbuf,
 {
     CamUnit *self = CAM_UNIT (user_data);
     CamUnitClass *klass = CAM_UNIT_GET_CLASS (self);
-    if (klass->on_input_frame_ready && 
-            self->status == CAM_UNIT_STATUS_READY) {
+    if (klass->on_input_frame_ready && self->is_streaming) {
         klass->on_input_frame_ready (self, inbuf, infmt);
     }
 }
@@ -354,12 +348,7 @@ find_output_format (CamUnit *self, const CamUnitFormat *format)
 int
 cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
 { 
-    if (self->status == CAM_UNIT_STATUS_READY) return 0;
-    if (self->status != CAM_UNIT_STATUS_IDLE) {
-        err("Unit: refusing to init non idle unit %s (%d)\n",
-                self->unit_id, self->status);
-        return -1;
-    }
+    if (self->is_streaming) return 0;
 
     if (! format) {
         if (! self->output_formats) return -1;
@@ -401,10 +390,9 @@ cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
     }
     dbg(DBG_UNIT, "[%s] default stream init [%s]\n",
             self->unit_id, self->fmt->name);
-    int status = CAM_UNIT_GET_CLASS (self)->stream_init (self, format); 
 
-    if (0 == status) {
-        cam_unit_set_status (self, CAM_UNIT_STATUS_READY);
+    if (0 == CAM_UNIT_GET_CLASS (self)->stream_init (self, format)) {
+        cam_unit_set_is_streaming (self, TRUE);
         return 0;
     } else {
         return -1;
@@ -414,9 +402,9 @@ cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
 int
 cam_unit_stream_shutdown (CamUnit * self)
 { 
-    if (self->status == CAM_UNIT_STATUS_IDLE) return 0;
+    if (! self->is_streaming) return 0;
     if (0 == CAM_UNIT_GET_CLASS (self)->stream_shutdown (self)) {
-        cam_unit_set_status (self, CAM_UNIT_STATUS_IDLE);
+        cam_unit_set_is_streaming (self, FALSE);
         self->fmt = NULL;
         return 0;
     } else {
@@ -459,7 +447,7 @@ cam_unit_try_produce_frame (CamUnit *self, int timeout_ms)
         g_warning ("Unit does not provide try_produce_frame\n");
         return FALSE;
     }
-    if (self->status != CAM_UNIT_STATUS_READY) {
+    if (! self->is_streaming) {
         g_warning ("Unit is not ready!");
         return FALSE;
     }
@@ -773,14 +761,13 @@ cam_unit_remove_all_output_formats (CamUnit *self)
             cam_unit_signals[OUTPUT_FORMATS_CHANGED_SIGNAL], 0);
 }
 
-void 
-cam_unit_set_status (CamUnit *self, CamUnitStatus newstatus)
+static void 
+cam_unit_set_is_streaming (CamUnit *self, gboolean is_streaming)
 {
-    if (newstatus != self->status) {
-        int oldstatus = self->status;
-        self->status = newstatus;
+    if (self->is_streaming != is_streaming) {
+        self->is_streaming = is_streaming;
         g_signal_emit (G_OBJECT(self),
-                cam_unit_signals[STATUS_CHANGED_SIGNAL], 0, oldstatus);
+                cam_unit_signals[STATUS_CHANGED_SIGNAL], 0);
     }
 }
 
@@ -790,17 +777,4 @@ cam_unit_produce_frame (CamUnit *self, const CamFrameBuffer *buffer,
 {
     g_signal_emit (G_OBJECT (self),
             cam_unit_signals[FRAME_READY_SIGNAL], 0, buffer, fmt);
-}
-
-// ============ utility functions ============
-const char *
-cam_unit_status_to_str (CamUnitStatus status)
-{
-    char *a[] = {
-        "Idle",
-        "Ready",
-        "INVALID"
-    };
-    if ((status < 0) || (status >= CAM_UNIT_STATUS_MAX)) return NULL;
-    return a[status];
 }

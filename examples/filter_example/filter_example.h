@@ -50,7 +50,7 @@ GType my_filter_example_get_type (void);
  * 
  * Don't call this function manually.  Instead, use the unit driver
  */
-MyFilterExample * my_filter_example_new();
+MyFilterExample * my_filter_example_new (void);
 
 CamUnitDriver * my_filter_example_driver_new (void);
 

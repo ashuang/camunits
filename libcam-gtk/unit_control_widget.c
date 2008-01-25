@@ -16,8 +16,7 @@ static void on_output_formats_changed( CamUnit *unit,
 static void on_close_button_clicked(GtkButton *bt, CamUnitControlWidget *self);
 static void on_expander_notify( GtkWidget*widget, GParamSpec *param, 
         CamUnitControlWidget *self );
-static void on_status_changed( CamUnit *unit, int old_status,
-        CamUnitControlWidget *self );
+static void on_status_changed( CamUnit *unit, CamUnitControlWidget *self );
 static void on_control_value_changed(CamUnit *unit, CamUnitControl *ctl, 
         CamUnitControlWidget *self);
 static void on_formats_combo_changed( GtkComboBox *combo, 
@@ -994,8 +993,8 @@ set_frame_label( CamUnitControlWidget *self )
 {
     if (self->unit) {
         const char *uname = cam_unit_get_name(self->unit);
-        const char *sstr = 
-            cam_unit_status_to_str(cam_unit_get_status(self->unit));
+        const char *sstr = cam_unit_is_streaming (self->unit) ? 
+            "Streaming" : "Off";
         char *tmp = g_strjoin( "", uname, " [", sstr, "]", NULL );
         gtk_label_set (GTK_LABEL (self->exp_label), tmp);
         free(tmp);
@@ -1159,11 +1158,10 @@ on_formats_combo_changed( GtkComboBox *combo, CamUnitControlWidget *self )
     GList *format_entry = g_list_nth (output_formats, selected);
     g_assert (format_entry);
     if (format_entry->data != cam_unit_get_output_format (self->unit)) {
-        CamUnitStatus orig_status = cam_unit_get_status (self->unit);
         CamUnitFormat *cfmt = CAM_UNIT_FORMAT (format_entry->data);
         cam_unit_set_preferred_format (self->unit, 
                 cfmt->pixelformat, cfmt->width, cfmt->height);
-        if (orig_status != CAM_UNIT_STATUS_IDLE) {
+        if (cam_unit_is_streaming (self->unit)) {
             cam_unit_stream_shutdown (self->unit);
             cam_unit_stream_init (self->unit, NULL);
         }
@@ -1190,7 +1188,7 @@ on_expander_notify( GtkWidget *widget, GParamSpec *param,
 }
 
 static void
-on_status_changed( CamUnit *unit, int old_status, CamUnitControlWidget *self )
+on_status_changed( CamUnit *unit, CamUnitControlWidget *self )
 {
     set_frame_label( self );
     update_formats_combo( self );

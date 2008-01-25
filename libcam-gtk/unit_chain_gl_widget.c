@@ -35,8 +35,7 @@ static void on_unit_added (CamUnitChain *chain, CamUnit *unit,
         void *user_data);
 static void on_unit_removed (CamUnitChain *chain, CamUnit *unit, 
         void *user_data);
-static void on_unit_status_changed (CamUnit *unit, int old_status, 
-        CamUnitChainGLWidget *self);
+static void on_unit_status_changed (CamUnit *unit, CamUnitChainGLWidget *self);
 static void on_unit_control_changed (CamUnit * unit, CamUnitControl * control,
         CamUnitChainGLWidget * self);
 static void on_show_after (CamUnitChainGLWidget *self, CamUnitChain *chain);
@@ -114,7 +113,7 @@ cam_unit_chain_gl_widget_finalize (GObject *obj)
         for (GList *uiter=units; uiter; uiter=uiter->next) {
             CamUnit *unit = CAM_UNIT (uiter->data);
             if ((cam_unit_get_flags (unit) & CAM_UNIT_RENDERS_GL) && 
-                cam_unit_get_status (unit) != CAM_UNIT_STATUS_IDLE) {
+                cam_unit_is_streaming (unit)) {
                 dbg (DBG_GUI, 
                         "CamUnitChainGLWidget: draw_gl_shutdown on [%s]\n",
                         cam_unit_get_id (unit));
@@ -332,7 +331,7 @@ on_unit_added (CamUnitChain *chain, CamUnit *unit, void *user_data)
     _set_aspect_widget (self);
     uint32_t flags = cam_unit_get_flags (unit);
     if (flags & CAM_UNIT_RENDERS_GL) {
-        if (cam_unit_get_status (unit) != CAM_UNIT_STATUS_IDLE) {
+        if (cam_unit_is_streaming (unit)) {
             dbg (DBG_GUI, "UnitChainGL:  initializing GL for new unit [%s]\n", 
                     cam_unit_get_name (unit));
             cam_unit_draw_gl_init (unit);
@@ -349,8 +348,7 @@ static void
 on_unit_removed (CamUnitChain *chain, CamUnit *unit, void *user_data)
 {
     uint32_t flags = cam_unit_get_flags (unit);
-    if ((flags & CAM_UNIT_RENDERS_GL) &&
-            cam_unit_get_status (unit) != CAM_UNIT_STATUS_IDLE) {
+    if ((flags & CAM_UNIT_RENDERS_GL) && cam_unit_is_streaming (unit)) {
         dbg (DBG_GUI, "UnitChainGL:  shutting down GL for removed unit [%s]\n", 
                 cam_unit_get_name (unit));
         cam_unit_draw_gl_shutdown (unit);
@@ -363,25 +361,22 @@ static void
 on_unit_control_changed (CamUnit * unit, CamUnitControl * control,
         CamUnitChainGLWidget * self)
 {
-    if (cam_unit_get_status (unit) != CAM_UNIT_STATUS_IDLE)
+    if (cam_unit_is_streaming (unit))
         cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (self->gl_area));
 }
 
 static void 
-on_unit_status_changed (CamUnit *unit, int old_status, 
-        CamUnitChainGLWidget *self)
+on_unit_status_changed (CamUnit *unit, CamUnitChainGLWidget *self)
 {
-    int new_status = cam_unit_get_status (unit);
     if (cam_unit_get_flags (unit) & CAM_UNIT_RENDERS_GL) {
-        if (new_status == CAM_UNIT_STATUS_IDLE) {
-            dbg (DBG_GUI, 
-                    "CamUnitChainGLWidget: draw_gl_shutdown on [%s]\n",
-                    cam_unit_get_id (unit));
-            cam_unit_draw_gl_shutdown (unit);
-        } else if (old_status == CAM_UNIT_STATUS_IDLE) {
+        if (cam_unit_is_streaming (unit)) {
             dbg (DBG_GUI, "CamUnitChainGLWidget: draw_gl_init on [%s]\n",
                     cam_unit_get_id (unit));
             cam_unit_draw_gl_init (unit);
+        } else {
+            dbg (DBG_GUI, "CamUnitChainGLWidget: draw_gl_shutdown on [%s]\n",
+                    cam_unit_get_id (unit));
+            cam_unit_draw_gl_shutdown (unit);
         }
     }
 }
