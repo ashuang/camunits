@@ -36,6 +36,7 @@ CamUnitDriver * cam_plugin_create (GTypeModule * module);
 struct _CamippResize {
     CamUnit parent;
 
+    int size_requested;
     CamUnitControl *width_ctl;
     CamUnitControl *height_ctl;
     CamUnitControl *lock_aspect_ctl;
@@ -85,11 +86,12 @@ camipp_resize_init (CamippResize *self)
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
     self->width_ctl = cam_unit_add_control_int (super, "width", "Width", 
-            1, MAX_WIDTH, 1, 1, 0);
+            1, MAX_WIDTH, 1, 1, 1);
     self->height_ctl = cam_unit_add_control_int (super, "height", "Height", 
-            1, MAX_HEIGHT, 1, 1, 0);
+            1, MAX_HEIGHT, 1, 1, 1);
     self->lock_aspect_ctl = cam_unit_add_control_boolean (super, 
             "lock-aspect", "Lock Aspect", 1, 1);
+    self->size_requested = 0;
 
     // suggest that UI widgets for this filter display the width and height
     // controls as spin buttons
@@ -170,6 +172,7 @@ update_output_format (CamippResize *self, int width, int height,
         infmt->pixelformat != CAM_PIXEL_FORMAT_BGR &&
         infmt->pixelformat != CAM_PIXEL_FORMAT_GRAY &&
         infmt->pixelformat != CAM_PIXEL_FORMAT_BGRA) return;
+    if (!width || !height) return;
 
     int bpp = cam_pixel_format_bpp (infmt->pixelformat);
     int stride = width * bpp / 8;
@@ -186,15 +189,14 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     
     if (infmt) {
         int new_width, new_height;
-        GList *old_formats = cam_unit_get_output_formats (super);
-        if (old_formats) {
+
+        if (self->size_requested) {
             new_width = cam_unit_control_get_int (self->width_ctl);
             new_height = cam_unit_control_get_int (self->height_ctl);
         } else {
             new_width = infmt->width;
             new_height = infmt->height;
         }
-        g_list_free (old_formats);
 
         update_output_format (self, new_width, new_height, infmt);
         cam_unit_control_force_set_int (self->width_ctl, new_width);
@@ -203,8 +205,6 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         cam_unit_control_set_enabled (self->height_ctl, TRUE);
     } else {
         update_output_format (self, 0, 0, infmt);
-        cam_unit_control_set_enabled (self->width_ctl, FALSE);
-        cam_unit_control_set_enabled (self->height_ctl, FALSE);
     }
 }
 
@@ -220,10 +220,7 @@ _try_set_control (CamUnit *super,
     int new_width = old_width;
     int new_height = old_height;
 
-    if (! super->input_unit) return FALSE;
-    const CamUnitFormat *infmt = cam_unit_get_output_format (super->input_unit);
-    if (!infmt) return FALSE;
-    double in_aspect = (double) infmt->width / infmt->height;
+    double in_aspect = (double) old_width / old_height;
 
     if (ctl == self->width_ctl) {
         new_width = g_value_get_int (proposed);
@@ -246,6 +243,7 @@ _try_set_control (CamUnit *super,
 
             cam_unit_control_force_set_int (self->height_ctl, new_height);
         }
+        self->size_requested = 1;
         g_value_set_int (actual, new_width);
     } else if (ctl == self->height_ctl) {
         new_height = g_value_get_int (proposed);
@@ -268,6 +266,7 @@ _try_set_control (CamUnit *super,
 
             cam_unit_control_force_set_int (self->width_ctl, new_width);
         }
+        self->size_requested = 1;
         g_value_set_int (actual, new_height);
     } else if (ctl == self->lock_aspect_ctl) {
         g_value_copy (proposed, actual);
@@ -275,18 +274,19 @@ _try_set_control (CamUnit *super,
         cam_unit_control_force_set_int (self->height_ctl, new_height);
     }
 
-    if ((old_width != new_width ||
-         old_height != new_height) && super->input_unit != NULL) {
+    if (super->input_unit) {
+        const CamUnitFormat *infmt = 
+            cam_unit_get_output_format (super->input_unit);
+        if ((old_width != new_width || old_height != new_height) && infmt) {
 
-        if (CAM_UNIT_STATUS_READY == cam_unit_get_status (super)) {
-            cam_unit_stream_shutdown (super);
+            if (CAM_UNIT_STATUS_READY == cam_unit_get_status (super)) {
+                cam_unit_stream_shutdown (super);
+            }
+
+            update_output_format (self, new_width, new_height, infmt);
+
+            cam_unit_stream_init (super, NULL);
         }
-
-        update_output_format (self, new_width, new_height, infmt);
-
-        printf ("status: %s\n", cam_unit_status_to_str (cam_unit_get_status (super)));
-
-        cam_unit_stream_init (super, NULL);
     }
 
     return TRUE;
