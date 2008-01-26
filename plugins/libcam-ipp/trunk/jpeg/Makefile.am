@@ -1,8 +1,8 @@
 INCLUDES = $(GLIB_CFLAGS) $(IPP_CFLAGS)
 
-libcamplugin_LTLIBRARIES = convert_jpeg_ipp.la
+libcamplugin_LTLIBRARIES = convert_ipp_jpeg.la
 
-convert_jpeg_ipp_la_SOURCES = jcapimin.c \
+convert_ipp_jpeg_la_SOURCES = jcapimin.c \
 					jcapistd.c \
 					jccoefct.c \
 					jccolor.c \
@@ -63,5 +63,5 @@ convert_jpeg_ipp_la_SOURCES = jcapimin.c \
 					convert_ipp_jpeg.c \
 					convert_ipp_jpeg.h 
 
-convert_jpeg_ipp_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-convert_jpeg_ipp_la_LIBADD = $(LIBCAM_LIBS) $(IPP_JPEG_LIBS)
+convert_ipp_jpeg_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
+convert_ipp_jpeg_la_LIBADD = $(LIBCAM_LIBS) $(IPP_JPEG_LIBS)
