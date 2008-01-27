@@ -194,6 +194,7 @@ static int
 _gl_draw_gl (CamUnit *super)
 {
     CamcvGFTT *self = CAMCV_GFTT (super);
+    if (!super->fmt) return 0;
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     glOrtho (0, super->fmt->width, super->fmt->height, 0, -1, 1);

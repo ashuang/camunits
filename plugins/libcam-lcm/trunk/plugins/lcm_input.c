@@ -31,8 +31,6 @@ static void * lcm_thread (void *user_data);
 static gboolean check_for_new_unit_descriptions_timer (void *user_data);
 static CamUnit * driver_create_unit (CamUnitDriver *super,
         const CamUnitDescription * udesc);
-static CamUnitDescription * driver_search_unit_description(
-        CamUnitDriver *driver, const char *id);
 
 static CamlcmInput * 
 camlcm_input_new (lcm_t *lcm, const camlcm_announce_t *ann);
@@ -56,20 +54,8 @@ cam_plugin_create (GTypeModule * module)
                 g_object_new (CAMLCM_TYPE_INPUT_DRIVER, NULL));
 
     // create LCM object
-    self->lcm = lcm_create ();
+    self->lcm = lcm_create ("udpm://?recv_buf_size=2000000");
     if (!self->lcm) {
-        err ("%s:%d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
-        goto fail;
-    }
-
-    lcm_params_t lcp;
-    lcm_params_init_defaults (&lcp);
-
-    // request a really big kernel receive buffer
-    lcp.recv_buf_size = 2000000; 
-
-    // initialize LCM
-    if (0 != lcm_init (self->lcm, &lcp)) {
         err ("%s:%d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
         goto fail;
     }
@@ -111,8 +97,6 @@ camlcm_input_driver_class_init (CamlcmInputDriverClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = driver_finalize;
     klass->parent_class.create_unit = driver_create_unit;
-    klass->parent_class.search_unit_description = 
-        driver_search_unit_description;
 }
 
 static void
@@ -160,42 +144,6 @@ driver_create_unit (CamUnitDriver *super, const CamUnitDescription * udesc)
 
     CamlcmInput *result = camlcm_input_new (self->lcm, ann);
     return CAM_UNIT (result);
-}
-
-static CamUnitDescription *
-check_for_unit_description (CamlcmInputDriver *self, const char *unit_id)
-{
-    camlcm_input_driver_check_for_new_units (self);
-    for (GList *uditer=CAM_UNIT_DRIVER(self)->udescs; uditer; 
-            uditer=uditer->next) {
-        CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION (uditer->data);
-        if (!strcmp (udesc->unit_id, unit_id)) {
-            return udesc;
-        }
-    }
-    return NULL;
-}
-
-static CamUnitDescription * 
-driver_search_unit_description (CamUnitDriver *super, 
-        const char *id)
-{
-    CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (super);
-
-    if (0 != strncmp (id, "input.LCM:", strlen ("input.LCM:"))) return NULL;
-
-    CamUnitDescription *udesc = check_for_unit_description (self, id);
-    for (int i = 0; i < 10 && !udesc; i++) {
-        // XXX hack
-        struct timespec towait = { 
-            .tv_sec = 0, 
-            .tv_nsec = CAMLCM_PUBLISH_DEFAULT_ANNOUNCE_INTERVAL_USEC * 1000
-        };
-        nanosleep (&towait, NULL);
-        udesc = check_for_unit_description (self, id);
-    }
-
-    return udesc;
 }
 
 static gboolean
@@ -310,8 +258,8 @@ lcm_thread (void *user_data)
  */
 static void camlcm_input_finalize (GObject *obj);
 static gboolean camlcm_input_try_produce_frame (CamUnit * super);
-static int camlcm_input_stream_on (CamUnit * super);
-static int camlcm_input_stream_off (CamUnit * super);
+static int _stream_init (CamUnit * super, const CamUnitFormat *fmt);
+static int _stream_shutdown (CamUnit * super);
 static int camlcm_input_get_fileno (CamUnit * super);
 static int on_image (const char *channel, const camlcm_image_t *ann, 
         void *user_data);
@@ -339,10 +287,8 @@ camlcm_input_class_init (CamlcmInputClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = camlcm_input_finalize;
     klass->parent_class.try_produce_frame = camlcm_input_try_produce_frame;
-//    klass->parent_class.stream_init = camlcm_input_stream_init;
-//    klass->parent_class.stream_shutdown = camlcm_input_shutdown;
-    klass->parent_class.stream_on = camlcm_input_stream_on;
-    klass->parent_class.stream_off = camlcm_input_stream_off;
+    klass->parent_class.stream_init = _stream_init;
+    klass->parent_class.stream_shutdown = _stream_shutdown;
     klass->parent_class.get_fileno = camlcm_input_get_fileno;
 }
 
@@ -417,7 +363,7 @@ fail:
 }
 
 static int
-camlcm_input_stream_on (CamUnit *super)
+_stream_init (CamUnit *super, const CamUnitFormat *fmt)
 {
     CamlcmInput *self = CAMLCM_INPUT (super);
     g_mutex_lock (self->buffer_mutex);
@@ -430,7 +376,7 @@ camlcm_input_stream_on (CamUnit *super)
 }
 
 static int
-camlcm_input_stream_off (CamUnit *super)
+_stream_shutdown (CamUnit *super)
 {
     dbgi ("unsubscribing image handler\n");
     CamlcmInput *self = CAMLCM_INPUT (super);
@@ -441,7 +387,7 @@ camlcm_input_stream_off (CamUnit *super)
     g_mutex_lock (self->buffer_mutex);
     self->unhandled_frame = 0;
     g_mutex_unlock (self->buffer_mutex);
-    return CAM_UNIT_CLASS (camlcm_input_parent_class)->stream_off (super);
+    return 0;
 }
 
 static int

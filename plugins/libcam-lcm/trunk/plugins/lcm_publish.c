@@ -23,14 +23,17 @@
 #define CONTROL_CHANNEL "channel"
 #define CONTROL_DATA_RATE_INFO "data-rate"
 
+#define DEFAULT_LCM_URL "udpm://?transmit_only=true"
+
 struct _CamlcmPublish {
     CamUnit parent;
 
     lcm_t * lcm;
 
     CamUnitControl *publish_ctl;
-    CamUnitControl *lc_name_ctl;
+    CamUnitControl *lcm_name_ctl;
     CamUnitControl *data_rate_ctl;
+    CamUnitControl *lcm_url_ctl;
 
     int64_t next_announce_time;
     int64_t announce_interval;
@@ -60,6 +63,8 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
+static gboolean _try_set_control (CamUnit *super, 
+        const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
 
 CAM_PLUGIN_TYPE (CamlcmPublish, camlcm_publish, CAM_TYPE_UNIT);
 
@@ -80,21 +85,34 @@ cam_plugin_create (GTypeModule * module)
 }
 
 static void
+camlcm_publish_class_init( CamlcmPublishClass *klass )
+{
+    GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
+    gobject_class->finalize = camlcm_publish_finalize;
+    klass->parent_class.on_input_frame_ready = on_input_frame_ready;
+    klass->parent_class.try_set_control = _try_set_control;
+}
+
+static void
 camlcm_publish_init( CamlcmPublish *self )
 {
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT( self );
 
-    self->lcm = NULL;
+    self->lcm = lcm_create (DEFAULT_LCM_URL);
+
     self->next_announce_time = 0;
     self->announce_interval = CAMLCM_PUBLISH_DEFAULT_ANNOUNCE_INTERVAL_USEC;
 
     self->publish_ctl = cam_unit_add_control_boolean (super, CONTROL_PUBLISH, 
                 "Publish", 1, 1); 
-    self->lc_name_ctl = cam_unit_add_control_string (super, CONTROL_CHANNEL,
+    self->lcm_name_ctl = cam_unit_add_control_string (super, CONTROL_CHANNEL,
             "Channel", "CAMLCM_IMAGE", 1);
+    self->lcm_url_ctl = cam_unit_add_control_string (super, "lcm-url", 
+            "LCM URL", DEFAULT_LCM_URL, 1);
     self->data_rate_ctl = cam_unit_add_control_string (super, 
             CONTROL_DATA_RATE_INFO, "Data Rate", "0", 0);
+
     self->data_rate = 0;
     self->bytes_transferred_since_last_data_rate_update = 0;
     self->last_data_rate_time = 0;
@@ -102,14 +120,6 @@ camlcm_publish_init( CamlcmPublish *self )
 
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
-}
-
-static void
-camlcm_publish_class_init( CamlcmPublishClass *klass )
-{
-    GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-    gobject_class->finalize = camlcm_publish_finalize;
-    klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
 
 static void
@@ -128,27 +138,7 @@ camlcm_publish_new()
     CamlcmPublish * self = 
         CAMLCM_PUBLISH(g_object_new(CAMLCM_TYPE_PUBLISH, NULL));
 
-    // create LCM object
-    self->lcm = lcm_create ();
-    if (!self->lcm) {
-        err ("%s:%d - Couldn't initialize LCM\n", __FILE__, __LINE__);
-        goto fail;
-    }
-
-    // initialize LCM
-    lcm_params_t params;
-    lcm_params_init_defaults (&params);
-    params.transmit_only = 1;
-    if (0 != lcm_init (self->lcm, &params)) {
-        err ("%s:%d Couldn't initialize LCM\n", __FILE__, __LINE__);
-        goto fail;
-    }
-
     return self;
-
-fail:
-    g_object_unref (self);
-    return NULL;
 }
 
 static void
@@ -174,6 +164,13 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     CamlcmPublish *self = CAMLCM_PUBLISH(super);
 
     if (! cam_unit_control_get_boolean (self->publish_ctl)) {
+        cam_unit_produce_frame (super, inbuf, infmt);
+        cam_unit_control_force_set_string (self->data_rate_ctl, "0");
+        return;
+    }
+
+    if (! self->lcm) {
+        cam_unit_control_force_set_string (self->data_rate_ctl, "NO LCM");
         cam_unit_produce_frame (super, inbuf, infmt);
         return;
     }
@@ -207,7 +204,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     }
     g_list_free (md_keys);
 
-    const char *channel = cam_unit_control_get_string (self->lc_name_ctl);
+    const char *channel = cam_unit_control_get_string (self->lcm_name_ctl);
 
     camlcm_image_t_publish (self->lcm, channel, &msg);
 
@@ -250,4 +247,21 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     cam_unit_produce_frame (super, inbuf, infmt);
 
     return;
+}
+
+static gboolean 
+_try_set_control (CamUnit *super, const CamUnitControl *ctl, 
+        const GValue *proposed, GValue *actual)
+{
+    CamlcmPublish *self = CAMLCM_PUBLISH (super);
+    if (ctl == self->lcm_url_ctl) {
+        const char *url = g_value_get_string (proposed);
+        if (self->lcm) {
+            lcm_destroy (self->lcm);
+        }
+        self->lcm = lcm_create (url);
+    } 
+
+    g_value_copy (proposed, actual);
+    return TRUE;
 }

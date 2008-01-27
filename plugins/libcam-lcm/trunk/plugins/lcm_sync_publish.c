@@ -9,8 +9,11 @@
 
 #define err(args...) fprintf(stderr, args)
 
+#define DEFAULT_LCM_URL "udpm://?transmit_only=true"
+
 struct _CamlcmSyncPub {
     CamUnit parent;
+    CamUnitControl *lcm_url_ctl;
     lcm_t * lcm;
 };
 
@@ -26,6 +29,8 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
+static gboolean _try_set_control (CamUnit *super, 
+        const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
 
 CAM_PLUGIN_TYPE (CamlcmSyncPub, camlcm_syncpub, CAM_TYPE_UNIT);
 
@@ -49,7 +54,9 @@ static void
 camlcm_syncpub_init (CamlcmSyncPub *self)
 {
     // constructor.  Initialize the unit with some reasonable defaults here.
-    self->lcm = NULL;
+    self->lcm = lcm_create (DEFAULT_LCM_URL);
+    self->lcm_url_ctl = cam_unit_add_control_string (CAM_UNIT (self), 
+        "lcm-url", "LCM URL", DEFAULT_LCM_URL, 1);
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
 }
@@ -59,6 +66,7 @@ camlcm_syncpub_class_init (CamlcmSyncPubClass *klass)
 {
     G_OBJECT_CLASS(klass)->finalize = camlcm_syncpub_finalize;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
+    klass->parent_class.try_set_control = _try_set_control;
 }
 
 static void
@@ -72,41 +80,17 @@ camlcm_syncpub_finalize (GObject *obj)
 static CamlcmSyncPub * 
 camlcm_syncpub_new()
 {
-    CamlcmSyncPub * self = 
-        CAMLCM_SYNCPUB(g_object_new(CAMLCM_TYPE_SYNCPUB, NULL));
-
-    // create LCM object
-    self->lcm = lcm_create ();
-    if (!self->lcm) {
-        err ("%s:%d - Couldn't initialize LCM\n", __FILE__, __LINE__);
-        goto fail;
-    }
-
-    // initialize LCM
-    lcm_params_t params;
-    lcm_params_init_defaults (&params);
-    params.transmit_only = 1;
-    if (0 != lcm_init (self->lcm, &params)) {
-        err ("%s:%d Couldn't initialize LCM\n", __FILE__, __LINE__);
-        goto fail;
-    }
-
-    return self;
-
-fail:
-    g_object_unref (self);
-    return NULL;
+    return CAMLCM_SYNCPUB(g_object_new(CAMLCM_TYPE_SYNCPUB, NULL));
 }
 
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
     cam_unit_remove_all_output_formats (super);
-    if (infmt) {
-        cam_unit_add_output_format_full (super, infmt->pixelformat,
-                infmt->name, infmt->width, infmt->height, 
-                infmt->row_stride, infmt->max_data_size);
-    }
+    if (! infmt) return;
+    cam_unit_add_output_format_full (super, infmt->pixelformat,
+            infmt->name, infmt->width, infmt->height, 
+            infmt->row_stride, infmt->max_data_size);
 }
 
 static void 
@@ -114,9 +98,29 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
     CamlcmSyncPub *self = CAMLCM_SYNCPUB(super);
-    camlcm_sync_t msg;
-    msg.utime = inbuf->timestamp;
-    camlcm_sync_t_publish (self->lcm, CAMLCM_SYNC_CHANNEL, &msg);
+    if (self->lcm) {
+        camlcm_sync_t msg;
+        msg.utime = inbuf->timestamp;
+        camlcm_sync_t_publish (self->lcm, CAMLCM_SYNC_CHANNEL, &msg);
+    }
     cam_unit_produce_frame (super, inbuf, infmt);
     return;
+}
+
+
+static gboolean 
+_try_set_control (CamUnit *super, const CamUnitControl *ctl, 
+        const GValue *proposed, GValue *actual)
+{
+    CamlcmSyncPub *self = CAMLCM_SYNCPUB (super);
+    if (ctl == self->lcm_url_ctl) {
+        const char *url = g_value_get_string (proposed);
+        if (self->lcm) {
+            lcm_destroy (self->lcm);
+        }
+        self->lcm = lcm_create (url);
+    } 
+
+    g_value_copy (proposed, actual);
+    return TRUE;
 }
