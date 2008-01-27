@@ -241,13 +241,20 @@ on_gl_expose (GtkWidget * widget, GdkEventExpose * event,
 
     // some unit can draw, so clear the drawing buffer
     cam_gl_drawing_area_set_context (CAM_GL_DRAWING_AREA (self->gl_area));
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // setup reasonable default matrices
+    const CamUnitFormat *fmt = cam_unit_get_output_format (first_render_unit);
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glOrtho (0, fmt->width, fmt->height, 0, -1, 1);
+
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
 
     // set the aspect ratio to match the aspect ratio of the 
     // first unit that can render
-    const CamUnitFormat *fmt = cam_unit_get_output_format (first_render_unit);
     double fmt_aspect = (double)fmt->width / fmt->height;
     if (fmt_aspect != self->aspect_ratio) {
         self->aspect_ratio = fmt_aspect;
