@@ -10,10 +10,17 @@ extern "C" {
 /**
  * SECTION:unit_control
  * @short_description:  User adjustable / automatically changing control value.
- * 
- * CamUnitControl represents a control value that can both automatically change
- * (e.g. the frame number of an advancing log playback unit) and can be
- * adjusted by the user.
+ *
+ * If you just want to access a control provided by an existing #CamUnit, do
+ * not use this class directly.  Instead, use the cam_unit_set_control_* and
+ * cam_unit_get_control_* methods.
+ *
+ * The only time in which you use this class directly is when implementing a
+ * subclass of #CamUnit.
+ *
+ * CamUnitControl represents a control value that can both change
+ * asynchronously (e.g. the frame number of an advancing log playback unit) and
+ * can be adjusted by the user.
  *
  * Typically, a #CamUnit will have a few of these controls that allow the user
  * to interact with the unit.  A control is strongly typed on construction, and
