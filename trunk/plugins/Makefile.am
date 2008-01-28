@@ -1,1 +1,1 @@
-SUBDIRS = dc1394 ladybug2
+SUBDIRS = dc1394 

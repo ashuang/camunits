@@ -118,7 +118,6 @@ AC_OUTPUT([
   po/Makefile.in
   plugins/Makefile
   plugins/dc1394/Makefile
-  plugins/ladybug2/Makefile
   examples/Makefile
   examples/basic/Makefile
   examples/filter_example/Makefile
