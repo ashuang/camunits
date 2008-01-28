@@ -166,12 +166,28 @@ int
 cam_pixel_convert_8u_gray_to_64f_gray (double * dest, int dstride,
         int dwidth, int dheight, const uint8_t * src, int sstride)
 {
+    double s = 1 / 255.0;
     int i, j;
     for( i=0; i<dheight; i++ ) {
         double *drow = (double*)( (uint8_t*)dest + i * dstride );
         const uint8_t *srow = src + i * sstride;
         for( j=0; j<dwidth; j++ ) {
-            drow[j] = srow[j];
+            drow[j] = srow[j] * s;
+        }
+    }
+    return 0;
+}
+
+int cam_pixel_convert_8u_gray_to_32f_gray (float *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride)
+{
+    float s = 1 / 255.0;
+    int i, j;
+    for( i=0; i<dheight; i++ ) {
+        float *drow = (float*)( (uint8_t*)dest + i * dstride );
+        const uint8_t *srow = src + i * sstride;
+        for( j=0; j<dwidth; j++ ) {
+            drow[j] = srow[j] * s;
         }
     }
     return 0;
@@ -222,6 +238,21 @@ cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest, int dstride, int width,
             drow[j] = 0.2125 * srow[j*3+0] + 
                       0.7154 * srow[j*3+1] + 
                       0.0721 * srow[j*3+2];
+        }
+    }
+    return 0;
+}
+
+int 
+cam_pixel_convert_8u_rgb_to_32f_gray (float *dest, int dstride, int width,
+        int height, const uint8_t *src, int sstride)
+{
+    float rw = 0.2125, gw = 0.7154, bw = 0.0721, s = 1 / 255.0;
+    for (int i=0; i<height; i++) {
+        const uint8_t *srow = src + i * sstride;
+        float *drow = (float*) (((uint8_t*)dest) + i * dstride);
+        for (int j=0; j<width; j++) {
+            drow[j] = s * (rw*srow[3*j] + gw*srow[3*j+1] + bw*srow[3*j+2]);
         }
     }
     return 0;
