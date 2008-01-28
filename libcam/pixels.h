@@ -92,12 +92,15 @@ int cam_pixel_format_stride_meaningful (CamPixelFormat p);
  *      source buffer.
  *
  * Converts an image composed of 8-bit unsigned pixels to an image composed
- * of double-precision pixels.  Pixel values are _not_ rescaled to [0,1].
+ * of double-precision pixels.  Pixel values are rescaled to [0,1].
  * This function works on multiple-channel images, as long as the width
  * and height are modified accordingly.
  */
 int cam_pixel_convert_8u_gray_to_64f_gray (double * dest, int dstride,
         int dwidth, int dheight, const uint8_t * src, int sstride);
+
+int cam_pixel_convert_8u_gray_to_32f_gray (float *dest, int dstride,
+        int dwidth, int dheight, const uint8_t *src, int sstride);
 
 /**
  * cam_pixel_convert_8u_gray_to_8u_RGB:
@@ -171,6 +174,23 @@ int cam_pixel_convert_8u_rgb_to_8u_bgr(uint8_t *dst, int dstride, int width,
         int height, const uint8_t *src, int sstride);
 
 int cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest, int dstride, int width,
+        int height, const uint8_t *src, int sstride);
+
+/**
+ * cam_pixel_convert_8u_rgb_to_32f_gray:
+ * @dst: The destination buffer pre-allocated by the caller.
+ * @dstride: Number of bytes between the start of each image row in the
+ *      destination buffer.
+ * @width: Width of the destination image in pixels.
+ * @height: Height of the destination image in pixels.
+ * @src: The source image.
+ * @sstride: Number of bytes between the start of each image row in the
+ *      source buffer.
+ *
+ * Converts a 3-channel RGB image to 32-bit floating point grayscale.
+ * Resulting pixel values are in the range [0,1]
+ */
+int cam_pixel_convert_8u_rgb_to_32f_gray (float *dest, int dstride, int width,
         int height, const uint8_t *src, int sstride);
 
 /**
