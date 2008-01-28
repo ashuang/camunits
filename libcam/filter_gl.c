@@ -169,7 +169,9 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
            infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_BGGR ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_GBRG ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_GRBG ||
-           infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY)) return;
+           infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY ||
+           infmt->pixelformat == CAM_PIXEL_FORMAT_FLOAT_GRAY32
+           )) return;
 
     cam_unit_add_output_format_full (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
