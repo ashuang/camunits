@@ -193,6 +193,19 @@ int cam_pixel_convert_8u_gray_to_32f_gray (float *dest, int dstride,
     return 0;
 }
 
+int cam_pixel_convert_32f_gray_to_8u_gray (uint8_t *dest, int dstride,
+        int dwidth, int dheight, const float *src, int sstride)
+{
+    for(int i=0; i<dheight; i++ ) {
+        uint8_t *drow = dest + i * dstride;
+        const float *srow = (float*)( (uint8_t*)src + i * sstride );
+        for(int j=0; j<dwidth; j++ ) {
+            drow[j] = srow[j] * 255;
+        }
+    }
+    return 0;
+}
+
 int
 cam_pixel_convert_8u_gray_to_8u_RGBA (uint8_t * dest, int dstride,
         int dwidth, int dheight, const uint8_t * src, int sstride)

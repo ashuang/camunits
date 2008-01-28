@@ -102,6 +102,9 @@ int cam_pixel_convert_8u_gray_to_64f_gray (double * dest, int dstride,
 int cam_pixel_convert_8u_gray_to_32f_gray (float *dest, int dstride,
         int dwidth, int dheight, const uint8_t *src, int sstride);
 
+int cam_pixel_convert_32f_gray_to_8u_gray (uint8_t *dest, int dstride,
+        int dwidth, int dheight, const float *src, int sstride);
+
 /**
  * cam_pixel_convert_8u_gray_to_8u_RGB:
  * @dest: The destination buffer pre-allocated by the caller.
