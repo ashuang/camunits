@@ -537,7 +537,7 @@ void cam_unit_remove_all_output_formats (CamUnit *self);
 /**
  * cam_unit_produce_frame:
  *
- * Protected method.  Subclasses of CamUnit shuld invoke this to signal that
+ * Protected method.  Subclasses of CamUnit should invoke this to signal that
  * a new frame is ready for consumption.  Invoking this method emits the
  * "frame-ready" signal.
  */
