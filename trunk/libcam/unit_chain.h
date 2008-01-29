@@ -256,6 +256,11 @@ int cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
  */
 void cam_unit_chain_detach_glib (CamUnitChain *self);
 
+/**
+ * cam_unit_chain_snapshot:
+ */
+char * cam_unit_chain_snapshot (const CamUnitChain *self);
+
 #ifdef __cplusplus
 }
 #endif

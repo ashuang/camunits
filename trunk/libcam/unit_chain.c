@@ -671,3 +671,77 @@ on_unit_status_changed (CamUnit *unit, CamUnitChain *self)
         }
     }
 }
+
+char *
+cam_unit_chain_snapshot (const CamUnitChain *self)
+{
+    GString *result = 
+        g_string_new ("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+
+    g_string_append (result, "<chain>\n");
+
+    // loop through all units and output their states
+    for (GList *uiter=self->units; uiter; uiter=uiter->next) {
+        CamUnit *unit = CAM_UNIT (uiter->data);
+
+        // start describing unit
+        g_string_append_printf (result, "    <unit id=\"%s\"", 
+                cam_unit_get_id (unit));
+
+        // output format?
+        const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
+        if (fmt) {
+            g_string_append_printf (result, 
+                    " width=\"%d\" height=\"%d\" pixelformat=\"0x%X\"", 
+                    fmt->width, fmt->height, fmt->pixelformat);
+        }
+        g_string_append (result, ">\n");
+
+        // get the state of each control
+        GList *ctls = cam_unit_list_controls(unit);
+        for (GList *citer=ctls; citer; citer=citer->next) {
+            CamUnitControl *ctl = CAM_UNIT_CONTROL (citer->data);
+
+            g_string_append_printf (result, "        <control id=\"%s\">", 
+                    ctl->id);
+
+            switch (ctl->type) {
+                case CAM_UNIT_CONTROL_TYPE_INT:
+                    g_string_append_printf (result, "%d", 
+                            cam_unit_control_get_int (ctl));
+                    break;
+                case CAM_UNIT_CONTROL_TYPE_BOOLEAN:
+                    g_string_append_printf (result, "%d", 
+                            cam_unit_control_get_boolean (ctl));
+                    break;
+                case CAM_UNIT_CONTROL_TYPE_ENUM:
+                    g_string_append_printf (result, "%d", 
+                            cam_unit_control_get_enum (ctl));
+                    break;
+                case CAM_UNIT_CONTROL_TYPE_STRING:
+                    {
+                        char *s = g_markup_printf_escaped ("%s", 
+                                cam_unit_control_get_string (ctl));
+                        g_string_append (result, s);
+                        free (s);
+                    }
+                    break;
+                case CAM_UNIT_CONTROL_TYPE_FLOAT:
+                    g_string_append_printf (result, "%g", 
+                            cam_unit_control_get_float (ctl));
+                    break;
+                default:
+                    g_warning ("%s: Ignoring unrecognized control type %d\n",
+                            __FUNCTION__, ctl->type);
+                    break;
+            }
+            g_string_append (result, "</control>\n");
+        }
+        g_list_free (ctls);
+
+        g_string_append (result, "    </unit>\n");
+    }
+
+    g_string_append (result, "</chain>\n");
+    return g_string_free (result, FALSE);
+}
