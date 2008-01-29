@@ -3,6 +3,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <assert.h>
+#include <errno.h>
 
 #include <gtk/gtk.h>
 
@@ -25,6 +26,18 @@ typedef struct _state_t {
     GtkWidget *manager_frame;
     GtkWidget *chain_frame;
 } state_t;
+
+static void
+_popup_file_error_dialog (GtkWindow *window,
+        const char *filename, const char *saveopen)
+{
+    GtkWidget *mdlg = gtk_message_dialog_new (window,
+            GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
+            GTK_BUTTONS_CLOSE, "Error %s file '%s': %s",
+            saveopen, filename, g_strerror (errno));
+    gtk_dialog_run (GTK_DIALOG (mdlg));
+    gtk_widget_destroy (mdlg);
+}
 
 // ==================== signal handlers =====================
 
@@ -67,6 +80,80 @@ on_unit_description_activated (CamUnitManagerWidget *mw,
     cam_unit_chain_add_unit_by_id (self->chain, udesc->unit_id);
 }
 
+static void
+on_open_menu_item_activate (GtkWidget *widget, void * user)
+{
+    state_t *self = user;
+
+    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Load Saved Chain",
+            self->window, GTK_FILE_CHOOSER_ACTION_OPEN,
+            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+        char *path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+        FILE *fp = fopen (path, "r");
+        if (!fp) {
+            _popup_file_error_dialog (self->window, path, "opening");
+            gtk_widget_destroy (dialog);
+            g_free (path);
+            return;
+        }
+            
+        // TODO
+
+        GtkWidget *mdlg = gtk_message_dialog_new (self->window,
+                GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
+                GTK_BUTTONS_CLOSE, "Not yet implemented");
+        gtk_dialog_run (GTK_DIALOG (mdlg));
+        gtk_widget_destroy (mdlg);
+
+        fclose (fp);
+        g_free (path);
+    }
+    gtk_widget_destroy (dialog);
+}
+
+
+static void
+on_save_menu_item_activate (GtkWidget *widget, void * user)
+{
+    state_t *self = user;
+
+    GtkWidget *dialog;
+    dialog = gtk_file_chooser_dialog_new ("Save Chain State",
+            self->window, GTK_FILE_CHOOSER_ACTION_SAVE,
+            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+            GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+        char *path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+        FILE *fp = fopen (path, "w");
+        if (!fp) {
+            _popup_file_error_dialog (self->window, path, "saving");
+            gtk_widget_destroy (dialog);
+            g_free (path);
+            return;
+        }
+        char *chain_state = cam_unit_chain_snapshot (self->chain);
+        int ntowrite = strlen (chain_state);
+        int nwritten = 0;
+        while (ntowrite) {
+            int s = fwrite (chain_state + nwritten, 1, ntowrite, fp);
+            if (s <= 0) {
+                _popup_file_error_dialog (self->window, path, "saving");
+                break;
+            }
+            ntowrite -= s;
+            nwritten += s;
+        }
+        free (chain_state);
+        fclose (fp);
+        g_free (path);
+    }
+
+    gtk_widget_destroy (dialog);
+}
+
 // ========== administrative methods (construction, destruction) ==========
 
 static void
@@ -91,6 +178,18 @@ setup_gtk (state_t *self)
     gtk_menu_bar_append (GTK_MENU_BAR (menubar), file_menu_item);
     GtkWidget *file_menu = gtk_menu_new ();
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (file_menu_item), file_menu);
+    
+    GtkWidget *open_mi = 
+        gtk_image_menu_item_new_from_stock (GTK_STOCK_OPEN, NULL);
+    gtk_menu_append (GTK_MENU (file_menu), open_mi);
+    gtk_signal_connect (GTK_OBJECT (open_mi), "activate", 
+            GTK_SIGNAL_FUNC (on_open_menu_item_activate), self);
+    
+    GtkWidget *save_mi = 
+        gtk_image_menu_item_new_from_stock (GTK_STOCK_SAVE, NULL);
+    gtk_menu_append (GTK_MENU (file_menu), save_mi);
+    gtk_signal_connect (GTK_OBJECT (save_mi), "activate", 
+            GTK_SIGNAL_FUNC (on_save_menu_item_activate), self);
     
     GtkWidget *quit_mi = 
         gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
@@ -173,9 +272,17 @@ setup_gtk (state_t *self)
 
     // chain widget
     self->chain_widget = cam_unit_chain_widget_new (self->chain);
+#if 0
+    GtkWidget *sw_chain = gtk_scrolled_window_new (NULL, NULL);
+    gtk_container_add (GTK_CONTAINER (self->chain_frame), sw_chain);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw_chain), 
+            GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+    gtk_container_add (GTK_CONTAINER (sw_chain), 
+            GTK_WIDGET (self->chain_widget));
+#else
     gtk_container_add (GTK_CONTAINER (self->chain_frame), 
             GTK_WIDGET (self->chain_widget));
-    gtk_widget_show (GTK_WIDGET (self->chain_widget));
+#endif
 
     gtk_widget_show_all (GTK_WIDGET (self->window));
 }
