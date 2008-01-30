@@ -249,7 +249,7 @@ cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
     }
     else {
         fprintf (stderr, "Error: gl_texture does not support pixel format %s\n",
-                cam_pixel_format_str (pixelformat));
+                cam_pixel_format_nickname (pixelformat));
         return -1;
     }
 

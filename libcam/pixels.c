@@ -26,64 +26,54 @@ static int cpuid_detected = 0;
 static int has_sse2;
 static int has_sse3;
 
-const char *
-cam_pixel_format_str (CamPixelFormat p)
+GType
+cam_pixel_format_get_type (void)
 {
-    switch (p) {
-        case CAM_PIXEL_FORMAT_UYVY:
-        case CAM_PIXEL_FORMAT_YUYV:
-            return "YUV 4:2:2";
-        case CAM_PIXEL_FORMAT_IYU1:
-            return "YUV 4:1:1 packed";
-        case CAM_PIXEL_FORMAT_IYU2:
-            return "YUV 4:4:4";
-        case CAM_PIXEL_FORMAT_YUV420:
-            return "YUV 4:2:0";
-        case CAM_PIXEL_FORMAT_YUV411P:
-            return "YUV 4:1:1 planar";
-        case CAM_PIXEL_FORMAT_YV12:
-        case CAM_PIXEL_FORMAT_I420:
-            return "YUV 4:2:0 planar";
-        case CAM_PIXEL_FORMAT_NV12:
-            return "YUV 4:2:0 planar (NV12)";
-        case CAM_PIXEL_FORMAT_RGB:
-            return "RGB 24bpp";
-        case CAM_PIXEL_FORMAT_BGR:
-            return "BGR 24bpp";
-        case CAM_PIXEL_FORMAT_RGBA:
-            return "RGBA 32bpp";
-        case CAM_PIXEL_FORMAT_BGRA:
-            return "BGRA 32bpp";
-        case CAM_PIXEL_FORMAT_RGB16:
-        case CAM_PIXEL_FORMAT_SIGNED_RGB16:
-            return "RGB 48bpp";
-        case CAM_PIXEL_FORMAT_GRAY:
-            return "Gray 8bpp";
-        case CAM_PIXEL_FORMAT_GRAY16:
-        case CAM_PIXEL_FORMAT_SIGNED_GRAY16:
-            return "Gray 16bpp";
-        case CAM_PIXEL_FORMAT_BAYER_BGGR:
-            return "Bayer BGGR 8bpp";
-        case CAM_PIXEL_FORMAT_BAYER_GBRG:
-            return "Bayer GBRG 8bpp";
-        case CAM_PIXEL_FORMAT_BAYER_GRBG:
-            return "Bayer GRBG 8bpp";
-        case CAM_PIXEL_FORMAT_BAYER_RGGB:
-            return "Bayer RGGB 8bpp";
-        case CAM_PIXEL_FORMAT_BAYER16:
-            return "Bayer 16bpp";
-        case CAM_PIXEL_FORMAT_MJPEG:
-            return "Motion-JPEG";
-        case CAM_PIXEL_FORMAT_FLOAT_GRAY32:
-            return "Gray float-32bpp";
-        case CAM_PIXEL_FORMAT_FLOAT_RGB32:
-            return "RGB float-96bpp";
-        case CAM_PIXEL_FORMAT_INVALID:
-            return "Invalid / Unsupported";
-        case CAM_PIXEL_FORMAT_ANY:
-            return "Any Pixel Format";
+    static GType etype = 0;
+    if (etype == 0) {
+        static const GEnumValue values[] = {
+            { CAM_PIXEL_FORMAT_UYVY, "CAM_PIXEL_FORMAT_UYVY", "YUV 4:2:2" },
+            { CAM_PIXEL_FORMAT_IYU1, "CAM_PIXEL_FORMAT_IYU1", "YUV 4:1:1 packed" },
+            { CAM_PIXEL_FORMAT_IYU2, "CAM_PIXEL_FORMAT_IYU2", "YUV 4:4:4" },
+            { CAM_PIXEL_FORMAT_YUV420, "CAM_PIXEL_FORMAT_YUV420", "YUV 4:2:0" },
+            { CAM_PIXEL_FORMAT_YUV411P, "CAM_PIXEL_FORMAT_YUV411P", "YUV 4:1:1 planar" },
+            { CAM_PIXEL_FORMAT_I420, "CAM_PIXEL_FORMAT_I420", "YUV 4:2:0 planar" },
+            { CAM_PIXEL_FORMAT_NV12, "CAM_PIXEL_FORMAT_NV12", "YUV 4:2:0 planar (NV12)" },
+            { CAM_PIXEL_FORMAT_RGB, "CAM_PIXEL_FORMAT_RGB", "RGB 24bpp" },
+            { CAM_PIXEL_FORMAT_BGR, "CAM_PIXEL_FORMAT_BGR", "BGR 24bpp" },
+            { CAM_PIXEL_FORMAT_RGBA, "CAM_PIXEL_FORMAT_RGBA", "RGBA 32bpp" },
+            { CAM_PIXEL_FORMAT_BGRA, "CAM_PIXEL_FORMAT_BGRA", "BGRA 32bpp" },
+            { CAM_PIXEL_FORMAT_RGB16, "CAM_PIXEL_FORMAT_RGB16", "RGB 48bpp" },
+            { CAM_PIXEL_FORMAT_SIGNED_RGB16, "CAM_PIXEL_FORMAT_SIGNED_RGB16", "RGB signed 48bpp" },
+            { CAM_PIXEL_FORMAT_GRAY, "CAM_PIXEL_FORMAT_GRAY", "Gray 8bpp" },
+            { CAM_PIXEL_FORMAT_GRAY16, "CAM_PIXEL_FORMAT_GRAY16", "Gray 16bpp" },
+            { CAM_PIXEL_FORMAT_SIGNED_GRAY16, "CAM_PIXEL_FORMAT_SIGNED_GRAY16", "Gray signed 16bpp" },
+            { CAM_PIXEL_FORMAT_BAYER_BGGR, "CAM_PIXEL_FORMAT_BAYER_BGGR", "Bayer BGGR 8bpp" },
+            { CAM_PIXEL_FORMAT_BAYER_GBRG, "CAM_PIXEL_FORMAT_BAYER_GBRG", "Bayer GBRG 8bpp" },
+            { CAM_PIXEL_FORMAT_BAYER_GRBG, "CAM_PIXEL_FORMAT_BAYER_GRBG", "Bayer GRBG 8bpp" },
+            { CAM_PIXEL_FORMAT_BAYER_RGGB, "CAM_PIXEL_FORMAT_BAYER_RGGB", "Bayer RGGB 8bpp" },
+            { CAM_PIXEL_FORMAT_MJPEG, "CAM_PIXEL_FORMAT_MJPEG", "Motion-JPEG" },
+            { CAM_PIXEL_FORMAT_FLOAT_GRAY32, "CAM_PIXEL_FORMAT_FLOAT_GRAY32",
+"Gray float-32bpp" },
+            { CAM_PIXEL_FORMAT_FLOAT_RGB32, "CAM_PIXEL_FORMAT_FLOAT_RGB32", "RGB float-96bpp" },
+            { CAM_PIXEL_FORMAT_INVALID, "CAM_PIXEL_FORMAT_INVALID", "Invalid / Unsupported" },
+            { CAM_PIXEL_FORMAT_ANY, "CAM_PIXEL_FORMAT_ANY", "Any Pixel Format" },
+            {0, NULL, NULL}
+        };
+        etype = 
+            g_enum_register_static (g_intern_static_string ("CamPixelFormat"), 
+                    values);
     }
-    return "Unknown";
+    return etype;
+}
+
+const char *
+cam_pixel_format_nickname (CamPixelFormat p)
+{
+    GEnumClass *class = G_ENUM_CLASS (g_type_class_ref (CAM_TYPE_PIXEL_FORMAT));
+    const char *result = g_enum_get_value (class, p)->value_nick;
+    g_type_class_unref (class);
+    return result;
 }
 
 int
@@ -101,7 +91,7 @@ cam_pixel_format_bpp (CamPixelFormat p)
         case CAM_PIXEL_FORMAT_BGR:
             return 24;
         case CAM_PIXEL_FORMAT_YUV420:
-        case CAM_PIXEL_FORMAT_YV12:
+//        case CAM_PIXEL_FORMAT_YV12:
         case CAM_PIXEL_FORMAT_I420:
             return 12;
         case CAM_PIXEL_FORMAT_NV12:
@@ -120,7 +110,7 @@ cam_pixel_format_bpp (CamPixelFormat p)
             return 8;
         case CAM_PIXEL_FORMAT_GRAY16:
         case CAM_PIXEL_FORMAT_SIGNED_GRAY16:
-        case CAM_PIXEL_FORMAT_BAYER16:
+//        case CAM_PIXEL_FORMAT_BAYER16:
             return 16;
         case CAM_PIXEL_FORMAT_MJPEG:
             return 12; /* worst-case estimate */
@@ -135,7 +125,7 @@ cam_pixel_format_bpp (CamPixelFormat p)
     return 0;
 }
 
-int cam_pixel_format_stride_meaningful (CamPixelFormat p)
+int cam_pixel_format_nicknameide_meaningful (CamPixelFormat p)
 {
     switch (p) {
         case CAM_PIXEL_FORMAT_MJPEG:
@@ -886,7 +876,7 @@ cam_pixel_convert_bayer_to_8u_bgra (uint8_t *dest, int dstride, int width,
         format != CAM_PIXEL_FORMAT_BAYER_GBRG &&
         format != CAM_PIXEL_FORMAT_BAYER_RGGB) {
         fprintf (stderr, "%s:%d:%s invalid pixel format %s\n", 
-                __FILE__, __LINE__, __FUNCTION__, cam_pixel_format_str (format));
+                __FILE__, __LINE__, __FUNCTION__, cam_pixel_format_nickname (format));
         return -1;
     }
 
@@ -954,7 +944,7 @@ cam_pixel_convert_bayer_to_8u_gray (uint8_t *dest, int dstride, int width,
         format != CAM_PIXEL_FORMAT_BAYER_GBRG &&
         format != CAM_PIXEL_FORMAT_BAYER_RGGB) {
         fprintf (stderr, "%s:%d:%s invalid pixel format %s\n", 
-                __FILE__, __LINE__, __FUNCTION__, cam_pixel_format_str (format));
+                __FILE__, __LINE__, __FUNCTION__, cam_pixel_format_nickname (format));
         return -1;
     }
 

@@ -253,7 +253,7 @@ add_v4l2_format (CamV4L2 * self, uint32_t width, uint32_t height,
         perror ("ioctl");
         fprintf (stderr, 
                 "Error: VIDIOC_TRY_FMT failed (%s %dx%d)\n",
-                cam_pixel_format_str(cam_pixelformat), width, height);
+                cam_pixel_format_nickname(cam_pixelformat), width, height);
         return -1;
     } 
 

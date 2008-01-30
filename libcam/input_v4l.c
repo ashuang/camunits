@@ -246,7 +246,7 @@ cam_v4l_new (int videonum)
 
     CamPixelFormat pfmt = videodev_palette_to_pixelformat (vpic.palette);
     dbg (DBG_INPUT, "V4L: palette %d (%s)\n", vpic.palette,
-            cam_pixel_format_str(pfmt));
+            cam_pixel_format_nickname(pfmt));
 
     if (pfmt != CAM_PIXEL_FORMAT_INVALID) {
         int npixels = vcap.minwidth * vcap.minheight;

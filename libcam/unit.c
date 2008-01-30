@@ -713,7 +713,7 @@ cam_unit_add_output_format_full (CamUnit *self, CamPixelFormat pfmt,
 {
     if (! name) {
         char buf[128];
-        sprintf(buf, "%dx%d %s", width, height, cam_pixel_format_str(pfmt));
+        sprintf(buf, "%dx%d %s", width, height, cam_pixel_format_nickname(pfmt));
         name = buf;
     }
 

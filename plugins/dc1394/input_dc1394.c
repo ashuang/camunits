@@ -382,7 +382,7 @@ cam_dc1394_new (dc1394camera_t * cam)
                 dc1394_pixel_format (mode->color_codings.codings[j],
                         mode->color_filter);
             sprintf (name, "%dx%d %s (F7)", mode->max_size_x, mode->max_size_y,
-                    cam_pixel_format_str (pix));
+                    cam_pixel_format_nickname (pix));
 
             int stride = mode->max_size_x * cam_pixel_format_bpp(pix) / 8;
 
@@ -416,7 +416,7 @@ cam_dc1394_new (dc1394camera_t * cam)
         stride = width * cam_pixel_format_bpp (pix) / 8;
 
         char name[256];
-        sprintf (name, "%dx%d %s", width, height, cam_pixel_format_str (pix));
+        sprintf (name, "%dx%d %s", width, height, cam_pixel_format_nickname (pix));
 
         CamUnitFormat * fmt =
             cam_unit_add_output_format_full (CAM_UNIT (self), pix, name,

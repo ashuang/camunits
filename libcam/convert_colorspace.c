@@ -110,7 +110,7 @@ cam_color_conversion_filter_init( CamColorConversionFilter *self )
     add_conv (self, CAM_PIXEL_FORMAT_I420, CAM_PIXEL_FORMAT_BGR,  yuv420p_to_bgr);
     add_conv (self, CAM_PIXEL_FORMAT_I420, CAM_PIXEL_FORMAT_BGRA, yuv420p_to_bgra);
     add_conv (self, CAM_PIXEL_FORMAT_I420, CAM_PIXEL_FORMAT_GRAY, yuv420p_to_gray);
-    add_conv (self, CAM_PIXEL_FORMAT_YV12, CAM_PIXEL_FORMAT_GRAY, yuv420p_to_gray);
+//    add_conv (self, CAM_PIXEL_FORMAT_YV12, CAM_PIXEL_FORMAT_GRAY, yuv420p_to_gray);
 
     add_conv (self, CAM_PIXEL_FORMAT_YUYV, CAM_PIXEL_FORMAT_BGRA, yuyv_to_bgra);
     add_conv (self, CAM_PIXEL_FORMAT_YUYV, CAM_PIXEL_FORMAT_GRAY, yuyv_to_gray);

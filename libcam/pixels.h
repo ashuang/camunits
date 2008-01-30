@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include <glib-object.h>
+
 #define cam_pf_fourcc(a,b,c,d)\
    (((uint32_t)(a))     | \
     ((uint32_t)(b)<<8)  | \
@@ -26,8 +28,8 @@ typedef enum {
     CAM_PIXEL_FORMAT_IYU2=cam_pf_fourcc('I','Y','U','2'),  /* YUV 4:4:4 */
     CAM_PIXEL_FORMAT_YUV420=cam_pf_fourcc('Y','U','1','2'), /* YUV 4:2:0 */
     CAM_PIXEL_FORMAT_YUV411P=cam_pf_fourcc('4','1','1','P'), /* YUV 4:1:1 planar */
-    CAM_PIXEL_FORMAT_YV12=cam_pf_fourcc('Y','V','1','2'),  /* planar YUV 4:2:0, 
-                                                      Y - V - U */
+//    CAM_PIXEL_FORMAT_YV12=cam_pf_fourcc('Y','V','1','2'),  /* planar YUV 4:2:0, 
+//                                                      Y - V - U */
     CAM_PIXEL_FORMAT_I420=cam_pf_fourcc('I','4','2','0'),  /* planar YUV 4:2:0, 
                                                       Y - U - V */
     CAM_PIXEL_FORMAT_NV12=cam_pf_fourcc('N','V','1','2'), /* YUV 4:2:0, 
@@ -47,7 +49,7 @@ typedef enum {
     CAM_PIXEL_FORMAT_MJPEG=cam_pf_fourcc('M','J','P','G'),
     CAM_PIXEL_FORMAT_RGB16=1,
     CAM_PIXEL_FORMAT_GRAY16,
-    CAM_PIXEL_FORMAT_BAYER16,
+//    CAM_PIXEL_FORMAT_BAYER16,
     CAM_PIXEL_FORMAT_SIGNED_GRAY16,
     CAM_PIXEL_FORMAT_SIGNED_RGB16,
     CAM_PIXEL_FORMAT_FLOAT_GRAY32,
@@ -56,13 +58,16 @@ typedef enum {
     CAM_PIXEL_FORMAT_ANY=0xFFFFFFFF,
 } CamPixelFormat;
 
+GType cam_pixel_format_get_type (void) G_GNUC_CONST;
+#define CAM_TYPE_PIXEL_FORMAT (cam_pixel_format_get_type ())
+
 /**
- * cam_pixel_format_str:
+ * cam_pixel_format_nickname:
  *
  * Returns a short, descriptive string that indicates the meaning of
- * CamPixelFormat @p, useful for debugging an UI elements.
+ * CamPixelFormat @p, useful for debugging and UI elements.
  */
-const char * cam_pixel_format_str (CamPixelFormat p);
+const char * cam_pixel_format_nickname (CamPixelFormat p);
 
 /**
  * cam_pixel_format_bpp:
@@ -74,11 +79,11 @@ const char * cam_pixel_format_str (CamPixelFormat p);
 int cam_pixel_format_bpp (CamPixelFormat p);
 
 /**
- * cam_pixel_format_stride_meaningful:
+ * cam_pixel_format_nicknameide_meaningful:
  *
  * Returns: 1 if rowstride is meaningful for the pixelformat, 0 if not.
  */
-int cam_pixel_format_stride_meaningful (CamPixelFormat p);
+int cam_pixel_format_nicknameide_meaningful (CamPixelFormat p);
 
 /**
  * cam_pixel_convert_8u_gray_to_64f_gray:
