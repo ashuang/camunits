@@ -33,6 +33,7 @@ cam_pixel_format_get_type (void)
     if (etype == 0) {
         static const GEnumValue values[] = {
             { CAM_PIXEL_FORMAT_UYVY, "CAM_PIXEL_FORMAT_UYVY", "YUV 4:2:2" },
+            { CAM_PIXEL_FORMAT_YUYV, "CAM_PIXEL_FORMAT_YUYV", "YUV 4:2:2 reverse byte" },
             { CAM_PIXEL_FORMAT_IYU1, "CAM_PIXEL_FORMAT_IYU1", "YUV 4:1:1 packed" },
             { CAM_PIXEL_FORMAT_IYU2, "CAM_PIXEL_FORMAT_IYU2", "YUV 4:4:4" },
             { CAM_PIXEL_FORMAT_YUV420, "CAM_PIXEL_FORMAT_YUV420", "YUV 4:2:0" },
@@ -71,7 +72,10 @@ const char *
 cam_pixel_format_nickname (CamPixelFormat p)
 {
     GEnumClass *class = G_ENUM_CLASS (g_type_class_ref (CAM_TYPE_PIXEL_FORMAT));
-    const char *result = g_enum_get_value (class, p)->value_nick;
+    GEnumValue *ev = g_enum_get_value (class, p);
+    const char *result;
+    if (ev) result = ev->value_nick;
+    else result = "UNRECOGNIZED";
     g_type_class_unref (class);
     return result;
 }
