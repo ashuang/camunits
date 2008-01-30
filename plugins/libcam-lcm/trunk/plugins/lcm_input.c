@@ -184,12 +184,12 @@ camlcm_input_driver_check_for_new_units (CamlcmInputDriver *self)
                 dbg ("   old: <%d, %d, %d> %s %s\n",
                         old_announce->width, old_announce->height,
                         old_announce->stride,
-                        cam_pixel_format_str (old_announce->pixelformat),
+                        cam_pixel_format_nickname (old_announce->pixelformat),
                         old_announce->channel);
                 dbg ("   new: <%d, %d, %d> %s %s\n",
                         msg->width, msg->height,
                         msg->stride,
-                        cam_pixel_format_str (msg->pixelformat),
+                        cam_pixel_format_nickname (msg->pixelformat),
                         msg->channel);
                 g_hash_table_remove (self->known_sources, msg->channel);
                 old_announce = NULL;

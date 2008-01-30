@@ -691,9 +691,15 @@ cam_unit_chain_snapshot (const CamUnitChain *self)
         // output format?
         const CamUnitFormat *fmt = cam_unit_get_output_format (unit);
         if (fmt) {
+            GEnumClass *pf_class = 
+                G_ENUM_CLASS (g_type_class_ref (CAM_TYPE_PIXEL_FORMAT));
+
             g_string_append_printf (result, 
-                    " width=\"%d\" height=\"%d\" pixelformat=\"0x%X\"", 
-                    fmt->width, fmt->height, fmt->pixelformat);
+                    " width=\"%d\" height=\"%d\" pixelformat=\"%s\"", 
+                    fmt->width, fmt->height, 
+                    g_enum_get_value (pf_class, fmt->pixelformat)->value_name);
+
+            g_type_class_unref (pf_class);
         }
         g_string_append (result, ">\n");
 
