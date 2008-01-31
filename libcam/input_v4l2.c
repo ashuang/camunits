@@ -491,8 +491,9 @@ static int
 v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
 {
     CamV4L2 * self = CAM_V4L2 (super);
-    dbg (DBG_INPUT, "Initializing v4l2 stream (pxlfmt 0x%x %dx%d)\n",
-            format->pixelformat, format->width, format->height);
+    dbg (DBG_INPUT, "Initializing v4l2 stream (pxlfmt %s %dx%d)\n",
+            cam_pixel_format_nickname (format->pixelformat), 
+            format->width, format->height);
 
     struct v4l2_format *fmt = g_object_get_data (G_OBJECT (format),
             "input_v4l2:v4l2_format");
@@ -885,6 +886,7 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         int val = g_value_get_int (proposed);
         v4l2_std_id * stds = g_object_get_data (G_OBJECT (ctl),
                 "v4l2-stds");
+        if (!stds) return FALSE;
         v4l2_std_id std = stds[val];
         if (ioctl (self->fd, VIDIOC_S_STD, &std) < 0) {
             fprintf (stderr, "VIDIOC_S_STD failed: %s\n", strerror (errno));

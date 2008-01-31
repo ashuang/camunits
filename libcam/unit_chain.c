@@ -331,8 +331,7 @@ void
 cam_unit_chain_remove_all_units (CamUnitChain *self)
 {
     GList *ucopy = g_list_copy (self->units);
-    GList *uiter;
-    for (uiter=g_list_last (ucopy); uiter; uiter=uiter->prev) {
+    for (GList *uiter=g_list_last (ucopy); uiter; uiter=uiter->prev) {
         cam_unit_chain_remove_unit (self, CAM_UNIT (uiter->data));
     }
     g_list_free (ucopy);
@@ -351,8 +350,7 @@ cam_unit_chain_find_unit_by_id (const CamUnitChain *self,
         const char *unit_id)
 {
     dbg (DBG_CHAIN, "searching for unit [%s]\n", unit_id);
-    GList *uiter;
-    for (uiter=self->units; uiter; uiter=uiter->next) {
+    for (GList *uiter=self->units; uiter; uiter=uiter->next) {
         CamUnit *unit = CAM_UNIT (uiter->data);
         if (! strcmp (cam_unit_get_id (unit), unit_id)) {
             return unit;
@@ -372,8 +370,7 @@ int
 cam_unit_chain_get_unit_index (CamUnitChain *self, const CamUnit *unit)
 {
     int index = 0;
-    GList *uiter;
-    for (uiter=self->units; uiter; uiter=uiter->next) {
+    for (GList *uiter=self->units; uiter; uiter=uiter->next) {
         if (unit == CAM_UNIT (uiter->data)) {
             return index;
         }
@@ -534,8 +531,7 @@ cam_unit_chain_source_check (GSource *source)
 
     self->pending_unit_link = NULL;
 
-    GList *uiter;
-    for (uiter=self->units; uiter; uiter=uiter->next) {
+    for (GList *uiter=self->units; uiter; uiter=uiter->next) {
         CamUnit *unit = CAM_UNIT (uiter->data);
         uint32_t uflags = cam_unit_get_flags (unit);
 
@@ -750,4 +746,277 @@ cam_unit_chain_snapshot (const CamUnitChain *self)
 
     g_string_append (result, "</chain>\n");
     return g_string_free (result, FALSE);
+}
+
+typedef struct {
+    CamUnitChain *chain;
+    int in_chain;
+    CamUnit *unit;
+    CamUnitControl *ctl;
+    GEnumClass *pfmt_class;
+    GQuark error_domain;
+} ChainParseContext;
+
+static void
+_start_element (GMarkupParseContext *ctx, const char *element_name,
+        const char **attribute_names, const char **attribute_values,
+        void *user_data, GError **error)
+{
+    ChainParseContext *cpc = user_data;
+
+    if (!strcmp (element_name, "chain")) {
+        if (! cpc->in_chain) {
+            cpc->in_chain = 1;
+        } else {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "Unexpected <chain> element");
+        }
+        return;
+    }
+
+    if (! cpc->in_chain) {
+        *error = g_error_new (CAM_ERROR_DOMAIN, 0, "Missing <chain> element");
+        return;
+    }
+    g_assert (cpc->in_chain);
+    if (!strcmp (element_name, "unit")) {
+        if (cpc->unit || cpc->ctl) {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "Unexpected <unit> element");
+            return;
+        }
+
+        const char *unit_id = NULL;
+        int width = -1;
+        int height = -1;
+        CamPixelFormat pfmt = CAM_PIXEL_FORMAT_ANY;
+
+        for (int i=0; attribute_names[i]; i++) {
+            if (!strcmp (attribute_names[i], "id")) {
+                unit_id = attribute_values[i];
+            } else if (!strcmp (attribute_names[i], "width")) {
+                char *e = NULL;
+                width = strtol (attribute_values[i], &e, 10);
+                if (e == attribute_values[i]) {
+                    width = -1;
+                    *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                            "Invalid unit width [%s]", attribute_values[i]);
+                    return;
+                }
+            } else if (!strcmp (attribute_names[i], "height")) {
+                char *e = NULL;
+                height = strtol (attribute_values[i], &e, 10);
+                if (e == attribute_values[i]) {
+                    width = -1;
+                    *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                            "Invalid unit height [%s]", attribute_values[i]);
+                    return;
+                }
+            } else if (!strcmp (attribute_names[i], "pixelformat")) {
+                GEnumValue *ev = g_enum_get_value_by_name (cpc->pfmt_class,
+                        attribute_values[i]);
+                if (!ev) {
+                    *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                            "Unrecognized pixelformat \"%s\"", 
+                            attribute_values[i]);
+                    return;
+                }
+                pfmt = ev->value;
+            } else {
+                *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                        "Unrecognized attribute \"%s\"", attribute_names[i]);
+                return;
+            }
+        }
+        if (!unit_id) {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "<unit> element missing required id attribute");
+            return;
+        }
+
+        cpc->unit = cam_unit_manager_create_unit_by_id (cpc->chain->manager, 
+                unit_id);
+        if (!cpc->unit) {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "Unable to instantiate [%s]", unit_id);
+            return;
+        }
+        cam_unit_set_preferred_format (cpc->unit, pfmt, width, height);
+
+        cam_unit_chain_insert_unit_tail (cpc->chain, cpc->unit);
+
+        return;
+    }
+    if (!strcmp (element_name, "control")) {
+        if (cpc->ctl || !cpc->unit) {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "Unexpected <control> element");
+            return;
+        }
+        const char *ctl_id = NULL;
+
+        for (int i=0; attribute_names[i]; i++) {
+            if (!strcmp (attribute_names[i], "id")) {
+                ctl_id = attribute_values[i];
+            } else {
+                *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                        "Unrecognized attribute \"%s\"", attribute_names[i]);
+                return;
+            }
+        }
+
+        if (!ctl_id) {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "<control> element missing required id attribute");
+            return;
+        }
+
+        cpc->ctl = cam_unit_find_control (cpc->unit, ctl_id);
+
+        if (!cpc->ctl) {
+            dbg (DBG_CHAIN, "WARNING [%s] does not have control [%s]\n",
+                    cam_unit_get_id (cpc->unit), ctl_id);
+        }
+    }
+}
+
+static void
+_end_element (GMarkupParseContext *ctx, const char *element_name,
+        void *user_data, GError **error)
+{
+    ChainParseContext *cpc = user_data;
+    if (!strcmp (element_name, "control"))
+        cpc->ctl = NULL;
+    else if (!strcmp (element_name, "chain"))
+        cpc->in_chain = 0;
+    else if (!strcmp (element_name, "unit"))
+        cpc->unit = NULL;
+}
+
+static void
+_text (GMarkupParseContext *ctx, const char *text, gsize text_len, 
+        void *user_data, GError **error)
+{
+    ChainParseContext *cpc = user_data;
+    char buf[text_len + 1];
+    memcpy (buf, text, text_len);
+    buf[text_len] = 0;
+    char *e = NULL;
+    if (cpc->ctl) {
+        switch (cpc->ctl->type) {
+            case CAM_UNIT_CONTROL_TYPE_INT:
+                {
+                    long int val = strtol (buf, &e, 10);
+                    if (e == buf) {
+                        *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                                "invalid value [%s] for control [%s]", 
+                                buf, cpc->ctl->id);
+                    }
+                    cam_unit_control_try_set_int (cpc->ctl, val);
+                }
+                break;
+            case CAM_UNIT_CONTROL_TYPE_BOOLEAN:
+                {
+                    long int val = strtol (buf, &e, 10);
+                    if (e == buf) {
+                        *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                                "invalid value [%s] for control [%s]", 
+                                buf, cpc->ctl->id);
+                    }
+                    cam_unit_control_try_set_boolean (cpc->ctl, val);
+                }
+                break;
+            case CAM_UNIT_CONTROL_TYPE_ENUM:
+                {
+                    long int val = strtol (buf, &e, 10);
+                    if (e == buf) {
+                        *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                                "invalid value [%s] for control [%s]", 
+                                buf, cpc->ctl->id);
+                    }
+                    cam_unit_control_try_set_enum (cpc->ctl, val);
+                }
+                break;
+            case CAM_UNIT_CONTROL_TYPE_STRING:
+                cam_unit_control_try_set_string (cpc->ctl, buf);
+                break;
+            case CAM_UNIT_CONTROL_TYPE_FLOAT:
+                {
+                    float val = strtof (buf, &e);
+                    if (e == buf) {
+                        *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                                "invalid value [%s] for control [%s]", 
+                                buf, cpc->ctl->id);
+                    }
+                    cam_unit_control_try_set_float (cpc->ctl, val);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+static void
+_parse_error (GMarkupParseContext *ctx, GError *error, void *user_data)
+{
+    printf ("parse error?\n");
+    printf (error->message);
+    printf ("===\n");
+}
+
+static GMarkupParser _parser = {
+    .start_element = _start_element,
+    .end_element = _end_element,
+    .text = _text,
+    .passthrough = NULL,
+    .error = _parse_error
+};
+
+void
+cam_unit_chain_load_from_str (CamUnitChain *self, const char *xml_str, 
+        GError **error)
+{
+    cam_unit_chain_remove_all_units (self);
+
+    cam_unit_chain_all_units_stream_init (self);
+
+    if (! self->manager) {
+        if (error) {
+            *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
+                    "cannot load from string without a manager");
+        }
+        return;
+    }
+
+    GEnumClass *pfmt_class = 
+        G_ENUM_CLASS (g_type_class_ref (CAM_TYPE_PIXEL_FORMAT));
+
+    ChainParseContext cpc = {
+        .chain = self,
+        .in_chain = 0,
+        .unit = NULL,
+        .ctl = NULL,
+        .error_domain = CAM_ERROR_DOMAIN,
+        .pfmt_class = pfmt_class
+    };
+
+    GMarkupParseContext *ctx = g_markup_parse_context_new (&_parser,
+            0, &cpc, NULL);
+
+    GError *parse_err = NULL;
+    g_markup_parse_context_parse (ctx, xml_str, strlen (xml_str), &parse_err);
+
+    g_type_class_unref (pfmt_class);
+
+//    int result = parse_err ? -1 : 0;
+    if (parse_err) {
+        if (error) {
+            *error = parse_err;
+        } else {
+            g_error_free (parse_err);
+        }
+    }
+
+    g_markup_parse_context_free (ctx);
 }

@@ -544,6 +544,8 @@ void cam_unit_remove_all_output_formats (CamUnit *self);
 void cam_unit_produce_frame (CamUnit *self, 
         const CamFrameBuffer *buffer, const CamUnitFormat *fmt);
 
+#define CAM_ERROR_DOMAIN (g_quark_from_string("Cam"))
+
 #ifdef __cplusplus
 }
 #endif
