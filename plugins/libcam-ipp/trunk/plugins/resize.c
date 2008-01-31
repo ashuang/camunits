@@ -85,12 +85,12 @@ camipp_resize_init (CamippResize *self)
 {
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
+    self->lock_aspect_ctl = cam_unit_add_control_boolean (super, 
+            "lock-aspect", "Lock Aspect", 1, 1);
     self->width_ctl = cam_unit_add_control_int (super, "width", "Width", 
             1, MAX_WIDTH, 1, 1, 1);
     self->height_ctl = cam_unit_add_control_int (super, "height", "Height", 
             1, MAX_HEIGHT, 1, 1, 1);
-    self->lock_aspect_ctl = cam_unit_add_control_boolean (super, 
-            "lock-aspect", "Lock Aspect", 1, 1);
     self->size_requested = 0;
 
     // suggest that UI widgets for this filter display the width and height

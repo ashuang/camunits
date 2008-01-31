@@ -3,6 +3,9 @@
 #include <string.h>
 #include <getopt.h>
 #include <assert.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <errno.h>
 
 #include <gtk/gtk.h>
@@ -20,24 +23,12 @@ typedef struct _state_t {
     CamUnitChainGLWidget *chain_gl_widget;
     CamUnitDescriptionWidget * desc_widget;
 
-    char *cmdline_input_id;
+    char *xml_fname;
 
     GtkWindow *window;
     GtkWidget *manager_frame;
     GtkWidget *chain_frame;
 } state_t;
-
-static void
-_popup_file_error_dialog (GtkWindow *window,
-        const char *filename, const char *saveopen)
-{
-    GtkWidget *mdlg = gtk_message_dialog_new (window,
-            GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
-            GTK_BUTTONS_CLOSE, "Error %s file '%s': %s",
-            saveopen, filename, g_strerror (errno));
-    gtk_dialog_run (GTK_DIALOG (mdlg));
-    gtk_widget_destroy (mdlg);
-}
 
 // ==================== signal handlers =====================
 
@@ -91,25 +82,23 @@ on_open_menu_item_activate (GtkWidget *widget, void * user)
             GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         char *path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-
-        FILE *fp = fopen (path, "r");
-        if (!fp) {
-            _popup_file_error_dialog (self->window, path, "opening");
-            gtk_widget_destroy (dialog);
-            g_free (path);
-            return;
+        char *text = NULL;
+        GError *gerr = NULL;
+        if (g_file_get_contents (path, &text, NULL, &gerr)) {
+            cam_unit_chain_load_from_str (self->chain, text, &gerr);
         }
-            
-        // TODO
+        free (text);
+        free (path);
+        if (gerr) {
+            GtkWidget *mdlg = gtk_message_dialog_new (self->window,
+                    GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
+                    GTK_BUTTONS_CLOSE, "Error opening file '%s': %s",
+                    path, gerr->message);
+            gtk_dialog_run (GTK_DIALOG (mdlg));
+            gtk_widget_destroy (mdlg);
 
-        GtkWidget *mdlg = gtk_message_dialog_new (self->window,
-                GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
-                GTK_BUTTONS_CLOSE, "Not yet implemented");
-        gtk_dialog_run (GTK_DIALOG (mdlg));
-        gtk_widget_destroy (mdlg);
-
-        fclose (fp);
-        g_free (path);
+            g_error_free (gerr);
+        }
     }
     gtk_widget_destroy (dialog);
 }
@@ -127,28 +116,21 @@ on_save_menu_item_activate (GtkWidget *widget, void * user)
             GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         char *path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-        FILE *fp = fopen (path, "w");
-        if (!fp) {
-            _popup_file_error_dialog (self->window, path, "saving");
-            gtk_widget_destroy (dialog);
-            g_free (path);
-            return;
-        }
         char *chain_state = cam_unit_chain_snapshot (self->chain);
-        int ntowrite = strlen (chain_state);
-        int nwritten = 0;
-        while (ntowrite) {
-            int s = fwrite (chain_state + nwritten, 1, ntowrite, fp);
-            if (s <= 0) {
-                _popup_file_error_dialog (self->window, path, "saving");
-                break;
-            }
-            ntowrite -= s;
-            nwritten += s;
-        }
+        GError *gerr = NULL;
+        g_file_set_contents (path, chain_state, -1, &gerr);
         free (chain_state);
-        fclose (fp);
-        g_free (path);
+        free (path);
+
+        if (gerr) {
+            GtkWidget *mdlg = gtk_message_dialog_new (self->window,
+                    GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
+                    GTK_BUTTONS_CLOSE, "Error saving file '%s': %s",
+                    path, gerr->message);
+            gtk_dialog_run (GTK_DIALOG (mdlg));
+            gtk_widget_destroy (mdlg);
+            g_error_free (gerr);
+        }
     }
 
     gtk_widget_destroy (dialog);
@@ -292,18 +274,22 @@ state_setup (state_t *self)
 {
     // create the image processing chain
     self->chain = cam_unit_chain_new ();
+
     cam_unit_chain_all_units_stream_init (self->chain);
     cam_unit_chain_attach_glib (self->chain, 1000, NULL);
     g_signal_connect (G_OBJECT (self->chain), "frame-ready",
             G_CALLBACK (on_frame_ready), self);
 
+    if (self->xml_fname) {
+        char *xml_str = NULL;
+        if (g_file_get_contents (self->xml_fname, &xml_str, NULL, NULL)) {
+            cam_unit_chain_load_from_str (self->chain, xml_str, NULL);
+        }
+        free (xml_str);
+    }
+
     // setup the GUI
     setup_gtk (self);
-
-    // was an input ID specified on the command line?
-    if (self->cmdline_input_id) {
-        cam_unit_chain_add_unit_by_id (self->chain, self->cmdline_input_id);
-    }
 
     return 0;
 }
@@ -314,9 +300,7 @@ state_cleanup (state_t *self)
     // halt and destroy chain
     cam_unit_chain_all_units_stream_shutdown (self->chain);
     g_object_unref (self->chain);
-
-    if (self->cmdline_input_id) free (self->cmdline_input_id);
-
+    free (self->xml_fname);
     return 0;
 }
 
@@ -329,13 +313,12 @@ usage (const char *progname)
 int main (int argc, char **argv)
 {
     state_t * self = (state_t*) calloc (1, sizeof (state_t));
-    self->cmdline_input_id = NULL;
 
-    char *optstring = "hi:";
+    char *optstring = "hf:";
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
-        { "input", required_argument, 0, 'i' },
+        { "file", required_argument, 0, 'f' },
         { 0, 0, 0, 0 }
     };
 
@@ -346,8 +329,8 @@ int main (int argc, char **argv)
     while ((c = getopt_long (argc, argv, optstring, long_opts, 0)) >= 0)
     {
         switch (c) {
-            case 'i':
-                self->cmdline_input_id = strdup (optarg);
+            case 'f':
+                self->xml_fname = strdup (optarg);
                 break;
             case 'h':
             default:
@@ -362,7 +345,6 @@ int main (int argc, char **argv)
     gtk_main ();
 
     state_cleanup (self);
-    free (self);
 
     return 0;
 }

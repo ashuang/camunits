@@ -43,18 +43,20 @@ cam_gl_texture_new (int width, int height, int max_data_size)
     int has_pbo = 0;
 
     const char * extstr = (const char *) glGetString (GL_EXTENSIONS);
-    gchar ** exts = g_strsplit (extstr, " ", 0);
-    int i;
-    for (i = 0; exts[i]; i++) {
-        gchar * ext = exts[i];
-        if (!strcmp (ext, "GL_ARB_texture_non_power_of_two"))
-            has_non_power_of_two = 1;
-        if (!strcmp (ext, "GL_ARB_texture_rectangle"))
-            has_texture_rectangle = 1;
-        if (!strcmp (ext, "GL_ARB_pixel_buffer_object"))
-            has_pbo = 1;
+    if (extstr) {
+        gchar ** exts = g_strsplit (extstr, " ", 0);
+        int i;
+        for (i = 0; exts[i]; i++) {
+            gchar * ext = exts[i];
+            if (!strcmp (ext, "GL_ARB_texture_non_power_of_two"))
+                has_non_power_of_two = 1;
+            if (!strcmp (ext, "GL_ARB_texture_rectangle"))
+                has_texture_rectangle = 1;
+            if (!strcmp (ext, "GL_ARB_pixel_buffer_object"))
+                has_pbo = 1;
+        }
+        g_strfreev (exts);
     }
-    g_strfreev (exts);
 
 //    printf ("%s:%d - %d %d %d\n", __FILE__, __LINE__,
 //            has_non_power_of_two, has_texture_rectangle,
@@ -78,8 +80,8 @@ cam_gl_texture_new (int width, int height, int max_data_size)
         t->texc_height = height;
     }
     else {
-        fprintf (stderr, "Error: GL supports neither non-power-of-two nor "
-                "texture-rectangle\n");
+        fprintf (stderr, "%s:%d -- GL supports neither non-power-of-two nor "
+                "texture-rectangle\n", __FILE__, __LINE__);
         free (t);
         return NULL;
     }
