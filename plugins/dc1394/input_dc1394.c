@@ -294,6 +294,7 @@ dc1394_pixel_format (dc1394color_coding_t color,
 {
     switch (color) {
         case DC1394_COLOR_CODING_MONO8:
+            return CAM_PIXEL_FORMAT_GRAY;
         case DC1394_COLOR_CODING_RAW8:
             switch (filter) {
                 case DC1394_COLOR_FILTER_RGGB:
