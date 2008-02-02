@@ -1,5 +1,5 @@
 AC_PREREQ(2.50)
-AC_INIT(jpeg/convert_ipp_jpeg.h)
+AC_INIT(jpeg/convert_ipp_jpeg_compress.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(libcam-ipp, 0.0.1)
