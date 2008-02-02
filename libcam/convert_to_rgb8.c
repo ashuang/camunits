@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "convert_colorspace.h"
-#include "filter_jpeg.h"
+#include "convert_jpeg_decompress.h"
 #include "filter_fast_bayer.h"
 #include "convert_to_rgb8.h"
 
@@ -157,7 +157,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 self->worker = CAM_UNIT (cam_color_conversion_filter_new());
                 break;
             case CAM_PIXEL_FORMAT_MJPEG:
-                self->worker = CAM_UNIT (cam_filter_jpeg_new ());
+                self->worker = CAM_UNIT (cam_convert_jpeg_decompress_new ());
                 break;
             case CAM_PIXEL_FORMAT_BAYER_BGGR:
             case CAM_PIXEL_FORMAT_BAYER_RGGB:

@@ -36,8 +36,10 @@ libcam_la_SOURCES = \
 	convert_to_rgb8.h \
 	filter_fast_bayer.c \
 	filter_fast_bayer.h \
-	filter_jpeg.c \
-	filter_jpeg.h \
+	convert_jpeg_compress.c \
+	convert_jpeg_compress.h \
+	convert_jpeg_decompress.c \
+	convert_jpeg_decompress.h \
 	output_logger.c \
 	output_logger.h \
 	cpuid.c \

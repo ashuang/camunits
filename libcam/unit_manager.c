@@ -13,7 +13,8 @@
 #include "filter_fast_bayer.h"
 #include "convert_colorspace.h"
 #include "convert_to_rgb8.h"
-#include "filter_jpeg.h"
+#include "convert_jpeg_compress.h"
+#include "convert_jpeg_decompress.h"
 #include "output_logger.h"
 
 #ifdef USE_V4L2
@@ -347,7 +348,6 @@ static void
 cam_unit_manager_register_core_drivers (CamUnitManager *self)
 {
     // register core CamUnit drivers
-
     CamUnitDriver *input_example_driver = 
         CAM_UNIT_DRIVER (cam_input_example_driver_new ());
     cam_unit_manager_add_driver (self, input_example_driver);
@@ -374,24 +374,26 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     cam_unit_manager_add_driver (self, bayer_filter_driver);
 #endif
 
-    CamUnitDriver *fast_bayer_filter_driver = 
-        cam_fast_bayer_filter_driver_new (); 
-    cam_unit_manager_add_driver (self, fast_bayer_filter_driver);
+    // Debayer
+    cam_unit_manager_add_driver (self, cam_fast_bayer_filter_driver_new ()); 
 
     CamUnitDriver *cconv_filter = cam_color_conversion_filter_driver_new ();
     cam_unit_manager_add_driver (self, cconv_filter);
 
-    CamUnitDriver *torgb8 = cam_convert_to_rgb8_driver_new ();
-    cam_unit_manager_add_driver (self, torgb8);
+    // convert "anything" to-rgb
+    cam_unit_manager_add_driver (self, cam_convert_to_rgb8_driver_new ());
 
-    CamUnitDriver *filter_gl_driver = cam_filter_gl_driver_new ();
-    cam_unit_manager_add_driver (self, filter_gl_driver);
+    // opengl renderer
+    cam_unit_manager_add_driver (self, cam_filter_gl_driver_new ()); 
 
-    CamUnitDriver *filter_jpeg_driver = cam_filter_jpeg_driver_new ();
-    cam_unit_manager_add_driver (self, filter_jpeg_driver);
+    // jpeg
+    cam_unit_manager_add_driver (self, 
+            cam_convert_jpeg_compress_driver_new ());
+    cam_unit_manager_add_driver (self, 
+            cam_convert_jpeg_decompress_driver_new ());
 
-    CamUnitDriver *logger_driver = cam_logger_unit_driver_new ();
-    cam_unit_manager_add_driver (self, logger_driver);
+    // logger
+    cam_unit_manager_add_driver (self, cam_logger_unit_driver_new ());
 
     cam_unit_manager_add_plugin_dir (self, LIBCAM_PLUGINS_PATH);
 

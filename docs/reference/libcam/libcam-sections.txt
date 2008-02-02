@@ -99,13 +99,12 @@ CamUnitDriverClass
 
 <SECTION>
 <FILE>unit</FILE>
-CamUnitStatus
 CamUnitFlags
 <TITLE>CamUnit</TITLE>
 CamUnit
 cam_unit_set_input
 cam_unit_get_input
-cam_unit_get_status
+cam_unit_is_streaming
 cam_unit_get_flags
 cam_unit_get_name
 cam_unit_get_id
@@ -142,9 +141,7 @@ cam_unit_add_control_string
 cam_unit_add_output_format_full
 cam_unit_remove_output_format
 cam_unit_remove_all_output_formats
-cam_unit_set_status
 cam_unit_produce_frame
-cam_unit_status_to_str
 <SUBSECTION Standard>
 CAM_UNIT
 CAM_IS_UNIT
@@ -193,9 +190,8 @@ cam_unit_chain_find_unit_by_id
 cam_unit_chain_get_units
 cam_unit_chain_get_unit_index
 cam_unit_chain_reorder_unit
-cam_unit_chain_set_desired_status
-cam_unit_chain_get_desired_status
-cam_unit_chain_check_status_all_units
+cam_unit_chain_all_units_stream_init
+cam_unit_chain_all_units_stream_shutdown
 cam_unit_chain_attach_glib
 cam_unit_chain_detach_glib
 <SUBSECTION Standard>
@@ -264,20 +260,37 @@ CamV4LDriverClass
 </SECTION>
 
 <SECTION>
-<FILE>filter_jpeg</FILE>
-<TITLE>CamFilterJpeg</TITLE>
-CamFilterJpeg
-cam_filter_jpeg_new
-cam_filter_jpeg_driver_new
+<FILE>convert_jpeg_compress</FILE>
+<TITLE>CamConvertJpegCompress</TITLE>
+CamConvertJpegCompress
+cam_convert_jpeg_compress_new
+cam_convert_jpeg_compress_driver_new
 <SUBSECTION Standard>
-CAM_FILTER_JPEG
-CAM_IS_FILTER_JPEG
-CAM_TYPE_FILTER_JPEG
-cam_filter_jpeg_get_type
-CAM_FILTER_JPEG_CLASS
-CAM_IS_FILTER_JPEG_CLASS
-CAM_FILTER_JPEG_GET_CLASS
-CamFilterJpegClass
+CAM_CONVERT_JPEG_COMPRESS
+CAM_IS_CONVERT_JPEG_COMPRESS
+CAM_TYPE_CONVERT_JPEG_COMPRESS
+cam_convert_jpeg_compress_get_type
+CAM_CONVERT_JPEG_COMPRESS_CLASS
+CAM_IS_CONVERT_JPEG_COMPRESS_CLASS
+CAM_CONVERT_JPEG_COMPRESS_GET_CLASS
+CamConvertJpegCompressClass
+</SECTION>
+
+<SECTION>
+<FILE>convert_jpeg_decompress</FILE>
+<TITLE>CamConvertJpegDecompress</TITLE>
+CamConvertJpegDecompress
+cam_convert_jpeg_decompress_new
+cam_convert_jpeg_decompress_driver_new
+<SUBSECTION Standard>
+CAM_CONVERT_JPEG_DECOMPRESS
+CAM_IS_CONVERT_JPEG_DECOMPRESS
+CAM_TYPE_CONVERT_JPEG_DECOMPRESS
+cam_convert_jpeg_decompress_get_type
+CAM_CONVERT_JPEG_DECOMPRESS_CLASS
+CAM_IS_CONVERT_JPEG_DECOMPRESS_CLASS
+CAM_CONVERT_JPEG_DECOMPRESS_GET_CLASS
+CamConvertJpegDecompressClass
 </SECTION>
 
 <SECTION>
