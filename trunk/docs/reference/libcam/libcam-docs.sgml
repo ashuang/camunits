@@ -27,7 +27,8 @@
     <xi:include href="xml/input_log.xml"/>
     <xi:include href="xml/convert_to_rgb8.xml"/>
     <xi:include href="xml/filter_gl.xml"/>
-    <xi:include href="xml/filter_jpeg.xml"/>
+    <xi:include href="xml/convert_jpeg_compress.xml"/>
+    <xi:include href="xml/convert_jpeg_decompress.xml"/>
     <xi:include href="xml/filter_fast_bayer.xml"/>
     <xi:include href="xml/convert_colorspace.xml"/>
     <xi:include href="xml/output_logger.xml"/>
