@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamUnitManager.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591247" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id346776" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2560214" class="shortcut">Description</a>
+                  <a href="#id337140" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2560140" class="shortcut">Object Hierarchy</a>
+                  <a href="#id337074" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2560164" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id337098" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitChain"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2591247"></a><span class="refentrytitle">CamUnitChain</span>
+<a name="id346776"></a><span class="refentrytitle">CamUnitChain</span>
 </h2>
 <p>CamUnitChain &#8212; A sequence of <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects that form an image
 processing chain.</p>
@@ -77,12 +77,10 @@ int                 <a href="CamUnitChain.html#cam-unit-chain-get-unit-index">ca
 int                 <a href="CamUnitChain.html#cam-unit-chain-reorder-unit">cam_unit_chain_reorder_unit</a>         (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit,
                                                          int new_index);
-int                 <a href="CamUnitChain.html#cam-unit-chain-set-desired-status">cam_unit_chain_set_desired_status</a>   (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
-                                                         <a href="CamUnit.html#CamUnitStatus">CamUnitStatus</a> status);
-<a href="CamUnit.html#CamUnitStatus">CamUnitStatus</a>       <a href="CamUnitChain.html#cam-unit-chain-get-desired-status">cam_unit_chain_get_desired_status</a>   (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);
-<a href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a href="CamUnitChain.html#cam-unit-chain-check-status-all-units">cam_unit_chain_check_status_all_units</a>
-                                                        (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
-                                                         <a href="CamUnit.html#CamUnitStatus">CamUnitStatus</a> status);
+<a href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a href="CamUnitChain.html#cam-unit-chain-all-units-stream-init">cam_unit_chain_all_units_stream_init</a>
+                                                        (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);
+<a href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a href="CamUnitChain.html#cam-unit-chain-all-units-stream-shutdown">cam_unit_chain_all_units_stream_shutdown</a>
+                                                        (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);
 int                 <a href="CamUnitChain.html#cam-unit-chain-attach-glib">cam_unit_chain_attach_glib</a>          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          int priority,
                                                          GMainContext *context);
@@ -91,7 +89,7 @@ void                <a href="CamUnitChain.html#cam-unit-chain-detach-glib">cam_u
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560140"></a><h2>Object Hierarchy</h2>
+<a name="id337074"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -99,10 +97,9 @@ void                <a href="CamUnitChain.html#cam-unit-chain-detach-glib">cam_u
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560164"></a><h2>Signals</h2>
+<a name="id337098"></a><h2>Signals</h2>
 <pre class="synopsis">
 
-  "<a href="CamUnitChain.html#CamUnitChain-desired-status-changed">desired-status-changed</a>"                         : Run First
   "<a href="CamUnitChain.html#CamUnitChain-frame-ready">frame-ready</a>"                                    : Run First
   "<a href="CamUnitChain.html#CamUnitChain-unit-added">unit-added</a>"                                     : Run First
   "<a href="CamUnitChain.html#CamUnitChain-unit-removed">unit-removed</a>"                                   : Run First
@@ -110,7 +107,7 @@ void                <a href="CamUnitChain.html#cam-unit-chain-detach-glib">cam_u
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560214"></a><h2>Description</h2>
+<a name="id337140"></a><h2>Description</h2>
 <p>
 CamUnitChain is largely a convenience class for creating and managing a
 sequence of <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects in an image processing chain.  CamUnitChain is
@@ -126,29 +123,29 @@ attaching the units to a GMainLoop.</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556566"></a><h2>Details</h2>
+<a name="id337172"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2556577"></a><h3>
+<a name="id337183"></a><h3>
 <a name="CamUnitChainSource"></a>CamUnitChainSource</h3>
-<a class="indexterm" name="id2556589"></a><pre class="programlisting">typedef struct _CamUnitChainSource CamUnitChainSource;</pre>
+<a class="indexterm" name="id337195"></a><pre class="programlisting">typedef struct _CamUnitChainSource CamUnitChainSource;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556606"></a><h3>
+<a name="id337210"></a><h3>
 <a name="CamUnitChain-struct"></a>CamUnitChain</h3>
-<a class="indexterm" name="id2556618"></a><pre class="programlisting">typedef struct _CamUnitChain CamUnitChain;</pre>
+<a class="indexterm" name="id380812"></a><pre class="programlisting">typedef struct _CamUnitChain CamUnitChain;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556634"></a><h3>
+<a name="id380826"></a><h3>
 <a name="cam-unit-chain-new"></a>cam_unit_chain_new ()</h3>
-<a class="indexterm" name="id2556646"></a><pre class="programlisting"><a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       cam_unit_chain_new                  (void);</pre>
+<a class="indexterm" name="id380836"></a><pre class="programlisting"><a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       cam_unit_chain_new                  (void);</pre>
 <p>
 
 </p>
@@ -165,9 +162,9 @@ attaching the units to a GMainLoop.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556682"></a><h3>
+<a name="id380870"></a><h3>
 <a name="cam-unit-chain-new-with-manager"></a>cam_unit_chain_new_with_manager ()</h3>
-<a class="indexterm" name="id2556695"></a><pre class="programlisting"><a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       cam_unit_chain_new_with_manager     (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager);</pre>
+<a class="indexterm" name="id380882"></a><pre class="programlisting"><a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       cam_unit_chain_new_with_manager     (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager);</pre>
 <p>
 Constructor.  create a new chain with an existing manager.  on return,
 the reference count on <code class="literal">manager</code> is incremeneted.</p>
@@ -194,9 +191,9 @@ the reference count on <code class="literal">manager</code> is incremeneted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556768"></a><h3>
+<a name="id380926"></a><h3>
 <a name="cam-unit-chain-get-manager"></a>cam_unit_chain_get_manager ()</h3>
-<a class="indexterm" name="id2556780"></a><pre class="programlisting"><a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_chain_get_manager          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<a class="indexterm" name="id380937"></a><pre class="programlisting"><a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_chain_get_manager          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -220,9 +217,9 @@ the reference count on <code class="literal">manager</code> is incremeneted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617451"></a><h3>
+<a name="id380989"></a><h3>
 <a name="cam-unit-chain-get-length"></a>cam_unit_chain_get_length ()</h3>
-<a class="indexterm" name="id2617462"></a><pre class="programlisting">int                 cam_unit_chain_get_length           (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<a class="indexterm" name="id381000"></a><pre class="programlisting">int                 cam_unit_chain_get_length           (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -246,9 +243,9 @@ the reference count on <code class="literal">manager</code> is incremeneted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617515"></a><h3>
+<a name="id381053"></a><h3>
 <a name="cam-unit-chain-has-unit"></a>cam_unit_chain_has_unit ()</h3>
-<a class="indexterm" name="id2617526"></a><pre class="programlisting">int                 cam_unit_chain_has_unit             (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381063"></a><pre class="programlisting">int                 cam_unit_chain_has_unit             (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          const <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit);</pre>
 <p>
 </p>
@@ -278,16 +275,16 @@ the reference count on <code class="literal">manager</code> is incremeneted.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617604"></a><h3>
+<a name="id381135"></a><h3>
 <a name="cam-unit-chain-insert-unit"></a>cam_unit_chain_insert_unit ()</h3>
-<a class="indexterm" name="id2617615"></a><pre class="programlisting">int                 cam_unit_chain_insert_unit          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381146"></a><pre class="programlisting">int                 cam_unit_chain_insert_unit          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit,
                                                          int position);</pre>
 <p>
 Inserts a unit into the chain at the specified position.  Also invokes
 unit_set_input on affected units.  If the chain is streaming
-(i.e. cam_unit_chain_set_desired_status has been called with
-CAM_UNIT_STATUS_STREAMING), then all the units after the insertion position
+(i.e. cam_unit_chain_all_units_stream_init has been called)
+then all the units after the insertion position
 will be automatically restarted.  Calls g_object_ref_sink on the unit</p>
 <p>
 
@@ -320,9 +317,9 @@ will be automatically restarted.  Calls g_object_ref_sink on the unit</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617724"></a><h3>
+<a name="id381238"></a><h3>
 <a name="cam-unit-chain-insert-unit-tail"></a>cam_unit_chain_insert_unit_tail ()</h3>
-<a class="indexterm" name="id2617738"></a><pre class="programlisting">int                 cam_unit_chain_insert_unit_tail     (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381248"></a><pre class="programlisting">int                 cam_unit_chain_insert_unit_tail     (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit);</pre>
 <p>
 Convenience method.  Inserts a unit into the chain as the last unit.
@@ -353,9 +350,9 @@ calls g_object_ref_sink on unit</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617822"></a><h3>
+<a name="id381320"></a><h3>
 <a name="cam-unit-chain-add-unit-by-id"></a>cam_unit_chain_add_unit_by_id ()</h3>
-<a class="indexterm" name="id2617835"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_add_unit_by_id       (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381331"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_add_unit_by_id       (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          const char *unit_id);</pre>
 <p>
 Convenience method.  Searches for a unit description with specified ID, 
@@ -386,9 +383,9 @@ creates a new unit from it, and adds it to the chain.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617920"></a><h3>
+<a name="id381403"></a><h3>
 <a name="cam-unit-chain-remove-unit"></a>cam_unit_chain_remove_unit ()</h3>
-<a class="indexterm" name="id2617932"></a><pre class="programlisting">int                 cam_unit_chain_remove_unit          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381413"></a><pre class="programlisting">int                 cam_unit_chain_remove_unit          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit);</pre>
 <p>
 removes a unit from the chain and decrements the unit's refcount.  Note that
@@ -421,9 +418,9 @@ chain, then g_object_ref the unit first.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618018"></a><h3>
+<a name="id381487"></a><h3>
 <a name="cam-unit-chain-remove-all-units"></a>cam_unit_chain_remove_all_units ()</h3>
-<a class="indexterm" name="id2618032"></a><pre class="programlisting">void                cam_unit_chain_remove_all_units     (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<a class="indexterm" name="id381497"></a><pre class="programlisting">void                cam_unit_chain_remove_all_units     (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
 removes all units from the chain.  This is done automatically when the chain
 is finalized, so only use this if you need to purge the units in the chain
@@ -444,9 +441,9 @@ and still keep the chain around.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618085"></a><h3>
+<a name="id381542"></a><h3>
 <a name="cam-unit-chain-get-last-unit"></a>cam_unit_chain_get_last_unit ()</h3>
-<a class="indexterm" name="id2618098"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_get_last_unit        (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<a class="indexterm" name="id381552"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_get_last_unit        (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
 Returns a pointer to the last unit in the chain.  Does not modify the
 reference count of the unit.</p>
@@ -471,9 +468,9 @@ reference count of the unit.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618162"></a><h3>
+<a name="id381607"></a><h3>
 <a name="cam-unit-chain-find-unit-by-id"></a>cam_unit_chain_find_unit_by_id ()</h3>
-<a class="indexterm" name="id2618175"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_find_unit_by_id      (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381617"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_find_unit_by_id      (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          const char *unit_id);</pre>
 <p>
 Searches for a unit in the chain with the specified id, and returns the
@@ -504,9 +501,9 @@ first matching unit.  Does not modify the reference count of the unit.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618260"></a><h3>
+<a name="id381690"></a><h3>
 <a name="cam-unit-chain-get-units"></a>cam_unit_chain_get_units ()</h3>
-<a class="indexterm" name="id2618271"></a><pre class="programlisting">GList*              cam_unit_chain_get_units            (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<a class="indexterm" name="id381701"></a><pre class="programlisting">GList*              cam_unit_chain_get_units            (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -531,9 +528,9 @@ must be released with g_list_free
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618333"></a><h3>
+<a name="id381755"></a><h3>
 <a name="cam-unit-chain-get-unit-index"></a>cam_unit_chain_get_unit_index ()</h3>
-<a class="indexterm" name="id2618347"></a><pre class="programlisting">int                 cam_unit_chain_get_unit_index       (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381765"></a><pre class="programlisting">int                 cam_unit_chain_get_unit_index       (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          const <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit);</pre>
 <p>
 </p>
@@ -564,9 +561,9 @@ does not belong to the chain.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618430"></a><h3>
+<a name="id381837"></a><h3>
 <a name="cam-unit-chain-reorder-unit"></a>cam_unit_chain_reorder_unit ()</h3>
-<a class="indexterm" name="id2618442"></a><pre class="programlisting">int                 cam_unit_chain_reorder_unit         (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id381848"></a><pre class="programlisting">int                 cam_unit_chain_reorder_unit         (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          <a href="CamUnit.html" title="CamUnit">CamUnit</a> *unit,
                                                          int new_index);</pre>
 <p>
@@ -603,47 +600,12 @@ chain, or new_index is not a valid index)
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618548"></a><h3>
-<a name="cam-unit-chain-set-desired-status"></a>cam_unit_chain_set_desired_status ()</h3>
-<a class="indexterm" name="id2618562"></a><pre class="programlisting">int                 cam_unit_chain_set_desired_status   (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
-                                                         <a href="CamUnit.html#CamUnitStatus">CamUnitStatus</a> status);</pre>
+<a name="id381938"></a><h3>
+<a name="cam-unit-chain-all-units-stream-init"></a>cam_unit_chain_all_units_stream_init ()</h3>
+<a class="indexterm" name="id381949"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_all_units_stream_init
+                                                        (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
-Sets the desired status for every unit in the chain.  Upon calling this, the
-chain will attempt to call stream_{init_any_format,on,off,shutdown} on each
-unit if necessary.  When new units are added to the chain, the chain will
-also do this.  If the status of a unit changes on its own, the chain will
-not try to force the unit back to the desired status.</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><span class="term"><em class="parameter"><code>status</code></em>&#160;:</span></td>
-<td> the desired CamUnitStatus
-</td>
-</tr>
-<tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> 0 if status is valid, -1 if status is not one of
-         CAM_UNIT_STATUS_IDLE, CAM_UNIT_STATUS_READY, or
-         CAM_UNIT_STATUS_STREAMING
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2618652"></a><h3>
-<a name="cam-unit-chain-get-desired-status"></a>cam_unit_chain_get_desired_status ()</h3>
-<a class="indexterm" name="id2618666"></a><pre class="programlisting"><a href="CamUnit.html#CamUnitStatus">CamUnitStatus</a>       cam_unit_chain_get_desired_status   (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+Calls cam_unit_stream_init on all non-streaming units in the chain.</p>
 <p>
 
 </p>
@@ -657,9 +619,8 @@ not try to force the unit back to the desired status.</p>
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td>
-
-
+<td> NULL on success, or a pointer to the first CamUnit that failed
+         cam_unit_stream_init
 </td>
 </tr>
 </tbody>
@@ -667,11 +628,12 @@ not try to force the unit back to the desired status.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618722"></a><h3>
-<a name="cam-unit-chain-check-status-all-units"></a>cam_unit_chain_check_status_all_units ()</h3>
-<a class="indexterm" name="id2618736"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_check_status_all_units
-                                                        (const <a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
-                                                         <a href="CamUnit.html#CamUnitStatus">CamUnitStatus</a> status);</pre>
+<a name="id382004"></a><h3>
+<a name="cam-unit-chain-all-units-stream-shutdown"></a>cam_unit_chain_all_units_stream_shutdown ()</h3>
+<a class="indexterm" name="id382014"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_chain_all_units_stream_shutdown
+                                                        (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<p>
+Calls cam_unit_stream_shutdown on all streaming units in the chain.</p>
 <p>
 
 </p>
@@ -684,15 +646,9 @@ not try to force the unit back to the desired status.</p>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>status</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td>
-
-
+<td> NULL on success, or a pointer to the first CamUnit that failed
+         cam_unit_stream_shutdown
 </td>
 </tr>
 </tbody>
@@ -700,9 +656,9 @@ not try to force the unit back to the desired status.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618816"></a><h3>
+<a name="id382070"></a><h3>
 <a name="cam-unit-chain-attach-glib"></a>cam_unit_chain_attach_glib ()</h3>
-<a class="indexterm" name="id2618828"></a><pre class="programlisting">int                 cam_unit_chain_attach_glib          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
+<a class="indexterm" name="id382080"></a><pre class="programlisting">int                 cam_unit_chain_attach_glib          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          int priority,
                                                          GMainContext *context);</pre>
 <p>
@@ -743,9 +699,9 @@ using a GTK or GLib event loop.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618936"></a><h3>
+<a name="id382173"></a><h3>
 <a name="cam-unit-chain-detach-glib"></a>cam_unit_chain_detach_glib ()</h3>
-<a class="indexterm" name="id2618948"></a><pre class="programlisting">void                cam_unit_chain_detach_glib          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
+<a class="indexterm" name="id382183"></a><pre class="programlisting">void                cam_unit_chain_detach_glib          (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
 <p>
 Detaches a CamUnitChain from its GLib event context.</p>
 <p>
@@ -764,39 +720,11 @@ Detaches a CamUnitChain from its GLib event context.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619000"></a><h2>Signal Details</h2>
+<a name="id382227"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619010"></a><h3>
-<a name="CamUnitChain-desired-status-changed"></a>The "desired-status-changed" signal</h3>
-<a class="indexterm" name="id2619020"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
-                                                        gpointer      user_data)      : Run First</pre>
-<p>
-The desired-status-changed signal is emitted when the desired status of
-every unit in the chain changes.
-See also <a href="CamUnitChain.html#cam-unit-chain-set-desired-status"><span class="type">cam_unit_chain_set_desired_status</span></a></p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><span class="term"><em class="parameter"><code>chain</code></em>&#160;:</span></td>
-<td> the CamUnitChain emitting the signal
-</td>
-</tr>
-<tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
-<td>user data set when the signal handler was connected.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2619100"></a><h3>
+<a name="id382236"></a><h3>
 <a name="CamUnitChain-frame-ready"></a>The "frame-ready" signal</h3>
-<a class="indexterm" name="id2619108"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>   *chain,
+<a class="indexterm" name="id382244"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>   *chain,
                                                         <a href="CamUnit.html" title="CamUnit">CamUnit</a>        *buf,
                                                         <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *arg2,
                                                         gpointer        user_data)      : Run First</pre>
@@ -828,9 +756,9 @@ produces a frame</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619209"></a><h3>
+<a name="id382329"></a><h3>
 <a name="CamUnitChain-unit-added"></a>The "unit-added" signal</h3>
-<a class="indexterm" name="id2619217"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
+<a class="indexterm" name="id382337"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
                                                         <a href="CamUnit.html" title="CamUnit">CamUnit</a>      *unit,
                                                         gpointer      user_data)      : Run First</pre>
 <p>
@@ -860,9 +788,9 @@ The unit-added signal is emitted when a new unit is added to the chain.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619310"></a><h3>
+<a name="id382416"></a><h3>
 <a name="CamUnitChain-unit-removed"></a>The "unit-removed" signal</h3>
-<a class="indexterm" name="id2619318"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
+<a class="indexterm" name="id382424"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
                                                         <a href="CamUnit.html" title="CamUnit">CamUnit</a>      *unit,
                                                         gpointer      user_data)      : Run First</pre>
 <p>
@@ -892,9 +820,9 @@ The unit-removed signal is emitted when a unit is removed from the chain</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619395"></a><h3>
+<a name="id382503"></a><h3>
 <a name="CamUnitChain-unit-reordered"></a>The "unit-reordered" signal</h3>
-<a class="indexterm" name="id2619402"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
+<a class="indexterm" name="id382511"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *chain,
                                                         <a href="CamUnit.html" title="CamUnit">CamUnit</a>      *unit,
                                                         gpointer      user_data)      : Run First</pre>
 <p>

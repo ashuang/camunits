@@ -105,22 +105,14 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="acqruigin-statuses"></a>Unit states - IDLE, READY, STREAMING</h3></div></div></div>
+<a name="acqruigin-statuses"></a>Unit State</h3></div></div></div>
 <p>
-            A <code class="classname">CamUnit</code> can be in one of three general
-            states: <code class="literal">CAM_UNIT_STATUS_IDLE</code>,
-            <code class="literal">CAM_UNIT_STATUS_READY</code>, or
-            <code class="literal">CAM_UNIT_STATUS_STREAMING</code>.  This distinction is
-            made mostly for units that consume hardware resources.  Roughly
-            speaking, an <span class="emphasis"><em>idle</em></span> unit is one that is not
-            consuming system
-            resources and is not able to produce any frames.  A
-            <span class="emphasis"><em>ready</em></span> unit is
-            one that has been initialized and is holding all the resources it
-            needs to produce frames, but is simply not doing so.  Finally, a
-            <span class="emphasis"><em>streaming</em></span> unit is one that has been
-            initialized and is actively
-            producing or processing image frames.
+            A <code class="classname">CamUnit</code> can be either
+            <span class="emphasis"><em>streaming</em></span> or not.  A streaming unit is one
+            that has all the resources it needs to produce frames, and is
+            actively doing so.  Additionally, a streaming unit has been bound
+            to a particular output format (see <a href="acquiring-unit-chain.html#acquiring-buffer-format" title="CamFrameBuffer and CamUnitFormat">the section called &#8220;<code class="classname">CamFrameBuffer</code> and
+            <code class="classname">CamUnitFormat</code>&#8221;</a>).
         </p>
 <p>
             <code class="classname">CamUnit</code> exposes methods for changing the
@@ -130,7 +122,8 @@
             desired status.
 </p>
 <pre class="programlisting">
-    cam_unit_chain_set_desired_status (chain, CAM_UNIT_STATUS_STREAMING);
+    cam_unit_chain_all_units_stream_init (chain);
+    cam_unit_chain_all_units_stream_shutdown (chain);
 </pre>
 <p>
             This causes the <code class="classname">CamUnitChain</code> to iterate
@@ -264,7 +257,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
             8-bit RGB frames (pixelformat
             <code class="literal">CAM_PIXEL_FORMAT_RGB</code>) and so the example
             program is able to write the data directly to disk using the PPM
-            image file format<sup>[<a name="id2556984" href="#ftn.id2556984">2</a>]</sup>.
+            image file format<sup>[<a name="id326574" href="#ftn.id326574">2</a>]</sup>.
             If you decide to try this example with other units available on
             your system, you must ensure that they either output RGB directly,
             or you must insert a colorspace conversion unit (described in the
@@ -273,7 +266,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2556984" href="#id2556984">2</a>] </sup><a href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id326574" href="#id326574">2</a>] </sup><a href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
 </div>
 </div>
 </body>

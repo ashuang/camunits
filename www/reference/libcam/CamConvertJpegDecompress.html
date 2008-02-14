@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>CamConvertJpegDecompress</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="libcam Reference Manual">
+<link rel="up" href="ch03.html" title="Built-in Units">
+<link rel="prev" href="CamConvertJpegCompress.html" title="CamConvertJpegCompress">
+<link rel="next" href="CamFastBayerFilter.html" title="CamFastBayerFilter">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Units">
+<link rel="chapter" href="ch02.html" title="Image Processing Chains">
+<link rel="chapter" href="ch03.html" title="Built-in Units">
+<link rel="chapter" href="ch04.html" title="Other stuff">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="CamConvertJpegCompress.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libcam Reference Manual</th>
+<td><a accesskey="n" href="CamFastBayerFilter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id333734" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id347385" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#id366811" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="CamConvertJpegDecompress"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2>
+<a name="id333734"></a><span class="refentrytitle">CamConvertJpegDecompress</span>
+</h2>
+<p>CamConvertJpegDecompress &#8212; unit to encode and decode JPEG images</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+                    <a href="CamConvertJpegDecompress.html#CamConvertJpegDecompress-struct">CamConvertJpegDecompress</a>;
+<a href="CamConvertJpegDecompress.html" title="CamConvertJpegDecompress">CamConvertJpegDecompress</a>* <a href="CamConvertJpegDecompress.html#cam-convert-jpeg-decompress-new">cam_convert_jpeg_decompress_new</a>
+                                                        (void);
+<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamConvertJpegDecompress.html#cam-convert-jpeg-decompress-driver-new">cam_convert_jpeg_decompress_driver_new</a>
+                                                        (void);
+
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id366811"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+
+  GObject
+   +----GInitiallyUnowned
+         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
+               +----CamConvertJpegDecompress
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id347385"></a><h2>Description</h2>
+<p>
+CamConvertJpegDecompress can decompress JPEG-compressed images to RGB.
+CamConvertJpegDecompress uses libjpeg.
+</p>
+<p>
+CamConvertJpegDecompress is a core unit, and is always available with unit
+id "convert.jpeg_decompress"</p>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id356141"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id356151"></a><h3>
+<a name="CamConvertJpegDecompress-struct"></a>CamConvertJpegDecompress</h3>
+<a class="indexterm" name="id356163"></a><pre class="programlisting">typedef struct _CamConvertJpegDecompress CamConvertJpegDecompress;</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id356178"></a><h3>
+<a name="cam-convert-jpeg-decompress-new"></a>cam_convert_jpeg_decompress_new ()</h3>
+<a class="indexterm" name="id356189"></a><pre class="programlisting"><a href="CamConvertJpegDecompress.html" title="CamConvertJpegDecompress">CamConvertJpegDecompress</a>* cam_convert_jpeg_decompress_new
+                                                        (void);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id337280"></a><h3>
+<a name="cam-convert-jpeg-decompress-driver-new"></a>cam_convert_jpeg_decompress_driver_new ()</h3>
+<a class="indexterm" name="id337291"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_convert_jpeg_decompress_driver_new
+                                                        (void);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+</body>
+</html>

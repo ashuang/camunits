@@ -1,0 +1,24 @@
+libcam 0.0.4 - Jan 8, 2008
+==========================
+* Update DC1394 plugin to use libdc1394-2.0.0
+* Improvements to input.log
+
+libcam 0.0.3 - Dec 19, 2007
+==========================
+* Fix installation directory of libcam-gtk headers and renamed cam_gtk.h to
+  cam-gtk.h.
+
+libcam 0.0.2
+============
+* Now builds under Mac OS X (tested on Leopard)
+* Tutorial and examples improvements
+* Documentation improvements
+* Update DC1394 plugin to use libdc1394-2.0.0-rc9
+* Allow DC1394 modes other than Format 7
+* Added additional colorspace conversions
+* Allow bayer demosaic code to work on non-SSE3 CPUs (still requires SSE2)
+
+libcam 0.0.1
+============
+
+* Initial release

@@ -1,0 +1,224 @@
+<chapter id="ch-camunit">
+    <title>Conversion Units and Unit Controls</title>
+
+    <para>
+        The example given in <xref linkend="ch-acquiring"/> provides a simple
+        description of how to use libcam to acquire images.  This chapter
+        describes how to do two of the most basic operations:  insert
+        units that convert frames from one image format to another, and
+        accessing the controls exposed by a unit.
+    </para>
+
+<sect1 id="camunit-specify-output">
+    <title>Specifying the output format of a Unit</title>
+
+    <para>
+        Some <classname>CamUnit</classname> objects are able to output images
+        in several formats.  For example, many cameras can produce images in
+        a number of resolutions or have an option to perform on-board
+        colorspace conversion.  To reflect this capability, a
+        <classname>CamUnit</classname> provides a list of formats that it is
+        able to produce, represented by a list of
+        <classname>CamUnitFormat</classname> objects.  In some cases, for
+        example if a <classname>CamUnit</classname> is not properly initialized
+        or is not able to deal with its input format (e.g. if it expects 8bpp
+        grayscale data and is instead given 24bpp RGB) then it may report that
+        it is unable to produce any output formats with its current input.
+    </para>
+    <para>
+        When a <classname>CamUnit</classname> is initialized, a specific output
+        format must be chosen.  The unit itself can arbitrarily pick one of
+        its output formats (this is the default when using a
+        <classname>CamUnitChain</classname>), or an application can
+        request a specific output format.  To do this, use the
+        <methodname>cam_unit_set_preferred_format</methodname> method.
+        <programlisting>
+    int cam_unit_set_preferred_format (CamUnit *self, 
+                            CamPixelFormat pixelformat, int width, int height);
+        </programlisting>
+
+        This method allows a program to request a specific pixel format and
+        image size.  To indicate that any width or height is acceptable, you
+        can specify a value of 0 for either the height or width parameter.  To
+        indicate that any pixel format is acceptable, pass in the constant
+        <literal>CAM_PIXEL_FORMAT_INVALID</literal>.  When the unit is
+        initialized by a chain, it will choose the output format best matching
+        the requested parameters.
+    </para>
+</sect1>
+
+<sect1 id="camunit-motivation">
+    <title>Conversion Units</title>
+    <para>
+        For a variety of reasons, there is no one standard way of representing
+        an image.  8bpp grayscale, 24bpp RGB, YUV 4:2:2, Bayer BGGR, 
+        all of these are fairly common image formats.  However, an
+        image processing algorithm can often deal only with images in a very
+        specific colorspace and binary representation.
+    </para>
+    <para>
+        libcam provides a set of conversion <classname>CamUnit</classname>
+        classes to handle this.  These units can be found in the "convert"
+        namespace.  Each unit can only perform a certain number of
+        conversions, and also has certain input requirements.  A few examples
+        of some of the conversion units and some the conversions they can
+        perform are:
+
+        <variablelist>
+            <varlistentry>
+                <term><literal>convert.fast_debayer</literal></term>
+                <listitem>
+                    <itemizedlist>
+                        <listitem><para>
+                                Bayer RGGB -> BGRA
+                        </para></listitem>
+                        <listitem><para>
+                                Bayer GBRG -> BGRA
+                        </para></listitem>
+                        <listitem><para>
+                                Bayer GRBG -> BGRA
+                        </para></listitem>
+                        <listitem><para>
+                                Bayer BGGR -> BGRA
+                        </para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><literal>convert.colorspace</literal></term>
+                <listitem>
+                    <itemizedlist>
+                        <listitem><para>
+                                8bpp Gray -> 24bpp RGB
+                        </para></listitem>
+                        <listitem><para>
+                                8bpp Gray -> 32bpp RGBA
+                        </para></listitem>
+                        <listitem><para>
+                                YUV 4:2:0 Planar-> 24bpp RGB
+                        </para></listitem>
+                        <listitem><para>
+                                YUV 4:2:2 -> 24bpp RGB
+                        </para></listitem>
+                        <listitem><para>
+                                and more...
+                        </para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><literal>convert.jpeg</literal></term>
+                <listitem>
+                    <itemizedlist>
+                        <listitem><para>
+                                24bpp RGB -> JPEG
+                        </para></listitem>
+                        <listitem><para>
+                                32bpp BGRA -> JPEG
+                        </para></listitem>
+                        <listitem><para>
+                                JPEG -> 24bpp RGB
+                        </para></listitem>
+                        <listitem><para>
+                                8bpp Gray -> JPEG
+                        </para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+        To use one, add the desired unit to the end of a
+        <classname>CamUnitChain</classname> and specify the desired output
+        format.  For example, as we saw in the previous chapter, the example
+        input unit produces 24bpp RGB images.  To create a chain that
+        compresses these to JPEG, we could do the following:
+
+<programlisting>
+    CamUnitChain *chain = cam_unit_chain_new ();
+
+    CamUnit *example_input = 
+        cam_unit_chain_add_unit_by_id (chain, "input.example");
+
+    CamUnit *jpeg_unit = 
+        cam_unit_chain_add_unit_by_id (chain, "convert.jpeg");
+
+    cam_unit_set_preferred_format (jpeg_unit, CAM_PIXEL_FORMAT_MJPEG, 0, 0);
+</programlisting>
+    </para>
+    <para>
+        If we then attach a callback function to the chain's "frame-ready" 
+        signal, then the image data received in that function should be
+        JPEG compressed.
+    </para>
+
+</sect1>
+
+<sect1 id="camunit-controls">
+    <title>Unit Controls</title>
+
+    <para>
+        Image producing units often have controls and parameters that can be
+        used to adjust the output.  For example, cameras typically might
+        have exposure, white balance, or gamma controls.  Similarly, a
+        conversion unit may expose controls for affecting the exact
+        conversion.  For example, <literal>input.jpeg</literal> provides a
+        parameter to control the compression quality.
+    </para>
+    <para>
+        Each <classname>CamUnit</classname> provides a list of controls that
+        it exposes, which can be enumerated and accessed programmatically.
+        Each control has a string identifier -- the <emphasis>control
+            ID</emphasis>.
+        To see which controls are available in a unit, it is probably fastest
+        to examine the unit in <command>camview</command>, which enumerates
+        all the controls for a unit and provides GUI widgets for adjusting
+        them.  The control ID can be found by hovering the mouse over the
+        actual control and waiting for a tooltip to appear.  <xref
+            linkend="camunit-controls-fig"/> shows an example of this.
+
+<figure id="camunit-controls-fig">
+    <title>Using <command>camview</command> to inspect available Unit controls
+    and formats</title>
+    <mediaobject>
+        <imageobject>
+            <imagedata fileref="camunit-controls.png" format="PNG"/>
+        </imageobject>
+        <caption>
+            <para>
+                Often, the easiest way to determine which controls and output
+                formats are available for a given unit is to inspect it in
+                <command>camview</command>.  Hovering the mouse over a control
+                reveals a tooltip showing the ID and data type of the control.
+            </para>
+        </caption>
+    </mediaobject>
+</figure>
+    </para>
+    <para>
+        Controls are strongly typed, and it is important to know the data type
+        of a actual control before setting it.  Five different types are
+        supported, integers, booleans, double-precision floating point numbers,
+        strings, and enumerations.  Numerical controls can also
+        have a minimum and maximum value as well as a suggested step size.  For
+        example, the quality control in the JPEG unit is an integer control
+        that ranges from 0-100.  To set this control programmatically, we could
+        do:
+<programlisting>
+    cam_unit_set_control_int (jpeg_unit, "quality", 50);
+</programlisting>
+
+        In addition to <methodname>cam_unit_set_control_int</methodname>,
+        there are also <methodname>cam_unit_set_control_string</methodname>,
+        <methodname>cam_unit_set_control_float</methodname>, etc.
+        Finally, there are methods for retrieving the current value of a
+        control, all of which are described in the reference documentation.
+    </para>
+</sect1>
+<sect1 id="camunit-summary">
+    <title>Summary</title>
+    <para>
+        TODO
+    </para>
+</sect1>
+
+</chapter>

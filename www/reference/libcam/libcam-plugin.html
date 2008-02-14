@@ -24,16 +24,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-gl-texture.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601061" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id356676" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2569871" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id386880" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-plugin"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2601061"></a><span class="refentrytitle">plugin</span>
+<a name="id356676"></a><span class="refentrytitle">plugin</span>
 </h2>
 <p>plugin</p>
 </td>
@@ -55,17 +55,17 @@
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569871"></a><h2>Description</h2>
+<a name="id386880"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569887"></a><h2>Details</h2>
+<a name="id386896"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2569898"></a><h3>
+<a name="id386907"></a><h3>
 <a name="CAM-PLUGIN-TYPE:CAPS"></a>CAM_PLUGIN_TYPE()</h3>
-<a class="indexterm" name="id2569909"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE(TN, t_n, T_P)			    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+<a class="indexterm" name="id390232"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE(TN, t_n, T_P)			    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
 </pre>
 <p>
 
@@ -95,9 +95,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562797"></a><h3>
+<a name="id386947"></a><h3>
 <a name="CAM-PLUGIN-TYPE-WITH-CODE:CAPS"></a>CAM_PLUGIN_TYPE_WITH_CODE()</h3>
-<a class="indexterm" name="id2562808"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_WITH_CODE(TN, t_n, T_P, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, 0) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
+<a class="indexterm" name="id386958"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_WITH_CODE(TN, t_n, T_P, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, 0) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
 </pre>
 <p>
 
@@ -132,9 +132,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602662"></a><h3>
+<a name="id380173"></a><h3>
 <a name="CAM-PLUGIN-ABSTRACT-TYPE:CAPS"></a>CAM_PLUGIN_ABSTRACT_TYPE()</h3>
-<a class="indexterm" name="id2602673"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE(TN, t_n, T_P)		    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, {})
+<a class="indexterm" name="id380184"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE(TN, t_n, T_P)		    CAM_PLUGIN_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, {})
 </pre>
 <p>
 
@@ -164,9 +164,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621389"></a><h3>
+<a name="id380248"></a><h3>
 <a name="CAM-PLUGIN-ABSTRACT-TYPE-WITH-CODE:CAPS"></a>CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE()</h3>
-<a class="indexterm" name="id2621400"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
+<a class="indexterm" name="id380259"></a><pre class="programlisting">#define CAM_PLUGIN_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
 </pre>
 <p>
 
@@ -201,9 +201,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627083"></a><h3>
+<a name="id390358"></a><h3>
 <a name="CAM-PLUGIN-TYPE-EXTENDED:CAPS"></a>CAM_PLUGIN_TYPE_EXTENDED()</h3>
-<a class="indexterm" name="id2627094"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
+<a class="indexterm" name="id390369"></a><pre class="programlisting">#define CAM_PLUGIN_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)	    _CAM_PLUGIN_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _CAM_PLUGIN_TYPE_EXTENDED_END(t_n)
 </pre>
 <p>
 
@@ -243,9 +243,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627188"></a><h3>
+<a name="id390462"></a><h3>
 <a name="CAM-PLUGIN-INTERFACE:CAPS"></a>CAM_PLUGIN_INTERFACE()</h3>
-<a class="indexterm" name="id2627199"></a><pre class="programlisting">#define             CAM_PLUGIN_INTERFACE(TYPE_IFACE, iface_init)</pre>
+<a class="indexterm" name="id390474"></a><pre class="programlisting">#define             CAM_PLUGIN_INTERFACE(TYPE_IFACE, iface_init)</pre>
 <p>
 
 </p>
@@ -269,9 +269,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626732"></a><h3>
+<a name="id389895"></a><h3>
 <a name="cam-plugin-unit-driver-create"></a>cam_plugin_unit_driver_create ()</h3>
-<a class="indexterm" name="id2626743"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_plugin_unit_driver_create       (const char *filename);</pre>
+<a class="indexterm" name="id389907"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_plugin_unit_driver_create       (const char *filename);</pre>
 <p>
 
 </p>

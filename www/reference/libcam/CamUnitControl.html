@@ -24,20 +24,20 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamUnitDriver.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586345" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id340718" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2610854" class="shortcut">Description</a>
+                  <a href="#id375008" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2610797" class="shortcut">Object Hierarchy</a>
+                  <a href="#id374954" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2610821" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id374978" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitControl"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2586345"></a><span class="refentrytitle">CamUnitControl</span>
+<a name="id340718"></a><span class="refentrytitle">CamUnitControl</span>
 </h2>
 <p>CamUnitControl &#8212; User adjustable / automatically changing control value.</p>
 </td>
@@ -149,7 +149,7 @@ const char*         <a href="CamUnitControl.html#cam-unit-control-get-type-str">
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2610797"></a><h2>Object Hierarchy</h2>
+<a name="id374954"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -157,7 +157,7 @@ const char*         <a href="CamUnitControl.html#cam-unit-control-get-type-str">
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2610821"></a><h2>Signals</h2>
+<a name="id374978"></a><h2>Signals</h2>
 <pre class="synopsis">
 
   "<a href="CamUnitControl.html#CamUnitControl-parameters-changed">parameters-changed</a>"                             : Run First / Action
@@ -165,11 +165,20 @@ const char*         <a href="CamUnitControl.html#cam-unit-control-get-type-str">
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2610854"></a><h2>Description</h2>
+<a name="id375008"></a><h2>Description</h2>
 <p>
-CamUnitControl represents a control value that can both automatically change
-(e.g. the frame number of an advancing log playback unit) and can be
-adjusted by the user.
+If you just want to access a control provided by an existing <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, do
+not use this class directly.  Instead, use the cam_unit_set_control_* and
+cam_unit_get_control_* methods.
+</p>
+<p>
+The only time in which you use this class directly is when implementing a
+subclass of <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>.
+</p>
+<p>
+CamUnitControl represents a control value that can both change
+asynchronously (e.g. the frame number of an advancing log playback unit) and
+can be adjusted by the user.
 </p>
 <p>
 Typically, a <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> will have a few of these controls that allow the user
@@ -213,11 +222,11 @@ widget.</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568186"></a><h2>Details</h2>
+<a name="id375108"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2610932"></a><h3>
+<a name="id375119"></a><h3>
 <a name="CamUnitControlType"></a>enum CamUnitControlType</h3>
-<a class="indexterm" name="id2610943"></a><pre class="programlisting">typedef enum {
+<a class="indexterm" name="id375131"></a><pre class="programlisting">typedef enum {
     /* no valid control should every have this type */
     CAM_UNIT_CONTROL_TYPE_INVALID = 0,
 
@@ -246,9 +255,9 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2610972"></a><h3>
+<a name="id375155"></a><h3>
 <a name="CamUnitControlUIHint"></a>enum CamUnitControlUIHint</h3>
-<a class="indexterm" name="id2610982"></a><pre class="programlisting">typedef enum {
+<a class="indexterm" name="id375167"></a><pre class="programlisting">typedef enum {
     CAM_UNIT_CONTROL_CHECK_BOX = (1 &lt;&lt; 1),
     CAM_UNIT_CONTROL_TOGGLE_BUTTON = (1 &lt;&lt; 2),
     CAM_UNIT_CONTROL_MENU = (1 &lt;&lt; 3),
@@ -266,9 +275,9 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611003"></a><h3>
+<a name="id375186"></a><h3>
 <a name="CamUnitControlCallback"></a>CamUnitControlCallback ()</h3>
-<a class="indexterm" name="id2611013"></a><pre class="programlisting">gboolean            (*CamUnitControlCallback)           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+<a class="indexterm" name="id375198"></a><pre class="programlisting">gboolean            (*CamUnitControlCallback)           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
                                                          const GValue *proposed,
                                                          GValue *actual,
                                                          void *user_data);</pre>
@@ -317,9 +326,9 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611136"></a><h3>
+<a name="id375298"></a><h3>
 <a name="CamUnitControl-struct"></a>CamUnitControl</h3>
-<a class="indexterm" name="id2611146"></a><pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
+<a class="indexterm" name="id375309"></a><pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
 <p>
 A control option on a CamUnit that the user or a program can adjust.</p>
 <p>
@@ -328,9 +337,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611165"></a><h3>
+<a name="id375326"></a><h3>
 <a name="cam-unit-control-new-enum"></a>cam_unit_control_new_enum ()</h3>
-<a class="indexterm" name="id2611176"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
+<a class="indexterm" name="id375336"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
                                                          const char *name,
                                                          int initial_index,
                                                          int enabled,
@@ -387,9 +396,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611339"></a><h3>
+<a name="id375491"></a><h3>
 <a name="cam-unit-control-new-int"></a>cam_unit_control_new_int ()</h3>
-<a class="indexterm" name="id2611349"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_int            (const char *id,
+<a class="indexterm" name="id375501"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_int            (const char *id,
                                                          const char *name,
                                                          int min,
                                                          int max,
@@ -449,9 +458,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611524"></a><h3>
+<a name="id375666"></a><h3>
 <a name="cam-unit-control-new-float"></a>cam_unit_control_new_float ()</h3>
-<a class="indexterm" name="id2611535"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_float          (const char *id,
+<a class="indexterm" name="id375676"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_float          (const char *id,
                                                          const char *name,
                                                          float min,
                                                          float max,
@@ -511,9 +520,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611710"></a><h3>
+<a name="id375842"></a><h3>
 <a name="cam-unit-control-new-boolean"></a>cam_unit_control_new_boolean ()</h3>
-<a class="indexterm" name="id2611722"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_boolean        (const char *id,
+<a class="indexterm" name="id375852"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_boolean        (const char *id,
                                                          const char *name,
                                                          int initial_val,
                                                          int enabled);</pre>
@@ -555,9 +564,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611838"></a><h3>
+<a name="id375961"></a><h3>
 <a name="cam-unit-control-new-string"></a>cam_unit_control_new_string ()</h3>
-<a class="indexterm" name="id2611849"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_string         (const char *id,
+<a class="indexterm" name="id375971"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_string         (const char *id,
                                                          const char *name,
                                                          const char *initial_val,
                                                          int enabled);</pre>
@@ -599,9 +608,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611963"></a><h3>
+<a name="id376080"></a><h3>
 <a name="cam-unit-control-set-callback"></a>cam_unit_control_set_callback ()</h3>
-<a class="indexterm" name="id2611976"></a><pre class="programlisting">void                cam_unit_control_set_callback       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376090"></a><pre class="programlisting">void                cam_unit_control_set_callback       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          <a href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
                                                          void *user_data);</pre>
 <p>
@@ -640,9 +649,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612085"></a><h3>
+<a name="id376193"></a><h3>
 <a name="cam-unit-control-modify-int"></a>cam_unit_control_modify_int ()</h3>
-<a class="indexterm" name="id2612096"></a><pre class="programlisting">void                cam_unit_control_modify_int         (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376203"></a><pre class="programlisting">void                cam_unit_control_modify_int         (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int min,
                                                          int max,
                                                          int step,
@@ -685,9 +694,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612213"></a><h3>
+<a name="id376317"></a><h3>
 <a name="cam-unit-control-modify-float"></a>cam_unit_control_modify_float ()</h3>
-<a class="indexterm" name="id2612225"></a><pre class="programlisting">void                cam_unit_control_modify_float       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376328"></a><pre class="programlisting">void                cam_unit_control_modify_float       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float min,
                                                          float max,
                                                          float step,
@@ -730,9 +739,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612343"></a><h3>
+<a name="id376442"></a><h3>
 <a name="cam-unit-control-modify-enum"></a>cam_unit_control_modify_enum ()</h3>
-<a class="indexterm" name="id2612355"></a><pre class="programlisting">void                cam_unit_control_modify_enum        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376452"></a><pre class="programlisting">void                cam_unit_control_modify_enum        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);</pre>
@@ -769,9 +778,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612454"></a><h3>
+<a name="id376548"></a><h3>
 <a name="cam-unit-control-try-set-val"></a>cam_unit_control_try_set_val ()</h3>
-<a class="indexterm" name="id2612467"></a><pre class="programlisting">int                 cam_unit_control_try_set_val        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376558"></a><pre class="programlisting">int                 cam_unit_control_try_set_val        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const GValue *val);</pre>
 <p>
 
@@ -801,9 +810,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612537"></a><h3>
+<a name="id376626"></a><h3>
 <a name="cam-unit-control-try-set-int"></a>cam_unit_control_try_set_int ()</h3>
-<a class="indexterm" name="id2612549"></a><pre class="programlisting">int                 cam_unit_control_try_set_int        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376636"></a><pre class="programlisting">int                 cam_unit_control_try_set_int        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -833,9 +842,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612620"></a><h3>
+<a name="id376704"></a><h3>
 <a name="cam-unit-control-try-set-float"></a>cam_unit_control_try_set_float ()</h3>
-<a class="indexterm" name="id2612632"></a><pre class="programlisting">int                 cam_unit_control_try_set_float      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376714"></a><pre class="programlisting">int                 cam_unit_control_try_set_float      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);</pre>
 <p>
 
@@ -865,9 +874,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612702"></a><h3>
+<a name="id376782"></a><h3>
 <a name="cam-unit-control-try-set-enum"></a>cam_unit_control_try_set_enum ()</h3>
-<a class="indexterm" name="id2612714"></a><pre class="programlisting">int                 cam_unit_control_try_set_enum       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376793"></a><pre class="programlisting">int                 cam_unit_control_try_set_enum       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int index);</pre>
 <p>
 
@@ -897,9 +906,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612785"></a><h3>
+<a name="id376861"></a><h3>
 <a name="cam-unit-control-try-set-boolean"></a>cam_unit_control_try_set_boolean ()</h3>
-<a class="indexterm" name="id2612797"></a><pre class="programlisting">int                 cam_unit_control_try_set_boolean    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376871"></a><pre class="programlisting">int                 cam_unit_control_try_set_boolean    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -929,9 +938,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612867"></a><h3>
+<a name="id376939"></a><h3>
 <a name="cam-unit-control-try-set-string"></a>cam_unit_control_try_set_string ()</h3>
-<a class="indexterm" name="id2612880"></a><pre class="programlisting">int                 cam_unit_control_try_set_string     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id376949"></a><pre class="programlisting">int                 cam_unit_control_try_set_string     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);</pre>
 <p>
 
@@ -961,9 +970,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612950"></a><h3>
+<a name="id377017"></a><h3>
 <a name="cam-unit-control-force-set-val"></a>cam_unit_control_force_set_val ()</h3>
-<a class="indexterm" name="id2612962"></a><pre class="programlisting">int                 cam_unit_control_force_set_val      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377028"></a><pre class="programlisting">int                 cam_unit_control_force_set_val      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const GValue *value);</pre>
 <p>
 
@@ -993,9 +1002,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613032"></a><h3>
+<a name="id377095"></a><h3>
 <a name="cam-unit-control-force-set-int"></a>cam_unit_control_force_set_int ()</h3>
-<a class="indexterm" name="id2613045"></a><pre class="programlisting">int                 cam_unit_control_force_set_int      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377106"></a><pre class="programlisting">int                 cam_unit_control_force_set_int      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1025,9 +1034,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613115"></a><h3>
+<a name="id377174"></a><h3>
 <a name="cam-unit-control-force-set-float"></a>cam_unit_control_force_set_float ()</h3>
-<a class="indexterm" name="id2613127"></a><pre class="programlisting">int                 cam_unit_control_force_set_float    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377184"></a><pre class="programlisting">int                 cam_unit_control_force_set_float    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);</pre>
 <p>
 
@@ -1057,9 +1066,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613198"></a><h3>
+<a name="id377252"></a><h3>
 <a name="cam-unit-control-force-set-enum"></a>cam_unit_control_force_set_enum ()</h3>
-<a class="indexterm" name="id2613210"></a><pre class="programlisting">int                 cam_unit_control_force_set_enum     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377262"></a><pre class="programlisting">int                 cam_unit_control_force_set_enum     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1089,9 +1098,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613280"></a><h3>
+<a name="id377330"></a><h3>
 <a name="cam-unit-control-force-set-boolean"></a>cam_unit_control_force_set_boolean ()</h3>
-<a class="indexterm" name="id2613293"></a><pre class="programlisting">int                 cam_unit_control_force_set_boolean  (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377341"></a><pre class="programlisting">int                 cam_unit_control_force_set_boolean  (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1121,9 +1130,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613363"></a><h3>
+<a name="id377408"></a><h3>
 <a name="cam-unit-control-force-set-string"></a>cam_unit_control_force_set_string ()</h3>
-<a class="indexterm" name="id2613376"></a><pre class="programlisting">int                 cam_unit_control_force_set_string   (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377419"></a><pre class="programlisting">int                 cam_unit_control_force_set_string   (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);</pre>
 <p>
 
@@ -1153,9 +1162,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613446"></a><h3>
+<a name="id377487"></a><h3>
 <a name="cam-unit-control-get-val"></a>cam_unit_control_get_val ()</h3>
-<a class="indexterm" name="id2613456"></a><pre class="programlisting">void                cam_unit_control_get_val            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id377497"></a><pre class="programlisting">void                cam_unit_control_get_val            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          GValue *value);</pre>
 <p>
 
@@ -1180,9 +1189,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613516"></a><h3>
+<a name="id377556"></a><h3>
 <a name="cam-unit-control-get-int"></a>cam_unit_control_get_int ()</h3>
-<a class="indexterm" name="id2613526"></a><pre class="programlisting">int                 cam_unit_control_get_int            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377566"></a><pre class="programlisting">int                 cam_unit_control_get_int            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1206,9 +1215,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613577"></a><h3>
+<a name="id377616"></a><h3>
 <a name="cam-unit-control-get-float"></a>cam_unit_control_get_float ()</h3>
-<a class="indexterm" name="id2613588"></a><pre class="programlisting">float               cam_unit_control_get_float          (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377627"></a><pre class="programlisting">float               cam_unit_control_get_float          (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1232,9 +1241,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613638"></a><h3>
+<a name="id377677"></a><h3>
 <a name="cam-unit-control-get-enum"></a>cam_unit_control_get_enum ()</h3>
-<a class="indexterm" name="id2613649"></a><pre class="programlisting">int                 cam_unit_control_get_enum           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377687"></a><pre class="programlisting">int                 cam_unit_control_get_enum           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1258,9 +1267,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613700"></a><h3>
+<a name="id377737"></a><h3>
 <a name="cam-unit-control-get-boolean"></a>cam_unit_control_get_boolean ()</h3>
-<a class="indexterm" name="id2613712"></a><pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377748"></a><pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1284,9 +1293,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613763"></a><h3>
+<a name="id377798"></a><h3>
 <a name="cam-unit-control-get-string"></a>cam_unit_control_get_string ()</h3>
-<a class="indexterm" name="id2613777"></a><pre class="programlisting">const char*         cam_unit_control_get_string         (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377811"></a><pre class="programlisting">const char*         cam_unit_control_get_string         (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1310,9 +1319,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613835"></a><h3>
+<a name="id377868"></a><h3>
 <a name="cam-unit-control-get-max-int"></a>cam_unit_control_get_max_int ()</h3>
-<a class="indexterm" name="id2613849"></a><pre class="programlisting">int                 cam_unit_control_get_max_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377882"></a><pre class="programlisting">int                 cam_unit_control_get_max_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1336,9 +1345,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613907"></a><h3>
+<a name="id377938"></a><h3>
 <a name="cam-unit-control-get-min-int"></a>cam_unit_control_get_min_int ()</h3>
-<a class="indexterm" name="id2613920"></a><pre class="programlisting">int                 cam_unit_control_get_min_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id377951"></a><pre class="programlisting">int                 cam_unit_control_get_min_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1362,9 +1371,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613978"></a><h3>
+<a name="id378007"></a><h3>
 <a name="cam-unit-control-get-step-int"></a>cam_unit_control_get_step_int ()</h3>
-<a class="indexterm" name="id2613992"></a><pre class="programlisting">int                 cam_unit_control_get_step_int       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id378020"></a><pre class="programlisting">int                 cam_unit_control_get_step_int       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1388,9 +1397,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614049"></a><h3>
+<a name="id378076"></a><h3>
 <a name="cam-unit-control-get-max-float"></a>cam_unit_control_get_max_float ()</h3>
-<a class="indexterm" name="id2614063"></a><pre class="programlisting">float               cam_unit_control_get_max_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id378090"></a><pre class="programlisting">float               cam_unit_control_get_max_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1414,9 +1423,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614120"></a><h3>
+<a name="id378146"></a><h3>
 <a name="cam-unit-control-get-min-float"></a>cam_unit_control_get_min_float ()</h3>
-<a class="indexterm" name="id2614134"></a><pre class="programlisting">float               cam_unit_control_get_min_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id378159"></a><pre class="programlisting">float               cam_unit_control_get_min_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1440,9 +1449,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614191"></a><h3>
+<a name="id378215"></a><h3>
 <a name="cam-unit-control-get-step-float"></a>cam_unit_control_get_step_float ()</h3>
-<a class="indexterm" name="id2614205"></a><pre class="programlisting">float               cam_unit_control_get_step_float     (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id378229"></a><pre class="programlisting">float               cam_unit_control_get_step_float     (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1466,9 +1475,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614262"></a><h3>
+<a name="id378285"></a><h3>
 <a name="cam-unit-control-set-enabled"></a>cam_unit_control_set_enabled ()</h3>
-<a class="indexterm" name="id2614276"></a><pre class="programlisting">void                cam_unit_control_set_enabled        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id378298"></a><pre class="programlisting">void                cam_unit_control_set_enabled        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled);</pre>
 <p>
 
@@ -1493,9 +1502,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614344"></a><h3>
+<a name="id378364"></a><h3>
 <a name="cam-unit-control-get-enabled"></a>cam_unit_control_get_enabled ()</h3>
-<a class="indexterm" name="id2614358"></a><pre class="programlisting">int                 cam_unit_control_get_enabled        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id378377"></a><pre class="programlisting">int                 cam_unit_control_get_enabled        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1519,9 +1528,9 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614416"></a><h3>
+<a name="id378433"></a><h3>
 <a name="cam-unit-control-set-ui-hints"></a>cam_unit_control_set_ui_hints ()</h3>
-<a class="indexterm" name="id2614429"></a><pre class="programlisting">void                cam_unit_control_set_ui_hints       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a class="indexterm" name="id378446"></a><pre class="programlisting">void                cam_unit_control_set_ui_hints       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int flags);</pre>
 <p>
 See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
@@ -1546,9 +1555,9 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614515"></a><h3>
+<a name="id378529"></a><h3>
 <a name="cam-unit-control-get-ui-hints"></a>cam_unit_control_get_ui_hints ()</h3>
-<a class="indexterm" name="id2614529"></a><pre class="programlisting">int                 cam_unit_control_get_ui_hints       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a class="indexterm" name="id378542"></a><pre class="programlisting">int                 cam_unit_control_get_ui_hints       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
 <p>
@@ -1572,9 +1581,9 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614604"></a><h3>
+<a name="id378615"></a><h3>
 <a name="cam-unit-control-get-type-str"></a>cam_unit_control_get_type_str ()</h3>
-<a class="indexterm" name="id2614618"></a><pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
+<a class="indexterm" name="id378628"></a><pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
 <p>
 
 </p>
@@ -1598,11 +1607,11 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614677"></a><h2>Signal Details</h2>
+<a name="id378687"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2614688"></a><h3>
+<a name="id378698"></a><h3>
 <a name="CamUnitControl-parameters-changed"></a>The "parameters-changed" signal</h3>
-<a class="indexterm" name="id2614698"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
+<a class="indexterm" name="id378707"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
                                                         gpointer        user_data)      : Run First / Action</pre>
 <p>
 The parameters-changed signal is emitted when properties of a
@@ -1629,9 +1638,9 @@ or <a href="CamUnitControl.html#cam-unit-control-modify-float"><code class="func
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614803"></a><h3>
+<a name="id378806"></a><h3>
 <a name="CamUnitControl-value-changed"></a>The "value-changed" signal</h3>
-<a class="indexterm" name="id2614814"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
+<a class="indexterm" name="id378816"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
                                                         gpointer        user_data)      : Run First / Action</pre>
 <p>
 The value-changed signal is emitted when the value of the control is
