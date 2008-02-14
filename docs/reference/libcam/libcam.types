@@ -7,7 +7,8 @@
 #include <libcam/convert_colorspace.h>
 #include <libcam/convert_to_rgb8.h>
 #include <libcam/filter_fast_bayer.h>
-#include <libcam/filter_jpeg.h>
+#include <libcam/convert_jpeg_compress.h>
+#include <libcam/convert_jpeg_decompress.h>
 #include <libcam/output_logger.h>
 
 cam_unit_get_type
@@ -32,5 +33,6 @@ cam_filter_gl_get_type
 cam_color_conversion_filter_get_type
 cam_convert_to_rgb8_get_type
 cam_fast_bayer_filter_get_type
-cam_filter_jpeg_get_type
+cam_convert_jpeg_compress_get_type
+cam_convert_jpeg_decompress_get_type
 cam_logger_unit_get_type
