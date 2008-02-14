@@ -144,7 +144,7 @@ setup_gtk (state_t *self)
     self->window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
     gtk_window_set_title(self->window, "Camview");
     gtk_window_set_resizable(self->window, TRUE);
-    gtk_window_set_default_size(self->window, 800, 540);
+    gtk_window_set_default_size(self->window, 1000, 540);
     gtk_signal_connect (GTK_OBJECT (self->window), "delete_event", 
             GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 
@@ -215,7 +215,7 @@ setup_gtk (state_t *self)
     gtk_paned_pack2 (GTK_PANED(hpane2), self->chain_frame, FALSE, TRUE);
 
     gtk_paned_set_position (GTK_PANED (hpane1), 200);
-    gtk_paned_set_position (GTK_PANED (hpane2), 400);
+    gtk_paned_set_position (GTK_PANED (hpane2), 500);
 
 
     // manager widget
@@ -254,17 +254,12 @@ setup_gtk (state_t *self)
 
     // chain widget
     self->chain_widget = cam_unit_chain_widget_new (self->chain);
-#if 0
     GtkWidget *sw_chain = gtk_scrolled_window_new (NULL, NULL);
     gtk_container_add (GTK_CONTAINER (self->chain_frame), sw_chain);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw_chain), 
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    gtk_container_add (GTK_CONTAINER (sw_chain), 
+    gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw_chain), 
             GTK_WIDGET (self->chain_widget));
-#else
-    gtk_container_add (GTK_CONTAINER (self->chain_frame), 
-            GTK_WIDGET (self->chain_widget));
-#endif
 
     gtk_widget_show_all (GTK_WIDGET (self->window));
 }
@@ -307,7 +302,12 @@ state_cleanup (state_t *self)
 static void 
 usage (const char *progname)
 {
-    fprintf (stderr, "usage: %s\n", progname);
+    fprintf (stderr, "usage: %s [options]\n"
+            "\n"
+            "Options:\n"
+            "    -f NAME, --file NAME   Load chain from file NAME\n"
+            "    -h, --help             Show this help text and exit\n"
+            , progname);
 }
 
 int main (int argc, char **argv)
