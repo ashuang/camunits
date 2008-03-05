@@ -159,6 +159,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     outbuf->bytesused = outfmt->row_stride * outfmt->height;
 
     cam_unit_produce_frame (super, outbuf, outfmt);
+    g_object_unref (outbuf);
     return;
 }
 
