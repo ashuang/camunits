@@ -25,7 +25,7 @@
 #define dbgi(...)
 
 static void driver_finalize (GObject *obj);
-static int on_announce (const char *channel, 
+static void on_announce (const lcm_recv_buf_t *rbuf, const char *channel, 
         const camlcm_announce_t *msg, void *user_data);
 static void * lcm_thread (void *user_data);
 static gboolean check_for_new_unit_descriptions_timer (void *user_data);
@@ -213,8 +213,8 @@ camlcm_input_driver_check_for_new_units (CamlcmInputDriver *self)
 }
 
 // ============ LC thread ========
-static int
-on_announce (const char *channel, 
+static void
+on_announce (const lcm_recv_buf_t *rbuf, const char *channel, 
         const camlcm_announce_t *msg, void *user_data)
 {
     CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (user_data);
@@ -223,7 +223,6 @@ on_announce (const char *channel,
     else {
         dbg ("source_q full: discarding announcement\n");
     }
-    return 0;
 }
 
 static void *
@@ -261,8 +260,8 @@ static gboolean camlcm_input_try_produce_frame (CamUnit * super);
 static int _stream_init (CamUnit * super, const CamUnitFormat *fmt);
 static int _stream_shutdown (CamUnit * super);
 static int camlcm_input_get_fileno (CamUnit * super);
-static int on_image (const char *channel, const camlcm_image_t *ann, 
-        void *user_data);
+static void on_image (const lcm_recv_buf_t *rbuf, const char *channel, 
+        const camlcm_image_t *ann, void *user_data);
 
 static void
 camlcm_input_init (CamlcmInput *self)
@@ -434,8 +433,9 @@ fail:
     return FALSE;
 }
 
-static int
-on_image (const char *channel, const camlcm_image_t *image, void *user_data)
+static void
+on_image (const lcm_recv_buf_t *rbuf, const char *channel, 
+        const camlcm_image_t *image, void *user_data)
 {
     // this method is always invoked from the LCM thread.
     CamlcmInput *self = CAMLCM_INPUT (user_data);
@@ -467,5 +467,4 @@ on_image (const char *channel, const camlcm_image_t *image, void *user_data)
     }
 
     g_mutex_unlock (self->buffer_mutex);
-    return 0;
 }

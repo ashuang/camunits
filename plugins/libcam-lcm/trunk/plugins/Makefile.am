@@ -51,9 +51,9 @@ lcmtypes_hfiles = camlcm_announce_t.h \
 		   camlcm_image_t.h
 
 $(lcmtypes_cfiles): camlcm_%.c: ../lcmtypes/%.lcm
-	lcmgen -c $< 
+	lcm-gen -c $< 
 $(lcmtypes_hfiles): camlcm_%.h: ../lcmtypes/%.lcm
-	lcmgen -c $< 
+	lcm-gen -c $< 
 
 clean-local:
 	rm -f $(lcmtypes_cfiles) $(lcmtypes_hfiles)
