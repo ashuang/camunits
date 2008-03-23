@@ -34,7 +34,7 @@ To stay on the bleeding edge of libcam development, you'll want to work from our
 You will want at least the following:
  * libjpeg62 development files
  * OpenGL development files
- * GLIB/GTK+ development files
+ * GLib/GTK+ development files
  * autotools (autoconf, automake, libtool, m4)
  * gtk-doc
  * docbook
