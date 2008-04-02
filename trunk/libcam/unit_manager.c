@@ -34,6 +34,17 @@
 
 #define err(args...) fprintf (stderr, args)
 
+struct _CamUnitManagerSource {
+    GSource gsource;
+    CamUnitManager *manager;
+};
+
+static gboolean _source_prepare (GSource *source, gint *timeout);
+static gboolean _source_check (GSource *source);
+static gboolean _source_dispatch (GSource *source, 
+        GSourceFunc callback, void *user_data);
+static void _source_finalize (GSource *source);
+
 enum {
     DRIVER_STOPPED,
     DRIVER_STARTED
@@ -60,6 +71,17 @@ cam_unit_manager_init (CamUnitManager *self)
 
     self->drivers = NULL;
     self->desired_driver_status = DRIVER_STOPPED;
+
+    self->source_funcs.prepare  = _source_prepare;
+    self->source_funcs.check    = _source_check;
+    self->source_funcs.dispatch = _source_dispatch;
+    self->source_funcs.finalize = _source_finalize;
+
+    self->event_source = (CamUnitManagerSource*) g_source_new (
+            &self->source_funcs, sizeof (CamUnitManagerSource));
+    self->event_source->manager = self;
+    self->driver_to_update = NULL;
+    self->event_source_attached_glib = 0;
 }
 
 static void
@@ -132,6 +154,9 @@ cam_unit_manager_finalize (GObject *obj)
     dbg (DBG_MANAGER, "finalize\n");
     CamUnitManager *self = CAM_UNIT_MANAGER (obj);
 
+    if (self->event_source)
+        g_source_destroy ((GSource *) self->event_source);
+
     cam_unit_manager_stop_drivers (self);
 
     GList *iter;
@@ -192,11 +217,27 @@ cam_unit_manager_add_driver (CamUnitManager *self, CamUnitDriver *driver)
     dbgl (DBG_REF, "ref_sink driver\n");
     g_object_ref_sink (driver);
 
+    // subscribe to driver events
     g_signal_connect (G_OBJECT (driver), "unit-description-added",
             G_CALLBACK (on_unit_description_added), self);
     g_signal_connect (G_OBJECT (driver), "unit-description-removed",
             G_CALLBACK (on_unit_description_removed), self);
 
+    // Check if the driver provides a file descriptor.  If so, add the
+    // file descriptor to the manager's event source
+    int driver_fileno = cam_unit_driver_get_fileno (driver);
+    if (driver_fileno >= 0) {
+        GPollFD *pfd = (GPollFD*) malloc (sizeof (GPollFD));
+
+        pfd->fd = driver_fileno;
+        pfd->events = G_IO_IN | G_IO_HUP | G_IO_ERR;
+        pfd->revents = 0;
+
+        g_object_set_data (G_OBJECT (driver), "ManagerPollFD", pfd);
+        g_source_add_poll ( (GSource *)self->event_source, pfd);
+    }
+
+    // maybe start the driver
     if (self->desired_driver_status == DRIVER_STARTED) {
         cam_unit_driver_start (driver);
     }
@@ -208,6 +249,16 @@ cam_unit_manager_remove_driver (CamUnitManager *self,
 {
     err ("unit_manager: remove driver not yet implemented!\n");
     // TODO
+ 
+    // remove a GPollFD if it was setup earlier
+    GPollFD *pfd = g_object_get_data (G_OBJECT (driver), "ManagerPollFD");
+    if (pfd) {
+        if (self->event_source)
+            g_source_remove_poll ( (GSource*)self->event_source, pfd);
+        g_object_set_data (G_OBJECT (driver), "ManagerPollFD", NULL);
+        free (pfd);
+    }
+
     return -1;
 }
 
@@ -342,6 +393,106 @@ cam_unit_manager_add_plugin_dir (CamUnitManager *self, const char *path)
     }
 
     closedir (dir);
+}
+
+static gboolean
+_source_prepare (GSource *source, gint *timeout)
+{
+    *timeout = -1;
+    return FALSE;
+}
+
+static gboolean
+_source_check (GSource *source)
+{
+    CamUnitManagerSource * csource = (CamUnitManagerSource *) source;
+    CamUnitManager * self = csource->manager;
+
+    self->driver_to_update = NULL;
+
+    for (GList *diter=self->drivers; diter; diter=diter->next) {
+        CamUnitDriver *driver = CAM_UNIT_DRIVER (diter->data);
+
+        GPollFD *pfd = (GPollFD*) g_object_get_data (G_OBJECT (driver),
+                "ManagerPollFD");
+        if (pfd && pfd->fd >= 0 && pfd->revents) {
+            self->driver_to_update = driver;
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+static gboolean
+_source_dispatch (GSource *source, GSourceFunc callback, void *user_data)
+{
+    CamUnitManagerSource * csource = (CamUnitManagerSource *) source;
+    CamUnitManager * self = csource->manager;
+
+    if (self->driver_to_update) {
+        cam_unit_driver_update (self->driver_to_update);
+        self->driver_to_update = NULL;
+    }
+
+    return TRUE;
+}
+
+static void _source_finalize (GSource *source) {}
+
+void 
+cam_unit_manager_attach_glib (CamUnitManager *self, int priority,
+        GMainContext * context)
+{
+    if (self->event_source_attached_glib) {
+        cam_unit_manager_detach_glib (self);
+    }
+    g_source_attach ((GSource*) self->event_source, context);
+    g_source_set_priority ((GSource*) self->event_source, priority);
+    self->event_source_attached_glib = 1;
+}
+
+void 
+cam_unit_manager_detach_glib (CamUnitManager *self)
+{
+    if (!self->event_source_attached_glib)
+        return;
+
+    // GLib (as of 2.12) does not provide a g_source_detach method, or
+    // something similar.  It does, however, provide a g_source_destroy
+    // method.  So destroy the GSource and create a new one.
+    g_source_destroy ((GSource *) self->event_source);
+
+    self->event_source = (CamUnitManagerSource*) g_source_new (
+            &self->source_funcs, sizeof (CamUnitManagerSource));
+    self->event_source->manager = self;
+
+    for (GList *diter=self->drivers; diter; diter=diter->next) {
+        CamUnitDriver *driver = diter->data;
+
+        // Check if the driver provides a file descriptor.  If so, add the
+        // file descriptor to the manager's event source
+        int driver_fileno = cam_unit_driver_get_fileno (driver);
+        if (driver_fileno >= 0) {
+            GPollFD *pfd = (GPollFD*) malloc (sizeof (GPollFD));
+
+            pfd->fd = driver_fileno;
+            pfd->events = G_IO_IN | G_IO_HUP | G_IO_ERR;
+            pfd->revents = 0;
+
+            g_object_set_data (G_OBJECT (driver), "ManagerPollFD", pfd);
+            g_source_add_poll ( (GSource *)self->event_source, pfd);
+        }
+    }
+    self->event_source_attached_glib = 0;
+}
+
+void 
+cam_unit_manager_update (CamUnitManager *self)
+{
+    for (GList *diter=self->drivers; diter; diter=diter->next) {
+        CamUnitDriver *driver = diter->data;
+        cam_unit_driver_update (driver);
+    }
 }
 
 static void

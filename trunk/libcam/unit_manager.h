@@ -55,6 +55,8 @@ typedef struct _CamUnitManagerClass CamUnitManagerClass;
 #define CAM_UNIT_MANAGER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
             CAM_TYPE_UNIT_MANAGER, CamUnitManagerClass))
 
+typedef struct _CamUnitManagerSource CamUnitManagerSource;
+
 struct _CamUnitManager {
     GObject parent;
 
@@ -64,6 +66,12 @@ struct _CamUnitManager {
     GList *drivers;
 
     int desired_driver_status;
+
+    // stuff for asynchronous update
+    GSourceFuncs source_funcs;
+    CamUnitManagerSource * event_source;
+    CamUnitDriver *driver_to_update;
+    int event_source_attached_glib;
 };
 
 struct _CamUnitManagerClass {
@@ -184,6 +192,42 @@ CamUnit * cam_unit_manager_create_unit_by_id (CamUnitManager *self,
  * Discovered plugins will be loaded into the manager.
  */
 void cam_unit_manager_add_plugin_dir (CamUnitManager *self, const char *path);
+
+/**
+ * cam_unit_manager_attach_glib:
+ * @priority: the GLib event priority to give the event sources in the
+ *            CamUnitManager.
+ * @context: a GMainContext to which the manager will be attached.  May be
+ *           NULL, in which case the default GMainContext is used.
+ *
+ * Attaches a CamUnitManager to a GLib event context.  When attached to a
+ * running GMainContext/GMainLoop, the unit manager will self-update
+ * when necessary (i.e. monitor the file descriptors provided by each unit
+ * driver, and call cam_unit_manager_update when a unit driver has a pending
+ * update).
+ *
+ * If already attached to a GMainContext, this method will first detach from 
+ * the old context.
+ */
+void cam_unit_manager_attach_glib (CamUnitManager *self, int priority,
+        GMainContext * context);
+
+/**
+ * cam_unit_manager_detach_glib:
+ *
+ * Detaches a CamUnitManager from a GLib event context.
+ *
+ * This method is idempotent.
+ */
+void cam_unit_manager_detach_glib (CamUnitManager *self);
+
+/**
+ * cam_unit_manager_update:
+ *
+ * Convenience function to call cam_unit_driver_update() on all the drivers
+ * managed by this UnitManager.
+ */
+void cam_unit_manager_update (CamUnitManager *self);
 
 #ifdef __cplusplus
 }

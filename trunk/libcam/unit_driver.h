@@ -141,6 +141,8 @@ struct _CamUnitDriverClass {
     int (*stop) (CamUnitDriver *self);
     CamUnit* (*create_unit) (CamUnitDriver *self, 
             const CamUnitDescription *udesc);
+    int (*get_fileno) (CamUnitDriver *self);
+    void (*update) (CamUnitDriver *self);
 };
 
 GType cam_unit_driver_get_type (void);
@@ -235,6 +237,32 @@ CamUnitDescription* cam_unit_driver_find_unit_description (CamUnitDriver *self,
  * Returns: a GList of #CamUnitDescription objects
  */
 GList* cam_unit_driver_get_unit_descriptions (CamUnitDriver *self);
+
+/**
+ * cam_unit_driver_get_fileno:
+ *
+ * Unit Drivers can optionally implement and provide a file descriptor that
+ * can be used to asynchronously notify applications when the driver has a 
+ * pending update (e.g. a unit description can be added or removed).  When the
+ * file descriptor is readable (e.g. as identified by poll or select or some
+ * other means) then the application should call cam_unit_driver_update().
+ *
+ * If a UnitDriver provides a file descriptor, the descriptor should be
+ * available on construction, and must never change.
+ *
+ * Returns: a nonnegative file descriptor, or -1 to indicate that the unit
+ *          driver does not provide a file descriptor.
+ */
+int cam_unit_driver_get_fileno (CamUnitDriver *self);
+
+/**
+ * cam_unit_driver_update:
+ *
+ * Unit Drivers can optionally implement an update method that checks for new
+ * or removed unit descriptions.  This function invokes that method for a
+ * specific driver.
+ */
+void cam_unit_driver_update (CamUnitDriver *self);
 
 // ======== CamUnitDriver protected methods =======
 
