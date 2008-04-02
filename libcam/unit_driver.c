@@ -73,6 +73,8 @@ static guint cam_unit_driver_signals[LAST_SIGNAL] = { 0 };
 static void cam_unit_driver_finalize (GObject *obj);
 static int cam_unit_driver_default_start (CamUnitDriver *self);
 static int cam_unit_driver_default_stop (CamUnitDriver *self);
+static int cam_unit_driver_default_get_fileno (CamUnitDriver *self);
+static void cam_unit_driver_default_update (CamUnitDriver *self);
 
 G_DEFINE_TYPE (CamUnitDriver, cam_unit_driver, G_TYPE_INITIALLY_UNOWNED);
 
@@ -94,6 +96,8 @@ cam_unit_driver_class_init (CamUnitDriverClass *klass)
 
     klass->start = cam_unit_driver_default_start;
     klass->stop = cam_unit_driver_default_stop;
+    klass->get_fileno = cam_unit_driver_default_get_fileno;
+    klass->update = cam_unit_driver_default_update;
 
     // pure virtual
     klass->create_unit = cam_unit_driver_default_create_unit;
@@ -247,6 +251,14 @@ cam_unit_driver_get_unit_descriptions (CamUnitDriver *self)
     return g_list_copy (self->udescs);
 }
 
+int 
+cam_unit_driver_get_fileno (CamUnitDriver *self)
+{ return CAM_UNIT_DRIVER_GET_CLASS (self)->get_fileno (self); }
+
+void 
+cam_unit_driver_update (CamUnitDriver *self)
+{ return CAM_UNIT_DRIVER_GET_CLASS (self)->update (self); }
+
 static CamUnit * 
 cam_unit_driver_default_create_unit (CamUnitDriver *self,
         const CamUnitDescription * udesc)
@@ -282,6 +294,13 @@ cam_unit_driver_default_stop (CamUnitDriver *self)
     
     return 0;
 }
+
+static int
+cam_unit_driver_default_get_fileno (CamUnitDriver *self)
+{ return -1; }
+
+static void
+cam_unit_driver_default_update (CamUnitDriver *self) {}
 
 CamUnitDescription *
 cam_unit_driver_add_unit_description (CamUnitDriver *self,

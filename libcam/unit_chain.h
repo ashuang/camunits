@@ -244,7 +244,8 @@ CamUnit * cam_unit_chain_all_units_stream_shutdown (CamUnitChain *self);
  *           in which case the default GMainContext is used.
  *
  * Attaches a CamUnitChain to a GLib event context.  Use this method when
- * using a GTK or GLib event loop.
+ * using a GTK or GLib event loop.  Calling this method also attaches the 
+ * chain's unit manager to the GMainContext.
  */
 int cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
         GMainContext * context);

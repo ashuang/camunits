@@ -599,12 +599,18 @@ cam_unit_chain_attach_glib (CamUnitChain *self, int priority,
 {
     g_source_attach ((GSource*) self->event_source, context);
     g_source_set_priority ((GSource*) self->event_source, priority);
+    if (self->manager) {
+        cam_unit_manager_attach_glib (self->manager, priority, context);
+    }
     return 0;
 }
 
 void 
 cam_unit_chain_detach_glib (CamUnitChain *self)
 {
+    if (self->manager) {
+        cam_unit_manager_detach_glib (self->manager);
+    }
     if (!self->event_source)
         return;
     g_source_destroy ((GSource *) self->event_source);
