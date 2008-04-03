@@ -31,6 +31,7 @@ AM_CONDITIONAL(HAVE_JPEG, test "x$JPEG_LIBS" != x)
 AM_CONDITIONAL(HAVE_DC1394, test "x$DC1394_LIBS" != x)
 
 AM_CONDITIONAL([LINUX], [test x$arch = xlinux])
+AM_CONDITIONAL(INTEL, [test x$target_cpu = xi386 -o x$target_cpu = xi486 -o x$target_cpu = xi586 -o x$target_cpu = xi686])
 
 dnl ---------------------------------------------------------------------------
 dnl When making a release:
