@@ -40,6 +40,8 @@ struct _CamlcmInputDriver {
     GThread *lcm_thread;
     GAsyncQueue *source_q;
     int thread_exit_requested;
+
+    int notify_pipe[2];
 };
 
 struct _CamlcmInputDriverClass {
@@ -52,16 +54,6 @@ GType camlcm_input_driver_get_type (void);
  * Constructor
  */
 CamlcmInputDriver * camlcm_input_driver_new();
-
-/**
- * camlcm_input_driver_check_for_new_units:
- *
- * checks for new unit descriptions that have arrived over LC.  It is not
- * typically necessary to call this directly, as it is periodically invoked
- * with a glib timer.  However, if you're not running a glib event loop, then
- * this should be invoked every now and then.
- */
-void camlcm_input_driver_check_for_new_units (CamlcmInputDriver *self);
 
 // =========================================================================
 

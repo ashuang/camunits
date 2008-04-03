@@ -28,9 +28,11 @@ static void driver_finalize (GObject *obj);
 static void on_announce (const lcm_recv_buf_t *rbuf, const char *channel, 
         const camlcm_announce_t *msg, void *user_data);
 static void * lcm_thread (void *user_data);
-static gboolean check_for_new_unit_descriptions_timer (void *user_data);
+
 static CamUnit * driver_create_unit (CamUnitDriver *super,
         const CamUnitDescription * udesc);
+static int driver_get_fileno (CamUnitDriver *super);
+static void driver_update (CamUnitDriver *super);
 
 static CamlcmInput * 
 camlcm_input_new (lcm_t *lcm, const camlcm_announce_t *ann);
@@ -70,9 +72,8 @@ cam_plugin_create (GTypeModule * module)
     self->source_q = g_async_queue_new ();
     self->lcm_thread = g_thread_create (lcm_thread, self, TRUE, NULL);
 
-    // set a glib timer to periodically check for new image source
-    // announcements
-    g_timeout_add (300, check_for_new_unit_descriptions_timer, self);
+    pipe (self->notify_pipe);
+    fcntl (self->notify_pipe[1], F_SETFL, O_NONBLOCK);
 
     return CAM_UNIT_DRIVER (self);
 fail:
@@ -89,6 +90,8 @@ camlcm_input_driver_init (CamlcmInputDriver *self)
     self->lcm = NULL;
     self->known_sources = g_hash_table_new_full (g_str_hash, g_str_equal,
             free, (GDestroyNotify) camlcm_announce_t_destroy);
+    self->notify_pipe[0] = -1;
+    self->notify_pipe[1] = -1;
 }
 
 static void
@@ -97,6 +100,8 @@ camlcm_input_driver_class_init (CamlcmInputDriverClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = driver_finalize;
     klass->parent_class.create_unit = driver_create_unit;
+    klass->parent_class.get_fileno = driver_get_fileno;
+    klass->parent_class.update = driver_update;
 }
 
 static void
@@ -126,6 +131,10 @@ driver_finalize (GObject *obj)
     if (self->known_sources) {
         g_hash_table_destroy (self->known_sources);
     }
+    if (self->notify_pipe[0] >= 0) {
+        close (self->notify_pipe[0]);
+        close (self->notify_pipe[1]);
+    }
 }
 
 static CamUnit * 
@@ -146,17 +155,21 @@ driver_create_unit (CamUnitDriver *super, const CamUnitDescription * udesc)
     return CAM_UNIT (result);
 }
 
-static gboolean
-check_for_new_unit_descriptions_timer (void *user_data)
+static int 
+driver_get_fileno (CamUnitDriver *super)
 {
-    CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (user_data);
-    camlcm_input_driver_check_for_new_units (self);
-    return TRUE;
+    return CAMLCM_INPUT_DRIVER(super)->notify_pipe[0];
 }
 
-void
-camlcm_input_driver_check_for_new_units (CamlcmInputDriver *self)
+static void
+driver_update (CamUnitDriver *super)
 {
+    CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (super);
+
+    printf ("driver update\n");
+    char ch;
+    read (self->notify_pipe[0], &ch, 1);
+
     camlcm_announce_t *msg = g_async_queue_try_pop (self->source_q);
     while (msg) {
 
@@ -218,9 +231,11 @@ on_announce (const lcm_recv_buf_t *rbuf, const char *channel,
         const camlcm_announce_t *msg, void *user_data)
 {
     CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (user_data);
-    if (g_async_queue_length (self->source_q) < 500)
+    if (g_async_queue_length (self->source_q) < 500) {
         g_async_queue_push (self->source_q, camlcm_announce_t_copy (msg));
-    else {
+        write (self->notify_pipe[1], "+", 1);
+        printf ("received announce!\n");
+    } else {
         dbg ("source_q full: discarding announcement\n");
     }
 }
