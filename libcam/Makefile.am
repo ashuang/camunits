@@ -7,7 +7,6 @@ INCLUDES = \
 	$(GLIB_CFLAGS)
 
 lib_LTLIBRARIES = libcam.la
-noinst_LTLIBRARIES = libcam_sse2.la libcam_sse3.la
 
 libcam_la_LDFLAGS = -version-info @LIBCAM_VERSION_INFO@
 libcam_la_SOURCES = \
@@ -42,10 +41,16 @@ libcam_la_SOURCES = \
 	convert_jpeg_decompress.h \
 	output_logger.c \
 	output_logger.h \
-	cpuid.c \
 	cpuid.h \
 	dbg.h \
 	pwc-ioctl.h
+
+libcam_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS)
+
+if INTEL
+libcam_la_SOURCES += cpuid.c
+
+noinst_LTLIBRARIES = libcam_sse2.la libcam_sse3.la
 
 libcam_sse2_la_CFLAGS = -msse2
 libcam_sse2_la_SOURCES = \
@@ -57,13 +62,16 @@ libcam_sse3_la_SOURCES = \
 	pixels_sse3.c \
 	pixels_sse3.h
 
+libcam_la_LIBADD += libcam_sse3.la libcam_sse2.la
+else
+libcam_la_SOURCES += cpuid_generic.c
+endif
+
 if LINUX
 libcam_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h
 AM_CFLAGS += -DUSE_V4L -DUSE_V4L2
 endif
 
-libcam_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS) \
-		   libcam_sse3.la libcam_sse2.la
 
 libcamincludedir = $(includedir)/libcam
 libcaminclude_HEADERS = \
