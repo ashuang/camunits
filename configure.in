@@ -31,7 +31,13 @@ AM_CONDITIONAL(HAVE_JPEG, test "x$JPEG_LIBS" != x)
 AM_CONDITIONAL(HAVE_DC1394, test "x$DC1394_LIBS" != x)
 
 AM_CONDITIONAL([LINUX], [test x$arch = xlinux])
-AM_CONDITIONAL(INTEL, [test x$target_cpu = xi386 -o x$target_cpu = xi486 -o x$target_cpu = xi586 -o x$target_cpu = xi686])
+
+if test x$target_cpu = xi386 -o x$target_cpu = xi486 -o x$target_cpu = xi586 -o x$target_cpu = xi686 -o x$target_cpu = xx86_64; then
+    AC_DEFINE(HAVE_INTEL, [1], [x86 instructions are available])
+    have_intel=yes
+fi
+AM_CONDITIONAL(INTEL, [test x$have_intel = xyes])
+
 
 dnl ---------------------------------------------------------------------------
 dnl When making a release:
@@ -101,8 +107,6 @@ if test "x$GCC" = "xyes"; then
     AC_SUBST(CFLAGS)
     AC_SUBST(LDFLAGS)
 fi
-LIBTOOL="$LIBTOOL --silent"
-AC_SUBST(LIBTOOL)
 
 AC_OUTPUT([
   Makefile
@@ -135,11 +139,18 @@ else
     DC1394MSG="Enabled"
 fi
 
+if test x$have_intel = xyes; then
+    INTELMSG="Enabled"
+else
+    INTELMSG="Disabled"
+fi
+
 echo "
 
 Configuration (libcam):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
+        x86 optimizations:     ${INTELMSG}
 	DC1394 plugin:         ${DC1394MSG}"
 
