@@ -818,9 +818,11 @@ cam_pixel_split_bayer_planes_8u (uint8_t *dst[4], int dstride,
         cpuid_detected = 1;
     }
 
+#ifdef HAVE_INTEL
     if (has_sse2)
         return cam_pixel_split_bayer_planes_8u_sse2 (dst, dstride,
                 src, sstride, width, height);
+#endif
 
     fprintf (stderr, "Error: cam_pixel_split_bayer_planes_8u requires at "
             "least SSE2 support\n");
@@ -837,12 +839,14 @@ cam_pixel_bayer_interpolate_to_8u_bgra (uint8_t ** src, int sstride,
         cpuid_detected = 1;
     }
     
+#ifdef HAVE_INTEL
     if (has_sse3)
         return cam_pixel_bayer_interpolate_to_8u_bgra_sse3 (src, sstride,
                 dst, dstride, width, height, format);
     if (has_sse2)
         return cam_pixel_bayer_interpolate_to_8u_bgra_sse2 (src, sstride,
                 dst, dstride, width, height, format);
+#endif
 
     fprintf (stderr, "Error: cam_pixel_bayer_interpolate_to_8u_bgra "
             "requires at least SSE2 support\n");
@@ -859,12 +863,14 @@ cam_pixel_bayer_interpolate_to_8u_gray (uint8_t * src, int sstride,
         cpuid_detected = 1;
     }
 
+#ifdef HAVE_INTEL
     if (has_sse3)
         return cam_pixel_bayer_interpolate_to_8u_gray_sse3 (src, sstride,
                 dst, dstride, width, height, format);
     if (has_sse2)
         return cam_pixel_bayer_interpolate_to_8u_gray_sse2 (src, sstride,
                 dst, dstride, width, height, format);
+#endif
 
     fprintf (stderr, "Error: cam_pixel_bayer_interpolate_to_8u_gray "
             "requires at least SSE2 support\n");
