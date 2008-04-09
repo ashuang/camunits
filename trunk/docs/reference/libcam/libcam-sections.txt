@@ -78,6 +78,8 @@ cam_unit_driver_get_unit_descriptions
 cam_unit_driver_add_unit_description
 cam_unit_driver_remove_unit_description
 cam_unit_driver_set_name
+cam_unit_driver_get_fileno
+cam_unit_driver_update
 <SUBSECTION Standard>
 cam_unit_driver_get_type
 CAM_UNIT_DESCRIPTION
@@ -194,6 +196,8 @@ cam_unit_chain_all_units_stream_init
 cam_unit_chain_all_units_stream_shutdown
 cam_unit_chain_attach_glib
 cam_unit_chain_detach_glib
+cam_unit_chain_snapshot
+cam_unit_chain_load_from_str
 <SUBSECTION Standard>
 CAM_UNIT_CHAIN
 CAM_IS_UNIT_CHAIN
@@ -324,6 +328,9 @@ cam_unit_manager_find_unit_description
 cam_unit_manager_list_package
 cam_unit_manager_create_unit_by_id
 cam_unit_manager_add_plugin_dir
+cam_unit_manager_attach_glib
+cam_unit_manager_detach_glib
+cam_unit_manager_update
 <SUBSECTION Standard>
 CAM_UNIT_MANAGER
 CAM_IS_UNIT_MANAGER
