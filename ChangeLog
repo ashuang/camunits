@@ -1,3 +1,33 @@
+2008-04-04  david.moore
+
+	* configure.in, libcam/pixels.c: Improve the intel arch test and
+	  add x86_64 support
+
+2008-04-03  david.moore
+
+	* configure.in, libcam/Makefile.am, libcam/cpuid_generic.c: Added
+	  conditional compilation of cpuid.c, etc. only on Intel platforms
+
+2008-04-02  ashuang
+
+	* libcam/unit_chain.c, libcam/unit_chain.h, libcam/unit_driver.c,
+	  libcam/unit_driver.h, libcam/unit_manager.c,
+	  libcam/unit_manager.h: add:
+	  cam_unit_driver_get_fileno
+	  cam_unit_driver_update
+	  cam_unit_manager_attach_glib
+	  cam_unit_manager_detach_glib
+	  cam_unit_manager_update
+
+2008-02-14  ashuang
+
+	* configure.in: update version numbers for 0.0.5 release
+	* ChangeLog, docs/reference/libcam/libcam.types: regenerated
+	  ChangeLog with svn2cl
+	  updated libcam docs for jpeg unit renaming
+	* camview/camview.c: camview UI updates. add scrollbar for chain
+	  widget, increase default width
+
 2008-02-02  ashuang
 
 	* docs/reference/libcam/libcam-docs.sgml,
