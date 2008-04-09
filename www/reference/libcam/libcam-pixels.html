@@ -24,16 +24,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-libcam-gmarshal.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id362737" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id346474" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id395612" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id396423" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-pixels"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id362737"></a><span class="refentrytitle">pixels</span>
+<a name="id346474"></a><span class="refentrytitle">pixels</span>
 </h2>
 <p>pixels</p>
 </td>
@@ -244,17 +244,17 @@ int                 <a href="libcam-pixels.html#cam-pixel-copy-8u-generic">cam_p
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id395612"></a><h2>Description</h2>
+<a name="id396423"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id395626"></a><h2>Details</h2>
+<a name="id396436"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id395635"></a><h3>
+<a name="id396446"></a><h3>
 <a name="cam-pf-fourcc"></a>cam_pf_fourcc()</h3>
-<a class="indexterm" name="id395646"></a><pre class="programlisting">#define             cam_pf_fourcc(a,b,c,d)</pre>
+<a class="indexterm" name="id396456"></a><pre class="programlisting">#define             cam_pf_fourcc(a,b,c,d)</pre>
 <p>
 
 </p>
@@ -288,9 +288,9 @@ int                 <a href="libcam-pixels.html#cam-pixel-copy-8u-generic">cam_p
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395714"></a><h3>
+<a name="id396524"></a><h3>
 <a name="CamPixelFormat"></a>enum CamPixelFormat</h3>
-<a class="indexterm" name="id395725"></a><pre class="programlisting">typedef enum {
+<a class="indexterm" name="id396535"></a><pre class="programlisting">typedef enum {
     /* standard FourCCs */
     CAM_PIXEL_FORMAT_UYVY=cam_pf_fourcc('U','Y','V','Y'),  /* YUV 4:2:2 */
     CAM_PIXEL_FORMAT_YUYV=cam_pf_fourcc('Y','U','Y','V'),  /* YUV 4:2:2 reverse byte 
@@ -335,9 +335,9 @@ int                 <a href="libcam-pixels.html#cam-pixel-copy-8u-generic">cam_p
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395756"></a><h3>
+<a name="id396566"></a><h3>
 <a name="cam-pixel-format-bpp"></a>cam_pixel_format_bpp ()</h3>
-<a class="indexterm" name="id395766"></a><pre class="programlisting">int                 cam_pixel_format_bpp                (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
+<a class="indexterm" name="id396576"></a><pre class="programlisting">int                 cam_pixel_format_bpp                (<a href="libcam-pixels.html#CamPixelFormat">CamPixelFormat</a> p);</pre>
 <p>
 </p>
 <p>
@@ -363,9 +363,9 @@ value is the total bits per pixel, not per component.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395820"></a><h3>
+<a name="id396630"></a><h3>
 <a name="cam-pixel-convert-8u-gray-to-64f-gray"></a>cam_pixel_convert_8u_gray_to_64f_gray ()</h3>
-<a class="indexterm" name="id395831"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_64f_gray
+<a class="indexterm" name="id396641"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_64f_gray
                                                         (double *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -427,9 +427,9 @@ and height are modified accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id395981"></a><h3>
+<a name="id396791"></a><h3>
 <a name="cam-pixel-convert-8u-gray-to-8u-RGB"></a>cam_pixel_convert_8u_gray_to_8u_RGB ()</h3>
-<a class="indexterm" name="id395991"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGB (uint8_t *dest,
+<a class="indexterm" name="id396801"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGB (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -489,9 +489,9 @@ the three color channels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id396140"></a><h3>
+<a name="id396950"></a><h3>
 <a name="cam-pixel-convert-8u-gray-to-8u-RGBA"></a>cam_pixel_convert_8u_gray_to_8u_RGBA ()</h3>
-<a class="indexterm" name="id396150"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGBA
+<a class="indexterm" name="id396960"></a><pre class="programlisting">int                 cam_pixel_convert_8u_gray_to_8u_RGBA
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -552,9 +552,9 @@ the three color channels and setting the alpha to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id396300"></a><h3>
+<a name="id397110"></a><h3>
 <a name="cam-pixel-apply-lut-8u"></a>cam_pixel_apply_lut_8u ()</h3>
-<a class="indexterm" name="id396310"></a><pre class="programlisting">int                 cam_pixel_apply_lut_8u              (uint8_t *dest,
+<a class="indexterm" name="id397120"></a><pre class="programlisting">int                 cam_pixel_apply_lut_8u              (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -620,9 +620,9 @@ the result to a destination image.  The LUT is an array of length
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id396478"></a><h3>
+<a name="id397288"></a><h3>
 <a name="cam-pixel-convert-8u-rgb-to-8u-bgr"></a>cam_pixel_convert_8u_rgb_to_8u_bgr ()</h3>
-<a class="indexterm" name="id396489"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgr  (uint8_t *dst,
+<a class="indexterm" name="id397299"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgr  (uint8_t *dst,
                                                          int dstride,
                                                          int width,
                                                          int height,
@@ -680,9 +680,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id396636"></a><h3>
+<a name="id397446"></a><h3>
 <a name="cam-pixel-convert-8u-rgb-to-8u-gray"></a>cam_pixel_convert_8u_rgb_to_8u_gray ()</h3>
-<a class="indexterm" name="id396646"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest,
+<a class="indexterm" name="id397456"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_gray (uint8_t *dest,
                                                          int dstride,
                                                          int width,
                                                          int height,
@@ -736,9 +736,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id396788"></a><h3>
+<a name="id397598"></a><h3>
 <a name="cam-pixel-convert-8u-bgr-to-8u-rgb"></a>cam_pixel_convert_8u_bgr_to_8u_rgb ()</h3>
-<a class="indexterm" name="id396798"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgr_to_8u_rgb  (uint8_t *dest,
+<a class="indexterm" name="id397609"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgr_to_8u_rgb  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -796,9 +796,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id396945"></a><h3>
+<a name="id397756"></a><h3>
 <a name="cam-pixel-convert-8u-rgb-to-8u-bgra"></a>cam_pixel_convert_8u_rgb_to_8u_bgra ()</h3>
-<a class="indexterm" name="id396956"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgra (uint8_t *dest,
+<a class="indexterm" name="id397766"></a><pre class="programlisting">int                 cam_pixel_convert_8u_rgb_to_8u_bgra (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -852,9 +852,9 @@ Reverses the order of channels in a 3-channel image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id397098"></a><h3>
+<a name="id397908"></a><h3>
 <a name="cam-pixel-convert-8u-bgra-to-8u-bgr"></a>cam_pixel_convert_8u_bgra_to_8u_bgr ()</h3>
-<a class="indexterm" name="id397108"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_bgr (uint8_t *dest,
+<a class="indexterm" name="id397919"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_bgr (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -913,9 +913,9 @@ channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id397256"></a><h3>
+<a name="id398066"></a><h3>
 <a name="cam-pixel-convert-8u-bgra-to-8u-rgb"></a>cam_pixel_convert_8u_bgra_to_8u_rgb ()</h3>
-<a class="indexterm" name="id397266"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_rgb (uint8_t *dest,
+<a class="indexterm" name="id398077"></a><pre class="programlisting">int                 cam_pixel_convert_8u_bgra_to_8u_rgb (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -969,9 +969,9 @@ channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id397409"></a><h3>
+<a name="id398219"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-rgb"></a>cam_pixel_convert_8u_yuv420p_to_8u_rgb ()</h3>
-<a class="indexterm" name="id397419"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgb
+<a class="indexterm" name="id398229"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgb
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1030,9 +1030,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id397567"></a><h3>
+<a name="id398377"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-rgba"></a>cam_pixel_convert_8u_yuv420p_to_8u_rgba ()</h3>
-<a class="indexterm" name="id397578"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgba
+<a class="indexterm" name="id398388"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_rgba
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1087,9 +1087,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id397723"></a><h3>
+<a name="id398531"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-bgr"></a>cam_pixel_convert_8u_yuv420p_to_8u_bgr ()</h3>
-<a class="indexterm" name="id397737"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgr
+<a class="indexterm" name="id398541"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgr
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1144,9 +1144,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id397897"></a><h3>
+<a name="id398685"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-bgra"></a>cam_pixel_convert_8u_yuv420p_to_8u_bgra ()</h3>
-<a class="indexterm" name="id397911"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgra
+<a class="indexterm" name="id398695"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_bgra
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1201,9 +1201,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id398070"></a><h3>
+<a name="id398838"></a><h3>
 <a name="cam-pixel-convert-8u-yuv420p-to-8u-gray"></a>cam_pixel_convert_8u_yuv420p_to_8u_gray ()</h3>
-<a class="indexterm" name="id398084"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_gray
+<a class="indexterm" name="id398849"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuv420p_to_8u_gray
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1258,9 +1258,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id398244"></a><h3>
+<a name="id399008"></a><h3>
 <a name="cam-pixel-convert-8u-uyvy-to-8u-bgra"></a>cam_pixel_convert_8u_uyvy_to_8u_bgra ()</h3>
-<a class="indexterm" name="id398256"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_bgra
+<a class="indexterm" name="id399021"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_bgra
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1315,9 +1315,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id398417"></a><h3>
+<a name="id399181"></a><h3>
 <a name="cam-pixel-convert-8u-uyvy-to-8u-gray"></a>cam_pixel_convert_8u_uyvy_to_8u_gray ()</h3>
-<a class="indexterm" name="id398430"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_gray
+<a class="indexterm" name="id399194"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_gray
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1372,9 +1372,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id398590"></a><h3>
+<a name="id399354"></a><h3>
 <a name="cam-pixel-convert-8u-uyvy-to-8u-rgb"></a>cam_pixel_convert_8u_uyvy_to_8u_rgb ()</h3>
-<a class="indexterm" name="id398603"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_rgb (uint8_t *dest,
+<a class="indexterm" name="id399367"></a><pre class="programlisting">int                 cam_pixel_convert_8u_uyvy_to_8u_rgb (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -1428,9 +1428,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id398763"></a><h3>
+<a name="id399527"></a><h3>
 <a name="cam-pixel-convert-8u-yuyv-to-8u-bgra"></a>cam_pixel_convert_8u_yuyv_to_8u_bgra ()</h3>
-<a class="indexterm" name="id398776"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_bgra
+<a class="indexterm" name="id399540"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_bgra
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1485,9 +1485,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id398936"></a><h3>
+<a name="id399700"></a><h3>
 <a name="cam-pixel-convert-8u-yuyv-to-8u-gray"></a>cam_pixel_convert_8u_yuyv_to_8u_gray ()</h3>
-<a class="indexterm" name="id398949"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_gray
+<a class="indexterm" name="id399714"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_gray
                                                         (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
@@ -1542,9 +1542,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399109"></a><h3>
+<a name="id399874"></a><h3>
 <a name="cam-pixel-convert-8u-yuyv-to-8u-rgb"></a>cam_pixel_convert_8u_yuyv_to_8u_rgb ()</h3>
-<a class="indexterm" name="id399122"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_rgb (uint8_t *dest,
+<a class="indexterm" name="id399887"></a><pre class="programlisting">int                 cam_pixel_convert_8u_yuyv_to_8u_rgb (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -1598,9 +1598,9 @@ TODO</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399282"></a><h3>
+<a name="id400046"></a><h3>
 <a name="cam-pixel-replicate-border-8u"></a>cam_pixel_replicate_border_8u ()</h3>
-<a class="indexterm" name="id399295"></a><pre class="programlisting">int                 cam_pixel_replicate_border_8u       (uint8_t *src,
+<a class="indexterm" name="id400059"></a><pre class="programlisting">int                 cam_pixel_replicate_border_8u       (uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);</pre>
@@ -1653,9 +1653,9 @@ sufficient unused space between rows for the duplicated column.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399452"></a><h3>
+<a name="id400217"></a><h3>
 <a name="cam-pixel-replicate-bayer-border-8u"></a>cam_pixel_replicate_bayer_border_8u ()</h3>
-<a class="indexterm" name="id399465"></a><pre class="programlisting">int                 cam_pixel_replicate_bayer_border_8u (uint8_t *src,
+<a class="indexterm" name="id400230"></a><pre class="programlisting">int                 cam_pixel_replicate_bayer_border_8u (uint8_t *src,
                                                          int sstride,
                                                          int width,
                                                          int height);</pre>
@@ -1710,9 +1710,9 @@ exists in the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399624"></a><h3>
+<a name="id400388"></a><h3>
 <a name="cam-pixel-split-bayer-planes-8u"></a>cam_pixel_split_bayer_planes_8u ()</h3>
-<a class="indexterm" name="id399637"></a><pre class="programlisting">int                 cam_pixel_split_bayer_planes_8u     (uint8_t *dst[4],
+<a class="indexterm" name="id400402"></a><pre class="programlisting">int                 cam_pixel_split_bayer_planes_8u     (uint8_t *dst[4],
                                                          int dstride,
                                                          const uint8_t *src,
                                                          int sstride,
@@ -1776,9 +1776,9 @@ four separate planes.  This function is SSE2 accelerated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id399806"></a><h3>
+<a name="id400571"></a><h3>
 <a name="cam-pixel-bayer-interpolate-to-8u-bgra"></a>cam_pixel_bayer_interpolate_to_8u_bgra ()</h3>
-<a class="indexterm" name="id399820"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_bgra
+<a class="indexterm" name="id400584"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_bgra
                                                         (uint8_t **src,
                                                          int sstride,
                                                          uint8_t *dst,
@@ -1855,9 +1855,9 @@ This function is SSE2/SSE3 accelerated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id400037"></a><h3>
+<a name="id400801"></a><h3>
 <a name="cam-pixel-bayer-interpolate-to-8u-gray"></a>cam_pixel_bayer_interpolate_to_8u_gray ()</h3>
-<a class="indexterm" name="id400051"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_gray
+<a class="indexterm" name="id400815"></a><pre class="programlisting">int                 cam_pixel_bayer_interpolate_to_8u_gray
                                                         (uint8_t *src,
                                                          int sstride,
                                                          uint8_t *dst,
@@ -1934,9 +1934,9 @@ This function is SSE2/SSE3 accelerated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id400258"></a><h3>
+<a name="id401022"></a><h3>
 <a name="cam-pixel-convert-bayer-to-8u-bgra"></a>cam_pixel_convert_bayer_to_8u_bgra ()</h3>
-<a class="indexterm" name="id400271"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_bgra  (uint8_t *dest,
+<a class="indexterm" name="id401036"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_bgra  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -2000,9 +2000,9 @@ destination buffers to be 16-byte aligned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id400457"></a><h3>
+<a name="id401221"></a><h3>
 <a name="cam-pixel-convert-bayer-to-8u-gray"></a>cam_pixel_convert_bayer_to_8u_gray ()</h3>
-<a class="indexterm" name="id400470"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_gray  (uint8_t *dest,
+<a class="indexterm" name="id401234"></a><pre class="programlisting">int                 cam_pixel_convert_bayer_to_8u_gray  (uint8_t *dest,
                                                          int dstride,
                                                          int dwidth,
                                                          int dheight,
@@ -2066,9 +2066,9 @@ destination buffers to be 16-byte aligned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id400655"></a><h3>
+<a name="id401419"></a><h3>
 <a name="cam-pixel-copy-8u-generic"></a>cam_pixel_copy_8u_generic ()</h3>
-<a class="indexterm" name="id400669"></a><pre class="programlisting">int                 cam_pixel_copy_8u_generic           (const uint8_t *src,
+<a class="indexterm" name="id401433"></a><pre class="programlisting">int                 cam_pixel_copy_8u_generic           (const uint8_t *src,
                                                          int sstride,
                                                          uint8_t *dst,
                                                          int dstride,

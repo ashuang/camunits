@@ -24,16 +24,16 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-pixels.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id333261" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id338307" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id327510" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id343137" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-dbg"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id333261"></a><span class="refentrytitle">dbg</span>
+<a name="id338307"></a><span class="refentrytitle">dbg</span>
 </h2>
 <p>dbg</p>
 </td>
@@ -78,17 +78,17 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id327510"></a><h2>Description</h2>
+<a name="id343137"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id327526"></a><h2>Details</h2>
+<a name="id343153"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id327537"></a><h3>
+<a name="id343164"></a><h3>
 <a name="DBG-MODE:CAPS"></a>DBG_MODE()</h3>
-<a class="indexterm" name="id327549"></a><pre class="programlisting">#define DBG_MODE(x) (1ULL &lt;&lt; (x))
+<a class="indexterm" name="id343176"></a><pre class="programlisting">#define DBG_MODE(x) (1ULL &lt;&lt; (x))
 </pre>
 <p>
 
@@ -106,9 +106,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id327583"></a><h3>
+<a name="id343210"></a><h3>
 <a name="DBG-ALL:CAPS"></a>DBG_ALL</h3>
-<a class="indexterm" name="id327595"></a><pre class="programlisting">#define DBG_ALL     (~0ULL)
+<a class="indexterm" name="id343222"></a><pre class="programlisting">#define DBG_ALL     (~0ULL)
 </pre>
 <p>
 
@@ -116,9 +116,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id327610"></a><h3>
+<a name="id343237"></a><h3>
 <a name="DBG-ERROR:CAPS"></a>DBG_ERROR</h3>
-<a class="indexterm" name="id327622"></a><pre class="programlisting">#define DBG_ERROR   DBG_MODE(0)
+<a class="indexterm" name="id343249"></a><pre class="programlisting">#define DBG_ERROR   DBG_MODE(0)
 </pre>
 <p>
 
@@ -126,9 +126,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id327637"></a><h3>
+<a name="id343264"></a><h3>
 <a name="DBG-DEFAULT:CAPS"></a>DBG_DEFAULT</h3>
-<a class="indexterm" name="id384500"></a><pre class="programlisting">#define DBG_DEFAULT DBG_ERROR
+<a class="indexterm" name="id385689"></a><pre class="programlisting">#define DBG_DEFAULT DBG_ERROR
 </pre>
 <p>
 
@@ -136,9 +136,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384515"></a><h3>
+<a name="id385704"></a><h3>
 <a name="DBG-UNIT:CAPS"></a>DBG_UNIT</h3>
-<a class="indexterm" name="id384527"></a><pre class="programlisting">#define DBG_UNIT            DBG_MODE(1) /* foo */
+<a class="indexterm" name="id385716"></a><pre class="programlisting">#define DBG_UNIT            DBG_MODE(1) /* foo */
 </pre>
 <p>
 
@@ -146,9 +146,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384542"></a><h3>
+<a name="id385731"></a><h3>
 <a name="DBG-CHAIN:CAPS"></a>DBG_CHAIN</h3>
-<a class="indexterm" name="id384554"></a><pre class="programlisting">#define DBG_CHAIN           DBG_MODE(2)
+<a class="indexterm" name="id385743"></a><pre class="programlisting">#define DBG_CHAIN           DBG_MODE(2)
 </pre>
 <p>
 
@@ -156,9 +156,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384570"></a><h3>
+<a name="id385759"></a><h3>
 <a name="DBG-DRIVER:CAPS"></a>DBG_DRIVER</h3>
-<a class="indexterm" name="id384582"></a><pre class="programlisting">#define DBG_DRIVER          DBG_MODE(3)
+<a class="indexterm" name="id385771"></a><pre class="programlisting">#define DBG_DRIVER          DBG_MODE(3)
 </pre>
 <p>
 
@@ -166,9 +166,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384597"></a><h3>
+<a name="id385786"></a><h3>
 <a name="DBG-MANAGER:CAPS"></a>DBG_MANAGER</h3>
-<a class="indexterm" name="id384609"></a><pre class="programlisting">#define DBG_MANAGER         DBG_MODE(4)
+<a class="indexterm" name="id385798"></a><pre class="programlisting">#define DBG_MANAGER         DBG_MODE(4)
 </pre>
 <p>
 
@@ -176,9 +176,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384624"></a><h3>
+<a name="id385813"></a><h3>
 <a name="DBG-INPUT:CAPS"></a>DBG_INPUT</h3>
-<a class="indexterm" name="id384636"></a><pre class="programlisting">#define DBG_INPUT           DBG_MODE(5)
+<a class="indexterm" name="id385825"></a><pre class="programlisting">#define DBG_INPUT           DBG_MODE(5)
 </pre>
 <p>
 
@@ -186,9 +186,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384651"></a><h3>
+<a name="id385840"></a><h3>
 <a name="DBG-FILTER:CAPS"></a>DBG_FILTER</h3>
-<a class="indexterm" name="id384663"></a><pre class="programlisting">#define DBG_FILTER          DBG_MODE(6)
+<a class="indexterm" name="id385852"></a><pre class="programlisting">#define DBG_FILTER          DBG_MODE(6)
 </pre>
 <p>
 
@@ -196,9 +196,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384678"></a><h3>
+<a name="id385867"></a><h3>
 <a name="DBG-OUTPUT:CAPS"></a>DBG_OUTPUT</h3>
-<a class="indexterm" name="id384690"></a><pre class="programlisting">#define DBG_OUTPUT          DBG_MODE(7)
+<a class="indexterm" name="id385879"></a><pre class="programlisting">#define DBG_OUTPUT          DBG_MODE(7)
 </pre>
 <p>
 
@@ -206,9 +206,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384706"></a><h3>
+<a name="id385895"></a><h3>
 <a name="DBG-GUI:CAPS"></a>DBG_GUI</h3>
-<a class="indexterm" name="id384718"></a><pre class="programlisting">#define DBG_GUI             DBG_MODE(8)
+<a class="indexterm" name="id385907"></a><pre class="programlisting">#define DBG_GUI             DBG_MODE(8)
 </pre>
 <p>
 
@@ -216,9 +216,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384733"></a><h3>
+<a name="id385922"></a><h3>
 <a name="DBG-CONTROL:CAPS"></a>DBG_CONTROL</h3>
-<a class="indexterm" name="id384745"></a><pre class="programlisting">#define DBG_CONTROL         DBG_MODE(9)
+<a class="indexterm" name="id385934"></a><pre class="programlisting">#define DBG_CONTROL         DBG_MODE(9)
 </pre>
 <p>
 
@@ -226,9 +226,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387494"></a><h3>
+<a name="id388253"></a><h3>
 <a name="DBG-REF:CAPS"></a>DBG_REF</h3>
-<a class="indexterm" name="id387505"></a><pre class="programlisting">#define DBG_REF             DBG_MODE(10)
+<a class="indexterm" name="id388263"></a><pre class="programlisting">#define DBG_REF             DBG_MODE(10)
 </pre>
 <p>
 
@@ -236,9 +236,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387518"></a><h3>
+<a name="id388277"></a><h3>
 <a name="DBG-PLUGIN:CAPS"></a>DBG_PLUGIN</h3>
-<a class="indexterm" name="id387529"></a><pre class="programlisting">#define DBG_PLUGIN          DBG_MODE(11)
+<a class="indexterm" name="id388287"></a><pre class="programlisting">#define DBG_PLUGIN          DBG_MODE(11)
 </pre>
 <p>
 
@@ -246,9 +246,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387542"></a><h3>
+<a name="id388301"></a><h3>
 <a name="DBG-LOG:CAPS"></a>DBG_LOG</h3>
-<a class="indexterm" name="id387553"></a><pre class="programlisting">#define DBG_LOG             DBG_MODE(12)
+<a class="indexterm" name="id388311"></a><pre class="programlisting">#define DBG_LOG             DBG_MODE(12)
 </pre>
 <p>
 
@@ -256,9 +256,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387567"></a><h3>
+<a name="id388326"></a><h3>
 <a name="DBG-13:CAPS"></a>DBG_13</h3>
-<a class="indexterm" name="id387579"></a><pre class="programlisting">#define DBG_13              DBG_MODE(13)
+<a class="indexterm" name="id388338"></a><pre class="programlisting">#define DBG_13              DBG_MODE(13)
 </pre>
 <p>
 
@@ -266,9 +266,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387595"></a><h3>
+<a name="id388353"></a><h3>
 <a name="DBG-14:CAPS"></a>DBG_14</h3>
-<a class="indexterm" name="id387607"></a><pre class="programlisting">#define DBG_14              DBG_MODE(14)
+<a class="indexterm" name="id388365"></a><pre class="programlisting">#define DBG_14              DBG_MODE(14)
 </pre>
 <p>
 
@@ -276,9 +276,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387622"></a><h3>
+<a name="id388380"></a><h3>
 <a name="DBG-15:CAPS"></a>DBG_15</h3>
-<a class="indexterm" name="id387634"></a><pre class="programlisting">#define DBG_15              DBG_MODE(15)
+<a class="indexterm" name="id388392"></a><pre class="programlisting">#define DBG_15              DBG_MODE(15)
 </pre>
 <p>
 
@@ -286,9 +286,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387649"></a><h3>
+<a name="id388407"></a><h3>
 <a name="DBG-16:CAPS"></a>DBG_16</h3>
-<a class="indexterm" name="id387661"></a><pre class="programlisting">#define DBG_16              DBG_MODE(16)
+<a class="indexterm" name="id388419"></a><pre class="programlisting">#define DBG_16              DBG_MODE(16)
 </pre>
 <p>
 
@@ -296,27 +296,27 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387676"></a><h3>
+<a name="id388435"></a><h3>
 <a name="DBG-NAMETAB:CAPS"></a>DBG_NAMETAB</h3>
-<a class="indexterm" name="id387688"></a><pre class="programlisting">#define             DBG_NAMETAB</pre>
+<a class="indexterm" name="id388447"></a><pre class="programlisting">#define             DBG_NAMETAB</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387703"></a><h3>
+<a name="id388462"></a><h3>
 <a name="DBG-COLORTAB:CAPS"></a>DBG_COLORTAB</h3>
-<a class="indexterm" name="id387715"></a><pre class="programlisting">#define             DBG_COLORTAB</pre>
+<a class="indexterm" name="id388474"></a><pre class="programlisting">#define             DBG_COLORTAB</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387731"></a><h3>
+<a name="id388489"></a><h3>
 <a name="dbg-mode-t"></a>dbg_mode_t</h3>
-<a class="indexterm" name="id387743"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id388501"></a><pre class="programlisting">typedef struct {
     const char *d_name;
     unsigned long long d_mode;
     const char *color;
@@ -328,9 +328,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387759"></a><h3>
+<a name="id388518"></a><h3>
 <a name="dbg-mode-color-t"></a>dbg_mode_color_t</h3>
-<a class="indexterm" name="id387771"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id388530"></a><pre class="programlisting">typedef struct {
     unsigned long long d_mode;
     const char *color;
 } dbg_mode_color_t;
@@ -341,9 +341,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387787"></a><h3>
+<a name="id388546"></a><h3>
 <a name="DCOLOR:CAPS"></a>DCOLOR ()</h3>
-<a class="indexterm" name="id387799"></a><pre class="programlisting">const char*         DCOLOR                              ();</pre>
+<a class="indexterm" name="id388558"></a><pre class="programlisting">const char*         DCOLOR                              ();</pre>
 <p>
 
 </p>
@@ -360,9 +360,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387836"></a><h3>
+<a name="id388594"></a><h3>
 <a name="dbg"></a>dbg()</h3>
-<a class="indexterm" name="id387848"></a><pre class="programlisting">#define             dbg(mode, args...)</pre>
+<a class="indexterm" name="id388606"></a><pre class="programlisting">#define             dbg(mode, args...)</pre>
 <p>
 
 </p>
@@ -386,9 +386,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387897"></a><h3>
+<a name="id388655"></a><h3>
 <a name="dbgl"></a>dbgl()</h3>
-<a class="indexterm" name="id387909"></a><pre class="programlisting">#define             dbgl(mode, args...)</pre>
+<a class="indexterm" name="id388667"></a><pre class="programlisting">#define             dbgl(mode, args...)</pre>
 <p>
 
 </p>
@@ -412,9 +412,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id387958"></a><h3>
+<a name="id388716"></a><h3>
 <a name="dbg-active"></a>dbg_active()</h3>
-<a class="indexterm" name="id387970"></a><pre class="programlisting">#define             dbg_active(mode)</pre>
+<a class="indexterm" name="id388728"></a><pre class="programlisting">#define             dbg_active(mode)</pre>
 <p>
 
 </p>
@@ -431,9 +431,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id388004"></a><h3>
+<a name="id388762"></a><h3>
 <a name="cdbg"></a>cdbg()</h3>
-<a class="indexterm" name="id388016"></a><pre class="programlisting">#define cdbg(mode,color,dtag,arg) 
+<a class="indexterm" name="id388774"></a><pre class="programlisting">#define cdbg(mode,color,dtag,arg) 
 </pre>
 <p>
 
@@ -468,9 +468,9 @@ const char*         <a href="libcam-dbg.html#DCOLOR:CAPS">DCOLOR</a>            
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id388093"></a><h3>
+<a name="id388852"></a><h3>
 <a name="cprintf"></a>cprintf()</h3>
-<a class="indexterm" name="id358381"></a><pre class="programlisting">#define             cprintf(color, args...)</pre>
+<a class="indexterm" name="id388864"></a><pre class="programlisting">#define             cprintf(color, args...)</pre>
 <p>
 
 </p>

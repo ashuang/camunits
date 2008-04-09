@@ -148,6 +148,8 @@
     <keyword type="function" name="cam_unit_driver_add_unit_description ()" link="CamUnitDriver.html#cam-unit-driver-add-unit-description"/>
     <keyword type="function" name="cam_unit_driver_remove_unit_description ()" link="CamUnitDriver.html#cam-unit-driver-remove-unit-description"/>
     <keyword type="function" name="cam_unit_driver_set_name ()" link="CamUnitDriver.html#cam-unit-driver-set-name"/>
+    <keyword type="function" name="cam_unit_driver_get_fileno ()" link="CamUnitDriver.html#cam-unit-driver-get-fileno"/>
+    <keyword type="function" name="cam_unit_driver_update ()" link="CamUnitDriver.html#cam-unit-driver-update"/>
     <keyword type="" name="The &quot;unit-description-added&quot; signal" link="CamUnitDriver.html#CamUnitDriver-unit-description-added"/>
     <keyword type="" name="The &quot;unit-description-removed&quot; signal" link="CamUnitDriver.html#CamUnitDriver-unit-description-removed"/>
     <keyword type="struct" name="CamFrameBuffer" link="CamFrameBuffer.html#CamFrameBuffer-struct"/>
@@ -178,6 +180,8 @@
     <keyword type="function" name="cam_unit_chain_all_units_stream_shutdown ()" link="CamUnitChain.html#cam-unit-chain-all-units-stream-shutdown"/>
     <keyword type="function" name="cam_unit_chain_attach_glib ()" link="CamUnitChain.html#cam-unit-chain-attach-glib"/>
     <keyword type="function" name="cam_unit_chain_detach_glib ()" link="CamUnitChain.html#cam-unit-chain-detach-glib"/>
+    <keyword type="function" name="cam_unit_chain_snapshot ()" link="CamUnitChain.html#cam-unit-chain-snapshot"/>
+    <keyword type="function" name="cam_unit_chain_load_from_str ()" link="CamUnitChain.html#cam-unit-chain-load-from-str"/>
     <keyword type="" name="The &quot;frame-ready&quot; signal" link="CamUnitChain.html#CamUnitChain-frame-ready"/>
     <keyword type="" name="The &quot;unit-added&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-added"/>
     <keyword type="" name="The &quot;unit-removed&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-removed"/>
@@ -193,6 +197,9 @@
     <keyword type="function" name="cam_unit_manager_list_package ()" link="CamUnitManager.html#cam-unit-manager-list-package"/>
     <keyword type="function" name="cam_unit_manager_create_unit_by_id ()" link="CamUnitManager.html#cam-unit-manager-create-unit-by-id"/>
     <keyword type="function" name="cam_unit_manager_add_plugin_dir ()" link="CamUnitManager.html#cam-unit-manager-add-plugin-dir"/>
+    <keyword type="function" name="cam_unit_manager_attach_glib ()" link="CamUnitManager.html#cam-unit-manager-attach-glib"/>
+    <keyword type="function" name="cam_unit_manager_detach_glib ()" link="CamUnitManager.html#cam-unit-manager-detach-glib"/>
+    <keyword type="function" name="cam_unit_manager_update ()" link="CamUnitManager.html#cam-unit-manager-update"/>
     <keyword type="" name="The &quot;unit-description-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-added"/>
     <keyword type="" name="The &quot;unit-description-removed&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-removed"/>
     <keyword type="" name="The &quot;unit-driver-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-driver-added"/>

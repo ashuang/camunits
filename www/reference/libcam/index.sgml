@@ -114,6 +114,8 @@
 <ANCHOR id="cam-unit-driver-add-unit-description" href="libcam/CamUnitDriver.html#cam-unit-driver-add-unit-description">
 <ANCHOR id="cam-unit-driver-remove-unit-description" href="libcam/CamUnitDriver.html#cam-unit-driver-remove-unit-description">
 <ANCHOR id="cam-unit-driver-set-name" href="libcam/CamUnitDriver.html#cam-unit-driver-set-name">
+<ANCHOR id="cam-unit-driver-get-fileno" href="libcam/CamUnitDriver.html#cam-unit-driver-get-fileno">
+<ANCHOR id="cam-unit-driver-update" href="libcam/CamUnitDriver.html#cam-unit-driver-update">
 <ANCHOR id="CamUnitDriver-unit-description-added" href="libcam/CamUnitDriver.html#CamUnitDriver-unit-description-added">
 <ANCHOR id="CamUnitDriver-unit-description-removed" href="libcam/CamUnitDriver.html#CamUnitDriver-unit-description-removed">
 <ANCHOR id="CamFrameBuffer" href="libcam/CamFrameBuffer.html">
@@ -146,6 +148,8 @@
 <ANCHOR id="cam-unit-chain-all-units-stream-shutdown" href="libcam/CamUnitChain.html#cam-unit-chain-all-units-stream-shutdown">
 <ANCHOR id="cam-unit-chain-attach-glib" href="libcam/CamUnitChain.html#cam-unit-chain-attach-glib">
 <ANCHOR id="cam-unit-chain-detach-glib" href="libcam/CamUnitChain.html#cam-unit-chain-detach-glib">
+<ANCHOR id="cam-unit-chain-snapshot" href="libcam/CamUnitChain.html#cam-unit-chain-snapshot">
+<ANCHOR id="cam-unit-chain-load-from-str" href="libcam/CamUnitChain.html#cam-unit-chain-load-from-str">
 <ANCHOR id="CamUnitChain-frame-ready" href="libcam/CamUnitChain.html#CamUnitChain-frame-ready">
 <ANCHOR id="CamUnitChain-unit-added" href="libcam/CamUnitChain.html#CamUnitChain-unit-added">
 <ANCHOR id="CamUnitChain-unit-removed" href="libcam/CamUnitChain.html#CamUnitChain-unit-removed">
@@ -162,6 +166,9 @@
 <ANCHOR id="cam-unit-manager-list-package" href="libcam/CamUnitManager.html#cam-unit-manager-list-package">
 <ANCHOR id="cam-unit-manager-create-unit-by-id" href="libcam/CamUnitManager.html#cam-unit-manager-create-unit-by-id">
 <ANCHOR id="cam-unit-manager-add-plugin-dir" href="libcam/CamUnitManager.html#cam-unit-manager-add-plugin-dir">
+<ANCHOR id="cam-unit-manager-attach-glib" href="libcam/CamUnitManager.html#cam-unit-manager-attach-glib">
+<ANCHOR id="cam-unit-manager-detach-glib" href="libcam/CamUnitManager.html#cam-unit-manager-detach-glib">
+<ANCHOR id="cam-unit-manager-update" href="libcam/CamUnitManager.html#cam-unit-manager-update">
 <ANCHOR id="CamUnitManager-unit-description-added" href="libcam/CamUnitManager.html#CamUnitManager-unit-description-added">
 <ANCHOR id="CamUnitManager-unit-description-removed" href="libcam/CamUnitManager.html#CamUnitManager-unit-description-removed">
 <ANCHOR id="CamUnitManager-unit-driver-added" href="libcam/CamUnitManager.html#CamUnitManager-unit-driver-added">

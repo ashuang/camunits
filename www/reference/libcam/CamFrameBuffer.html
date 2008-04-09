@@ -24,18 +24,18 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="ch02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id326238" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id326100" class="shortcut">Top</a>
                   &#160;|&#160;
                   <a href="#id368047" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id368024" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+                  <a href="#id368023" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamFrameBuffer"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id326238"></a><span class="refentrytitle">CamFrameBuffer</span>
+<a name="id326100"></a><span class="refentrytitle">CamFrameBuffer</span>
 </h2>
 <p>CamFrameBuffer &#8212; Container class for a raw data buffer.</p>
 </td>
@@ -65,7 +65,7 @@ GList*              <a href="CamFrameBuffer.html#cam-framebuffer-metadata-list-k
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id368024"></a><h2>Object Hierarchy</h2>
+<a name="id368023"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -99,11 +99,11 @@ file.</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id343782"></a><h2>Details</h2>
+<a name="id374249"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id343793"></a><h3>
+<a name="id374260"></a><h3>
 <a name="CamFrameBuffer-struct"></a>CamFrameBuffer</h3>
-<a class="indexterm" name="id343805"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id374272"></a><pre class="programlisting">typedef struct {
     uint8_t * data;
     unsigned int length;
     unsigned int bytesused;
@@ -144,9 +144,9 @@ file.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id374240"></a><h3>
+<a name="id327250"></a><h3>
 <a name="cam-framebuffer-new"></a>cam_framebuffer_new ()</h3>
-<a class="indexterm" name="id374252"></a><pre class="programlisting"><a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_framebuffer_new                 (uint8_t *data,
+<a class="indexterm" name="id327262"></a><pre class="programlisting"><a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_framebuffer_new                 (uint8_t *data,
                                                          int length);</pre>
 <p>
 </p>
@@ -179,9 +179,9 @@ file.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id343215"></a><h3>
+<a name="id327373"></a><h3>
 <a name="cam-framebuffer-new-alloc"></a>cam_framebuffer_new_alloc ()</h3>
-<a class="indexterm" name="id343226"></a><pre class="programlisting"><a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_framebuffer_new_alloc           (int length);</pre>
+<a class="indexterm" name="id327384"></a><pre class="programlisting"><a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_framebuffer_new_alloc           (int length);</pre>
 <p>
 </p>
 <p>
@@ -207,9 +207,9 @@ file.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id343305"></a><h3>
+<a name="id327464"></a><h3>
 <a name="cam-framebuffer-copy-metadata"></a>cam_framebuffer_copy_metadata ()</h3>
-<a class="indexterm" name="id343318"></a><pre class="programlisting">void                cam_framebuffer_copy_metadata       (<a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+<a class="indexterm" name="id327476"></a><pre class="programlisting">void                cam_framebuffer_copy_metadata       (<a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
                                                          const <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *from);</pre>
 <p>
 Convenience method to copy the metadata dictionary from the <em class="parameter"><code>from</code></em> buffer to
@@ -235,9 +235,9 @@ Convenience method to copy the metadata dictionary from the <em class="parameter
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id327747"></a><h3>
+<a name="id327865"></a><h3>
 <a name="cam-framebuffer-metadata-get"></a>cam_framebuffer_metadata_get ()</h3>
-<a class="indexterm" name="id327760"></a><pre class="programlisting">uint8_t*            cam_framebuffer_metadata_get        (const <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+<a class="indexterm" name="id327877"></a><pre class="programlisting">uint8_t*            cam_framebuffer_metadata_get        (const <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
                                                          const char *key,
                                                          int *len);</pre>
 <p>
@@ -277,9 +277,9 @@ CamFramebuffer is not destroyed.  Returns NULL if the key is not found.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id327864"></a><h3>
+<a name="id327982"></a><h3>
 <a name="cam-framebuffer-metadata-set"></a>cam_framebuffer_metadata_set ()</h3>
-<a class="indexterm" name="id327877"></a><pre class="programlisting">void                cam_framebuffer_metadata_set        (<a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
+<a class="indexterm" name="id327994"></a><pre class="programlisting">void                cam_framebuffer_metadata_set        (<a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self,
                                                          const char *key,
                                                          const uint8_t *value,
                                                          int len);</pre>
@@ -319,9 +319,9 @@ entries are overwritten.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id327994"></a><h3>
+<a name="id328112"></a><h3>
 <a name="cam-framebuffer-metadata-list-keys"></a>cam_framebuffer_metadata_list_keys ()</h3>
-<a class="indexterm" name="id328007"></a><pre class="programlisting">GList*              cam_framebuffer_metadata_list_keys  (const <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);</pre>
+<a class="indexterm" name="id328124"></a><pre class="programlisting">GList*              cam_framebuffer_metadata_list_keys  (const <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);</pre>
 <p>
 </p>
 <p>
