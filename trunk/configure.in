@@ -69,7 +69,6 @@ AC_SUBST(LIBCAM_GTK_VERSION_INFO)
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-
 dnl ---------------------------------------------------------------------------
 dnl i18n support
 dnl ---------------------------------------------------------------------------
@@ -97,6 +96,18 @@ AC_SUBST(libcampixmapdir)
 
 libcamdatadir="$datadir/$PACKAGE"
 AC_SUBST(libcamdatadir)
+
+dnl ---------------------------------------------------------------------------
+dnl additional plugin paths can be specified as a configure argument
+dnl ---------------------------------------------------------------------------
+AC_ARG_WITH(plugin-extra-path,[  --with-plugin-extra-path=<path>  Colon-separated plugin search path])
+if ! test -z "$with_plugin_extra_path" ; then
+    extra_plugin_path="$with_plugin_extra_path"
+else
+    extra_plugin_path=""
+fi
+LIBCAM_PLUGIN_PATH="$libcamplugindir:$with_plugin_extra_path"
+AC_SUBST(LIBCAM_PLUGIN_PATH)
 
 dnl ---------------------------------------------------------------------------
 dnl Warnings
@@ -151,6 +162,7 @@ Configuration (libcam):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
-        x86 optimizations:     ${INTELMSG}
+	x86 optimizations:     ${INTELMSG}
 	DC1394 plugin:         ${DC1394MSG}"
+
 

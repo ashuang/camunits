@@ -1,5 +1,5 @@
 AM_CFLAGS = \
-	-DLIBCAM_PLUGINS_PATH=\""$(libcamplugindir)"\"
+	-DLIBCAM_PLUGIN_PATH=\""$(LIBCAM_PLUGIN_PATH)"\"
 
 INCLUDES = \
 	-I$(top_srcdir) \
