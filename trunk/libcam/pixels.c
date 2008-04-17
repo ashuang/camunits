@@ -8,6 +8,11 @@
 #include "pixels_sse2.h"
 #include "pixels_sse3.h"
 
+// HAVE_INTEL is defined in config.h by autotools
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #ifndef MIN
 #define MIN(a,b) ( (a)<(b) ? (a) : (b) )
 #endif

@@ -10,7 +10,7 @@ camview_SOURCES = \
 	gtk_util.h
 
 camview_LDADD = \
-	$(GTK_LIBS) $(GLIB_LIBS) ../libcam-gtk/libcam-gtk.la
+	$(GTK_LIBS) $(GLIB_LIBS) ../libcam-gtk/libcam-gtk.la ../libcam/libcam.la
 
 man_MANS = camview.1
 
