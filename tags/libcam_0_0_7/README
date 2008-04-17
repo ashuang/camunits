@@ -1,0 +1,12 @@
+libcam
+======
+
+Image acquisition library for computer vision researchers
+
+
+To compile, run:
+   ./configure
+   make
+
+As root:
+   make install

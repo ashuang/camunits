@@ -1,0 +1,168 @@
+AC_PREREQ(2.50)
+AC_INIT(libcam/unit.h)
+AM_CONFIG_HEADER(config.h)
+AC_CANONICAL_SYSTEM
+AM_INIT_AUTOMAKE(libcam, 0.0.7)
+
+case "$target_os" in
+	linux*) arch=linux;;
+	darwin*)
+		CFLAGS="$CFLAGS -I/usr/X11R6/include -I/opt/local/include"
+		LDFLAGS="$LDFLAGS -L/usr/X11R6/lib -L/opt/local/lib -Wl,-dylib_file,/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib"
+		;;
+	*) arch=unknown;;
+esac
+
+AC_PROG_CC
+AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
+AM_PATH_GTK_2_0
+AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
+             [AC_MSG_ERROR([GL not found, but is required by libcam.])])
+AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, JPEG_LIBS='-ljpeg',
+             [AC_MSG_ERROR([libjpeg not found, but is required by libcam.])])
+PKG_PROG_PKG_CONFIG
+PKG_CHECK_MODULES(DC1394, [libdc1394-2 >= 2.0.0],,
+                  [AC_MSG_WARN([libdc1394 not found, firewire camera support will be disabled])])
+
+AC_SUBST(GL_LIBS)
+AC_SUBST(JPEG_LIBS)
+AM_CONDITIONAL(HAVE_GL, test "x$GL_LIBS" != x)
+AM_CONDITIONAL(HAVE_JPEG, test "x$JPEG_LIBS" != x)
+AM_CONDITIONAL(HAVE_DC1394, test "x$DC1394_LIBS" != x)
+
+AM_CONDITIONAL([LINUX], [test x$arch = xlinux])
+
+if test x$target_cpu = xi386 -o x$target_cpu = xi486 -o x$target_cpu = xi586 -o x$target_cpu = xi686 -o x$target_cpu = xx86_64; then
+    AC_DEFINE(HAVE_INTEL, [1], [x86 instructions are available])
+    have_intel=yes
+fi
+AM_CONDITIONAL(INTEL, [test x$have_intel = xyes])
+
+
+dnl ---------------------------------------------------------------------------
+dnl When making a release:
+dnl  1. If the library source code has changed at all since the last release,
+dnl     then increment REVISION.
+dnl  2. If the interface has been changed since the last release, increment
+dnl     CURRENT, and set REVISION to 0.
+dnl  3. If the interface changes consist solely of additions, increment AGE.
+dnl  4. If the interface has removed elements, set AGE to 0.
+dnl ---------------------------------------------------------------------------
+LIBCAM_AGE=1
+LIBCAM_REVISION=1
+LIBCAM_CURRENT=4
+AC_SUBST(LIBCAM_AGE)
+AC_SUBST(LIBCAM_REVISION)
+AC_SUBST(LIBCAM_CURRENT)
+LIBCAM_VERSION_INFO=$LIBCAM_CURRENT:$LIBCAM_REVISION:$LIBCAM_AGE
+AC_SUBST(LIBCAM_VERSION_INFO)
+
+LIBCAM_GTK_AGE=1
+LIBCAM_GTK_REVISION=1
+LIBCAM_GTK_CURRENT=4
+AC_SUBST(LIBCAM_GTK_AGE)
+AC_SUBST(LIBCAM_GTK_REVISION)
+AC_SUBST(LIBCAM_GTK_CURRENT)
+LIBCAM_GTK_VERSION_INFO=$LIBCAM_GTK_CURRENT:$LIBCAM_GTK_REVISION:$LIBCAM_GTK_AGE
+AC_SUBST(LIBCAM_GTK_VERSION_INFO)
+
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+dnl ---------------------------------------------------------------------------
+dnl i18n support
+dnl ---------------------------------------------------------------------------
+ALL_LINGUAS=""
+
+dnl The gettext domain of the library
+GETTEXT_PACKAGE=${PACKAGE}
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[The gettext domain for the library])
+AC_SUBST(GETTEXT_PACKAGE)
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.14.3)
+
+AM_ICONV()
+
+
+GTK_DOC_CHECK([1.4])
+
+libcamplugindir="$libdir/$PACKAGE"
+AC_SUBST(libcamplugindir)
+libcampluginincludedir="$includedir/$PACKAGE/plugins"
+AC_SUBST(libcampluginincludedir)
+
+libcampixmapdir="$datadir/pixmaps/$PACKAGE"
+AC_SUBST(libcampixmapdir)
+
+libcamdatadir="$datadir/$PACKAGE"
+AC_SUBST(libcamdatadir)
+
+dnl ---------------------------------------------------------------------------
+dnl additional plugin paths can be specified as a configure argument
+dnl ---------------------------------------------------------------------------
+AC_ARG_WITH(plugin-extra-path,[  --with-plugin-extra-path=<path>  Colon-separated plugin search path])
+if ! test -z "$with_plugin_extra_path" ; then
+    extra_plugin_path="$with_plugin_extra_path"
+else
+    extra_plugin_path=""
+fi
+LIBCAM_PLUGIN_PATH="$libcamplugindir:$with_plugin_extra_path"
+AC_SUBST(LIBCAM_PLUGIN_PATH)
+
+dnl ---------------------------------------------------------------------------
+dnl Warnings
+dnl ---------------------------------------------------------------------------
+if test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+    LDFLAGS="$LDFLAGS -g -Wall"
+    AC_SUBST(CFLAGS)
+    AC_SUBST(LDFLAGS)
+fi
+
+AC_OUTPUT([
+  Makefile
+  libcam.spec
+  libcam/Makefile
+  libcam-gtk/Makefile
+  camview/Makefile
+  camlog/Makefile
+  m4/Makefile
+  m4macros/Makefile
+  libcam/libcam.pc
+  libcam-gtk/libcam-gtk.pc
+  libcam-gtk/pixmaps/Makefile
+  po/Makefile.in
+  plugins/Makefile
+  plugins/dc1394/Makefile
+  examples/Makefile
+  examples/basic/Makefile
+  examples/filter_example/Makefile
+  docs/Makefile
+  docs/reference/Makefile
+  docs/reference/libcam/Makefile
+  docs/reference/libcam-gtk/Makefile
+  docs/tutorial/Makefile
+])
+
+if test "x$DC1394_LIBS" = x; then
+    DC1394MSG="Disabled (libdc1394 not found)"
+else
+    DC1394MSG="Enabled"
+fi
+
+if test x$have_intel = xyes; then
+    INTELMSG="Enabled"
+else
+    INTELMSG="Disabled"
+fi
+
+echo "
+
+Configuration (libcam):
+
+	Source code location:  ${srcdir}
+	Compiler:              ${CC}
+	x86 optimizations:     ${INTELMSG}
+	DC1394 plugin:         ${DC1394MSG}"
+
+

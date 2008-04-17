@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+    <!ENTITY bookinfo SYSTEM "bookinfo.sgml">
+    <!ENTITY preface SYSTEM "preface.sgml">
+    <!ENTITY acquiring SYSTEM "acquiring.sgml">
+    <!ENTITY camunit SYSTEM "camunit.sgml">
+    <!ENTITY subclassing SYSTEM "subclassing.sgml">
+    <!ENTITY otherenvs SYSTEM "otherenvs.sgml">
+    <!ENTITY fdl SYSTEM "fdl.sgml">
+]>
+ 
+<book>
+ 
+&bookinfo;
+&preface;
+&acquiring;
+&camunit;
+&subclassing;
+&otherenvs;
+&fdl;
+ 
+</book>
