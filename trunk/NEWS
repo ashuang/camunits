@@ -1,3 +1,8 @@
+libcam 0.0.7 - Apr 17, 2008
+===========================
+* Fix debayer regression from last version's portability improvements
+* Allow specification of extra plugin path at configure time
+
 libcam 0.0.6 - Apr 9, 2008
 ==========================
 * Add asynchronous driver handling
