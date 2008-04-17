@@ -2,15 +2,15 @@ Source: libcam
 Section: libs
 Priority: extra
 Maintainer: Albert Huang <albert@csail.mit.edu>
-Build-Depends: debhelper (>> 4.2.0), cdbs, gcc (>= 3.0.0), linux-libc-dev, libgl1-mesa-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.10.0), libdc1394-21-dev (>= 2.0.0), libjpeg62-dev
+Build-Depends: debhelper (>> 4.2.0), cdbs, gcc (>= 3.0.0), linux-libc-dev, libgl1-mesa-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.10.0), libdc1394-22-dev (>= 2.0.0), libjpeg62-dev
 Standards-Version: 3.7.2
 Xs-Vcs-Svn: https://libcam.googlecode.com/svn/debian/trunk
 Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
 
-Package: libcam1
+Package: libcam3
 Section: libs
 Architecture: amd64 i386 
-Recommends: libcam-utils, libcam-gtk1
+Recommends: libcam-utils, libcam-gtk3
 Suggests: libcam-plugins-dc1394
 Depends: ${shlibs:Depends}
 Description: device-independent image acquisition and processing API
@@ -20,10 +20,10 @@ Description: device-independent image acquisition and processing API
  .
  This package contains shared libraries. 
 
-Package: libcam1-dev
+Package: libcam3-dev
 Section: libs
 Architecture: amd64 i386 
-Depends: libcam1 (= ${binary:Version}), libc6-dev
+Depends: libcam3 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
@@ -40,7 +40,7 @@ Description: utility programs for libcam
  acquisition and processing API.  It currently provides camlog, a program for 
  logging image streams to disk using the libcam log format.
 
-Package: libcam-gtk1
+Package: libcam-gtk3
 Section: libs
 Architecture: amd64 i386 
 Recommends: libcam-gtk-utils
@@ -52,10 +52,10 @@ Description: GTK+ widgets for libcam
  .
  This package contains shared libraries. 
 
-Package: libcam-gtk1-dev
+Package: libcam-gtk3-dev
 Section: libs
 Architecture: amd64 i386 
-Depends: libcam-gtk1 (= ${binary:Version}), libcam1-dev, libc6-dev
+Depends: libcam-gtk3 (= ${binary:Version}), libcam3-dev, libc6-dev
 Description: GTK+ widgets for libcam
  libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
  intended to provide an easy, consistent, and uniform way to include GUI
@@ -77,7 +77,7 @@ Package: libcam-plugins-dc1394
 Section: libs
 Conflicts: libcam0-plugins-dc1394
 Architecture: amd64 i386 
-Depends: ${shlibs:Depends}, libdc1394-21 (>= 2.0.0)
+Depends: ${shlibs:Depends}
 Description: IEEE 1394 Digital Camera device input plugins for libcam
  libcam is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
