@@ -25,11 +25,6 @@
 #include "input_v4l.h"
 #endif
 
-#ifdef ENABLE_DC1394
-#include "input_dc1394.h"
-#include "filter_bayer.h"
-#endif
-
 #include "dbg.h"
 
 #define err(args...) fprintf (stderr, args)
@@ -529,14 +524,6 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
 #ifdef USE_V4L
     CamUnitDriver *v4l_driver = cam_v4l_driver_new ();
     cam_unit_manager_add_driver (self, v4l_driver);
-#endif
-
-#ifdef ENABLE_DC1394
-    CamUnitDriver *dc1394_driver = cam_dc1394_driver_new ();
-    cam_unit_manager_add_driver (self, dc1394_driver);
-
-    CamUnitDriver *bayer_filter_driver = cam_bayer_filter_driver_new (); 
-    cam_unit_manager_add_driver (self, bayer_filter_driver);
 #endif
 
     // Debayer
