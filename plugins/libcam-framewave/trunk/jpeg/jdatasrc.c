@@ -19,7 +19,7 @@
 #include "jpeglib.h"
 #include "jerror.h"
 #ifdef USE_FW
-#include "jpegipp.h"
+#include "jpegfw.h"
 #endif
 
 

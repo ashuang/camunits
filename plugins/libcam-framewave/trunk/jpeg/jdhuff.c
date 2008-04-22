@@ -19,7 +19,7 @@
 #include "jpeglib.h"
 #include "jdhuff.h"   /* Declarations shared with jdphuff.c */
 #ifdef USE_FW
-#include "jpegipp.h"
+#include "jpegfw.h"
 #endif
 
 /*
@@ -267,7 +267,7 @@ jpegfw_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
       dtbl->maxcode[l] = -1;  /* -1 if no codes of this length */
     }
   }
-  dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpegipp.huff_decode terminates */
+  dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpegfw_huff_decode terminates */
 
   /* Compute lookahead tables to speed up decoding.
    * First we set all the table entries to 0, indicating "too long";

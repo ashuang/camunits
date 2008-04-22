@@ -8,7 +8,7 @@
 
 #include <libcam/plugin.h>
 
-#include "convert_ipp_jpeg_compress.h"
+#include "unit_jpeg_compress.h"
 
 #define err(args...) fprintf(stderr, args)
 
@@ -43,8 +43,8 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("convert.fw", "jpeg_compress",
-            "FW JPEG Compress", 0, 
+    return cam_unit_driver_new_stock_full ("framewave", "jpeg_compress",
+            "JPEG Compress", 0, 
             (CamUnitConstructor)camfw_jpeg_compress_new, module);
 }
 

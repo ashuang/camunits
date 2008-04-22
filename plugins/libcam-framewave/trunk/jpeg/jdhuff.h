@@ -10,7 +10,7 @@
  * progressive decoder (jdphuff.c).  No other modules need to see these.
  */
 #ifdef USE_FW
-#include "jpegipp.h"
+#include "jpegfw.h"
 #endif
 
 /* Short forms of external names for systems with brain-damaged linkers. */
@@ -18,7 +18,7 @@
 #ifdef NEED_SHORT_EXTERNAL_NAMES
 #define jpegfw_make_d_derived_tbl jMkDDerived
 #define jpegfw_fill_bit_buffer  jFilBitBuf
-#define jpegipp.huff_decode  jHufDecode
+#define jpegfw_huff_decode  jHufDecode
 #endif /* NEED_SHORT_EXTERNAL_NAMES */
 
 
@@ -29,14 +29,14 @@
 typedef struct {
   /* Basic tables: (element [0] of each array is unused) */
   INT32 maxcode[18];    /* largest code of length k (-1 if none) */
-  /* (maxcode[17] is a sentinel to ensure jpegipp.huff_decode terminates) */
+  /* (maxcode[17] is a sentinel to ensure jpegfw_huff_decode terminates) */
   INT32 valoffset[17];    /* huffval[] offset for codes of length k */
   /* valoffset[k] = huffval[] index of 1st symbol of code length k, less
    * the smallest code of length k; so given a code of length k, the
    * corresponding symbol is huffval[code + valoffset[k]]
    */
 
-  /* Link to public Huffman table (needed only in jpegipp.huff_decode) */
+  /* Link to public Huffman table (needed only in jpegfw_huff_decode) */
   JHUFF_TBL *pub;
 
   /* Lookahead tables: indexed by the next HUFF_LOOKAHEAD bits of
@@ -133,7 +133,7 @@ typedef struct {    /* Bitreading working state within an MCU */
  * Use CHECK_BIT_BUFFER to ensure there are N bits in get_buffer
  * before using GET_BITS, PEEK_BITS, or DROP_BITS.
  * The variables get_buffer and bits_left are assumed to be locals,
- * but the state struct might not be (jpegipp.huff_decode needs this).
+ * but the state struct might not be (jpegfw_huff_decode needs this).
  *  CHECK_BIT_BUFFER(state,n,action);
  *    Ensure there are N bits in get_buffer; if suspend, take action.
  *      val = GET_BITS(n);
@@ -181,7 +181,7 @@ EXTERN(boolean) jpegfw_fill_bit_buffer
  *    for a lookahead.  In that case, we do it the hard way.
  * 2. If the lookahead table contains no entry, the next code must be
  *    more than HUFF_LOOKAHEAD bits long.
- * 3. jpegipp.huff_decode returns -1 if forced to suspend.
+ * 3. jpegfw_huff_decode returns -1 if forced to suspend.
  */
 
 #define HUFF_DECODE(result,state,htbl,failaction,slowlabel) \

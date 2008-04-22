@@ -1,9 +1,9 @@
 INCLUDES = $(GLIB_CFLAGS) $(FRAMEWAVE_CFLAGS)
 
-libcamplugin_LTLIBRARIES = convert_ipp_jpeg_compress.la \
-						   convert_ipp_jpeg_decompress.la
+libcamplugin_LTLIBRARIES = framewave_jpeg_compress.la \
+						   framewave_jpeg_decompress.la
 
-convert_ipp_jpeg_compress_la_SOURCES = jcapimin.c \
+framewave_jpeg_compress_la_SOURCES = jcapimin.c \
 					jcapistd.c \
 					jccoefct.c \
 					jccolor.c \
@@ -60,11 +60,11 @@ convert_ipp_jpeg_compress_la_SOURCES = jcapimin.c \
 					jinclude.h \
 					jmemsys.h \
 					jpegint.h \
-					jpegipp.h \
-					convert_ipp_jpeg_compress.c \
-					convert_ipp_jpeg_compress.h 
+					jpegfw.h \
+					unit_jpeg_compress.c \
+					unit_jpeg_compress.h 
 
-convert_ipp_jpeg_decompress_la_SOURCES = jcapimin.c \
+framewave_jpeg_decompress_la_SOURCES = jcapimin.c \
 					jcapistd.c \
 					jccoefct.c \
 					jccolor.c \
@@ -121,12 +121,12 @@ convert_ipp_jpeg_decompress_la_SOURCES = jcapimin.c \
 					jinclude.h \
 					jmemsys.h \
 					jpegint.h \
-					jpegipp.h \
-					convert_ipp_jpeg_decompress.c \
-					convert_ipp_jpeg_decompress.h 
+					jpegfw.h \
+					unit_jpeg_decompress.c \
+					unit_jpeg_decompress.h 
 
-convert_ipp_jpeg_compress_la_LDFLAGS = -avoid-version -module
-convert_ipp_jpeg_compress_la_LIBADD = $(LIBCAM_LIBS) $(FRAMEWAVE_JPEG_LIBS)
+framewave_jpeg_compress_la_LDFLAGS = -avoid-version -module
+framewave_jpeg_compress_la_LIBADD = $(LIBCAM_LIBS) $(FRAMEWAVE_JPEG_LIBS)
 
-convert_ipp_jpeg_decompress_la_LDFLAGS = -avoid-version -module
-convert_ipp_jpeg_decompress_la_LIBADD = $(LIBCAM_LIBS) $(FRAMEWAVE_JPEG_LIBS)
+framewave_jpeg_decompress_la_LDFLAGS = -avoid-version -module
+framewave_jpeg_decompress_la_LIBADD = $(LIBCAM_LIBS) $(FRAMEWAVE_JPEG_LIBS)

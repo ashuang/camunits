@@ -861,7 +861,7 @@ typedef JMETHOD(boolean, jpegfw_marker_parser_method, (j_decompress_ptr cinfo));
 #define jpegfw_read_scanlines     jReadScanlines
 #define jpegfw_finish_decompress  jFinDecompress
 #define jpegfw_read_raw_data      jReadRawData
-#define jpegipp.has_multiple_scans jHasMultScn
+#define jpegfw_has_multiple_scans jHasMultScn
 #define jpegfw_start_output       jStrtOutput
 #define jpegfw_finish_output      jFinOutput
 #define jpegfw_input_complete     jInComplete

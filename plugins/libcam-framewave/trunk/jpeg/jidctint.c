@@ -29,7 +29,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jdct.h"   /* Private declarations for DCT subsystem */
-#include "jpegipp.h"
+#include "jpegfw.h"
 
 #ifdef DCT_ISLOW_SUPPORTED
 

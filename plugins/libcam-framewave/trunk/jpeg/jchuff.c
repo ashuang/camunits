@@ -19,7 +19,7 @@
 #include "jpeglib.h"
 #include "jchuff.h"   /* Declarations shared with jcphuff.c */
 #ifdef FWJ_HUFF
-#include "jpegipp.h"
+#include "jpegfw.h"
 #endif
 
 

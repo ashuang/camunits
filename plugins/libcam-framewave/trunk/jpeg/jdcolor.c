@@ -11,7 +11,7 @@
 #define JPEG_INTERNALS
 #include "jinclude.h"
 #include "jpeglib.h"
-#include "jpegipp.h"
+#include "jpegfw.h"
 
 
 /* Private subobject */

@@ -17,7 +17,7 @@
  */
 
 #ifdef FWJ_HUFF
-#include "jpegipp.h"
+#include "jpegfw.h"
 #endif
 
 #if BITS_IN_JSAMPLE == 8
