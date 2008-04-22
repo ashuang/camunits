@@ -1,4 +1,4 @@
-INCLUDES = $(GLIB_CFLAGS) $(IPP_CFLAGS)
+INCLUDES = $(GLIB_CFLAGS) $(FRAMEWAVE_CFLAGS)
 
 libcamplugin_LTLIBRARIES = convert_ipp_jpeg_compress.la \
 						   convert_ipp_jpeg_decompress.la
@@ -125,8 +125,8 @@ convert_ipp_jpeg_decompress_la_SOURCES = jcapimin.c \
 					convert_ipp_jpeg_decompress.c \
 					convert_ipp_jpeg_decompress.h 
 
-convert_ipp_jpeg_compress_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-convert_ipp_jpeg_compress_la_LIBADD = $(LIBCAM_LIBS) $(IPP_JPEG_LIBS)
+convert_ipp_jpeg_compress_la_LDFLAGS = -avoid-version -module
+convert_ipp_jpeg_compress_la_LIBADD = $(LIBCAM_LIBS) $(FRAMEWAVE_JPEG_LIBS)
 
-convert_ipp_jpeg_decompress_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-convert_ipp_jpeg_decompress_la_LIBADD = $(LIBCAM_LIBS) $(IPP_JPEG_LIBS)
+convert_ipp_jpeg_decompress_la_LDFLAGS = -avoid-version -module
+convert_ipp_jpeg_decompress_la_LIBADD = $(LIBCAM_LIBS) $(FRAMEWAVE_JPEG_LIBS)

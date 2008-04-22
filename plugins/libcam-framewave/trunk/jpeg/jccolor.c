@@ -17,7 +17,7 @@
 /* Private subobject */
 
 typedef struct {
-  struct jpegipp_color_converter pub; /* public fields */
+  struct jpegfw_color_converter pub; /* public fields */
 
   /* Private state for RGB->YCC conversion */
   INT32 * rgb_ycc_tab;    /* => table for RGB to YCbCr conversion */
@@ -184,7 +184,7 @@ rgb_ycc_convert_intellib(
   JSAMPROW   inptr;
   JSAMPROW   outptr[3];
   JDIMENSION num_cols;
-  IppiSize   roi;
+  FwiSize   roi;
 
   inptr = *input_buf;
 
@@ -198,9 +198,9 @@ rgb_ycc_convert_intellib(
   roi.height = num_rows;
 
 #if   RGB_RED == 0 && RGB_GREEN == 1 && RGB_BLUE == 2 && RGB_PIXELSIZE == 3
-  ippiRGBToYCbCr_JPEG_8u_C3P3R(inptr,num_cols*3,outptr,num_cols,roi);
+  fwiRGBToYCbCr_JPEG_8u_C3P3R(inptr,num_cols*3,outptr,num_cols,roi);
 #elif RGB_RED == 2 && RGB_GREEN == 1 && RGB_BLUE == 0 && RGB_PIXELSIZE == 3
-  ippiBGRToYCbCr_JPEG_8u_C3P3R(inptr,num_cols*3,outptr,num_cols,roi);
+  fwiBGRToYCbCr_JPEG_8u_C3P3R(inptr,num_cols*3,outptr,num_cols,roi);
 #else
 # error "Unsupported RGB ordering from jmorecfg.h (RGB_RED, RGB_GREEN, RGB_BLUE)"
 #endif
@@ -261,7 +261,7 @@ rgb_gray_convert_intellib(
   JSAMPROW   inptr;
   JSAMPROW   outptr;
   JDIMENSION num_cols;
-  IppiSize   roi;
+  FwiSize   roi;
 
   inptr = *input_buf;
 
@@ -273,9 +273,9 @@ rgb_gray_convert_intellib(
   roi.height = num_rows;
 
 #if   RGB_RED == 0 && RGB_GREEN == 1 && RGB_BLUE == 2 && RGB_PIXELSIZE == 3
-  ippiRGBToY_JPEG_8u_C3C1R(inptr,num_cols*3,outptr,num_cols,roi);
+  fwiRGBToY_JPEG_8u_C3C1R(inptr,num_cols*3,outptr,num_cols,roi);
 #elif RGB_RED == 2 && RGB_GREEN == 1 && RGB_BLUE == 0 && RGB_PIXELSIZE == 3
-  ippiBGRToY_JPEG_8u_C3C1R(inptr,num_cols*3,outptr,num_cols,roi);
+  fwiBGRToY_JPEG_8u_C3C1R(inptr,num_cols*3,outptr,num_cols,roi);
 #else
 # error "Unsupported RGB ordering from jmorecfg.h (RGB_RED, RGB_GREEN, RGB_BLUE)"
 #endif
@@ -352,7 +352,7 @@ cmyk_ycck_convert_intellib(
   JSAMPROW   inptr;
   JSAMPROW   outptr[4];
   JDIMENSION num_cols;
-  IppiSize   roi;
+  FwiSize   roi;
 
   inptr = *input_buf;
 
@@ -366,7 +366,7 @@ cmyk_ycck_convert_intellib(
   roi.width  = num_cols;
   roi.height = num_rows;
 
-  ippiCMYKToYCCK_JPEG_8u_C4P4R(inptr,num_cols*4,outptr,num_cols,roi);
+  fwiCMYKToYCCK_JPEG_8u_C4P4R(inptr,num_cols*4,outptr,num_cols,roi);
 
   return;
 } /* cmyk_ycck_convert_intellib() */
@@ -451,14 +451,14 @@ null_method (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinitipp_color_converter (j_compress_ptr cinfo)
+jinitfw_color_converter (j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;
 
   cconvert = (my_cconvert_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_color_converter));
-  cinfo->cconvert = (struct jpegipp_color_converter *) cconvert;
+  cinfo->cconvert = (struct jpegfw_color_converter *) cconvert;
   /* set start_pass to null method until we find out differently */
   cconvert->pub.start_pass = null_method;
 
@@ -494,7 +494,7 @@ jinitipp_color_converter (j_compress_ptr cinfo)
   }
 
   /* Check num_components, set conversion method based on requested space */
-  switch (cinfo->jpegipp_color_space) {
+  switch (cinfo->jpegfw_color_space) {
   case JCS_GRAYSCALE:
     if (cinfo->num_components != 1)
       ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
@@ -503,7 +503,7 @@ jinitipp_color_converter (j_compress_ptr cinfo)
     else if (cinfo->in_color_space == JCS_RGB) {
       cconvert->pub.start_pass = rgb_ycc_start;
       {
-#ifdef IPPJ_CC
+#ifdef FWJ_CC
         cconvert->pub.color_convert = rgb_gray_convert_intellib;
 #else
         cconvert->pub.color_convert = rgb_gray_convert;
@@ -530,7 +530,7 @@ jinitipp_color_converter (j_compress_ptr cinfo)
     if (cinfo->in_color_space == JCS_RGB) {
       cconvert->pub.start_pass = rgb_ycc_start;
       {
-#ifdef IPPJ_CC
+#ifdef FWJ_CC
         cconvert->pub.color_convert = rgb_ycc_convert_intellib;
 #else
         cconvert->pub.color_convert = rgb_ycc_convert;
@@ -557,7 +557,7 @@ jinitipp_color_converter (j_compress_ptr cinfo)
     if (cinfo->in_color_space == JCS_CMYK) {
       cconvert->pub.start_pass = rgb_ycc_start;
       {
-#ifdef IPPJ_CC
+#ifdef FWJ_CC
         cconvert->pub.color_convert = cmyk_ycck_convert_intellib;
 #else
         cconvert->pub.color_convert = cmyk_ycck_convert;
@@ -570,7 +570,7 @@ jinitipp_color_converter (j_compress_ptr cinfo)
     break;
 
   default:      /* allow null conversion of JCS_UNKNOWN */
-    if (cinfo->jpegipp_color_space != cinfo->in_color_space ||
+    if (cinfo->jpegfw_color_space != cinfo->in_color_space ||
       cinfo->num_components != cinfo->input_components)
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     cconvert->pub.color_convert = null_convert;

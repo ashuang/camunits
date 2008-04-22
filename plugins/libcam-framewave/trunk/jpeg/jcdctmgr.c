@@ -21,7 +21,7 @@
 /* Private subobject for this module */
 
 typedef struct {
-  struct jpegipp_forward_dct pub;  /* public fields */
+  struct jpegfw_forward_dct pub;  /* public fields */
 
   /* Pointer to the DCT routine actually in use */
   forward_DCT_method_ptr do_dct;
@@ -56,11 +56,11 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct = (my_fdct_ptr) cinfo->fdct;
   int ci, qtblno, i;
-  jpegipp_component_info *compptr;
+  jpegfw_component_info *compptr;
   JQUANT_TBL * qtbl;
   DCTELEM * dtbl;
-#ifdef IPPJ_DCT_QNT
-  Ipp8u rawqtbl[DCTSIZE2];
+#ifdef FWJ_DCT_QNT
+  Fw8u rawqtbl[DCTSIZE2];
   int izigzag_index[DCTSIZE2] =
   {
      0,  1,  8, 16,  9,  2,  3, 10,
@@ -102,15 +102,15 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
       dtbl = fdct->divisors[qtblno];
 
       {
-#ifdef IPPJ_DCT_QNT
-        /* reorder to zig-zag, because IPPJ expect raw tables in zig-zag */
+#ifdef FWJ_DCT_QNT
+        /* reorder to zig-zag, because FWJ expect raw tables in zig-zag */
         /* but IJG have it in natural order */
         for(i = 0; i < DCTSIZE2; i++)
         {
           rawqtbl[i] = (unsigned char)qtbl->quantval[izigzag_index[i]];
         }
         /* build encoder quant table */
-        ippiQuantFwdTableInit_JPEG_8u16u(rawqtbl,(Ipp16u*)dtbl);
+        fwiQuantFwdTableInit_JPEG_8u16u(rawqtbl,(Fw16u*)dtbl);
 #else
         for(i = 0; i < DCTSIZE2; i++)
         {
@@ -213,7 +213,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
  */
 
 METHODDEF(void)
-forward_DCT (j_compress_ptr cinfo, jpegipp_component_info * compptr,
+forward_DCT (j_compress_ptr cinfo, jpegfw_component_info * compptr,
        JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
        JDIMENSION start_row, JDIMENSION start_col,
        JDIMENSION num_blocks)
@@ -313,7 +313,7 @@ forward_DCT (j_compress_ptr cinfo, jpegipp_component_info * compptr,
 METHODDEF(void)
 forward_DCT_intellib(
   j_compress_ptr       cinfo,
-  jpegipp_component_info* compptr,
+  jpegfw_component_info* compptr,
   JSAMPARRAY           sample_data,
   JBLOCKROW            coef_blocks,
   JDIMENSION           start_row,
@@ -324,8 +324,8 @@ forward_DCT_intellib(
   JDIMENSION  bi;
   my_fdct_ptr fdct = (my_fdct_ptr) cinfo->fdct;
   DCTELEM*    divisors = fdct->divisors[compptr->quant_tbl_no];
-  Ipp8u       workspace[DCTSIZE2];  /* work area for FDCT subroutine */
-  Ipp8u*      workspaceptr;
+  Fw8u       workspace[DCTSIZE2];  /* work area for FDCT subroutine */
+  Fw8u*      workspaceptr;
 
   sample_data += start_row; /* fold in the vertical offset once */
 
@@ -351,7 +351,7 @@ forward_DCT_intellib(
       *workspaceptr++ = GETJSAMPLE(*elemptr++);
     }
 
-    ippiDCTQuantFwd8x8LS_JPEG_8u16s_C1R(workspace,8,output_ptr,(Ipp16u*)divisors);
+    fwiDCTQuantFwd8x8LS_JPEG_8u16s_C1R(workspace,8,output_ptr,(Fw16u*)divisors);
   }
 
   return;
@@ -361,7 +361,7 @@ forward_DCT_intellib(
 #ifdef DCT_FLOAT_SUPPORTED
 
 METHODDEF(void)
-forward_DCT_float (j_compress_ptr cinfo, jpegipp_component_info * compptr,
+forward_DCT_float (j_compress_ptr cinfo, jpegfw_component_info * compptr,
        JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
        JDIMENSION start_row, JDIMENSION start_col,
        JDIMENSION num_blocks)
@@ -436,7 +436,7 @@ forward_DCT_float (j_compress_ptr cinfo, jpegipp_component_info * compptr,
  */
 
 GLOBAL(void)
-jinitipp_forward_dct (j_compress_ptr cinfo)
+jinitfw_forward_dct (j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct;
   int i;
@@ -444,30 +444,30 @@ jinitipp_forward_dct (j_compress_ptr cinfo)
   fdct = (my_fdct_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_fdct_controller));
-  cinfo->fdct = (struct jpegipp_forward_dct *) fdct;
+  cinfo->fdct = (struct jpegfw_forward_dct *) fdct;
   fdct->pub.start_pass = start_pass_fdctmgr;
 
   switch (cinfo->dct_method) {
 #ifdef DCT_ISLOW_SUPPORTED
   case JDCT_ISLOW:
-#ifdef IPPJ_DCT_QNT
+#ifdef FWJ_DCT_QNT
     fdct->pub.forward_DCT = forward_DCT_intellib;
 #else
     fdct->pub.forward_DCT = forward_DCT;
 #endif
-    fdct->do_dct = jpegipp_fdct_islow;
+    fdct->do_dct = jpegfw_fdct_islow;
     break;
 #endif
 #ifdef DCT_IFAST_SUPPORTED
   case JDCT_IFAST:
     fdct->pub.forward_DCT = forward_DCT;
-    fdct->do_dct = jpegipp_fdct_ifast;
+    fdct->do_dct = jpegfw_fdct_ifast;
     break;
 #endif
 #ifdef DCT_FLOAT_SUPPORTED
   case JDCT_FLOAT:
     fdct->pub.forward_DCT = forward_DCT_float;
-    fdct->do_float_dct = jpegipp_fdct_float;
+    fdct->do_float_dct = jpegfw_fdct_float;
     break;
 #endif
   default:

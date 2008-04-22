@@ -6,34 +6,33 @@
 #include <sys/time.h>
 
 #include <libcam/plugin.h>
-#include <ipp.h>
-#include <ippi.h>
+#include <fwImage.h>
 
 #define MAX_WIDTH (2 << 15)
 #define MAX_HEIGHT (2 << 15)
 #define MIN_WIDTH 1
 #define MIN_HEIGHT 1
 
-typedef struct _CamippResize CamippResize;
-typedef struct _CamippResizeClass CamippResizeClass;
+typedef struct _CamfwResize CamfwResize;
+typedef struct _CamfwResizeClass CamfwResizeClass;
 
 // boilerplate
-#define CAMIPP_TYPE_RESIZE  camipp_resize_get_type()
-#define CAMIPP_RESIZE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMIPP_TYPE_RESIZE, CamippResize))
-#define CAMIPP_RESIZE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMIPP_TYPE_RESIZE, CamippResizeClass ))
-#define IS_CAMIPP_RESIZE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMIPP_TYPE_RESIZE ))
-#define IS_CAMIPP_RESIZE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMIPP_TYPE_RESIZE))
-#define CAMIPP_RESIZE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMIPP_TYPE_RESIZE, CamippResizeClass))
+#define CAMFW_TYPE_RESIZE  camfw_resize_get_type()
+#define CAMFW_RESIZE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        CAMFW_TYPE_RESIZE, CamfwResize))
+#define CAMFW_RESIZE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
+            CAMFW_TYPE_RESIZE, CamfwResizeClass ))
+#define IS_CAMFW_RESIZE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            CAMFW_TYPE_RESIZE ))
+#define IS_CAMFW_RESIZE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
+            (klass), CAMFW_TYPE_RESIZE))
+#define CAMFW_RESIZE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
+            CAMFW_TYPE_RESIZE, CamfwResizeClass))
 
 void cam_plugin_initialize (GTypeModule * module);
 CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
-struct _CamippResize {
+struct _CamfwResize {
     CamUnit parent;
 
     int size_requested;
@@ -42,13 +41,13 @@ struct _CamippResize {
     CamUnitControl *lock_aspect_ctl;
 };
 
-struct _CamippResizeClass {
+struct _CamfwResizeClass {
     CamUnitClass parent_class;
 };
 
-GType camipp_resize_get_type (void);
+GType camfw_resize_get_type (void);
 
-static CamippResize * camipp_resize_new(void);
+static CamfwResize * camfw_resize_new(void);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
@@ -56,32 +55,32 @@ static void on_input_format_changed (CamUnit *super,
 static gboolean _try_set_control (CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
 
-CAM_PLUGIN_TYPE (CamippResize, camipp_resize, CAM_TYPE_UNIT);
+CAM_PLUGIN_TYPE (CamfwResize, camfw_resize, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
 void
 cam_plugin_initialize (GTypeModule * module)
 {
-    camipp_resize_register_type (module);
+    camfw_resize_register_type (module);
 }
 
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("filter.ipp", "resize",
-            "Resize", 0, (CamUnitConstructor)camipp_resize_new, module);
+    return cam_unit_driver_new_stock_full ("framewave", "resize",
+            "Resize", 0, (CamUnitConstructor)camfw_resize_new, module);
 }
 
 static void
-camipp_resize_class_init (CamippResizeClass *klass)
+camfw_resize_class_init (CamfwResizeClass *klass)
 {
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
     klass->parent_class.try_set_control = _try_set_control;
 }
 
 static void
-camipp_resize_init (CamippResize *self)
+camfw_resize_init (CamfwResize *self)
 {
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
@@ -103,10 +102,10 @@ camipp_resize_init (CamippResize *self)
             G_CALLBACK (on_input_format_changed), self);
 }
 
-static CamippResize * 
-camipp_resize_new()
+static CamfwResize * 
+camfw_resize_new()
 {
-    return CAMIPP_RESIZE(g_object_new(CAMIPP_TYPE_RESIZE, NULL));
+    return CAMFW_RESIZE(g_object_new(CAMFW_TYPE_RESIZE, NULL));
 }
 
 static void 
@@ -124,29 +123,29 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (super->fmt->max_data_size);
 
-    IppiSize srcSize = { infmt->width, infmt->height };
-    IppiRect srcRoi = { 0, 0, infmt->width, infmt->height };
-    IppiSize dstRoiSize = { outfmt->width, outfmt->height };
+    FwiSize srcSize = { infmt->width, infmt->height };
+    FwiRect srcRoi = { 0, 0, infmt->width, infmt->height };
+    FwiSize dstRoiSize = { outfmt->width, outfmt->height };
     
     double sf_x = (double) outfmt->width / infmt->width;
     double sf_y = (double) outfmt->height / infmt->height;
 
-    int interp_method = IPPI_INTER_LINEAR;
+    int interp_method = FWI_INTER_LINEAR;
 
     switch (infmt->pixelformat) {
         case CAM_PIXEL_FORMAT_GRAY:
-            ippiResize_8u_C1R (inbuf->data, srcSize, infmt->row_stride,
+            fwiResize_8u_C1R (inbuf->data, srcSize, infmt->row_stride,
                     srcRoi, outbuf->data, outfmt->row_stride, dstRoiSize,
                     sf_x, sf_y, interp_method);
             break;
         case CAM_PIXEL_FORMAT_RGB:
         case CAM_PIXEL_FORMAT_BGR:
-            ippiResize_8u_C3R (inbuf->data, srcSize, infmt->row_stride,
+            fwiResize_8u_C3R (inbuf->data, srcSize, infmt->row_stride,
                     srcRoi, outbuf->data, outfmt->row_stride, dstRoiSize,
                     sf_x, sf_y, interp_method);
             break;
         case CAM_PIXEL_FORMAT_BGRA:
-            ippiResize_8u_C4R (inbuf->data, srcSize, infmt->row_stride,
+            fwiResize_8u_C4R (inbuf->data, srcSize, infmt->row_stride,
                     srcRoi, outbuf->data, outfmt->row_stride, dstRoiSize,
                     sf_x, sf_y, interp_method);
             break;
@@ -164,7 +163,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 }
 
 static void
-update_output_format (CamippResize *self, int width, int height,
+update_output_format (CamfwResize *self, int width, int height,
         const CamUnitFormat *infmt)
 {
     cam_unit_remove_all_output_formats (CAM_UNIT (self));
@@ -186,7 +185,7 @@ update_output_format (CamippResize *self, int width, int height,
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamippResize *self = CAMIPP_RESIZE (super);
+    CamfwResize *self = CAMFW_RESIZE (super);
     
     if (infmt) {
         int new_width, new_height;
@@ -213,7 +212,7 @@ static gboolean
 _try_set_control (CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual)
 {
-    CamippResize *self = CAMIPP_RESIZE (super);
+    CamfwResize *self = CAMFW_RESIZE (super);
 
     int old_width = cam_unit_control_get_int (self->width_ctl);
     int old_height = cam_unit_control_get_int (self->height_ctl);

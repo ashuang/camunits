@@ -1,5 +1,5 @@
-#ifndef __camipp_jpeg_decompress_h__
-#define __camipp_jpeg_decompress_h__
+#ifndef __camfw_jpeg_decompress_h__
+#define __camfw_jpeg_decompress_h__
 
 #include <glib-object.h>
 
@@ -7,48 +7,48 @@
 
 G_BEGIN_DECLS
 
-typedef struct _CamippJpegDecompress CamippJpegDecompress;
-typedef struct _CamippJpegDecompressClass CamippJpegDecompressClass;
+typedef struct _CamfwJpegDecompress CamfwJpegDecompress;
+typedef struct _CamfwJpegDecompressClass CamfwJpegDecompressClass;
 
 // boilerplate
-#define CAMIPP_TYPE_JPEG_DECOMPRESS  camipp_jpeg_decompress_get_type()
-#define CAMIPP_JPEG_DECOMPRESS(obj)  \
+#define CAMFW_TYPE_JPEG_DECOMPRESS  camfw_jpeg_decompress_get_type()
+#define CAMFW_JPEG_DECOMPRESS(obj)  \
     (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMIPP_TYPE_JPEG_DECOMPRESS, CamippJpegDecompress))
-#define CAMIPP_JPEG_DECOMPRESS_CLASS(klass) \
+        CAMFW_TYPE_JPEG_DECOMPRESS, CamfwJpegDecompress))
+#define CAMFW_JPEG_DECOMPRESS_CLASS(klass) \
     (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMIPP_TYPE_JPEG_DECOMPRESS, CamippJpegDecompressClass ))
-#define CAMIPP_IS_JPEG_DECOMPRESS(obj)   \
+            CAMFW_TYPE_JPEG_DECOMPRESS, CamfwJpegDecompressClass ))
+#define CAMFW_IS_JPEG_DECOMPRESS(obj)   \
     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMIPP_TYPE_JPEG_DECOMPRESS ))
-#define CAMIPP_IS_JPEG_DECOMPRESS_CLASS(klass)   \
+            CAMFW_TYPE_JPEG_DECOMPRESS ))
+#define CAMFW_IS_JPEG_DECOMPRESS_CLASS(klass)   \
     (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMIPP_TYPE_JPEG_DECOMPRESS))
-#define CAMIPP_JPEG_DECOMPRESS_GET_CLASS(obj) \
+            (klass), CAMFW_TYPE_JPEG_DECOMPRESS))
+#define CAMFW_JPEG_DECOMPRESS_GET_CLASS(obj) \
     (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMIPP_TYPE_JPEG_DECOMPRESS, CamippJpegDecompressClass))
+            CAMFW_TYPE_JPEG_DECOMPRESS, CamfwJpegDecompressClass))
 
-struct _CamippJpegDecompress {
+struct _CamfwJpegDecompress {
     CamUnit parent;
     
     /*< private >*/
     CamFrameBuffer * outbuf;
 };
 
-struct _CamippJpegDecompressClass {
+struct _CamfwJpegDecompressClass {
     CamUnitClass parent_class;
 };
 
-GType camipp_jpeg_decompress_get_type (void);
+GType camfw_jpeg_decompress_get_type (void);
 
 /** 
  * Constructor.
  * 
  * Don't call this function manually.  Instead, use the unit driver
  */
-CamippJpegDecompress * camipp_jpeg_decompress_new (void);
+CamfwJpegDecompress * camfw_jpeg_decompress_new (void);
 
-CamUnitDriver * camipp_jpeg_decompress_driver_new (void);
+CamUnitDriver * camfw_jpeg_decompress_driver_new (void);
 
 G_END_DECLS
 

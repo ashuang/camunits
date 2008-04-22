@@ -41,16 +41,16 @@ typedef unsigned char boolean;
 #endif /* WIN32 */
 
 
-//#undef USE_IPP
-#define USE_IPP
+//#undef USE_FW
+#define USE_FW
 
-#ifdef USE_IPP
-#define IPPI_COPY
-#define IPPS_ZERO
-#define IPPJ_CC
-#define IPPJ_SS
-#define IPPJ_DCT_QNT
-#define IPPJ_HUFF
+#ifdef USE_FW
+#define FWI_COPY
+#define FWS_ZERO
+#define FWJ_CC
+#define FWJ_SS
+#define FWJ_DCT_QNT
+#define FWJ_HUFF
 #endif
 
 

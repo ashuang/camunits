@@ -1,14 +1,9 @@
 libcamplugin_LTLIBRARIES = \
-		   ipp_pyr_down_gauss.la ipp_resize.la
+		   framewave_resize.la
 
-INCLUDES = $(GLIB_CFLAGS) $(LIBCAM_CFLAGS) $(IPP_CFLAGS)
-
-# gaussian downsample
-ipp_pyr_down_gauss_la_SOURCES = pyr_down_gauss.c 
-ipp_pyr_down_gauss_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-ipp_pyr_down_gauss_la_LIBADD = $(LIBCAM_LIBS) $(IPP_LIBS)
+INCLUDES = $(GLIB_CFLAGS) $(LIBCAM_CFLAGS) $(FRAMEWAVE_CFLAGS)
 
 # resize
-ipp_resize_la_SOURCES = resize.c 
-ipp_resize_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-ipp_resize_la_LIBADD = $(LIBCAM_LIBS) $(IPP_LIBS)
+framewave_resize_la_SOURCES = resize.c 
+framewave_resize_la_LDFLAGS = -avoid-version -module
+framewave_resize_la_LIBADD = $(FRAMEWAVE_IMAGE_LIBS)

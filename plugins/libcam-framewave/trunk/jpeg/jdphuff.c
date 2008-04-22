@@ -54,7 +54,7 @@ typedef struct {
 
 
 typedef struct {
-  struct jpegipp_entropy_decoder pub; /* public fields */
+  struct jpegfw_entropy_decoder pub; /* public fields */
 
   /* These fields are loaded into local variables at start of each MCU.
    * In case of suspension, we exit WITHOUT updating them.
@@ -95,7 +95,7 @@ start_pass_phuff_decoder (j_decompress_ptr cinfo)
   boolean is_DC_band, bad;
   int ci, coefi, tbl;
   int *coef_bit_ptr;
-  jpegipp_component_info * compptr;
+  jpegfw_component_info * compptr;
 
   is_DC_band = (cinfo->Ss == 0);
 
@@ -166,12 +166,12 @@ start_pass_phuff_decoder (j_decompress_ptr cinfo)
     if (is_DC_band) {
       if (cinfo->Ah == 0) { /* DC refinement needs no table */
         tbl = compptr->dc_tbl_no;
-        jpegipp_make_d_derived_tbl(cinfo, TRUE, tbl,
+        jpegfw_make_d_derived_tbl(cinfo, TRUE, tbl,
             & entropy->derived_tbls[tbl]);
       }
     } else {
       tbl = compptr->ac_tbl_no;
-      jpegipp_make_d_derived_tbl(cinfo, FALSE, tbl,
+      jpegfw_make_d_derived_tbl(cinfo, FALSE, tbl,
             & entropy->derived_tbls[tbl]);
       /* remember the single active table */
       entropy->ac_derived_tbl = entropy->derived_tbls[tbl];
@@ -293,7 +293,7 @@ decode_mcu_DC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
   BITREAD_STATE_VARS;
   savable_state state;
   d_derived_tbl * tbl;
-  jpegipp_component_info * compptr;
+  jpegfw_component_info * compptr;
 
   /* Process restart marker if needed; may have to suspend */
   if (cinfo->restart_interval) {
@@ -332,7 +332,7 @@ decode_mcu_DC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
       /* Convert DC difference to actual value, update last_dc_val */
       s += state.last_dc_val[ci];
       state.last_dc_val[ci] = s;
-      /* Scale and output the coefficient (assumes jpegipp_natural_order[0]=0) */
+      /* Scale and output the coefficient (assumes jpegfw_natural_order[0]=0) */
       (*block)[0] = (JCOEF) (s << Al);
     }
 
@@ -401,7 +401,7 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
           r = GET_BITS(s);
           s = HUFF_EXTEND(r, s);
           /* Scale and output coefficient in natural (dezigzagged) order */
-          (*block)[jpegipp_natural_order[k]] = (JCOEF) (s << Al);
+          (*block)[jpegfw_natural_order[k]] = (JCOEF) (s << Al);
         } else {
           if (r == 15) {  /* ZRL */
             k += 15;    /* skip 15 zeroes in band */
@@ -563,7 +563,7 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
          * if the absolute value of the coefficient must be increased.
          */
         do {
-          thiscoef = *block + jpegipp_natural_order[k];
+          thiscoef = *block + jpegfw_natural_order[k];
           if (*thiscoef != 0) {
             CHECK_BIT_BUFFER(br_state, 1, goto undoit);
             if (GET_BITS(1)) {
@@ -581,7 +581,7 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
           k++;
         } while (k <= Se);
         if (s) {
-          int pos = jpegipp_natural_order[k];
+          int pos = jpegfw_natural_order[k];
           /* Output newly nonzero coefficient */
           (*block)[pos] = (JCOEF) s;
           /* Remember its position in case we have to suspend */
@@ -597,7 +597,7 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
        * if the absolute value of the coefficient must be increased.
        */
       for (; k <= Se; k++) {
-        thiscoef = *block + jpegipp_natural_order[k];
+        thiscoef = *block + jpegfw_natural_order[k];
         if (*thiscoef != 0) {
           CHECK_BIT_BUFFER(br_state, 1, goto undoit);
           if (GET_BITS(1)) {
@@ -638,7 +638,7 @@ undoit:
  */
 
 GLOBAL(void)
-jinitipp_phuff_decoder (j_decompress_ptr cinfo)
+jinitfw_phuff_decoder (j_decompress_ptr cinfo)
 {
   phuff_entropy_ptr entropy;
   int *coef_bit_ptr;
@@ -647,7 +647,7 @@ jinitipp_phuff_decoder (j_decompress_ptr cinfo)
   entropy = (phuff_entropy_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(phuff_entropy_decoder));
-  cinfo->entropy = (struct jpegipp_entropy_decoder *) entropy;
+  cinfo->entropy = (struct jpegfw_entropy_decoder *) entropy;
   entropy->pub.start_pass = start_pass_phuff_decoder;
 
   /* Mark derived tables unallocated */

@@ -18,7 +18,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jerror.h"
-#ifdef USE_IPP
+#ifdef USE_FW
 #include "jpegipp.h"
 #endif
 
@@ -26,7 +26,7 @@
 /* Expanded data source object for stdio input */
 
 typedef struct {
-  struct jpegipp_source_mgr pub; /* public fields */
+  struct jpegfw_source_mgr pub; /* public fields */
 
   FILE * infile;    /* source stream */
   JOCTET * buffer;    /* start of buffer */
@@ -39,7 +39,7 @@ typedef my_source_mgr * my_src_ptr;
 
 
 /*
- * Initialize source --- called by jpegipp_read_header
+ * Initialize source --- called by jpegfw_read_header
  * before any data is actually read.
  */
 
@@ -114,7 +114,7 @@ fill_input_buffer (j_decompress_ptr cinfo)
   return TRUE;
 }
 
-#ifdef IPPJ_HUFF
+#ifdef FWJ_HUFF
 METHODDEF(boolean)
 fill_input_buffer_intellib (j_decompress_ptr cinfo)
 {
@@ -210,10 +210,10 @@ skip_input_data (j_decompress_ptr cinfo, long num_bytes)
 
 
 /*
- * Terminate source --- called by jpegipp_finish_decompress
+ * Terminate source --- called by jpegfw_finish_decompress
  * after all data has been read.  Often a no-op.
  *
- * NB: *not* called by jpegipp_abort or jpegipp_destroy; surrounding
+ * NB: *not* called by jpegfw_abort or jpegfw_destroy; surrounding
  * application must deal with any cleanup that should happen even
  * for error exit.
  */
@@ -232,19 +232,19 @@ term_source (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpegipp_stdio_src (j_decompress_ptr cinfo, FILE * infile)
+jpegfw_stdio_src (j_decompress_ptr cinfo, FILE * infile)
 {
   my_src_ptr src;
 
   /* The source object and input buffer are made permanent so that a series
-   * of JPEG images can be read from the same file by calling jpegipp_stdio_src
+   * of JPEG images can be read from the same file by calling jpegfw_stdio_src
    * only before the first one.  (If we discarded the buffer at the end of
    * one image, we'd likely lose the start of the next one.)
    * This makes it unsafe to use this manager and a different source
    * manager serially with the same JPEG object.  Caveat programmer.
    */
   if (cinfo->src == NULL) { /* first time for this JPEG object? */
-    cinfo->src = (struct jpegipp_source_mgr *)
+    cinfo->src = (struct jpegfw_source_mgr *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
           SIZEOF(my_source_mgr));
     src = (my_src_ptr) cinfo->src;
@@ -255,13 +255,13 @@ jpegipp_stdio_src (j_decompress_ptr cinfo, FILE * infile)
 
   src = (my_src_ptr) cinfo->src;
   src->pub.init_source = init_source;
-#ifndef IPPJ_HUFF
+#ifndef FWJ_HUFF
   src->pub.fill_input_buffer = fill_input_buffer;
 #else
   src->pub.fill_input_buffer = fill_input_buffer_intellib;
 #endif
   src->pub.skip_input_data = skip_input_data;
-  src->pub.resync_to_restart = jpegipp_resync_to_restart; /* use default method */
+  src->pub.resync_to_restart = jpegfw_resync_to_restart; /* use default method */
   src->pub.term_source = term_source;
   src->infile = infile;
   src->pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */

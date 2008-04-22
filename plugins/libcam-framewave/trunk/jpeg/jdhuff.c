@@ -18,7 +18,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jdhuff.h"   /* Declarations shared with jdphuff.c */
-#ifdef USE_IPP
+#ifdef USE_FW
 #include "jpegipp.h"
 #endif
 
@@ -31,8 +31,8 @@
 
 typedef struct {
   int last_dc_val[MAX_COMPS_IN_SCAN]; /* last DC coef for each component */
-#ifdef IPPJ_HUFF
-  IppiDecodeHuffmanState* pDecHuffState;
+#ifdef FWJ_HUFF
+  FwiDecodeHuffmanState* pDecHuffState;
 #endif
 } savable_state;
 
@@ -42,7 +42,7 @@ typedef struct {
  * such a compiler and you change MAX_COMPS_IN_SCAN.
  */
 
-#ifndef IPPJ_HUFF
+#ifndef FWJ_HUFF
 #ifndef NO_STRUCT_ASSIGN
 #define ASSIGN_STATE(dest,src)  ((dest) = (src))
 #else
@@ -71,7 +71,7 @@ typedef struct {
 
 
 typedef struct {
-  struct jpegipp_entropy_decoder pub; /* public fields */
+  struct jpegfw_entropy_decoder pub; /* public fields */
 
   /* These fields are loaded into local variables at start of each MCU.
    * In case of suspension, we exit WITHOUT updating them.
@@ -108,7 +108,7 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci, blkn, dctbl, actbl;
-  jpegipp_component_info * compptr;
+  jpegfw_component_info * compptr;
 
   /* Check that the scan parameters Ss, Se, Ah/Al are OK for sequential JPEG.
    * This ought to be an error condition, but we make it a warning because
@@ -124,15 +124,15 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
     actbl = compptr->ac_tbl_no;
     /* Compute derived values for Huffman tables */
     /* We may do this more than once for a table, but it's not expensive */
-#ifndef IPPJ_HUFF
-    jpegipp_make_d_derived_tbl(cinfo, TRUE, dctbl,
+#ifndef FWJ_HUFF
+    jpegfw_make_d_derived_tbl(cinfo, TRUE, dctbl,
           & entropy->dc_derived_tbls[dctbl]);
-    jpegipp_make_d_derived_tbl(cinfo, FALSE, actbl,
+    jpegfw_make_d_derived_tbl(cinfo, FALSE, actbl,
           & entropy->ac_derived_tbls[actbl]);
 #else
-      jpegipp_make_d_derived_tbl_intellib(cinfo, TRUE, dctbl,
+      jpegfw_make_d_derived_tbl_intellib(cinfo, TRUE, dctbl,
             & entropy->dc_derived_tbls[dctbl]);
-      jpegipp_make_d_derived_tbl_intellib(cinfo, FALSE, actbl,
+      jpegfw_make_d_derived_tbl_intellib(cinfo, FALSE, actbl,
             & entropy->ac_derived_tbls[actbl]);
 #endif
     /* Initialize DC predictions to 0 */
@@ -161,17 +161,17 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
   entropy->bitstate.get_buffer = 0; /* unnecessary, but keeps Purify quiet */
   entropy->pub.insufficient_data = FALSE;
 
-#ifdef IPPJ_HUFF
+#ifdef FWJ_HUFF
   {
     int size = 0;
     entropy->saved.pDecHuffState = NULL;
 
-    ippiDecodeHuffmanStateGetBufSize_JPEG_8u(&size);
+    fwiDecodeHuffmanStateGetBufSize_JPEG_8u(&size);
 
-    entropy->saved.pDecHuffState = (IppiDecodeHuffmanState*)
+    entropy->saved.pDecHuffState = (FwiDecodeHuffmanState*)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE, size);
 
-    ippiDecodeHuffmanStateInit_JPEG_8u(entropy->saved.pDecHuffState);
+    fwiDecodeHuffmanStateInit_JPEG_8u(entropy->saved.pDecHuffState);
   }
 #endif
 
@@ -188,7 +188,7 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpegipp_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
+jpegfw_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
        d_derived_tbl ** pdtbl)
 {
   JHUFF_TBL *htbl;
@@ -267,7 +267,7 @@ jpegipp_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
       dtbl->maxcode[l] = -1;  /* -1 if no codes of this length */
     }
   }
-  dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpegipp_huff_decode terminates */
+  dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpegipp.huff_decode terminates */
 
   /* Compute lookahead tables to speed up decoding.
    * First we set all the table entries to 0, indicating "too long";
@@ -307,9 +307,9 @@ jpegipp_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
   }
 }
 
-#ifdef IPPJ_HUFF
+#ifdef FWJ_HUFF
 GLOBAL(void)
-jpegipp_make_d_derived_tbl_intellib(
+jpegfw_make_d_derived_tbl_intellib(
   j_decompress_ptr cinfo,
   boolean          isDC,
   int              tblno,
@@ -318,7 +318,7 @@ jpegipp_make_d_derived_tbl_intellib(
   int            size;
   JHUFF_TBL*     htbl;
   d_derived_tbl* dtbl;
-  IppStatus      status;
+  FwStatus      status;
 
   /* Note that huffsize[] and huffcode[] are filled in code-length order,
    * paralleling the order of the symbols themselves in htbl->huffval[].
@@ -345,14 +345,14 @@ jpegipp_make_d_derived_tbl_intellib(
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
           SIZEOF(d_derived_tbl));
 
-    ippiDecodeHuffmanSpecGetBufSize_JPEG_8u(&size);
+    fwiDecodeHuffmanSpecGetBufSize_JPEG_8u(&size);
 
-    (*pdtbl)->pHuffTbl = (IppiDecodeHuffmanSpec*)
+    (*pdtbl)->pHuffTbl = (FwiDecodeHuffmanSpec*)
       (*cinfo->mem->alloc_small)((j_common_ptr)cinfo,JPOOL_IMAGE,size);
   }
 
-  status = ippiDecodeHuffmanSpecInit_JPEG_8u(&htbl->bits[1],htbl->huffval,(*pdtbl)->pHuffTbl);
-  if(ippStsNoErr != status)
+  status = fwiDecodeHuffmanSpecInit_JPEG_8u(&htbl->bits[1],htbl->huffval,(*pdtbl)->pHuffTbl);
+  if(fwStsNoErr != status)
   {
     ERREXIT(cinfo,JERR_BAD_HUFF_TABLE);
   }
@@ -360,7 +360,7 @@ jpegipp_make_d_derived_tbl_intellib(
   dtbl = *pdtbl;
 
   return;
-} /* jpegipp_make_d_derived_tbl_intellib() */
+} /* jpegfw_make_d_derived_tbl_intellib() */
 #endif
 
 /*
@@ -375,7 +375,7 @@ jpegipp_make_d_derived_tbl_intellib(
  * quite slow and take time proportional to the number of places shifted.
  * (This is true with most PC compilers, for instance.)  In this case it may
  * be a win to set MIN_GET_BITS to the minimum value of 15.  This reduces the
- * average shift distance at the cost of more calls to jpegipp_fill_bit_buffer.
+ * average shift distance at the cost of more calls to jpegfw_fill_bit_buffer.
  */
 
 #ifdef SLOW_SHIFT_32
@@ -385,7 +385,7 @@ jpegipp_make_d_derived_tbl_intellib(
 #endif
 
 GLOBAL(boolean)
-jpegipp_fill_bit_buffer (bitread_working_state * state,
+jpegfw_fill_bit_buffer (bitread_working_state * state,
           register bit_buf_type get_buffer, register int bits_left,
           int nbits)
 /* Load up the bit buffer to a depth of at least nbits */
@@ -490,7 +490,7 @@ jpegipp_fill_bit_buffer (bitread_working_state * state,
  * See jdhuff.h for info about usage.
  */
 GLOBAL(int)
-jpegipp_huff_decode (bitread_working_state * state,
+jpegfw_huff_decode (bitread_working_state * state,
       register bit_buf_type get_buffer, register int bits_left,
       d_derived_tbl * htbl, int min_bits)
 {
@@ -567,11 +567,11 @@ process_restart (j_decompress_ptr cinfo)
 
   /* Throw away any unused bits remaining in bit buffer; */
   /* include any full bytes in next_marker's count of discarded bytes */
-#ifndef IPPJ_HUFF
+#ifndef FWJ_HUFF
   cinfo->marker->discarded_bytes += entropy->bitstate.bits_left / 8;
   entropy->bitstate.bits_left = 0;
 #else
-  ippiDecodeHuffmanStateInit_JPEG_8u(entropy->saved.pDecHuffState);
+  fwiDecodeHuffmanStateInit_JPEG_8u(entropy->saved.pDecHuffState);
 #endif
 
   /* Advance past the RSTn marker */
@@ -659,14 +659,14 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
         int ci = cinfo->MCU_membership[blkn];
         s += state.last_dc_val[ci];
         state.last_dc_val[ci] = s;
-        /* Output the DC coefficient (assumes jpegipp_natural_order[0] = 0) */
+        /* Output the DC coefficient (assumes jpegfw_natural_order[0] = 0) */
         (*block)[0] = (JCOEF) s;
       }
 
       if (entropy->ac_needed[blkn]) {
 
         /* Section F.2.2.2: decode the AC coefficients */
-        /* Since zeroes are skipped, output area must be cleared beforehand */
+        /* Since zeroes are skfwed, output area must be cleared beforehand */
         for (k = 1; k < DCTSIZE2; k++) {
           HUFF_DECODE(s, br_state, actbl, return FALSE, label2);
       
@@ -679,10 +679,10 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
             r = GET_BITS(s);
             s = HUFF_EXTEND(r, s);
             /* Output coefficient in natural (dezigzagged) order.
-             * Note: the extra entries in jpegipp_natural_order[] will save us
+             * Note: the extra entries in jpegfw_natural_order[] will save us
              * if k >= DCTSIZE2, which could happen if the data is corrupted.
              */
-            (*block)[jpegipp_natural_order[k]] = (JCOEF) s;
+            (*block)[jpegfw_natural_order[k]] = (JCOEF) s;
           } else {
             if (r != 15)
               break;
@@ -725,7 +725,7 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
   return TRUE;
 }
 
-#ifdef IPPJ_HUFF
+#ifdef FWJ_HUFF
 METHODDEF(boolean)
 decode_mcu_intellib(
   j_decompress_ptr cinfo,
@@ -777,12 +777,12 @@ decode_mcu_intellib(
         }
       }
 
-      ippiDecodeHuffman8x8_JPEG_1u16s_C1(
+      fwiDecodeHuffman8x8_JPEG_1u16s_C1(
         cinfo->src->next_input_byte,
         cinfo->src->bytes_in_buffer,
         &currPos,
-        (Ipp16s*)&block[0],
-        (Ipp16s*)&state.last_dc_val[ci],
+        (Fw16s*)&block[0],
+        (Fw16s*)&state.last_dc_val[ci],
         &cinfo->unread_marker,
         dctbl->pHuffTbl,
         actbl->pHuffTbl,
@@ -808,7 +808,7 @@ decode_mcu_intellib(
  */
 
 GLOBAL(void)
-jinitipp_huff_decoder (j_decompress_ptr cinfo)
+jinitfw_huff_decoder (j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;
@@ -816,9 +816,9 @@ jinitipp_huff_decoder (j_decompress_ptr cinfo)
   entropy = (huff_entropy_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(huff_entropy_decoder));
-  cinfo->entropy = (struct jpegipp_entropy_decoder *) entropy;
+  cinfo->entropy = (struct jpegfw_entropy_decoder *) entropy;
   entropy->pub.start_pass = start_pass_huff_decoder;
-#ifndef IPPJ_HUFF
+#ifndef FWJ_HUFF
   entropy->pub.decode_mcu = decode_mcu;
 #else
   entropy->pub.decode_mcu = decode_mcu_intellib;

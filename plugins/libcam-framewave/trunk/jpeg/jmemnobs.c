@@ -32,13 +32,13 @@ extern void free JPP((void *ptr));
  */
 
 GLOBAL(void *)
-jpegipp_get_small (j_common_ptr cinfo, size_t sizeofobject)
+jpegfw_get_small (j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void *) malloc(sizeofobject);
 }
 
 GLOBAL(void)
-jpegipp_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
+jpegfw_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
 {
   free(object);
 }
@@ -52,13 +52,13 @@ jpegipp_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
  */
 
 GLOBAL(void FAR *)
-jpegipp_get_large (j_common_ptr cinfo, size_t sizeofobject)
+jpegfw_get_large (j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void FAR *) malloc(sizeofobject);
 }
 
 GLOBAL(void)
-jpegipp_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
+jpegfw_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 {
   free(object);
 }
@@ -70,7 +70,7 @@ jpegipp_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
  */
 
 GLOBAL(long)
-jpegipp_mem_available (j_common_ptr cinfo, long min_bytes_needed,
+jpegfw_mem_available (j_common_ptr cinfo, long min_bytes_needed,
         long max_bytes_needed, long already_allocated)
 {
   return max_bytes_needed;
@@ -79,12 +79,12 @@ jpegipp_mem_available (j_common_ptr cinfo, long min_bytes_needed,
 
 /*
  * Backing store (temporary file) management.
- * Since jpegipp_mem_available always promised the moon,
+ * Since jpegfw_mem_available always promised the moon,
  * this should never be called and we can just error out.
  */
 
 GLOBAL(void)
-jpegipp_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+jpegfw_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
        long total_bytes_needed)
 {
   ERREXIT(cinfo, JERR_NO_BACKING_STORE);
@@ -97,13 +97,13 @@ jpegipp_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
  */
 
 GLOBAL(long)
-jpegipp_mem_init (j_common_ptr cinfo)
+jpegfw_mem_init (j_common_ptr cinfo)
 {
   return 0;     /* just set max_memory_to_use to 0 */
 }
 
 GLOBAL(void)
-jpegipp_mem_term (j_common_ptr cinfo)
+jpegfw_mem_term (j_common_ptr cinfo)
 {
   /* no work */
 }

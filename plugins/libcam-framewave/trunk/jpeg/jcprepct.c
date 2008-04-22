@@ -51,7 +51,7 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpegipp_c_prep_controller pub; /* public fields */
+  struct jpegfw_c_prep_controller pub; /* public fields */
 
   /* Downsampling input buffer.  This buffer holds color-converted data
    * until we have enough to do a downsample step.
@@ -134,7 +134,7 @@ pre_process_data (j_compress_ptr cinfo,
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
   int numrows, ci;
   JDIMENSION inrows;
-  jpegipp_component_info * compptr;
+  jpegfw_component_info * compptr;
 
   while (*in_row_ctr < in_rows_avail &&
    *out_row_group_ctr < out_row_groups_avail) {
@@ -269,7 +269,7 @@ create_context_buffer (j_compress_ptr cinfo)
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
   int rgroup_height = cinfo->max_v_samp_factor;
   int ci, i;
-  jpegipp_component_info * compptr;
+  jpegfw_component_info * compptr;
   JSAMPARRAY true_buffer, fake_buffer;
 
   /* Grab enough space for fake row pointers for all the components;
@@ -312,11 +312,11 @@ create_context_buffer (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinitipp_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+jinitfw_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_prep_ptr prep;
   int ci;
-  jpegipp_component_info * compptr;
+  jpegfw_component_info * compptr;
 
   if (need_full_buffer)   /* safety check */
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
@@ -324,7 +324,7 @@ jinitipp_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
   prep = (my_prep_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_prep_controller));
-  cinfo->prep = (struct jpegipp_c_prep_controller *) prep;
+  cinfo->prep = (struct jpegfw_c_prep_controller *) prep;
   prep->pub.start_pass = start_pass_prep;
 
   /* Allocate the color conversion buffer.

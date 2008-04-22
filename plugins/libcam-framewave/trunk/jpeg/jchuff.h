@@ -16,7 +16,7 @@
  * Hence the magnitude should always fit in 10 or 14 bits respectively.
  */
 
-#ifdef IPPJ_HUFF
+#ifdef FWJ_HUFF
 #include "jpegipp.h"
 #endif
 
@@ -32,8 +32,8 @@ typedef struct {
   unsigned int ehufco[256]; /* code for each symbol */
   char ehufsi[256];   /* length of code for each symbol */
   /* If no code has been allocated for a symbol S, ehufsi[S] contains 0 */
-#ifdef IPPJ_HUFF
-  IppiEncodeHuffmanSpec* pHuffTbl;
+#ifdef FWJ_HUFF
+  FwiEncodeHuffmanSpec* pHuffTbl;
 #endif
 } c_derived_tbl;
 
@@ -41,24 +41,24 @@ typedef struct {
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpegipp_make_c_derived_tbl jMkCDerived
-#define jpegipp_gen_optimal_table  jGenOptTbl
+#define jpegfw_make_c_derived_tbl jMkCDerived
+#define jpegfw_gen_optimal_table  jGenOptTbl
 #endif /* NEED_SHORT_EXTERNAL_NAMES */
 
 /* Expand a Huffman table definition into the derived format */
-EXTERN(void) jpegipp_make_c_derived_tbl
+EXTERN(void) jpegfw_make_c_derived_tbl
   JPP((j_compress_ptr cinfo, boolean isDC, int tblno,
        c_derived_tbl ** pdtbl));
-#ifdef IPPJ_HUFF
-EXTERN(void) jpegipp_make_c_derived_tbl_intellib
+#ifdef FWJ_HUFF
+EXTERN(void) jpegfw_make_c_derived_tbl_intellib
   JPP((j_compress_ptr cinfo, boolean isDC, int tblno,
        c_derived_tbl ** pdtbl));
 #endif
 
 /* Generate an optimal table definition given the specified counts */
-EXTERN(void) jpegipp_gen_optimal_table
+EXTERN(void) jpegfw_gen_optimal_table
   JPP((j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[]));
-#ifdef IPPJ_HUFF
-EXTERN(void) jpegipp_gen_optimal_table_intellib
+#ifdef FWJ_HUFF
+EXTERN(void) jpegfw_gen_optimal_table_intellib
   JPP((j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[]));
 #endif

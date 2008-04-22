@@ -22,49 +22,49 @@
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpegipp_get_small    jGetSmall
-#define jpegipp_free_small   jFreeSmall
-#define jpegipp_get_large    jGetLarge
-#define jpegipp_free_large   jFreeLarge
-#define jpegipp_mem_available  jMemAvail
-#define jpegipp_open_backing_store jOpenBackStore
-#define jpegipp_mem_init   jMemInit
-#define jpegipp_mem_term   jMemTerm
+#define jpegfw_get_small    jGetSmall
+#define jpegfw_free_small   jFreeSmall
+#define jpegfw_get_large    jGetLarge
+#define jpegfw_free_large   jFreeLarge
+#define jpegfw_mem_available  jMemAvail
+#define jpegfw_open_backing_store jOpenBackStore
+#define jpegfw_mem_init   jMemInit
+#define jpegfw_mem_term   jMemTerm
 #endif /* NEED_SHORT_EXTERNAL_NAMES */
 
 
 /*
  * These two functions are used to allocate and release small chunks of
- * memory.  (Typically the total amount requested through jpegipp_get_small is
+ * memory.  (Typically the total amount requested through jpegfw_get_small is
  * no more than 20K or so; this will be requested in chunks of a few K each.)
  * Behavior should be the same as for the standard library functions malloc
- * and free; in particular, jpegipp_get_small must return NULL on failure.
- * On most systems, these ARE malloc and free.  jpegipp_free_small is passed the
+ * and free; in particular, jpegfw_get_small must return NULL on failure.
+ * On most systems, these ARE malloc and free.  jpegfw_free_small is passed the
  * size of the object being freed, just in case it's needed.
  * On an 80x86 machine using small-data memory model, these manage near heap.
  */
 
-EXTERN(void *) jpegipp_get_small JPP((j_common_ptr cinfo, size_t sizeofobject));
-EXTERN(void) jpegipp_free_small JPP((j_common_ptr cinfo, void * object,
+EXTERN(void *) jpegfw_get_small JPP((j_common_ptr cinfo, size_t sizeofobject));
+EXTERN(void) jpegfw_free_small JPP((j_common_ptr cinfo, void * object,
           size_t sizeofobject));
 
 /*
  * These two functions are used to allocate and release large chunks of
- * memory (up to the total free space designated by jpegipp_mem_available).
+ * memory (up to the total free space designated by jpegfw_mem_available).
  * The interface is the same as above, except that on an 80x86 machine,
  * far pointers are used.  On most other machines these are identical to
- * the jpegipp_get/free_small routines; but we keep them separate anyway,
+ * the jpegfw_get/free_small routines; but we keep them separate anyway,
  * in case a different allocation strategy is desirable for large chunks.
  */
 
-EXTERN(void FAR *) jpegipp_get_large JPP((j_common_ptr cinfo,
+EXTERN(void FAR *) jpegfw_get_large JPP((j_common_ptr cinfo,
                size_t sizeofobject));
-EXTERN(void) jpegipp_free_large JPP((j_common_ptr cinfo, void FAR * object,
+EXTERN(void) jpegfw_free_large JPP((j_common_ptr cinfo, void FAR * object,
           size_t sizeofobject));
 
 /*
  * The macro MAX_ALLOC_CHUNK designates the maximum number of bytes that may
- * be requested in a single call to jpegipp_get_large (and jpegipp_get_small for that
+ * be requested in a single call to jpegfw_get_large (and jpegfw_get_small for that
  * matter, but that case should never come into play).  This macro is needed
  * to model the 64Kb-segment-size limit of far addressing on 80x86 machines.
  * On those machines, we expect that jconfig.h will provide a proper value.
@@ -80,18 +80,18 @@ EXTERN(void) jpegipp_free_large JPP((j_common_ptr cinfo, void FAR * object,
 
 /*
  * This routine computes the total space still available for allocation by
- * jpegipp_get_large.  If more space than this is needed, backing store will be
+ * jpegfw_get_large.  If more space than this is needed, backing store will be
  * used.  NOTE: any memory already allocated must not be counted.
  *
  * There is a minimum space requirement, corresponding to the minimum
  * feasible buffer sizes; jmemmgr.c will request that much space even if
- * jpegipp_mem_available returns zero.  The maximum space needed, enough to hold
+ * jpegfw_mem_available returns zero.  The maximum space needed, enough to hold
  * all working storage in memory, is also passed in case it is useful.
  * Finally, the total space already allocated is passed.  If no better
  * method is available, cinfo->mem->max_memory_to_use - already_allocated
  * is often a suitable calculation.
  *
- * It is OK for jpegipp_mem_available to underestimate the space available
+ * It is OK for jpegfw_mem_available to underestimate the space available
  * (that'll just lead to more backing-store access than is really necessary).
  * However, an overestimate will lead to failure.  Hence it's wise to subtract
  * a slop factor from the true available space.  5% should be enough.
@@ -100,7 +100,7 @@ EXTERN(void) jpegipp_free_large JPP((j_common_ptr cinfo, void FAR * object,
  * Conversely, zero may be returned to always use the minimum amount of memory.
  */
 
-EXTERN(long) jpegipp_mem_available JPP((j_common_ptr cinfo,
+EXTERN(long) jpegfw_mem_available JPP((j_common_ptr cinfo,
              long min_bytes_needed,
              long max_bytes_needed,
              long already_allocated));
@@ -173,26 +173,26 @@ typedef struct backing_store_struct {
  * Initial opening of a backing-store object.  This must fill in the
  * read/write/close pointers in the object.  The read/write routines
  * may take an error exit if the specified maximum file size is exceeded.
- * (If jpegipp_mem_available always returns a large value, this routine can
+ * (If jpegfw_mem_available always returns a large value, this routine can
  * just take an error exit.)
  */
 
-EXTERN(void) jpegipp_open_backing_store JPP((j_common_ptr cinfo,
+EXTERN(void) jpegfw_open_backing_store JPP((j_common_ptr cinfo,
             backing_store_ptr info,
             long total_bytes_needed));
 
 
 /*
  * These routines take care of any system-dependent initialization and
- * cleanup required.  jpegipp_mem_init will be called before anything is
+ * cleanup required.  jpegfw_mem_init will be called before anything is
  * allocated (and, therefore, nothing in cinfo is of use except the error
  * manager pointer).  It should return a suitable default value for
  * max_memory_to_use; this may subsequently be overridden by the surrounding
  * application.  (Note that max_memory_to_use is only important if
- * jpegipp_mem_available chooses to consult it ... no one else will.)
- * jpegipp_mem_term may assume that all requested memory has been freed and that
+ * jpegfw_mem_available chooses to consult it ... no one else will.)
+ * jpegfw_mem_term may assume that all requested memory has been freed and that
  * all opened backing-store objects have been closed.
  */
 
-EXTERN(long) jpegipp_mem_init JPP((j_common_ptr cinfo));
-EXTERN(void) jpegipp_mem_term JPP((j_common_ptr cinfo));
+EXTERN(long) jpegfw_mem_init JPP((j_common_ptr cinfo));
+EXTERN(void) jpegfw_mem_term JPP((j_common_ptr cinfo));

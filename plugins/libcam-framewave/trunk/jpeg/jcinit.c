@@ -27,39 +27,39 @@
  */
 
 GLOBAL(void)
-jinitipp_compress_master (j_compress_ptr cinfo)
+jinitfw_compress_master (j_compress_ptr cinfo)
 {
   /* Initialize master control (includes parameter checking/processing) */
-  jinitipp_c_master_control(cinfo, FALSE /* full compression */);
+  jinitfw_c_master_control(cinfo, FALSE /* full compression */);
 
   /* Preprocessing */
   if (! cinfo->raw_data_in) {
-    jinitipp_color_converter(cinfo);
-    jinitipp_downsampler(cinfo);
-    jinitipp_c_prep_controller(cinfo, FALSE /* never need full buffer here */);
+    jinitfw_color_converter(cinfo);
+    jinitfw_downsampler(cinfo);
+    jinitfw_c_prep_controller(cinfo, FALSE /* never need full buffer here */);
   }
   /* Forward DCT */
-  jinitipp_forward_dct(cinfo);
+  jinitfw_forward_dct(cinfo);
   /* Entropy encoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code) {
     ERREXIT(cinfo, JERR_ARITH_NOTIMPL);
   } else {
     if (cinfo->progressive_mode) {
 #ifdef C_PROGRESSIVE_SUPPORTED
-      jinitipp_phuff_encoder(cinfo);
+      jinitfw_phuff_encoder(cinfo);
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else
-      jinitipp_huff_encoder(cinfo);
+      jinitfw_huff_encoder(cinfo);
   }
 
   /* Need a full-image coefficient buffer in any multi-pass mode. */
-  jinitipp_c_coef_controller(cinfo,
+  jinitfw_c_coef_controller(cinfo,
     (boolean) (cinfo->num_scans > 1 || cinfo->optimize_coding));
-  jinitipp_c_main_controller(cinfo, FALSE /* never need full buffer here */);
+  jinitfw_c_main_controller(cinfo, FALSE /* never need full buffer here */);
 
-  jinitipp_marker_writer(cinfo);
+  jinitfw_marker_writer(cinfo);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);

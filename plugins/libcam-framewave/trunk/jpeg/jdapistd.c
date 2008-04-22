@@ -9,7 +9,7 @@
  * of the JPEG library.  These are the "standard" API routines that are
  * used in the normal full-decompression case.  They are not used by a
  * transcoding-only application.  Note that if an application links in
- * jpegipp_start_decompress, it will end up linking in the entire decompressor.
+ * jpegfw_start_decompress, it will end up linking in the entire decompressor.
  * We thus must separate this file from jdapimin.c to avoid linking the
  * whole decompression library into a transcoder.
  */
@@ -25,7 +25,7 @@ LOCAL(boolean) output_pass_setup JPP((j_decompress_ptr cinfo));
 
 /*
  * Decompression initialization.
- * jpegipp_read_header must be completed before calling this.
+ * jpegfw_read_header must be completed before calling this.
  *
  * If a multipass operating mode was selected, this will do all but the
  * last pass, and thus may take a great deal of time.
@@ -35,13 +35,13 @@ LOCAL(boolean) output_pass_setup JPP((j_decompress_ptr cinfo));
  */
 
 GLOBAL(boolean)
-jpegipp_start_decompress (j_decompress_ptr cinfo)
+jpegfw_start_decompress (j_decompress_ptr cinfo)
 {
   if (cinfo->global_state == DSTATE_READY) {
     /* First call: initialize master control, select active modules */
-    jinitipp_master_decompress(cinfo);
+    jinitfw_master_decompress(cinfo);
     if (cinfo->buffered_image) {
-      /* No more work here; expecting jpegipp_start_output next */
+      /* No more work here; expecting jpegfw_start_output next */
       cinfo->global_state = DSTATE_BUFIMAGE;
       return TRUE;
     }
@@ -85,7 +85,7 @@ jpegipp_start_decompress (j_decompress_ptr cinfo)
 
 /*
  * Set up for an output pass, and perform any dummy pass(es) needed.
- * Common subroutine for jpegipp_start_decompress and jpegipp_start_output.
+ * Common subroutine for jpegfw_start_decompress and jpegfw_start_output.
  * Entry: global_state = DSTATE_PRESCAN only if previously suspended.
  * Exit: If done, returns TRUE and sets global_state for proper output mode.
  *       If suspended, returns FALSE and sets global_state = DSTATE_PRESCAN.
@@ -128,7 +128,7 @@ output_pass_setup (j_decompress_ptr cinfo)
 #endif /* QUANT_2PASS_SUPPORTED */
   }
   /* Ready for application to drive output pass through
-   * jpegipp_read_scanlines or jpegipp_read_raw_data.
+   * jpegfw_read_scanlines or jpegfw_read_raw_data.
    */
   cinfo->global_state = cinfo->raw_data_out ? DSTATE_RAW_OK : DSTATE_SCANNING;
   return TRUE;
@@ -143,13 +143,13 @@ output_pass_setup (j_decompress_ptr cinfo)
  * including bottom of image, data source suspension, and operating
  * modes that emit multiple scanlines at a time.
  *
- * Note: we warn about excess calls to jpegipp_read_scanlines() since
+ * Note: we warn about excess calls to jpegfw_read_scanlines() since
  * this likely signals an application programmer error.  However,
  * an oversize buffer (max_lines > scanlines remaining) is not an error.
  */
 
 GLOBAL(JDIMENSION)
-jpegipp_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
+jpegfw_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
          JDIMENSION max_lines)
 {
   JDIMENSION row_ctr;
@@ -182,7 +182,7 @@ jpegipp_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
  */
 
 GLOBAL(JDIMENSION)
-jpegipp_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
+jpegfw_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
         JDIMENSION max_lines)
 {
   JDIMENSION lines_per_iMCU_row;
@@ -225,7 +225,7 @@ jpegipp_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
  */
 
 GLOBAL(boolean)
-jpegipp_start_output (j_decompress_ptr cinfo, int scan_number)
+jpegfw_start_output (j_decompress_ptr cinfo, int scan_number)
 {
   if (cinfo->global_state != DSTATE_BUFIMAGE &&
       cinfo->global_state != DSTATE_PRESCAN)
@@ -250,7 +250,7 @@ jpegipp_start_output (j_decompress_ptr cinfo, int scan_number)
  */
 
 GLOBAL(boolean)
-jpegipp_finish_output (j_decompress_ptr cinfo)
+jpegfw_finish_output (j_decompress_ptr cinfo)
 {
   if ((cinfo->global_state == DSTATE_SCANNING ||
        cinfo->global_state == DSTATE_RAW_OK) && cinfo->buffered_image) {

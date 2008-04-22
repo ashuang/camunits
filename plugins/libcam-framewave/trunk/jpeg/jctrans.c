@@ -25,7 +25,7 @@ LOCAL(void) transencode_coef_controller
 /*
  * Compression initialization for writing raw-coefficient data.
  * Before calling this, all parameters and a data destination must be set up.
- * Call jpegipp_finish_compress() to actually write the data.
+ * Call jpegfw_finish_compress() to actually write the data.
  *
  * The number of passed virtual arrays must match cinfo->num_components.
  * Note that the virtual arrays need not be filled or even realized at
@@ -35,19 +35,19 @@ LOCAL(void) transencode_coef_controller
  */
 
 GLOBAL(void)
-jpegipp_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
+jpegfw_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 {
   if (cinfo->global_state != CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Mark all tables to be written */
-  jpegipp_suppress_tables(cinfo, FALSE);
+  jpegfw_suppress_tables(cinfo, FALSE);
   /* (Re)initialize error mgr and destination modules */
   (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
   /* Perform master selection of active modules */
   transencode_master_selection(cinfo, coef_arrays);
-  /* Wait for jpegipp_finish_compress() call */
-  cinfo->next_scanline = 0; /* so jpegipp_write_marker works */
+  /* Wait for jpegfw_finish_compress() call */
+  cinfo->next_scanline = 0; /* so jpegfw_write_marker works */
   cinfo->global_state = CSTATE_WRCOEFS;
 }
 
@@ -60,11 +60,11 @@ jpegipp_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays
  */
 
 GLOBAL(void)
-jpegipp_copy_critical_parameters (j_decompress_ptr srcinfo,
+jpegfw_copy_critical_parameters (j_decompress_ptr srcinfo,
              j_compress_ptr dstinfo)
 {
   JQUANT_TBL ** qtblptr;
-  jpegipp_component_info *incomp, *outcomp;
+  jpegfw_component_info *incomp, *outcomp;
   JQUANT_TBL *c_quant, *slot_quant;
   int tblno, ci, coefi;
 
@@ -75,13 +75,13 @@ jpegipp_copy_critical_parameters (j_decompress_ptr srcinfo,
   dstinfo->image_width = srcinfo->image_width;
   dstinfo->image_height = srcinfo->image_height;
   dstinfo->input_components = srcinfo->num_components;
-  dstinfo->in_color_space = srcinfo->jpegipp_color_space;
+  dstinfo->in_color_space = srcinfo->jpegfw_color_space;
   /* Initialize all parameters to default values */
-  jpegipp_set_defaults(dstinfo);
-  /* jpegipp_set_defaults may choose wrong colorspace, eg YCbCr if input is RGB.
+  jpegfw_set_defaults(dstinfo);
+  /* jpegfw_set_defaults may choose wrong colorspace, eg YCbCr if input is RGB.
    * Fix it to get the right header markers for the image colorspace.
    */
-  jpegipp_set_colorspace(dstinfo, srcinfo->jpegipp_color_space);
+  jpegfw_set_colorspace(dstinfo, srcinfo->jpegfw_color_space);
   dstinfo->data_precision = srcinfo->data_precision;
   dstinfo->CCIR601_sampling = srcinfo->CCIR601_sampling;
   /* Copy the source's quantization tables. */
@@ -89,7 +89,7 @@ jpegipp_copy_critical_parameters (j_decompress_ptr srcinfo,
     if (srcinfo->quant_tbl_ptrs[tblno] != NULL) {
       qtblptr = & dstinfo->quant_tbl_ptrs[tblno];
       if (*qtblptr == NULL)
-        *qtblptr = jpegipp_alloc_quant_table((j_common_ptr) dstinfo);
+        *qtblptr = jpegfw_alloc_quant_table((j_common_ptr) dstinfo);
       MEMCOPY((*qtblptr)->quantval,
         srcinfo->quant_tbl_ptrs[tblno]->quantval,
         SIZEOF((*qtblptr)->quantval));
@@ -97,7 +97,7 @@ jpegipp_copy_critical_parameters (j_decompress_ptr srcinfo,
     }
   }
   /* Copy the source's per-component info.
-   * Note we assume jpegipp_set_defaults has allocated the dest comp_info array.
+   * Note we assume jpegfw_set_defaults has allocated the dest comp_info array.
    */
   dstinfo->num_components = srcinfo->num_components;
   if (dstinfo->num_components < 1 || dstinfo->num_components > MAX_COMPONENTS)
@@ -126,7 +126,7 @@ jpegipp_copy_critical_parameters (j_decompress_ptr srcinfo,
       }
     }
     /* Note: we do not copy the source's Huffman table assignments;
-     * instead we rely on jpegipp_set_colorspace to have made a suitable choice.
+     * instead we rely on jpegfw_set_colorspace to have made a suitable choice.
      */
   }
   /* Also copy JFIF version and resolution information, if available.
@@ -163,7 +163,7 @@ transencode_master_selection (j_compress_ptr cinfo,
    */
   cinfo->input_components = 1;
   /* Initialize master control (includes parameter checking/processing) */
-  jinitipp_c_master_control(cinfo, TRUE /* transcode only */);
+  jinitfw_c_master_control(cinfo, TRUE /* transcode only */);
 
   /* Entropy encoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code) {
@@ -171,18 +171,18 @@ transencode_master_selection (j_compress_ptr cinfo,
   } else {
     if (cinfo->progressive_mode) {
 #ifdef C_PROGRESSIVE_SUPPORTED
-      jinitipp_phuff_encoder(cinfo);
+      jinitfw_phuff_encoder(cinfo);
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else
-      jinitipp_huff_encoder(cinfo);
+      jinitfw_huff_encoder(cinfo);
   }
 
   /* We need a special coefficient buffer controller. */
   transencode_coef_controller(cinfo, coef_arrays);
 
-  jinitipp_marker_writer(cinfo);
+  jinitfw_marker_writer(cinfo);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
@@ -206,7 +206,7 @@ transencode_master_selection (j_compress_ptr cinfo,
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpegipp_c_coef_controller pub; /* public fields */
+  struct jpegfw_c_coef_controller pub; /* public fields */
 
   JDIMENSION iMCU_row_num;  /* iMCU row # within image */
   JDIMENSION mcu_ctr;   /* counts MCUs processed in current row */
@@ -286,7 +286,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
   JBLOCKARRAY buffer[MAX_COMPS_IN_SCAN];
   JBLOCKROW MCU_buffer[C_MAX_BLOCKS_IN_MCU];
   JBLOCKROW buffer_ptr;
-  jpegipp_component_info *compptr;
+  jpegfw_component_info *compptr;
 
   /* Align the virtual buffers for the components used in this scan. */
   for (ci = 0; ci < cinfo->comps_in_scan; ci++) {
@@ -370,7 +370,7 @@ transencode_coef_controller (j_compress_ptr cinfo,
   coef = (my_coef_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_coef_controller));
-  cinfo->coef = (struct jpegipp_c_coef_controller *) coef;
+  cinfo->coef = (struct jpegfw_c_coef_controller *) coef;
   coef->pub.start_pass = start_pass_coef;
   coef->pub.compress_data = compress_output;
 

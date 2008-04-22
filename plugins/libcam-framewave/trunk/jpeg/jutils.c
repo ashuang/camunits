@@ -17,13 +17,13 @@
 
 
 /*
- * jpegipp_zigzag_order[i] is the zigzag-order position of the i'th element
+ * jpegfw_zigzag_order[i] is the zigzag-order position of the i'th element
  * of a DCT block read in natural order (left to right, top to bottom).
  */
 
 #if 0       /* This table is not actually needed in v6a */
 
-const int jpegipp_zigzag_order[DCTSIZE2] = {
+const int jpegfw_zigzag_order[DCTSIZE2] = {
    0,  1,  5,  6, 14, 15, 27, 28,
    2,  4,  7, 13, 16, 26, 29, 42,
    3,  8, 12, 17, 25, 30, 41, 43,
@@ -37,7 +37,7 @@ const int jpegipp_zigzag_order[DCTSIZE2] = {
 #endif
 
 /*
- * jpegipp_natural_order[i] is the natural-order position of the i'th element
+ * jpegfw_natural_order[i] is the natural-order position of the i'th element
  * of zigzag order.
  *
  * When reading corrupted data, the Huffman decoders could attempt
@@ -50,7 +50,7 @@ const int jpegipp_zigzag_order[DCTSIZE2] = {
  * fake entries.
  */
 
-const int jpegipp_natural_order[DCTSIZE2+16] = {
+const int jpegfw_natural_order[DCTSIZE2+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4,  5,
  12, 19, 26, 33, 40, 48, 41, 34,

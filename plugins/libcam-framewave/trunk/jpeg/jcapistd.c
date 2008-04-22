@@ -9,7 +9,7 @@
  * of the JPEG library.  These are the "standard" API routines that are
  * used in the normal full-compression case.  They are not used by a
  * transcoding-only application.  Note that if an application links in
- * jpegipp_start_compress, it will end up linking in the entire compressor.
+ * jpegfw_start_compress, it will end up linking in the entire compressor.
  * We thus must separate this file from jcapimin.c to avoid linking the
  * whole compression library into a transcoder.
  */
@@ -35,23 +35,23 @@
  */
 
 GLOBAL(void)
-jpegipp_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
+jpegfw_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
 {
   if (cinfo->global_state != CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (write_all_tables)
-    jpegipp_suppress_tables(cinfo, FALSE); /* mark all tables to be written */
+    jpegfw_suppress_tables(cinfo, FALSE); /* mark all tables to be written */
 
   /* (Re)initialize error mgr and destination modules */
   (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
   /* Perform master selection of active modules */
-  jinitipp_compress_master(cinfo);
+  jinitfw_compress_master(cinfo);
   /* Set up for the first pass */
   (*cinfo->master->prepare_for_pass) (cinfo);
-  /* Ready for application to drive first pass through jpegipp_write_scanlines
-   * or jpegipp_write_raw_data.
+  /* Ready for application to drive first pass through jpegfw_write_scanlines
+   * or jpegfw_write_raw_data.
    */
   cinfo->next_scanline = 0;
   cinfo->global_state = (cinfo->raw_data_in ? CSTATE_RAW_OK : CSTATE_SCANNING);
@@ -66,7 +66,7 @@ jpegipp_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
  * the data destination module has requested suspension of the compressor,
  * or if more than image_height scanlines are passed in.
  *
- * Note: we warn about excess calls to jpegipp_write_scanlines() since
+ * Note: we warn about excess calls to jpegfw_write_scanlines() since
  * this likely signals an application programmer error.  However,
  * excess scanlines passed in the last valid call are *silently* ignored,
  * so that the application need not adjust num_lines for end-of-image
@@ -74,7 +74,7 @@ jpegipp_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
  */
 
 GLOBAL(JDIMENSION)
-jpegipp_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
+jpegfw_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
           JDIMENSION num_lines)
 {
   JDIMENSION row_ctr, rows_left;
@@ -92,9 +92,9 @@ jpegipp_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
   }
 
   /* Give master control module another chance if this is first call to
-   * jpegipp_write_scanlines.  This lets output of the frame/scan headers be
+   * jpegfw_write_scanlines.  This lets output of the frame/scan headers be
    * delayed so that application can write COM, etc, markers between
-   * jpegipp_start_compress and jpegipp_write_scanlines.
+   * jpegfw_start_compress and jpegfw_write_scanlines.
    */
   if (cinfo->master->call_pass_startup)
     (*cinfo->master->pass_startup) (cinfo);
@@ -117,7 +117,7 @@ jpegipp_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
  */
 
 GLOBAL(JDIMENSION)
-jpegipp_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
+jpegfw_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
          JDIMENSION num_lines)
 {
   JDIMENSION lines_per_iMCU_row;
@@ -137,9 +137,9 @@ jpegipp_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
   }
 
   /* Give master control module another chance if this is first call to
-   * jpegipp_write_raw_data.  This lets output of the frame/scan headers be
+   * jpegfw_write_raw_data.  This lets output of the frame/scan headers be
    * delayed so that application can write COM, etc, markers between
-   * jpegipp_start_compress and jpegipp_write_raw_data.
+   * jpegfw_start_compress and jpegfw_write_raw_data.
    */
   if (cinfo->master->call_pass_startup)
     (*cinfo->master->pass_startup) (cinfo);

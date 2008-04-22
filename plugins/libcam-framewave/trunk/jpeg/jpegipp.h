@@ -9,46 +9,46 @@
 //
 */
 
-#ifndef __JPEGIPP_H__
-#define __JPEGIPP_H__
+#ifndef __JPEGFW_H__
+#define __JPEGFW_H__
 
 #include "jinclude.h"
 #include "jpeglib.h"
 
-#ifndef __IPPJ_H__
-#include "ippj.h"
+#ifndef __FWJ_H__
+#include "fwJPEG.h"
 #endif
 
 
-/* uncomment it for IPP v1.1 beta */
-//#define IPP_11_BETA
+/* uncomment it for FW v1.1 beta */
+//#define FW_11_BETA
 
 
-//#define IPP_VER 11
-/* uncomment it to use new functions in ippJP v 2.0 */
-#define IPP_VER 20
+//#define FW_VER 11
+/* uncomment it to use new functions in fwJP v 2.0 */
+#define FW_VER 20
 
-/* We have changed some names after ippJP v1.1 Beta was released */
-#ifdef IPP_11_BETA
+/* We have changed some names after fwJP v1.1 Beta was released */
+#ifdef FW_11_BETA
 
-#define IppiEncodeHuffmanState                   IppiEncoderHuffmanState
-#define IppiDecodeHuffmanState                   IppiDecoderHuffmanState
-#define IppiEncodeHuffmanSpec                    IppiEncoderHuffmanSpec
-#define IppiDecodeHuffmanSpec                    IppiDecoderHuffmanSpec
+#define FwiEncodeHuffmanState                   FwiEncoderHuffmanState
+#define FwiDecodeHuffmanState                   FwiDecoderHuffmanState
+#define FwiEncodeHuffmanSpec                    FwiEncoderHuffmanSpec
+#define FwiDecodeHuffmanSpec                    FwiDecoderHuffmanSpec
 
-#define ippiQuantFwdTableInit_JPEG_8u16u         ippiQuantFwdSpecInit_JPEG_8u16u
-#define ippiEncodeHuffmanRawTableInit_JPEG_8u    ippiEncoderHuffmanRawSpecInit_JPEG_8u
+#define fwiQuantFwdTableInit_JPEG_8u16u         fwiQuantFwdSpecInit_JPEG_8u16u
+#define fwiEncodeHuffmanRawTableInit_JPEG_8u    fwiEncoderHuffmanRawSpecInit_JPEG_8u
 
-#define ippiDecodeHuffmanSpecGetBufSize_JPEG_8u  ippiDecoderHuffmanSpecGetBufSize_JPEG_8u
-#define ippiDecodeHuffmanSpecInit_JPEG_8u        ippiDecoderHuffmanSpecInit_JPEG_8u
-#define ippiDecodeHuffmanStateGetBufSize_JPEG_8u ippiDecoderHuffmanStateGetBufSize_JPEG_8u
-#define ippiDecodeHuffmanStateInit_JPEG_8u       ippiDecoderHuffmanStateInit_JPEG_8u
-#define ippiDecodeHuffman8x8_JPEG_1u16s_C1       ippiDecoderHuffman8x8_JPEG_1u16s_C1
-#define ippiEncodeHuffmanSpecInit_JPEG_8u        ippiEncoderHuffmanSpecInit_JPEG_8u
-#define ippiEncodeHuffmanSpecGetBufSize_JPEG_8u  ippiEncoderHuffmanSpecGetBufSize_JPEG_8u
-#define ippiEncodeHuffmanStateGetBufSize_JPEG_8u ippiEncoderHuffmanStateGetBufSize_JPEG_8u
-#define ippiEncodeHuffmanStateInit_JPEG_8u       ippiEncoderHuffmanStateInit_JPEG_8u
-#define ippiEncodeHuffman8x8_JPEG_16s1u_C1       ippiEncoderHuffman8x8_JPEG_16s1u_C1
+#define fwiDecodeHuffmanSpecGetBufSize_JPEG_8u  fwiDecoderHuffmanSpecGetBufSize_JPEG_8u
+#define fwiDecodeHuffmanSpecInit_JPEG_8u        fwiDecoderHuffmanSpecInit_JPEG_8u
+#define fwiDecodeHuffmanStateGetBufSize_JPEG_8u fwiDecoderHuffmanStateGetBufSize_JPEG_8u
+#define fwiDecodeHuffmanStateInit_JPEG_8u       fwiDecoderHuffmanStateInit_JPEG_8u
+#define fwiDecodeHuffman8x8_JPEG_1u16s_C1       fwiDecoderHuffman8x8_JPEG_1u16s_C1
+#define fwiEncodeHuffmanSpecInit_JPEG_8u        fwiEncoderHuffmanSpecInit_JPEG_8u
+#define fwiEncodeHuffmanSpecGetBufSize_JPEG_8u  fwiEncoderHuffmanSpecGetBufSize_JPEG_8u
+#define fwiEncodeHuffmanStateGetBufSize_JPEG_8u fwiEncoderHuffmanStateGetBufSize_JPEG_8u
+#define fwiEncodeHuffmanStateInit_JPEG_8u       fwiEncoderHuffmanStateInit_JPEG_8u
+#define fwiEncodeHuffman8x8_JPEG_16s1u_C1       fwiEncoderHuffman8x8_JPEG_16s1u_C1
 
 #endif
 
@@ -85,7 +85,7 @@ cmyk_ycck_convert_intellib(
 METHODDEF(void)
 forward_DCT_intellib(
   j_compress_ptr       cinfo,
-  jpegipp_component_info* compptr,
+  jpegfw_component_info* compptr,
   JSAMPARRAY           sample_data,
   JBLOCKROW            coef_blocks,
   JDIMENSION           start_row,
@@ -94,9 +94,9 @@ forward_DCT_intellib(
 
 /* inverse DCT */
 GLOBAL(void)
-jpegipp_idct_islow_intellib(
+jpegfw_idct_islow_intellib(
   j_decompress_ptr     cinfo,
-  jpegipp_component_info* compptr,
+  jpegfw_component_info* compptr,
   JCOEFPTR             coef_block,
   JSAMPARRAY           output_buf,
   JDIMENSION           output_col);
@@ -126,7 +126,7 @@ ycck_cmyk_convert_intellib(
 METHODDEF(void)
 h2v1_downsample_intellib(
   j_compress_ptr       cinfo,
-  jpegipp_component_info* compptr,
+  jpegfw_component_info* compptr,
   JSAMPARRAY           input_data,
   JSAMPARRAY           output_data);
 
@@ -144,7 +144,7 @@ htest_one_block_intellib(
   long           ac_counts[]);
 
 GLOBAL(void)
-jpegipp_gen_optimal_table_intellib(
+jpegfw_gen_optimal_table_intellib(
   j_compress_ptr cinfo,
   JHUFF_TBL*     htbl,
   long           freq[]);
@@ -154,4 +154,4 @@ METHODDEF(boolean)
 fill_input_buffer_intellib (j_decompress_ptr cinfo);
 
 
-#endif /* __JPEGIPP_H__ */
+#endif /* __JPEGFW_H__ */

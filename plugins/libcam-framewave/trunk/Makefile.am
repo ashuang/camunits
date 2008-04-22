@@ -1,2 +1,2 @@
-SUBDIRS = jpeg plugins po
+SUBDIRS = plugins jpeg po
 ACLOCAL_AMFLAGS = -I m4

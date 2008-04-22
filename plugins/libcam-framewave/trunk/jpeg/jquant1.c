@@ -140,7 +140,7 @@ typedef FSERROR FAR *FSERRPTR;  /* pointer to error array (in FAR storage!) */
 #define MAX_Q_COMPS 4   /* max components I can handle */
 
 typedef struct {
-  struct jpegipp_color_quantizer pub; /* public fields */
+  struct jpegfw_color_quantizer pub; /* public fields */
 
   /* Initially allocated colormap is saved here */
   JSAMPARRAY sv_colormap; /* The color map as a 2-D pixel array */
@@ -818,14 +818,14 @@ new_color_map_1_quant (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinitipp_1pass_quantizer (j_decompress_ptr cinfo)
+jinitfw_1pass_quantizer (j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize;
 
   cquantize = (my_cquantize_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_cquantizer));
-  cinfo->cquantize = (struct jpegipp_color_quantizer *) cquantize;
+  cinfo->cquantize = (struct jpegfw_color_quantizer *) cquantize;
   cquantize->pub.start_pass = start_pass_1_quant;
   cquantize->pub.finish_pass = finish_pass_1_quant;
   cquantize->pub.new_color_map = new_color_map_1_quant;

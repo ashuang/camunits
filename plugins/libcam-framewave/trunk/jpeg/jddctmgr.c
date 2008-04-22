@@ -42,7 +42,7 @@
 /* Private subobject for this module */
 
 typedef struct {
-  struct jpegipp_inverse_dct pub;  /* public fields */
+  struct jpegfw_inverse_dct pub;  /* public fields */
 
   /* This array contains the IDCT method code that each multiplier table
    * is currently set up for, or -1 if it's not yet set up.
@@ -91,7 +91,7 @@ start_pass (j_decompress_ptr cinfo)
 {
   my_idct_ptr idct = (my_idct_ptr) cinfo->idct;
   int ci, i;
-  jpegipp_component_info *compptr;
+  jpegfw_component_info *compptr;
   int method = 0;
   inverse_DCT_method_ptr method_ptr = NULL;
   JQUANT_TBL * qtbl;
@@ -102,15 +102,15 @@ start_pass (j_decompress_ptr cinfo)
     switch (compptr->DCT_scaled_size) {
 #ifdef IDCT_SCALING_SUPPORTED
     case 1:
-      method_ptr = jpegipp_idct_1x1;
+      method_ptr = jpegfw_idct_1x1;
       method = JDCT_ISLOW;  /* jidctred uses islow-style table */
       break;
     case 2:
-      method_ptr = jpegipp_idct_2x2;
+      method_ptr = jpegfw_idct_2x2;
       method = JDCT_ISLOW;  /* jidctred uses islow-style table */
       break;
     case 4:
-      method_ptr = jpegipp_idct_4x4;
+      method_ptr = jpegfw_idct_4x4;
       method = JDCT_ISLOW;  /* jidctred uses islow-style table */
       break;
 #endif
@@ -119,10 +119,10 @@ start_pass (j_decompress_ptr cinfo)
 #ifdef DCT_ISLOW_SUPPORTED
       case JDCT_ISLOW:
         {
-#ifdef IPPJ_DCT_QNT
-          method_ptr = jpegipp_idct_islow_intellib;
+#ifdef FWJ_DCT_QNT
+          method_ptr = jpegfw_idct_islow_intellib;
 #else
-          method_ptr = jpegipp_idct_islow;
+          method_ptr = jpegfw_idct_islow;
 #endif
         }
         method = JDCT_ISLOW;
@@ -130,13 +130,13 @@ start_pass (j_decompress_ptr cinfo)
 #endif
 #ifdef DCT_IFAST_SUPPORTED
       case JDCT_IFAST:
-        method_ptr = jpegipp_idct_ifast;
+        method_ptr = jpegfw_idct_ifast;
         method = JDCT_IFAST;
         break;
 #endif
 #ifdef DCT_FLOAT_SUPPORTED
       case JDCT_FLOAT:
-        method_ptr = jpegipp_idct_float;
+        method_ptr = jpegfw_idct_float;
         method = JDCT_FLOAT;
         break;
 #endif
@@ -252,16 +252,16 @@ start_pass (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinitipp_inverse_dct (j_decompress_ptr cinfo)
+jinitfw_inverse_dct (j_decompress_ptr cinfo)
 {
   my_idct_ptr idct;
   int ci;
-  jpegipp_component_info *compptr;
+  jpegfw_component_info *compptr;
 
   idct = (my_idct_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
         SIZEOF(my_idct_controller));
-  cinfo->idct = (struct jpegipp_inverse_dct *) idct;
+  cinfo->idct = (struct jpegfw_inverse_dct *) idct;
   idct->pub.start_pass = start_pass;
 
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;

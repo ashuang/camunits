@@ -146,7 +146,7 @@
  */
 
 GLOBAL(void)
-jpegipp_idct_islow (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
+jpegfw_idct_islow (j_decompress_ptr cinfo, jpegfw_component_info * compptr,
      JCOEFPTR coef_block,
      JSAMPARRAY output_buf, JDIMENSION output_col)
 {
@@ -390,26 +390,26 @@ jpegipp_idct_islow (j_decompress_ptr cinfo, jpegipp_component_info * compptr,
 
 
 GLOBAL(void)
-jpegipp_idct_islow_intellib(
+jpegfw_idct_islow_intellib(
   j_decompress_ptr     cinfo,
-  jpegipp_component_info* compptr,
+  jpegfw_component_info* compptr,
   JCOEFPTR             coef_block,
   JSAMPARRAY           output_buf,
   JDIMENSION           output_col)
 {
   int       ctr;
   JCOEFPTR  inptr;
-  Ipp16u*   quantptr;
-  Ipp8u*    wsptr;
-  Ipp8u     workspace[DCTSIZE2];
+  Fw16u*   quantptr;
+  Fw8u*    wsptr;
+  Fw8u     workspace[DCTSIZE2];
   JSAMPROW  outptr;
 
   inptr = coef_block;
-  quantptr = (Ipp16u*)compptr->dct_table;
+  quantptr = (Fw16u*)compptr->dct_table;
 
   wsptr = workspace;
 
-  ippiDCTQuantInv8x8LS_JPEG_16s8u_C1R(inptr,workspace,8,quantptr);
+  fwiDCTQuantInv8x8LS_JPEG_16s8u_C1R(inptr,workspace,8,quantptr);
 
   for(ctr = 0; ctr < DCTSIZE; ctr++)
   {
@@ -428,7 +428,7 @@ jpegipp_idct_islow_intellib(
   }
 
   return;
-} /* jpegipp_idct_islow_intellib() */
+} /* jpegfw_idct_islow_intellib() */
 
 
 #endif /* DCT_ISLOW_SUPPORTED */
