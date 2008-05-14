@@ -275,8 +275,12 @@ log_try_produce_frame (CamUnit *super)
         // frame to get the next frame event time
         CamLogFrameInfo next_frameinfo;
         cam_log_get_frame_info (self->camlog, &next_frameinfo);
+
+//        // XXX why does this blow up?
+//        int64_t dt = 
+//            (int64_t)((next_frameinfo.timestamp - frameinfo.timestamp) / speed);
         int64_t dt = 
-            (int64_t)((next_frameinfo.timestamp - frameinfo.timestamp) / speed);
+            (int64_t)((int)(next_frameinfo.timestamp - frameinfo.timestamp) / speed);
 
         self->next_frame_time = now + dt;
         dbg (DBG_INPUT, "usec until next frame: %"PRId64"\n", dt);
