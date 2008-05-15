@@ -18,6 +18,13 @@
 
 #define V4L_BASE   "/dev/video"
 
+static inline int64_t _timestamp_now()
+{
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    return (int64_t) (((int64_t) tv.tv_sec) * 1000000 + tv.tv_usec);
+}
+
 static int
 open_v4l_device (int num, struct video_capability * cap)
 {
@@ -426,6 +433,9 @@ v4l_try_produce_frame (CamUnit * super)
         g_object_unref (buf);
         return FALSE;
     } 
+
+    buf->bytesused = status;
+    buf->timestamp = _timestamp_now();
 
     cam_unit_produce_frame (super, buf, super->fmt);
     g_object_unref (buf);
