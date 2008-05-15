@@ -137,6 +137,7 @@ AC_OUTPUT([
   examples/Makefile
   examples/basic/Makefile
   examples/filter_example/Makefile
+  examples/qt4/Makefile
   docs/Makefile
   docs/reference/Makefile
   docs/reference/libcam/Makefile
