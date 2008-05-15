@@ -7,5 +7,11 @@
         <para>
             <emphasis>TODO</emphasis>
         </para>
+
+        <para>
+        For an example on how to use libcam with a Qt event loop, take a look
+        at the <filename>examples/qt4/snapshot</filename> directory,
+        distributed with libcam.
+        </para>
     </sect1>
 </chapter>
