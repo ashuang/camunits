@@ -1,1 +1,1 @@
-SUBDIRS = basic filter_example
+SUBDIRS = basic filter_example qt4
