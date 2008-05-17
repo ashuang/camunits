@@ -14,14 +14,14 @@ make install
 
 == Mac OS X ==
 
-libcam 0.0.2 has been built and run successfully on Mac OS 10.5 (Leopard).  To build, you will need glib and gtk+ installed, which I suggest getting from [http://darwinports.com/ Darwinports].  After installing darwinports, run:
+libcam 0.0.7 has been built and run successfully on Mac OS 10.5 (Leopard).  To build, you will need glib and gtk+ installed, which I suggest getting from [http://darwinports.com/ Darwinports].  After installing darwinports, run:
 {{{
 sudo port install glib2
 sudo port install gtk2
 }}}
 to install the glib and gtk+.
 
-IIDC camera support works if you have libdc1394-2.0.0-rc9 installed.  After installing libdc1394, you may need to run:
+IIDC camera support works if you have libdc1394 >= 2.0.0 installed.  After installing libdc1394, you may need to run:
 {{{
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 }}}
