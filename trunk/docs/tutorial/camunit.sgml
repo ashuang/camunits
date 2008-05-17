@@ -41,7 +41,7 @@
         image size.  To indicate that any width or height is acceptable, you
         can specify a value of 0 for either the height or width parameter.  To
         indicate that any pixel format is acceptable, pass in the constant
-        <literal>CAM_PIXEL_FORMAT_INVALID</literal>.  When the unit is
+        <literal>CAM_PIXEL_FORMAT_ANY</literal>.  When the unit is
         initialized by a chain, it will choose the output format best matching
         the requested parameters.
     </para>
@@ -107,7 +107,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term><literal>convert.jpeg</literal></term>
+                <term><literal>convert.jpeg_compress</literal></term>
                 <listitem>
                     <itemizedlist>
                         <listitem><para>
@@ -117,10 +117,17 @@
                                 32bpp BGRA -> JPEG
                         </para></listitem>
                         <listitem><para>
-                                JPEG -> 24bpp RGB
-                        </para></listitem>
-                        <listitem><para>
                                 8bpp Gray -> JPEG
+                        </para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><literal>convert.jpeg_decompress</literal></term>
+                <listitem>
+                    <itemizedlist>
+                        <listitem><para>
+                                JPEG -> 24bpp RGB
                         </para></listitem>
                     </itemizedlist>
                 </listitem>
@@ -140,7 +147,7 @@
         cam_unit_chain_add_unit_by_id (chain, "input.example");
 
     CamUnit *jpeg_unit = 
-        cam_unit_chain_add_unit_by_id (chain, "convert.jpeg");
+        cam_unit_chain_add_unit_by_id (chain, "convert.jpeg_compress");
 
     cam_unit_set_preferred_format (jpeg_unit, CAM_PIXEL_FORMAT_MJPEG, 0, 0);
 </programlisting>
