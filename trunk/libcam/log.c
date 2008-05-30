@@ -670,7 +670,8 @@ do_seek_to_int64_param (CamLog *self, CamLogFrameInfo *low_frame,
     int64_t high_val = GET_VAL (high_frame);
     int64_t curr_val = GET_VAL (&self->curr_info);
     dbg (DBG_LOG, " --- %"PRId64", %"PRId64", %"PRId64" (%"PRId64") ---\n",
-            low_val, desired_val, high_val, curr_val);
+            low_val - desired_val, desired_val, high_val - desired_val, 
+            curr_val - desired_val);
 
     assert (low_frame->offset >= 0 && 
             low_frame->offset <= high_frame->offset && 
@@ -690,6 +691,11 @@ do_seek_to_int64_param (CamLog *self, CamLogFrameInfo *low_frame,
         if (cam_log_next_frame (self) < 0)
             return -1;
         curr_val = GET_VAL (&self->curr_info);
+
+        // if we've iterated beyond what we actually want, then just bottom out
+        // and return.
+        if (curr_val > desired_val)
+            return 0;
     }
 #if 0
     while (self->next_frame_info.frameno > desired_frameno &&
