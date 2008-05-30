@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <assert.h>
 
 #include <fcntl.h>
 #include <poll.h>
@@ -15,9 +16,10 @@
 #include <lcm/lcm.h>
 
 #include "lcm_input_log_sync.h"
+#include "lcm_sync_publish.h"
 
-#define dbg(args...) fprintf (stderr, args)
-//#define dbg(...)
+//#define dbg(args...) fprintf (stderr, args)
+#define dbg(...)
 #define err(...) fprintf (stderr, __VA_ARGS__)
 
 //#define USE_ADV_MODE
@@ -133,7 +135,7 @@ cam_input_log_sync_init (CamInputLogSync *self)
 
 //    self->sync_ctl = cam_unit_add_control_boolean (super, "sync", "Sync", 1, 1);
     self->sync_channel_ctl = cam_unit_add_control_string (super, "channel",
-            "Channel", "CAMLCM_SYNC", 1);
+            "Channel", CAMLCM_DEFAULT_SYNC_CHANNEL, 1);
 
 #ifdef USE_ADV_MODE
     // advance mode
@@ -156,7 +158,7 @@ cam_input_log_sync_init (CamInputLogSync *self)
 
     // frame number
     self->frame_ctl = cam_unit_add_control_int (super,
-            "frame", "Frame", 0, 1, 1, 0, 0);
+            "frame", "Frame", 0, 1, 1, 0, 1);
 
 #ifdef USE_ADV_MODE
     // pause
@@ -183,7 +185,8 @@ cam_input_log_sync_init (CamInputLogSync *self)
     pipe (self->frame_ready_pipe);
     fcntl (self->frame_ready_pipe[1], F_SETFL, O_NONBLOCK);
 
-    self->subscription = NULL;
+    self->subscription = camlcm_image_sync_t_subscribe (self->lcm, 
+                CAMLCM_DEFAULT_SYNC_CHANNEL, on_sync, self);
     self->legacy_subscription = camlcm_image_legacy_sync_t_subscribe(self->lcm,
            "IMAGE_LCSYNC", on_legacy_sync, self);
 
@@ -225,7 +228,9 @@ log_finalize (GObject *obj)
     G_OBJECT_CLASS (cam_input_log_sync_parent_class)->finalize (obj);
 
     if (self->lcm) {
-        camlcm_image_sync_t_unsubscribe (self->lcm, self->subscription);
+        if (self->subscription) {
+            camlcm_image_sync_t_unsubscribe (self->lcm, self->subscription);
+        }
         camlcm_image_legacy_sync_t_unsubscribe (self->lcm, 
                 self->legacy_subscription);
         lcm_destroy (self->lcm);
@@ -294,14 +299,6 @@ _log_set_file (CamInputLogSync *self, const char *fname)
     cam_unit_control_modify_int (self->frame_ctl, 0, self->nframes-1, 1, 1);
     cam_unit_control_force_set_int (self->frame_ctl, 0);
 
-#ifdef USE_ADV_MODE
-    if (ADVANCE_MODE_SYNC == cam_unit_control_get_enum (self->adv_mode_ctl)) {
-        cam_unit_control_set_enabled (self->frame_ctl, 0);
-    }
-#else
-    cam_unit_control_set_enabled (self->frame_ctl, 0);
-#endif
-
     return 0;
 
 fail:
@@ -310,6 +307,7 @@ fail:
         self->camlog = NULL;
     }
     cam_unit_control_modify_int (self->frame_ctl, 0, 1, 1, 0);
+    self->has_legacy_uid = 0;
     return -1;
 }
 
@@ -336,6 +334,7 @@ log_try_produce_frame (CamUnit *super)
     CamInputLogSync *self = CAM_INPUT_LOG_SYNC (super);
 
     g_mutex_lock (self->sync_mutex);
+    assert (self->sync_pending);
     int64_t seek_to_utime = -1;
     if (self->sync_pending) {
         char c;
@@ -353,50 +352,6 @@ log_try_produce_frame (CamUnit *super)
         return FALSE;
     }
 
-//    CamLogFrameInfo cur_info;
-//    if (0 != cam_log_get_frame_info (self->camlog, &cur_info)) {
-//        dbg ("InputLogSync EOF?\n");
-//        self->next_frame_time = now + 1000000;
-//        return FALSE;
-//    }
-//
-//    int paused = cam_unit_control_get_boolean (self->pause_ctl);
-//    if (paused && ! self->readone) { 
-//        dbg ("InputLogSync paused\n");
-//        self->next_frame_time = now + 300000;
-//        return FALSE; 
-//    }
-//    if (paused && self->readone) {
-//        dbg("InputLogSync paused, but reading one frame\n");
-//    }
-//
-//
-//    int sync = cam_unit_control_get_boolean (self->sync_ctl);
-//
-//    double speed = cam_unit_control_get_float (self->adv_speed_ctl);
-//    int advance_mode = cam_unit_control_get_enum (self->adv_mode_ctl);
-//    // check the next frame and see if we should skip the current frame
-//    // however, don't skip frames when paused
-//    if (!sync && (advance_mode == CAM_INPUT_LOG_SYNC_ADVANCE_MODE_HARD) &&
-//        (!paused)) {
-//        while (0 == cam_log_next_frame (self->camlog)) {
-//            CamLogFrameInfo next_info;
-//
-//            cam_log_get_frame_info (self->camlog, &next_info);
-//
-//            int64_t dt = (int64_t) ((next_info.timestamp - 
-//                                     cur_info.timestamp) / speed);
-//            int64_t expected_play_utime = self->next_frame_time + dt;
-//
-//            if (expected_play_utime <= now) {
-//                cur_info = next_info;
-//                self->next_frame_time = expected_play_utime;
-//                break;
-//            }
-//        }
-//        cam_log_seek_to_offset (self->camlog, cur_info.offset);
-//    }
-//
     CamFrameBuffer * buf = cam_log_get_frame (self->camlog);
     if (!buf) {
         return FALSE;
@@ -405,32 +360,7 @@ log_try_produce_frame (CamUnit *super)
     cam_log_get_frame_info (self->camlog, &frameinfo);
     cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
 
-//    // what is the timestamp of the next frame?
-//    if (!sync) {
-//        int have_next_frame = (0 == cam_log_next_frame (self->camlog));
-//        if (! have_next_frame) {
-//            self->next_frame_time = now + 300000;
-//        } else {
-//            // diff log timestamp that with the timestamp of the current
-//            // frame to get the next frame event time
-//            CamLogFrameInfo next_frameinfo;
-//            cam_log_get_frame_info (self->camlog, &next_frameinfo);
-//            int64_t dt =  (int64_t)((next_frameinfo.timestamp -
-//                                     frameinfo.timestamp) / speed);
-//
-//            self->next_frame_time = now + dt;
-//            dbg ("usec until next frame: %"PRId64"\n", dt);
-//        }
-//
-//        cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
-//    } else {
-//        CamLogFrameInfo next_frameinfo;
-//        cam_log_get_frame_info (self->camlog, &next_frameinfo);
-//        self->next_frame_time = now +
-//            (next_frameinfo.timestamp - frameinfo.timestamp);
-//    }
-//
-//    self->readone = 0;
+    printf ("produce frame %"PRId64"\n", seek_to_utime);
     cam_unit_produce_frame (super, buf, super->fmt);
     g_object_unref (buf);
     return TRUE;
@@ -479,8 +409,11 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     } 
     else if (ctl == self->frame_ctl) {
-        int next_frameno = g_value_get_int (proposed);
+        if (cam_unit_control_get_enum (self->adv_mode_ctl) == ADVANCE_MODE_SYNC)
+            return FALSE;
         if (! self->camlog) return FALSE;
+
+        int next_frameno = g_value_get_int (proposed);
 
         dbg ("seeking to frame %d\n", next_frameno);
         if (cam_log_seek_to_frame (self->camlog, next_frameno) == 0) {
@@ -496,11 +429,8 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
     else if (ctl == self->adv_mode_ctl) {
         g_value_copy (proposed, actual);
 
-        int enable_frame_ctls = 
-            ADVANCE_MODE_SYNC != g_value_get_int (proposed);
-
-        cam_unit_control_set_enabled (self->frame_ctl, enable_frame_ctls);
-        cam_unit_control_set_enabled (self->adv_speed_ctl, enable_frame_ctls);
+        cam_unit_control_set_enabled (self->adv_speed_ctl, 
+                ADVANCE_MODE_SYNC != g_value_get_int (proposed));
 //        cam_unit_control_set_enabled (self->sync_channel_ctl, !enable_frame_ctls);
 
         return TRUE;
@@ -532,18 +462,26 @@ lcm_thread (void *user_data)
     return NULL;
 }
 
+static void 
+_notify_frame_ready (CamInputLogSync *self, int64_t utime)
+{
+    g_mutex_lock (self->sync_mutex);
+    self->sync_utime = utime;
+    if (!self->sync_pending) {
+        char c = ' ';
+        write (self->frame_ready_pipe[1], &c, 1);
+        self->sync_pending = 1;
+    }
+    g_mutex_unlock (self->sync_mutex);
+}
+
 static void
 on_sync (const lcm_recv_buf_t *rbuf, const char *channel, 
          const camlcm_image_sync_t *msg, void *user_data)
 {
-    printf ("TODO!!\n");
-//    CamInputLogSync *self = CAM_INPUT_LOG_SYNC (user_data);
-//    if (self->camlog) {
-//        if (0 == cam_log_seek_to_timestamp (self->camlog, msg->utime)) {
-//            self->readone = 1;
-//            self->next_frame_time = _timestamp_now();
-//        }
-//    }
+    CamInputLogSync *self = CAM_INPUT_LOG_SYNC (user_data);
+    if (!self->camlog) return;
+    _notify_frame_ready (self, msg->utime);
 }
 
 static void 
@@ -551,16 +489,9 @@ on_legacy_sync (const lcm_recv_buf_t *rbuf, const char *channel,
         const camlcm_image_legacy_sync_t *msg, void *user_data)
 {
     CamInputLogSync *self = CAM_INPUT_LOG_SYNC (user_data);
-
+    if (!self->camlog) return;
     if (self->has_legacy_uid && msg->source_uid == self->legacy_uid) {
-        g_mutex_lock (self->sync_mutex);
-        self->sync_utime = msg->utime;
-        if (!self->sync_pending) {
-            char c = ' ';
-            write (self->frame_ready_pipe[1], &c, 1);
-            self->sync_pending = 1;
-        }
-        g_mutex_unlock (self->sync_mutex);
+        _notify_frame_ready (self, msg->utime);
     }
 }
 
@@ -569,7 +500,11 @@ change_sync_channel (CamInputLogSync *self, const char *chan)
 {
     if (self->subscription != NULL) {
         camlcm_image_sync_t_unsubscribe (self->lcm, self->subscription);
+        self->subscription = NULL;
     }
+
+    if (!strlen (chan)) return;
+
     self->subscription = camlcm_image_sync_t_subscribe (self->lcm,
             chan, on_sync, self);
 }

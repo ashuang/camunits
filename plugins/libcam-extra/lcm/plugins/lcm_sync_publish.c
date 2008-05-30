@@ -11,8 +11,6 @@
 
 #define DEFAULT_LCM_URL "udpm://?transmit_only=true"
 
-#define DEFAULT_SYNC_CHANNEL   "CAMLCM_SYNC"
-
 struct _CamlcmSyncPub {
     CamUnit parent;
     CamUnitControl *lcm_url_ctl;
@@ -48,8 +46,8 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("output", "lcm-syncpub",
-            "LCM Sync Publish", 0, (CamUnitConstructor)camlcm_syncpub_new,
+    return cam_unit_driver_new_stock_full ("lcm", "syncpub",
+            "Sync Publish", 0, (CamUnitConstructor)camlcm_syncpub_new,
             module);
 }
 
@@ -61,7 +59,7 @@ camlcm_syncpub_init (CamlcmSyncPub *self)
     self->lcm_url_ctl = cam_unit_add_control_string (CAM_UNIT (self), 
         "lcm-url", "LCM URL", DEFAULT_LCM_URL, 1);
     self->sync_channel_ctl = cam_unit_add_control_string (CAM_UNIT (self),
-            "sync-channel", "Sync Channel", DEFAULT_SYNC_CHANNEL, 1);
+            "sync-channel", "Sync Channel", CAMLCM_DEFAULT_SYNC_CHANNEL, 1);
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
 }

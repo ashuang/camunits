@@ -85,7 +85,7 @@ static void
 camlcm_input_driver_init (CamlcmInputDriver *self)
 {
     CamUnitDriver *super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_name (super, "input", "lcm");
+    cam_unit_driver_set_name (super, "lcm", "input");
     
     self->lcm = NULL;
     self->known_sources = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -166,7 +166,7 @@ driver_update (CamUnitDriver *super)
 {
     CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (super);
 
-    printf ("driver update\n");
+//    printf ("driver update\n");
     char ch;
     read (self->notify_pipe[0], &ch, 1);
 
@@ -174,7 +174,7 @@ driver_update (CamUnitDriver *super)
     while (msg) {
 
         char unit_id[1024];
-        snprintf (unit_id, sizeof (unit_id), "input.LCM:%s", msg->channel);
+        snprintf (unit_id, sizeof (unit_id), "lcm.input:%s", msg->channel);
 
         camlcm_image_announce_t *old_announce = 
             (camlcm_image_announce_t*) g_hash_table_lookup (self->known_sources, 
@@ -234,7 +234,7 @@ on_announce (const lcm_recv_buf_t *rbuf, const char *channel,
     if (g_async_queue_length (self->source_q) < 500) {
         g_async_queue_push (self->source_q, camlcm_image_announce_t_copy (msg));
         write (self->notify_pipe[1], "+", 1);
-        printf ("received announce!\n");
+//        printf ("received announce!\n");
     } else {
         dbg ("source_q full: discarding announcement\n");
     }
