@@ -1,2 +1,2 @@
-SUBDIRS = lcm po
+SUBDIRS = po lcm ipp
 ACLOCAL_AMFLAGS = -I m4

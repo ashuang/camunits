@@ -2,7 +2,7 @@
 # Albert Huang
 
 dnl AM_PATH_IPP([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
-dnl Test for libcam, and define LIBCAM_CFLAGS and LIBCAM_LIBS
+dnl Test for IPP, and define LIBIPP_CFLAGS and LIBIPP_LIBS
 dnl
 AC_DEFUN([AM_PATH_IPP],
 [dnl 
@@ -11,7 +11,7 @@ dnl
 
 AC_REQUIRE([AC_CANONICAL_SYSTEM])
 
-min_libcam_version=ifelse([$1], ,5.1,$1)
+min_ipp_version=ifelse([$1], ,5.1,$1)
 AC_MSG_CHECKING(for IPP - version >= $min_ipp_version)
 
 AC_ARG_ENABLE(ipptest, [  --disable-ipptest      do not try to compile and run a test IPP program],, enable_ipptest=yes)

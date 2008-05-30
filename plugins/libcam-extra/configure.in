@@ -19,6 +19,11 @@ AM_PATH_LCM(,,
        [AC_MSG_WARN([lcm is not found, lcm plugins will not be built.])])
 AM_CONDITIONAL(HAVE_LCM, test "x$LCM_LIBS" != x)
 
+dnl check for IPP
+AM_PATH_IPP(,,
+       [AC_MSG_WARN([IPP is not found, IPP plugins will not be built.])])
+AM_CONDITIONAL(HAVE_IPP, test "x$IPP_LIBS" != x)
+
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
@@ -58,6 +63,9 @@ AC_OUTPUT([
   lcm/Makefile
   lcm/plugins/Makefile
   lcm/lcmtypes/Makefile
+  ipp/Makefile
+  ipp/plugins/Makefile
+  ipp/jpeg-plugins/Makefile
   po/Makefile.in
 ])
 
@@ -67,6 +75,12 @@ else
     LCM_MSG="Enabled"
 fi
 
+if test "x$IPP_LIBS" = x; then
+    IPP_MSG="Disabled (IPP not found)"
+else
+    IPP_MSG="Enabled"
+fi
+
 echo "
 
 Configuration (libcam-extra):
@@ -74,4 +88,5 @@ Configuration (libcam-extra):
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
 	LCM plugins:           ${LCM_MSG}
+	IPP plugins:           ${IPP_MSG}
 "

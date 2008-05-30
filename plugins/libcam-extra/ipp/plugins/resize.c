@@ -69,7 +69,7 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("filter.ipp", "resize",
+    return cam_unit_driver_new_stock_full ("ipp", "resize",
             "Resize", 0, (CamUnitConstructor)camipp_resize_new, module);
 }
 

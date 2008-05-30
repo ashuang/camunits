@@ -40,8 +40,8 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("convert.ipp", "jpeg_decompress",
-            "IPP JPEG Decompress", 0, 
+    return cam_unit_driver_new_stock_full ("ipp", "jpeg_decompress",
+            "JPEG Decompress", 0, 
             (CamUnitConstructor)camipp_jpeg_decompress_new, module);
 }
 
