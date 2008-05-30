@@ -1,6 +1,6 @@
 package camlcm;
 
-struct key_byte_t {
+struct image_metadata_t {
     string key;
     int32_t n;
     byte value[n];

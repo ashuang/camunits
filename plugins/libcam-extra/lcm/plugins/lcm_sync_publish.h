@@ -26,8 +26,6 @@ typedef struct _CamlcmSyncPubClass CamlcmSyncPubClass;
 void cam_plugin_initialize (GTypeModule * module);
 CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
-#define CAMLCM_SYNC_CHANNEL   "CAMLCM_SYNC"
-
 #ifdef __cplusplus
 }
 #endif

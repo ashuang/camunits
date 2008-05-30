@@ -33,7 +33,7 @@ struct _CamlcmInputDriver {
 
     lcm_t *lcm;
 //    lcm_lc_handler_t *ahid;
-    camlcm_announce_t_subscription_t *subscription;
+    camlcm_image_announce_t_subscription_t *subscription;
 
     GHashTable *known_sources;
 
@@ -82,7 +82,7 @@ struct _CamlcmInput {
 
     lcm_t *lcm;
 
-    camlcm_announce_t *announce;
+    camlcm_image_announce_t *announce;
     int read_fd;
     int write_fd;
     int unhandled_frame;

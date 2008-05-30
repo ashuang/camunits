@@ -12,8 +12,8 @@
 
 #include <lcm/lcm.h>
 
-#include <camlcm_announce_t.h>
-#include <camlcm_image_t.h>
+#include "camlcm_image_announce_t.h"
+#include "camlcm_image_t.h"
 
 #include "lcm_input.h"
 #include "lcm_publish.h"
@@ -26,7 +26,7 @@
 
 static void driver_finalize (GObject *obj);
 static void on_announce (const lcm_recv_buf_t *rbuf, const char *channel, 
-        const camlcm_announce_t *msg, void *user_data);
+        const camlcm_image_announce_t *msg, void *user_data);
 static void * lcm_thread (void *user_data);
 
 static CamUnit * driver_create_unit (CamUnitDriver *super,
@@ -35,7 +35,7 @@ static int driver_get_fileno (CamUnitDriver *super);
 static void driver_update (CamUnitDriver *super);
 
 static CamlcmInput * 
-camlcm_input_new (lcm_t *lcm, const camlcm_announce_t *ann);
+camlcm_input_new (lcm_t *lcm, const camlcm_image_announce_t *ann);
 
 CAM_PLUGIN_TYPE (CamlcmInput, camlcm_input, CAM_TYPE_UNIT);
 CAM_PLUGIN_TYPE (CamlcmInputDriver, camlcm_input_driver, 
@@ -62,7 +62,7 @@ cam_plugin_create (GTypeModule * module)
         goto fail;
     }
 
-    self->subscription = camlcm_announce_t_subscribe (self->lcm,
+    self->subscription = camlcm_image_announce_t_subscribe (self->lcm,
             CAMLCM_ANNOUNCE_CHANNEL, 
             on_announce, self);
 
@@ -85,11 +85,11 @@ static void
 camlcm_input_driver_init (CamlcmInputDriver *self)
 {
     CamUnitDriver *super = CAM_UNIT_DRIVER (self);
-    cam_unit_driver_set_name (super, "input", "LCM");
+    cam_unit_driver_set_name (super, "input", "lcm");
     
     self->lcm = NULL;
     self->known_sources = g_hash_table_new_full (g_str_hash, g_str_equal,
-            free, (GDestroyNotify) camlcm_announce_t_destroy);
+            free, (GDestroyNotify) camlcm_image_announce_t_destroy);
     self->notify_pipe[0] = -1;
     self->notify_pipe[1] = -1;
 }
@@ -116,16 +116,16 @@ driver_finalize (GObject *obj)
         self->lcm_thread = NULL;
     }
     if (self->source_q) {
-        for (camlcm_announce_t *ann = g_async_queue_try_pop (self->source_q);
+        for (camlcm_image_announce_t *ann = g_async_queue_try_pop (self->source_q);
              ann != NULL;
              ann = g_async_queue_try_pop (self->source_q)) {
-            camlcm_announce_t_destroy (ann);
+            camlcm_image_announce_t_destroy (ann);
         }
         g_async_queue_unref (self->source_q);
         self->source_q = NULL;
     }
     if (self->lcm) {
-        camlcm_announce_t_unsubscribe (self->lcm, self->subscription);
+        camlcm_image_announce_t_unsubscribe (self->lcm, self->subscription);
         lcm_destroy (self->lcm);
     }
     if (self->known_sources) {
@@ -143,10 +143,10 @@ driver_create_unit (CamUnitDriver *super, const CamUnitDescription * udesc)
     dbg ("creating new unit [%s]\n", udesc->unit_id);
 
     CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (super);
-    camlcm_announce_t *ann = (camlcm_announce_t*)
+    camlcm_image_announce_t *ann = (camlcm_image_announce_t*)
         g_hash_table_lookup (self->known_sources, udesc->unit_id);
     if (!ann) {
-        dbg ("can't find camlcm_announce_t matching %s\n",
+        dbg ("can't find camlcm_image_announce_t matching %s\n",
                 udesc->unit_id);
         return NULL;
     }
@@ -170,14 +170,14 @@ driver_update (CamUnitDriver *super)
     char ch;
     read (self->notify_pipe[0], &ch, 1);
 
-    camlcm_announce_t *msg = g_async_queue_try_pop (self->source_q);
+    camlcm_image_announce_t *msg = g_async_queue_try_pop (self->source_q);
     while (msg) {
 
         char unit_id[1024];
         snprintf (unit_id, sizeof (unit_id), "input.LCM:%s", msg->channel);
 
-        camlcm_announce_t *old_announce = 
-            (camlcm_announce_t*) g_hash_table_lookup (self->known_sources, 
+        camlcm_image_announce_t *old_announce = 
+            (camlcm_image_announce_t*) g_hash_table_lookup (self->known_sources, 
                     unit_id);
 
         // if we already have an announcement for this image source, check to
@@ -218,7 +218,7 @@ driver_update (CamUnitDriver *super)
             g_hash_table_insert (self->known_sources, strdup (unit_id), msg);
         } else {
             // already have this announce, and it hasn't changed
-            camlcm_announce_t_destroy (msg);
+            camlcm_image_announce_t_destroy (msg);
         }
 
         msg = g_async_queue_try_pop (self->source_q);
@@ -228,11 +228,11 @@ driver_update (CamUnitDriver *super)
 // ============ LC thread ========
 static void
 on_announce (const lcm_recv_buf_t *rbuf, const char *channel, 
-        const camlcm_announce_t *msg, void *user_data)
+        const camlcm_image_announce_t *msg, void *user_data)
 {
     CamlcmInputDriver *self = CAMLCM_INPUT_DRIVER (user_data);
     if (g_async_queue_length (self->source_q) < 500) {
-        g_async_queue_push (self->source_q, camlcm_announce_t_copy (msg));
+        g_async_queue_push (self->source_q, camlcm_image_announce_t_copy (msg));
         write (self->notify_pipe[1], "+", 1);
         printf ("received announce!\n");
     } else {
@@ -325,7 +325,7 @@ camlcm_input_finalize (GObject *obj)
         self->write_fd = -1;
     }
     if (self->announce) {
-        camlcm_announce_t_destroy (self->announce);
+        camlcm_image_announce_t_destroy (self->announce);
     }
     if (self->received_image) {
         g_object_unref (self->received_image);
@@ -342,7 +342,7 @@ camlcm_input_finalize (GObject *obj)
 }
 
 CamlcmInput * 
-camlcm_input_new (lcm_t *lcm, const camlcm_announce_t *ann)
+camlcm_input_new (lcm_t *lcm, const camlcm_image_announce_t *ann)
 {
     CamlcmInput * self = CAMLCM_INPUT (g_object_new (CAMLCM_TYPE_INPUT, NULL));
 
@@ -363,7 +363,7 @@ camlcm_input_new (lcm_t *lcm, const camlcm_announce_t *ann)
         goto fail;
     }
 
-    self->announce = camlcm_announce_t_copy (ann);
+    self->announce = camlcm_image_announce_t_copy (ann);
 
     // set unit output format
     cam_unit_add_output_format_full (CAM_UNIT (self), ann->pixelformat, NULL, 
@@ -467,11 +467,11 @@ on_image (const lcm_recv_buf_t *rbuf, const char *channel,
     self->received_image->timestamp = image->utime;
     memcpy (self->received_image->data, image->data, image->size);
     self->received_image->bytesused = image->size;
-    for (int i=0; i<image->nb; i++) {
+    for (int i=0; i<image->nmetadata; i++) {
         cam_framebuffer_metadata_set (self->received_image, 
-                image->metadata_byte[i].key, 
-                image->metadata_byte[i].value, 
-                image->metadata_byte[i].n);
+                image->metadata[i].key, 
+                image->metadata[i].value, 
+                image->metadata[i].n);
     }
 
     if (! self->unhandled_frame) {

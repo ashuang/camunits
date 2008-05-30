@@ -26,7 +26,7 @@ typedef struct _CamlcmPublishClass CamlcmPublishClass;
 void cam_plugin_initialize (GTypeModule * module);
 CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
-#define CAMLCM_ANNOUNCE_CHANNEL   "CAMLCM_ANNOUNCE"
+#define CAMLCM_ANNOUNCE_CHANNEL   "CAMLCM_IMAGE_ANNOUNCE"
 #define CAMLCM_PUBLISH_DEFAULT_ANNOUNCE_INTERVAL_USEC 300000
 
 #ifdef __cplusplus

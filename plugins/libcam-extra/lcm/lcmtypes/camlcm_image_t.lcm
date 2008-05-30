@@ -1,5 +1,7 @@
 package camlcm;
 
+// Describes an image, for use with libcam.
+
 struct image_t
 {
     // microseconds since the epoch
@@ -16,6 +18,6 @@ struct image_t
     byte     data[size];
 
     // metadata dictionary
-    int32_t nb;
-    camlcm.key_byte_t metadata_byte[nb];
+    int32_t nmetadata;
+    image_metadata_t metadata[nmetadata];
 }

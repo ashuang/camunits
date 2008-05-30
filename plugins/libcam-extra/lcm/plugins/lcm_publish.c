@@ -7,7 +7,7 @@
 #include <libcam/plugin.h>
 #include <lcm/lcm.h>
 
-#include "camlcm_announce_t.h"
+#include "camlcm_image_announce_t.h"
 #include "camlcm_image_t.h"
 
 #include "lcm_publish.h"
@@ -35,7 +35,7 @@ struct _CamlcmPublish {
     CamUnitControl *data_rate_ctl;
     CamUnitControl *lcm_url_ctl;
 
-    int64_t next_announce_time;
+    int64_t next_image_announce_time;
     int64_t announce_interval;
 
     int64_t bytes_transferred_since_last_data_rate_update;
@@ -79,7 +79,7 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("output", "lcm_publish",
+    return cam_unit_driver_new_stock_full ("output", "lcm-publish",
             "LCM Publish", 0, (CamUnitConstructor)camlcm_publish_new,
             module);
 }
@@ -101,7 +101,7 @@ camlcm_publish_init( CamlcmPublish *self )
 
     self->lcm = lcm_create (DEFAULT_LCM_URL);
 
-    self->next_announce_time = 0;
+    self->next_image_announce_time = 0;
     self->announce_interval = CAMLCM_PUBLISH_DEFAULT_ANNOUNCE_INTERVAL_USEC;
 
     self->publish_ctl = cam_unit_add_control_boolean (super, CONTROL_PUBLISH, 
@@ -184,13 +184,13 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     msg.size = inbuf->bytesused;
     msg.data = inbuf->data;
 
-    msg.nb = 0;
-    msg.metadata_byte = NULL;
+    msg.nmetadata = 0;
+    msg.metadata = NULL;
 
     GList *md_keys = cam_framebuffer_metadata_list_keys (inbuf);
-    msg.nb = g_list_length (md_keys);
-    camlcm_key_byte_t kbpairs[msg.nb];
-    msg.metadata_byte = kbpairs;
+    msg.nmetadata = g_list_length (md_keys);
+    camlcm_image_metadata_t kbpairs[msg.nmetadata];
+    msg.metadata = kbpairs;
 
     int i=0; 
     for (GList *kiter=md_keys; kiter; kiter=kiter->next) {
@@ -209,8 +209,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     camlcm_image_t_publish (self->lcm, channel, &msg);
 
     int64_t now = timestamp_now ();
-    if (now > self->next_announce_time) {
-        camlcm_announce_t announce = {
+    if (now > self->next_image_announce_time) {
+        camlcm_image_announce_t announce = {
             .utime = now,
             .width = infmt->width,
             .height = infmt->height,
@@ -220,9 +220,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
             .channel = (char*)channel
         };
 
-        camlcm_announce_t_publish (self->lcm, CAMLCM_ANNOUNCE_CHANNEL,
+        camlcm_image_announce_t_publish (self->lcm, CAMLCM_ANNOUNCE_CHANNEL,
                 &announce);
-        self->next_announce_time = now + self->announce_interval;
+        self->next_image_announce_time = now + self->announce_interval;
     }
 
     self->bytes_transferred_since_last_data_rate_update += 

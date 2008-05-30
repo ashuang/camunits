@@ -1,8 +1,8 @@
 AC_PREREQ(2.50)
-AC_INIT(plugins/lcm_publish.h)
+AC_INIT(lcm/plugins/lcm_publish.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(libcam-lcm, 0.0.1)
+AM_INIT_AUTOMAKE(libcam-extra, 0.0.1)
 
 AC_PROG_CC
 
@@ -16,35 +16,16 @@ AM_PATH_LIBCAM(,,
 
 dnl check for lcm
 AM_PATH_LCM(,,
-       [AC_MSG_ERROR([lcm is not found, but is required by libcam-lcm.])])
-
-dnl ---------------------------------------------------------------------------
-dnl When making a release:
-dnl  1. If the library source code has changed at all since the last release,
-dnl     then increment REVISION.
-dnl  2. If the interface has been changed since the last release, increment
-dnl     CURRENT, and set REVISION to 0.
-dnl  3. If the interface changes consist solely of additions, increment AGE.
-dnl  4. If the interface has removed elements, set AGE to 0.
-dnl ---------------------------------------------------------------------------
-LIBCAM_LCM_AGE=1
-LIBCAM_LCM_REVISION=0
-LIBCAM_LCM_CURRENT=2
-AC_SUBST(LIBCAM_LCM_AGE)
-AC_SUBST(LIBCAM_LCM_REVISION)
-AC_SUBST(LIBCAM_LCM_CURRENT)
-LIBCAM_LCM_VERSION_INFO=$LIBCAM_LCM_CURRENT:$LIBCAM_LCM_REVISION:$LIBCAM_LCM_AGE
-AC_SUBST(LIBCAM_LCM_VERSION_INFO)
+       [AC_MSG_WARN([lcm is not found, lcm plugins will not be built.])])
+AM_CONDITIONAL(HAVE_LCM, test "x$LCM_LIBS" != x)
 
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
 libcamdatadir="$datadir/libcam"
-AC_SUBST(libcamplugindir)
+AC_SUBST(libcamdatadir)
 libcamplugindir="$libdir/libcam"
 AC_SUBST(libcamplugindir)
-lcmtypesdir="$datadir/libcam-lcm"
-AC_SUBST(lcmtypesdir)
 
 dnl ---------------------------------------------------------------------------
 dnl i18n support
@@ -74,15 +55,23 @@ AC_SUBST(LIBTOOL)
 
 AC_OUTPUT([
   Makefile
-  plugins/Makefile
-  lcmtypes/Makefile
+  lcm/Makefile
+  lcm/plugins/Makefile
+  lcm/lcmtypes/Makefile
   po/Makefile.in
 ])
 
+if test "x$LCM_LIBS" = x; then
+    LCM_MSG="Disabled (lcm not found)"
+else
+    LCM_MSG="Enabled"
+fi
+
 echo "
 
-Configuration (libcam-lcm):
+Configuration (libcam-extra):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}
+	LCM plugins:           ${LCM_MSG}
 "
