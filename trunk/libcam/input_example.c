@@ -238,7 +238,7 @@ cam_input_example_try_produce_frame (CamUnit *super)
     _draw_rectangle (outbuf, super->fmt, self->x, self->y, w, w, rgb);
 
     outbuf->bytesused = super->fmt->height * super->fmt->row_stride;
-    outbuf->timestamp = self->next_frame_time;
+    outbuf->timestamp = now;
 
     cam_unit_produce_frame (super, outbuf, super->fmt);
     g_object_unref (outbuf);
