@@ -24,6 +24,7 @@ typedef struct _state_t {
     CamUnitDescriptionWidget * desc_widget;
 
     char *xml_fname;
+    int use_gui;
 
     GtkWindow *window;
     GtkWidget *manager_frame;
@@ -37,8 +38,8 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit, const CamFrameBuffer *buf,
         void *user_data)
 {
     state_t *self = (state_t*) user_data;
-
-    cam_unit_chain_gl_widget_request_redraw (self->chain_gl_widget);
+    if (self->use_gui) 
+        cam_unit_chain_gl_widget_request_redraw (self->chain_gl_widget);
 }
 
 static void
@@ -284,7 +285,11 @@ state_setup (state_t *self)
     }
 
     // setup the GUI
-    setup_gtk (self);
+    if (self->use_gui) {
+        setup_gtk (self);
+    } else {
+        assert (self->xml_fname);
+    }
 
     return 0;
 }
@@ -306,25 +311,26 @@ usage (const char *progname)
             "\n"
             "Options:\n"
             "    -f NAME, --file NAME   Load chain from file NAME\n"
+            "    --no-gui               Run without a GUI.  If --no-gui\n"
+            "                           is specified, -f is required.\n"
             "    -h, --help             Show this help text and exit\n"
             , progname);
+    exit(1);
 }
 
 int main (int argc, char **argv)
 {
     state_t * self = (state_t*) calloc (1, sizeof (state_t));
+    self->use_gui = 1;
 
     char *optstring = "hf:";
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
         { "file", required_argument, 0, 'f' },
+        { "no-gui", no_argument, 0, 'u' },
         { 0, 0, 0, 0 }
     };
-
-    gtk_init (&argc, &argv);
-
-    g_thread_init (NULL);
 
     while ((c = getopt_long (argc, argv, optstring, long_opts, 0)) >= 0)
     {
@@ -332,19 +338,39 @@ int main (int argc, char **argv)
             case 'f':
                 self->xml_fname = strdup (optarg);
                 break;
+            case 'u':
+                self->use_gui = 0;
+                break;
             case 'h':
             default:
                 usage (argv[0]);
-                return 1;
+                break;
         };
     }
 
+    if (!self->use_gui && !self->xml_fname) usage(argv[0]);
+
+    if (self->use_gui) {
+        gtk_init (&argc, &argv);
+    } else {
+        g_type_init ();
+    }
+
+    g_thread_init (NULL);
+
     if (0 != state_setup (self)) return 1;
 
-    camview_gtk_quit_on_interrupt ();
-    gtk_main ();
-
-    state_cleanup (self);
+    if (self->use_gui) {
+        camview_gtk_quit_on_interrupt ();
+        gtk_main ();
+        state_cleanup (self);
+    } else {
+        GMainLoop *mainloop = g_main_loop_new (NULL, FALSE);
+        camview_g_quit_on_interrupt (mainloop);
+        g_main_loop_run (mainloop);
+        state_cleanup (self);
+        g_main_loop_unref (mainloop);
+    }
 
     return 0;
 }

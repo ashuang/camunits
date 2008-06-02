@@ -27,15 +27,17 @@ camview
 .SH DESCRIPTION
 .PP
 \fBcamview\fR is a graphical tool for viewing and testing image processing
-chains.  It uses GTK2, OpenGL, and libcam.
+chains.  It uses GTK+ 2.0, OpenGL, and libcam.
 
 .SH OPTIONS
 The following options are provided by \fBcamview\fR using the standard GNU
 command line syntax:
 .TP
-.B \-i, \-\-input=\fISOURCE\fB
-Loads the specified input source as the first unit in the image processing
-chain.  \fISOURCE\fR should be a libcam unit id.
+.B \-f, \-\-file=\fINAME\fB
+Load chain from file NAME
+.TP
+.B \-\-no\-gui
+Run without a GUI.  If --no-gui is specified, -f is required.
 .TP
 .B \-h, \-\-help
 Print this help and exit.

@@ -139,14 +139,27 @@ signal_pipe_attach_glib (signal_pipe_glib_handler_t func, gpointer user_data)
 static void
 gqoi_handler (int signal, void *user)
 {
-    gtk_main_quit ();
+    if (user) {
+        g_main_loop_quit ((GMainLoop*) user);
+    } else {
+        gtk_main_quit ();
+    }
     signal_pipe_cleanup();
+}
+
+int camview_g_quit_on_interrupt(GMainLoop *mainloop)
+{
+    if (0 != signal_pipe_init()) return -1;
+    signal_pipe_add_signal (SIGINT);
+    signal_pipe_add_signal (SIGTERM);
+    signal_pipe_add_signal (SIGHUP);
+
+    return signal_pipe_attach_glib (gqoi_handler, mainloop);
 }
 
 int camview_gtk_quit_on_interrupt()
 {
     if (0 != signal_pipe_init()) return -1;
-
     signal_pipe_add_signal (SIGINT);
     signal_pipe_add_signal (SIGTERM);
     signal_pipe_add_signal (SIGHUP);
