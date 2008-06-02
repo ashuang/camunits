@@ -13,6 +13,8 @@ extern "C" {
  */
 int camview_gtk_quit_on_interrupt (void);
 
+int camview_g_quit_on_interrupt (GMainLoop *mainloop);
+
 #ifdef __cplusplus
 }
 #endif
