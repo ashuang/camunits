@@ -42,8 +42,9 @@ struct _CamkltKLT {
     uint8_t *packed_img;
     uint8_t *prev_img;
 
+    CamUnitControl *max_features_ctl;
 //    CamUnitControl *quality_ctl;
-//    CamUnitControl *min_dist_ctl;
+    CamUnitControl *min_dist_ctl;
 //    CamUnitControl *block_size_ctl;
 //    CamUnitControl *use_harris_ctl;
 //    CamUnitControl *harris_k_ctl;
@@ -102,17 +103,19 @@ camklt_klt_init (CamkltKLT *self)
 {
     // "private" constructor.  Initialize the unit with some reasonable
     // defaults here.
-//    CamUnit *super = CAM_UNIT (self);
+    CamUnit *super = CAM_UNIT (self);
 //    self->quality_ctl = cam_unit_add_control_float (super, "quality",
 //            "Quality", 0.0001, 1, 0.1, 0.3, 1);
-//    self->min_dist_ctl = cam_unit_add_control_float (super, "min-dist",
-//            "Min. Distance", 1, 100, 1, 5, 1);
+    self->min_dist_ctl = cam_unit_add_control_int (super, "min-dist",
+            "Min. Distance", 1, 100, 1, 10, 1);
 //    self->block_size_ctl = cam_unit_add_control_int (super, "block-size",
 //            "Block Size", 3, 15, 2, 3, 1);
 //    self->use_harris_ctl = cam_unit_add_control_boolean (super, "use-harris",
 //            "Use Harris", 1, 1);
 //    self->harris_k_ctl = cam_unit_add_control_float (super, "harris-k",
 //            "Harris K", 0, 0.5, 0.05, 0.04, 1);
+    self->max_features_ctl = cam_unit_add_control_int (super, "max-features",
+            "Max Features", 1, 2000, 1, 100, 1);
 
     self->tc = NULL;
     self->fl = NULL;
@@ -136,6 +139,8 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
     CamkltKLT * self = CAMKLT_KLT (super);
 
     self->tc = KLTCreateTrackingContext ();
+
+    self->tc->mindist = cam_unit_control_get_int (self->min_dist_ctl);
 
     self->packed_img = malloc (format->width * format->height);
     self->prev_img = malloc(format->width * format->height);
@@ -197,7 +202,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     img_data = self->packed_img;
 
     if (!self->fl) {
-        self->fl = KLTCreateFeatureList (100);
+        int max_features = cam_unit_control_get_int (self->max_features_ctl);
+        self->fl = KLTCreateFeatureList (max_features);
         KLTSelectGoodFeatures (self->tc, img_data, infmt->width, infmt->height,
                 self->fl);
     } else {
@@ -247,6 +253,26 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual)
 {
     CamkltKLT *self = CAMKLT_KLT (super);
+    if (ctl == self->max_features_ctl) {
+        int old_max = cam_unit_control_get_int (self->max_features_ctl);
+        int new_max = g_value_get_int (proposed);
+        if (old_max != new_max && self->fl) {
+            KLTFreeFeatureList (self->fl);
+            self->fl = NULL;
+        }
+        g_value_copy (proposed, actual);
+        return TRUE;
+    } else if (ctl == self->min_dist_ctl) {
+        if (self->tc) {
+            self->tc->mindist = g_value_get_int (proposed);
+            if (self->fl) {
+                KLTFreeFeatureList (self->fl);
+                self->fl = NULL;
+            }
+        }
+        g_value_copy (proposed, actual);
+        return TRUE;
+    }
 //    if (ctl == self->block_size_ctl) {
 //        int requested = g_value_get_int (proposed);
 //        if (requested < 3 || (requested % 2 == 0)) {
