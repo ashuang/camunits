@@ -24,6 +24,11 @@ AM_PATH_IPP(,,
        [AC_MSG_WARN([IPP is not found, IPP plugins will not be built.])])
 AM_CONDITIONAL(HAVE_IPP, test "x$IPP_LIBS" != x)
 
+dnl check for Framewave
+AM_PATH_FRAMEWAVE(,,
+       [AC_MSG_WARN([Framewave is not found, Framewave plugins will not be built.])])
+AM_CONDITIONAL(HAVE_FRAMEWAVE, test "x$FRAMEWAVE_LIBS" != x)
+
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
@@ -66,6 +71,9 @@ AC_OUTPUT([
   ipp/Makefile
   ipp/plugins/Makefile
   ipp/jpeg-plugins/Makefile
+  framewave/Makefile
+  framewave/plugins/Makefile
+  framewave/jpeg-plugins/Makefile
   po/Makefile.in
 ])
 
@@ -81,6 +89,12 @@ else
     IPP_MSG="Enabled"
 fi
 
+if test "x$FRAMEWAVE_LIBS" = x; then
+    FRAMEWAVE_MSG="Disabled (Framewave not found)"
+else
+    FRAMEWAVE_MSG="Enabled"
+fi
+
 echo "
 
 Configuration (libcam-extra):
@@ -89,4 +103,5 @@ Configuration (libcam-extra):
 	Compiler:              ${CC}
 	LCM plugins:           ${LCM_MSG}
 	IPP plugins:           ${IPP_MSG}
+	Framewave plugins:     ${FRAMEWAVE_MSG}
 "

@@ -1,2 +1,2 @@
-SUBDIRS = po lcm ipp
+SUBDIRS = po lcm ipp framewave
 ACLOCAL_AMFLAGS = -I m4
