@@ -74,6 +74,8 @@ AC_OUTPUT([
   framewave/Makefile
   framewave/plugins/Makefile
   framewave/jpeg-plugins/Makefile
+  klt-stb/Makefile
+  klt-stb/klt/Makefile
   po/Makefile.in
 ])
 
@@ -95,13 +97,16 @@ else
     FRAMEWAVE_MSG="Enabled"
 fi
 
+KLTSTB_MSG="Enabled"
+
 echo "
 
 Configuration (libcam-extra):
 
-	Source code location:  ${srcdir}
-	Compiler:              ${CC}
-	LCM plugins:           ${LCM_MSG}
-	IPP plugins:           ${IPP_MSG}
-	Framewave plugins:     ${FRAMEWAVE_MSG}
+	Source code location:      ${srcdir}
+	Compiler:                  ${CC}
+	LCM plugins:               ${LCM_MSG}
+	IPP plugins:               ${IPP_MSG}
+	Framewave plugins:         ${FRAMEWAVE_MSG}
+	KLT (Birchfield) plugin:   ${KLTSTB_MSG}
 "
