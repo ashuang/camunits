@@ -347,7 +347,7 @@ log_try_produce_frame (CamUnit *super)
     if (seek_to_utime < 0) 
         return FALSE;
 
-    printf ("try produce frame %"PRId64"\n", seek_to_utime);
+//    printf ("try produce frame %"PRId64"\n", seek_to_utime);
     if (0 != cam_log_seek_to_timestamp (self->camlog, seek_to_utime)) {
         return FALSE;
     }
@@ -360,7 +360,7 @@ log_try_produce_frame (CamUnit *super)
     cam_log_get_frame_info (self->camlog, &frameinfo);
     cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
 
-    printf ("produce frame %"PRId64"\n", seek_to_utime);
+//    printf ("produce frame %"PRId64"\n", seek_to_utime);
     cam_unit_produce_frame (super, buf, super->fmt);
     g_object_unref (buf);
     return TRUE;

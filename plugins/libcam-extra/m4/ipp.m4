@@ -75,6 +75,13 @@ for basedir in $base_candidates ; do
 done
 
 if test x${IPP_INCLUDEDIR} = x ; then
+    IPP_JPEG_STATIC_LIBS=
+    IPP_JPEG_LIBS=
+    IPP_ARCH=
+    IPP_LIBS=
+    IPP_CFLAGS=
+    IPP_CDEFINES=
+
     ifelse([$3], , :, [$3])
 else
     IPP_CFLAGS="-I${IPP_INCLUDEDIR} $IPP_CDEFINES"
