@@ -3,12 +3,14 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
+#include <assert.h>
 
 #include <GL/gl.h>
 
 #include <libcam/plugin.h>
 
 #include "klt/klt.h"
+#include "color_util.h"
 
 #define err(args...) fprintf(stderr, args)
 
@@ -38,6 +40,7 @@ struct _CamkltKLT {
 
     KLT_TrackingContext tc;
     KLT_FeatureList fl;
+    int *feature_ages;
 
     uint8_t *packed_img;
     uint8_t *prev_img;
@@ -48,6 +51,7 @@ struct _CamkltKLT {
 //    CamUnitControl *block_size_ctl;
 //    CamUnitControl *use_harris_ctl;
 //    CamUnitControl *harris_k_ctl;
+    CamUnitControl *verbose_ctl;
 };
 
 struct _CamkltKLTClass {
@@ -116,11 +120,15 @@ camklt_klt_init (CamkltKLT *self)
 //            "Harris K", 0, 0.5, 0.05, 0.04, 1);
     self->max_features_ctl = cam_unit_add_control_int (super, "max-features",
             "Max Features", 1, 2000, 1, 100, 1);
+    self->verbose_ctl = cam_unit_add_control_boolean (super, "verbose",
+            "Verbose", 0, 1);
+    KLTSetVerbosity(cam_unit_control_get_boolean (self->verbose_ctl));
 
     self->tc = NULL;
     self->fl = NULL;
     self->packed_img = NULL;
     self->prev_img = NULL;
+    self->feature_ages = NULL;
 
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
@@ -204,11 +212,22 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     if (!self->fl) {
         int max_features = cam_unit_control_get_int (self->max_features_ctl);
         self->fl = KLTCreateFeatureList (max_features);
+        assert (!self->feature_ages);
+        self->feature_ages = malloc (max_features * sizeof (int));
         KLTSelectGoodFeatures (self->tc, img_data, infmt->width, infmt->height,
                 self->fl);
     } else {
         KLTTrackFeatures (self->tc, self->prev_img, img_data, 
                 infmt->width, infmt->height, self->fl);
+
+        for (int i=0; i<self->fl->nFeatures; i++) {
+            if (self->fl->feature[i]->val >= 0) {
+                self->feature_ages[i] ++;
+            } else {
+                self->feature_ages[i] = 0;
+            }
+        }
+
         KLTReplaceLostFeatures (self->tc, img_data, 
                 infmt->width, infmt->height, self->fl);
     }
@@ -237,10 +256,15 @@ _gl_draw_gl (CamUnit *super)
     glLoadIdentity ();
 
     glPointSize (4.0);
-    glColor3f (0, 1, 0);
+
+    double COLOR_AGE_MAX = 20;
+
+//    glColor3f (0, 1, 0);
     glBegin (GL_POINTS);
     for (int i=0; i<self->fl->nFeatures; i++) {
         if (self->fl->feature[i]->val >= 0) {
+            double a = self->feature_ages[i] / COLOR_AGE_MAX;
+            glColor3fv (color_util_jet (a));
             glVertex2f (self->fl->feature[i]->x, self->fl->feature[i]->y);
         }
     }
@@ -259,6 +283,8 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
         if (old_max != new_max && self->fl) {
             KLTFreeFeatureList (self->fl);
             self->fl = NULL;
+            free (self->feature_ages);
+            self->feature_ages = NULL;
         }
         g_value_copy (proposed, actual);
         return TRUE;
@@ -270,6 +296,10 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
                 self->fl = NULL;
             }
         }
+        g_value_copy (proposed, actual);
+        return TRUE;
+    } else if (ctl == self->verbose_ctl) {
+        KLTSetVerbosity(g_value_get_boolean (proposed));
         g_value_copy (proposed, actual);
         return TRUE;
     }
