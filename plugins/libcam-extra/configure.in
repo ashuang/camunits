@@ -60,8 +60,6 @@ if test "x$GCC" = "xyes"; then
     AC_SUBST(CFLAGS)
     AC_SUBST(LDFLAGS)
 fi
-LIBTOOL="$LIBTOOL --silent"
-AC_SUBST(LIBTOOL)
 
 AC_OUTPUT([
   Makefile
@@ -76,11 +74,12 @@ AC_OUTPUT([
   framewave/jpeg-plugins/Makefile
   klt-stb/Makefile
   klt-stb/klt/Makefile
+  fh-segment/Makefile
   po/Makefile.in
 ])
 
 if test "x$LCM_LIBS" = x; then
-    LCM_MSG="Disabled (lcm not found)"
+    LCM_MSG="Disabled (LCM not found)"
 else
     LCM_MSG="Enabled"
 fi
@@ -103,10 +102,11 @@ echo "
 
 Configuration (libcam-extra):
 
-	Source code location:      ${srcdir}
-	Compiler:                  ${CC}
-	LCM plugins:               ${LCM_MSG}
-	IPP plugins:               ${IPP_MSG}
-	Framewave plugins:         ${FRAMEWAVE_MSG}
-	KLT (Birchfield) plugin:   ${KLTSTB_MSG}
+	Source code location:              ${srcdir}
+	Compiler:                          ${CC}
+	LCM plugins:                       ${LCM_MSG}
+	IPP plugins:                       ${IPP_MSG}
+	Framewave plugins:                 ${FRAMEWAVE_MSG}
+	KLT (Birchfield) plugin:           ${KLTSTB_MSG}
+    Felzenszwalb-Huttenlocher plugin:  Enabled
 "
