@@ -190,7 +190,7 @@ cam_fhsegmenter_init (CamFHSegmenter *self)
     CamUnit *super = CAM_UNIT (self);
 
     self->sigma_ctl = cam_unit_add_control_float (super, 
-            "sigma", "Sigma", 0.01, 1, 0.05, 0.5, 1);
+            "sigma", "Sigma", 0, 1, 0.05, 0.5, 1);
     self->k_ctl = cam_unit_add_control_float (super, 
             "k", "k", 1, 1000, 50, 200, 1);
     self->min_size_ctl = cam_unit_add_control_int (super, 

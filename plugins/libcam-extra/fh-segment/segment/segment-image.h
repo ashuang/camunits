@@ -62,9 +62,18 @@ disjoint_set_forest *segment_image(image<rgb> *im, float sigma, float c, int min
     image<float> *smooth_r = smooth(r, sigma);
     image<float> *smooth_g = smooth(g, sigma);
     image<float> *smooth_b = smooth(b, sigma);
-    delete r;
-    delete g;
-    delete b;
+    if (sigma > 0) {
+        smooth_r = smooth(r, sigma);
+        smooth_g = smooth(g, sigma);
+        smooth_b = smooth(b, sigma);
+        delete r;
+        delete g;
+        delete b;
+    } else {
+        smooth_r = r;
+        smooth_g = g;
+        smooth_b = b;
+    }
 
     // build graph
     edge *edges = new edge[width*height*4];
