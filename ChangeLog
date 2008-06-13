@@ -1,5 +1,42 @@
+2008-06-02  ashuang
+
+	* [r225] camview/camview.1, camview/camview.c, camview/gtk_util.c,
+	  camview/gtk_util.h: add --no-gui option to camview
+
+2008-05-30  ashuang
+
+	* [r224] libcam/input_example.c: fix input example timestamps
+	* [r220] libcam/log.c: fix thrashing for inexact log seeking (e.g.
+	  timestamps)
+
+2008-05-17  ashuang
+
+	* [r218] docs/tutorial/camunit.sgml: update tutorial to match
+	  reality
+
+2008-05-15  ashuang
+
+	* [r217] examples/qt4/snapshot/snapshot.pro: add gobject-2.0
+	  gmodule-2.0 to pkgconfig line in qmake project file
+	* [r216] libcam/input_v4l.c: input_v4l was not populating
+	  timestamp, bytesused. fixed.
+	* [r215] docs/tutorial/otherenvs.sgml: add note to otherenv doc
+	* [r214] configure.in, examples/Makefile.am, examples/qt4,
+	  examples/qt4/Makefile.am, examples/qt4/snapshot,
+	  examples/qt4/snapshot/CamUnitChainQtAdapter.cpp,
+	  examples/qt4/snapshot/CamUnitChainQtAdapter.hpp,
+	  examples/qt4/snapshot/snapshot.cpp,
+	  examples/qt4/snapshot/snapshot.pro: add qt4 examples
+
+2008-05-14  ashuang
+
+	* [r213] libcam/input_log.c: make input_log not blow up for strange
+	  type conversion issue.
+
 2008-04-17  david.moore
 
+	* [r207] ChangeLog, NEWS, configure.in, docs/release_checklist:
+	  release 0.0.7
 	* [r206] libcam/unit_manager.c: Remove some cruft
 
 2008-04-17  ashuang
