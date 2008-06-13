@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamLoggerUnit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamColorConversionFilter.html" title="CamColorConversionFilter">
 <link rel="next" href="ch04.html" title="Other stuff">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
@@ -24,47 +24,40 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id344825" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id343312" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id343276" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#CamLoggerUnit.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#CamLoggerUnit.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#CamLoggerUnit.object-hierarchy" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamLoggerUnit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id344825"></a><span class="refentrytitle">CamLoggerUnit</span>
-</h2>
-<p>CamLoggerUnit &#8212; logging unit that streams its input to disk</p>
+<h2><span class="refentrytitle"><a name="CamLoggerUnit.top_of_page"></a>CamLoggerUnit</span></h2>
+<p>CamLoggerUnit — logging unit that streams its input to disk</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="CamLoggerUnit.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a href="CamLoggerUnit.html#CamLoggerUnit-struct">CamLoggerUnit</a>;
-<a href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      <a href="CamLoggerUnit.html#cam-logger-unit-new">cam_logger_unit_new</a>                 (void);
-<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamLoggerUnit.html#cam-logger-unit-driver-new">cam_logger_unit_driver_new</a>          (void);
-
+                    <a class="link" href="CamLoggerUnit.html#CamLoggerUnit-struct" title="CamLoggerUnit">CamLoggerUnit</a>;
+<a class="link" href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      <a class="link" href="CamLoggerUnit.html#cam-logger-unit-new" title="cam_logger_unit_new ()">cam_logger_unit_new</a>                 (void);
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamLoggerUnit.html#cam-logger-unit-driver-new" title="cam_logger_unit_driver_new ()">cam_logger_unit_driver_new</a>          (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id343276"></a><h2>Object Hierarchy</h2>
+<a name="CamLoggerUnit.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   GObject
    +----GInitiallyUnowned
-         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
+         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamLoggerUnit
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id343312"></a><h2>Description</h2>
+<a name="CamLoggerUnit.description"></a><h2>Description</h2>
 <p>
 CamLoggerUnit can be used to log image streams to disk for later playback
 and analysis.  It is a core unit, always available with unit id
@@ -74,27 +67,25 @@ and analysis.  It is a core unit, always available with unit id
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id343333"></a><h2>Details</h2>
+<a name="CamLoggerUnit.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id337594"></a><h3>
-<a name="CamLoggerUnit-struct"></a>CamLoggerUnit</h3>
-<a class="indexterm" name="id337606"></a><pre class="programlisting">typedef struct _CamLoggerUnit CamLoggerUnit;</pre>
+<a name="CamLoggerUnit-struct"></a><h3>CamLoggerUnit</h3>
+<pre class="programlisting">typedef struct _CamLoggerUnit CamLoggerUnit;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id337621"></a><h3>
-<a name="cam-logger-unit-new"></a>cam_logger_unit_new ()</h3>
-<a class="indexterm" name="id337633"></a><pre class="programlisting"><a href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      cam_logger_unit_new                 (void);</pre>
+<a name="cam-logger-unit-new"></a><h3>cam_logger_unit_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>*      cam_logger_unit_new                 (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -104,16 +95,15 @@ and analysis.  It is a core unit, always available with unit id
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id379330"></a><h3>
-<a name="cam-logger-unit-driver-new"></a>cam_logger_unit_driver_new ()</h3>
-<a class="indexterm" name="id379341"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_logger_unit_driver_new          (void);</pre>
+<a name="cam-logger-unit-driver-new"></a><h3>cam_logger_unit_driver_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_logger_unit_driver_new          (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -123,5 +113,8 @@ and analysis.  It is a core unit, always available with unit id
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

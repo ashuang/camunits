@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>log</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch04.html" title="Other stuff">
 <link rel="prev" href="libcam-libcam-gmarshal.html" title="libcam-gmarshal">
 <link rel="next" href="libcam-plugin.html" title="plugin">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
@@ -24,75 +24,68 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="libcam-plugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id353158" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id390072" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libcam-log.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libcam-log.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libcam-log"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id353158"></a><span class="refentrytitle">log</span>
-</h2>
+<h2><span class="refentrytitle"><a name="libcam-log.top_of_page"></a>log</span></h2>
 <p>log</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libcam-log.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a href="libcam-log.html#CamLog">CamLog</a>;
-                    <a href="libcam-log.html#CamLogFrameFormat">CamLogFrameFormat</a>;
-                    <a href="libcam-log.html#CamLogFrameInfo">CamLogFrameInfo</a>;
-<a href="libcam-log.html#CamLog">CamLog</a>*             <a href="libcam-log.html#cam-log-new">cam_log_new</a>                         (const char *fname,
+                    <a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a>;
+                    <a class="link" href="libcam-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a>;
+                    <a class="link" href="libcam-log.html#CamLogFrameInfo" title="CamLogFrameInfo">CamLogFrameInfo</a>;
+<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a>*             <a class="link" href="libcam-log.html#cam-log-new" title="cam_log_new ()">cam_log_new</a>                         (const char *fname,
                                                          const char *mode);
-void                <a href="libcam-log.html#cam-log-destroy">cam_log_destroy</a>                     (<a href="libcam-log.html#CamLog">CamLog</a> *self);
-int                 <a href="libcam-log.html#cam-log-next-frame">cam_log_next_frame</a>                  (<a href="libcam-log.html#CamLog">CamLog</a> *self);
-int                 <a href="libcam-log.html#cam-log-prev-frame">cam_log_prev_frame</a>                  (<a href="libcam-log.html#CamLog">CamLog</a> *self);
-int                 <a href="libcam-log.html#cam-log-get-frame-format">cam_log_get_frame_format</a>            (<a href="libcam-log.html#CamLog">CamLog</a> *self,
-                                                         <a href="libcam-log.html#CamLogFrameFormat">CamLogFrameFormat</a> *format);
-int                 <a href="libcam-log.html#cam-log-get-frame-info">cam_log_get_frame_info</a>              (<a href="libcam-log.html#CamLog">CamLog</a> *self,
-                                                         <a href="libcam-log.html#CamLogFrameInfo">CamLogFrameInfo</a> *info);
-<a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     <a href="libcam-log.html#cam-log-get-frame">cam_log_get_frame</a>                   (<a href="libcam-log.html#CamLog">CamLog</a> *self);
-int                 <a href="libcam-log.html#cam-log-write-frame">cam_log_write_frame</a>                 (<a href="libcam-log.html#CamLog">CamLog</a> *self,
-                                                         <a href="libcam-log.html#CamLogFrameFormat">CamLogFrameFormat</a> *format,
-                                                         <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *frame,
+void                <a class="link" href="libcam-log.html#cam-log-destroy" title="cam_log_destroy ()">cam_log_destroy</a>                     (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="libcam-log.html#cam-log-next-frame" title="cam_log_next_frame ()">cam_log_next_frame</a>                  (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="libcam-log.html#cam-log-prev-frame" title="cam_log_prev_frame ()">cam_log_prev_frame</a>                  (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="libcam-log.html#cam-log-get-frame-format" title="cam_log_get_frame_format ()">cam_log_get_frame_format</a>            (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="libcam-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format);
+int                 <a class="link" href="libcam-log.html#cam-log-get-frame-info" title="cam_log_get_frame_info ()">cam_log_get_frame_info</a>              (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="libcam-log.html#CamLogFrameInfo" title="CamLogFrameInfo">CamLogFrameInfo</a> *info);
+<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     <a class="link" href="libcam-log.html#cam-log-get-frame" title="cam_log_get_frame ()">cam_log_get_frame</a>                   (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="libcam-log.html#cam-log-write-frame" title="cam_log_write_frame ()">cam_log_write_frame</a>                 (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="libcam-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format,
+                                                         <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *frame,
                                                          int64_t *offset);
-int                 <a href="libcam-log.html#cam-log-count-frames">cam_log_count_frames</a>                (<a href="libcam-log.html#CamLog">CamLog</a> *self);
-int                 <a href="libcam-log.html#cam-log-seek-to-frame">cam_log_seek_to_frame</a>               (<a href="libcam-log.html#CamLog">CamLog</a> *self,
+int                 <a class="link" href="libcam-log.html#cam-log-count-frames" title="cam_log_count_frames ()">cam_log_count_frames</a>                (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="libcam-log.html#cam-log-seek-to-frame" title="cam_log_seek_to_frame ()">cam_log_seek_to_frame</a>               (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
                                                          int frameno);
-int                 <a href="libcam-log.html#cam-log-seek-to-offset">cam_log_seek_to_offset</a>              (<a href="libcam-log.html#CamLog">CamLog</a> *self,
+int                 <a class="link" href="libcam-log.html#cam-log-seek-to-offset" title="cam_log_seek_to_offset ()">cam_log_seek_to_offset</a>              (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
                                                          int64_t file_offset);
-int                 <a href="libcam-log.html#cam-log-seek-to-timestamp">cam_log_seek_to_timestamp</a>           (<a href="libcam-log.html#CamLog">CamLog</a> *self,
+int                 <a class="link" href="libcam-log.html#cam-log-seek-to-timestamp" title="cam_log_seek_to_timestamp ()">cam_log_seek_to_timestamp</a>           (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
                                                          int64_t timestamp);
-int64_t             <a href="libcam-log.html#cam-log-get-file-size">cam_log_get_file_size</a>               (const <a href="libcam-log.html#CamLog">CamLog</a> *self);
+int64_t             <a class="link" href="libcam-log.html#cam-log-get-file-size" title="cam_log_get_file_size ()">cam_log_get_file_size</a>               (const <a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id390072"></a><h2>Description</h2>
+<a name="libcam-log.description"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id390523"></a><h2>Details</h2>
+<a name="libcam-log.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id390534"></a><h3>
-<a name="CamLog"></a>CamLog</h3>
-<a class="indexterm" name="id390546"></a><pre class="programlisting">typedef struct _CamLog CamLog;</pre>
+<a name="CamLog"></a><h3>CamLog</h3>
+<pre class="programlisting">typedef struct _CamLog CamLog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390561"></a><h3>
-<a name="CamLogFrameFormat"></a>CamLogFrameFormat</h3>
-<a class="indexterm" name="id390573"></a><pre class="programlisting">typedef struct {
+<a name="CamLogFrameFormat"></a><h3>CamLogFrameFormat</h3>
+<pre class="programlisting">typedef struct {
     uint16_t width;
     uint16_t height;
     uint16_t stride;
@@ -105,9 +98,8 @@ int64_t             <a href="libcam-log.html#cam-log-get-file-size">cam_log_get_
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390589"></a><h3>
-<a name="CamLogFrameInfo"></a>CamLogFrameInfo</h3>
-<a class="indexterm" name="id390601"></a><pre class="programlisting">typedef struct {
+<a name="CamLogFrameInfo"></a><h3>CamLogFrameInfo</h3>
+<pre class="programlisting">typedef struct {
     uint64_t timestamp;
     uint64_t frameno;
     int64_t offset;
@@ -121,9 +113,8 @@ int64_t             <a href="libcam-log.html#cam-log-get-file-size">cam_log_get_
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390618"></a><h3>
-<a name="cam-log-new"></a>cam_log_new ()</h3>
-<a class="indexterm" name="id390630"></a><pre class="programlisting"><a href="libcam-log.html#CamLog">CamLog</a>*             cam_log_new                         (const char *fname,
+<a name="cam-log-new"></a><h3>cam_log_new ()</h3>
+<pre class="programlisting"><a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a>*             cam_log_new                         (const char *fname,
                                                          const char *mode);</pre>
 <p>
 constructor</p>
@@ -134,17 +125,17 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>fname</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>fname</code></em> :</span></p></td>
 <td> the file to read or create
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
 <td>  either "r" or "w"
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -155,16 +146,15 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390709"></a><h3>
-<a name="cam-log-destroy"></a>cam_log_destroy ()</h3>
-<a class="indexterm" name="id390721"></a><pre class="programlisting">void                cam_log_destroy                     (<a href="libcam-log.html#CamLog">CamLog</a> *self);</pre>
+<a name="cam-log-destroy"></a><h3>cam_log_destroy ()</h3>
+<pre class="programlisting">void                cam_log_destroy                     (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 
 
@@ -174,9 +164,8 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id390766"></a><h3>
-<a name="cam-log-next-frame"></a>cam_log_next_frame ()</h3>
-<a class="indexterm" name="id391324"></a><pre class="programlisting">int                 cam_log_next_frame                  (<a href="libcam-log.html#CamLog">CamLog</a> *self);</pre>
+<a name="cam-log-next-frame"></a><h3>cam_log_next_frame ()</h3>
+<pre class="programlisting">int                 cam_log_next_frame                  (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
 <p>
 
 </p>
@@ -184,12 +173,12 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -200,9 +189,8 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391380"></a><h3>
-<a name="cam-log-prev-frame"></a>cam_log_prev_frame ()</h3>
-<a class="indexterm" name="id391392"></a><pre class="programlisting">int                 cam_log_prev_frame                  (<a href="libcam-log.html#CamLog">CamLog</a> *self);</pre>
+<a name="cam-log-prev-frame"></a><h3>cam_log_prev_frame ()</h3>
+<pre class="programlisting">int                 cam_log_prev_frame                  (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
 <p>
 
 </p>
@@ -210,12 +198,12 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -226,10 +214,9 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391447"></a><h3>
-<a name="cam-log-get-frame-format"></a>cam_log_get_frame_format ()</h3>
-<a class="indexterm" name="id391458"></a><pre class="programlisting">int                 cam_log_get_frame_format            (<a href="libcam-log.html#CamLog">CamLog</a> *self,
-                                                         <a href="libcam-log.html#CamLogFrameFormat">CamLogFrameFormat</a> *format);</pre>
+<a name="cam-log-get-frame-format"></a><h3>cam_log_get_frame_format ()</h3>
+<pre class="programlisting">int                 cam_log_get_frame_format            (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="libcam-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format);</pre>
 <p>
 
 </p>
@@ -237,17 +224,17 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -258,10 +245,9 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391534"></a><h3>
-<a name="cam-log-get-frame-info"></a>cam_log_get_frame_info ()</h3>
-<a class="indexterm" name="id391545"></a><pre class="programlisting">int                 cam_log_get_frame_info              (<a href="libcam-log.html#CamLog">CamLog</a> *self,
-                                                         <a href="libcam-log.html#CamLogFrameInfo">CamLogFrameInfo</a> *info);</pre>
+<a name="cam-log-get-frame-info"></a><h3>cam_log_get_frame_info ()</h3>
+<pre class="programlisting">int                 cam_log_get_frame_info              (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="libcam-log.html#CamLogFrameInfo" title="CamLogFrameInfo">CamLogFrameInfo</a> *info);</pre>
 <p>
 
 </p>
@@ -269,17 +255,17 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>info</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -290,9 +276,8 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391621"></a><h3>
-<a name="cam-log-get-frame"></a>cam_log_get_frame ()</h3>
-<a class="indexterm" name="id391633"></a><pre class="programlisting"><a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_log_get_frame                   (<a href="libcam-log.html#CamLog">CamLog</a> *self);</pre>
+<a name="cam-log-get-frame"></a><h3>cam_log_get_frame ()</h3>
+<pre class="programlisting"><a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_log_get_frame                   (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
 <p>
 
 </p>
@@ -300,12 +285,12 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -316,11 +301,10 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391688"></a><h3>
-<a name="cam-log-write-frame"></a>cam_log_write_frame ()</h3>
-<a class="indexterm" name="id391700"></a><pre class="programlisting">int                 cam_log_write_frame                 (<a href="libcam-log.html#CamLog">CamLog</a> *self,
-                                                         <a href="libcam-log.html#CamLogFrameFormat">CamLogFrameFormat</a> *format,
-                                                         <a href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *frame,
+<a name="cam-log-write-frame"></a><h3>cam_log_write_frame ()</h3>
+<pre class="programlisting">int                 cam_log_write_frame                 (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="libcam-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format,
+                                                         <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *frame,
                                                          int64_t *offset);</pre>
 <p>
 
@@ -329,27 +313,27 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>frame</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>offset</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>offset</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -360,9 +344,8 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391818"></a><h3>
-<a name="cam-log-count-frames"></a>cam_log_count_frames ()</h3>
-<a class="indexterm" name="id391830"></a><pre class="programlisting">int                 cam_log_count_frames                (<a href="libcam-log.html#CamLog">CamLog</a> *self);</pre>
+<a name="cam-log-count-frames"></a><h3>cam_log_count_frames ()</h3>
+<pre class="programlisting">int                 cam_log_count_frames                (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -372,12 +355,12 @@ constructor</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the total number of frames in the logfile
 </td>
 </tr>
@@ -386,9 +369,8 @@ constructor</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391889"></a><h3>
-<a name="cam-log-seek-to-frame"></a>cam_log_seek_to_frame ()</h3>
-<a class="indexterm" name="id391900"></a><pre class="programlisting">int                 cam_log_seek_to_frame               (<a href="libcam-log.html#CamLog">CamLog</a> *self,
+<a name="cam-log-seek-to-frame"></a><h3>cam_log_seek_to_frame ()</h3>
+<pre class="programlisting">int                 cam_log_seek_to_frame               (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
                                                          int frameno);</pre>
 <p>
 Positions the file pointer of the cam_log such that the next call to
@@ -403,17 +385,17 @@ Read-mode only.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>frameno</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>frameno</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> 0 on success, -1 on failure
 </td>
 </tr>
@@ -422,9 +404,8 @@ Read-mode only.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id391994"></a><h3>
-<a name="cam-log-seek-to-offset"></a>cam_log_seek_to_offset ()</h3>
-<a class="indexterm" name="id392006"></a><pre class="programlisting">int                 cam_log_seek_to_offset              (<a href="libcam-log.html#CamLog">CamLog</a> *self,
+<a name="cam-log-seek-to-offset"></a><h3>cam_log_seek_to_offset ()</h3>
+<pre class="programlisting">int                 cam_log_seek_to_offset              (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
                                                          int64_t file_offset);</pre>
 <p>
 Positions the file pointer of the cam_log at the start of the first frame
@@ -439,17 +420,17 @@ Read-mode only.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>file_offset</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>file_offset</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> 0 on success, -1 on failure
 </td>
 </tr>
@@ -458,9 +439,8 @@ Read-mode only.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392099"></a><h3>
-<a name="cam-log-seek-to-timestamp"></a>cam_log_seek_to_timestamp ()</h3>
-<a class="indexterm" name="id392111"></a><pre class="programlisting">int                 cam_log_seek_to_timestamp           (<a href="libcam-log.html#CamLog">CamLog</a> *self,
+<a name="cam-log-seek-to-timestamp"></a><h3>cam_log_seek_to_timestamp ()</h3>
+<pre class="programlisting">int                 cam_log_seek_to_timestamp           (<a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self,
                                                          int64_t timestamp);</pre>
 <p>
 Positions the file pointer of the cam_log at the start of the first frame
@@ -475,17 +455,17 @@ Read-mode only.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>timestamp</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>timestamp</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> 0 on success, -1 on failure
 </td>
 </tr>
@@ -494,9 +474,8 @@ Read-mode only.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id392205"></a><h3>
-<a name="cam-log-get-file-size"></a>cam_log_get_file_size ()</h3>
-<a class="indexterm" name="id392217"></a><pre class="programlisting">int64_t             cam_log_get_file_size               (const <a href="libcam-log.html#CamLog">CamLog</a> *self);</pre>
+<a name="cam-log-get-file-size"></a><h3>cam_log_get_file_size ()</h3>
+<pre class="programlisting">int64_t             cam_log_get_file_size               (const <a class="link" href="libcam-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -506,12 +485,12 @@ Read-mode only.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the size of the camera log file.
 </td>
 </tr>
@@ -520,5 +499,8 @@ Read-mode only.</p>
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

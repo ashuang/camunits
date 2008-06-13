@@ -1,3 +1,12 @@
+libcam 0.0.8 - Jun 13, 2008
+===========================
+* add --no-gui option to camview
+* input_example: fix timestamps
+* camlog: fix thrashing for inexact log seeking (e.g. timestamps)
+* update tutorial to match reality
+* add qt4 examples
+* input_v4l: was not populating timestamp, bytesused.  fixed.
+
 libcam 0.0.7 - Apr 17, 2008
 ===========================
 * Fix debayer regression from last version's portability improvements

@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamColorConversionFilter</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch03.html" title="Built-in Units">
 <link rel="prev" href="CamFastBayerFilter.html" title="CamFastBayerFilter">
 <link rel="next" href="CamLoggerUnit.html" title="CamLoggerUnit">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
@@ -24,49 +24,42 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamLoggerUnit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id344334" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id379699" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id379664" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#CamColorConversionFilter.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#CamColorConversionFilter.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#CamColorConversionFilter.object-hierarchy" class="shortcut">Object Hierarchy</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamColorConversionFilter"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id344334"></a><span class="refentrytitle">CamColorConversionFilter</span>
-</h2>
-<p>CamColorConversionFilter &#8212; General-purpose colorspace conversion</p>
+<h2><span class="refentrytitle"><a name="CamColorConversionFilter.top_of_page"></a>CamColorConversionFilter</span></h2>
+<p>CamColorConversionFilter — General-purpose colorspace conversion</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="CamColorConversionFilter.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a href="CamColorConversionFilter.html#CamColorConversionFilter-struct">CamColorConversionFilter</a>;
-<a href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>* <a href="CamColorConversionFilter.html#cam-color-conversion-filter-new">cam_color_conversion_filter_new</a>
+                    <a class="link" href="CamColorConversionFilter.html#CamColorConversionFilter-struct" title="CamColorConversionFilter">CamColorConversionFilter</a>;
+<a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>* <a class="link" href="CamColorConversionFilter.html#cam-color-conversion-filter-new" title="cam_color_conversion_filter_new ()">cam_color_conversion_filter_new</a>
                                                         (void);
-<a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a href="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new">cam_color_conversion_filter_driver_new</a>
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new" title="cam_color_conversion_filter_driver_new ()">cam_color_conversion_filter_driver_new</a>
                                                         (void);
-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id379664"></a><h2>Object Hierarchy</h2>
+<a name="CamColorConversionFilter.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   GObject
    +----GInitiallyUnowned
-         +----<a href="CamUnit.html" title="CamUnit">CamUnit</a>
+         +----<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>
                +----CamColorConversionFilter
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id379699"></a><h2>Description</h2>
+<a name="CamColorConversionFilter.description"></a><h2>Description</h2>
 <p>
 CamColorConversionFilter attempts to be a swiss-army-knife of colorspace
 conversions.  It does so with limited success.  The list of supported
@@ -81,20 +74,18 @@ id "convert.colorspace"</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id343760"></a><h2>Details</h2>
+<a name="CamColorConversionFilter.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id343770"></a><h3>
-<a name="CamColorConversionFilter-struct"></a>CamColorConversionFilter</h3>
-<a class="indexterm" name="id343781"></a><pre class="programlisting">typedef struct _CamColorConversionFilter CamColorConversionFilter;</pre>
+<a name="CamColorConversionFilter-struct"></a><h3>CamColorConversionFilter</h3>
+<pre class="programlisting">typedef struct _CamColorConversionFilter CamColorConversionFilter;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id343796"></a><h3>
-<a name="cam-color-conversion-filter-new"></a>cam_color_conversion_filter_new ()</h3>
-<a class="indexterm" name="id343808"></a><pre class="programlisting"><a href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>* cam_color_conversion_filter_new
+<a name="cam-color-conversion-filter-new"></a><h3>cam_color_conversion_filter_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>* cam_color_conversion_filter_new
                                                         (void);</pre>
 <p>
 
@@ -102,7 +93,7 @@ id "convert.colorspace"</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -112,9 +103,8 @@ id "convert.colorspace"</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id343652"></a><h3>
-<a name="cam-color-conversion-filter-driver-new"></a>cam_color_conversion_filter_driver_new ()</h3>
-<a class="indexterm" name="id343663"></a><pre class="programlisting"><a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_color_conversion_filter_driver_new
+<a name="cam-color-conversion-filter-driver-new"></a><h3>cam_color_conversion_filter_driver_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_color_conversion_filter_driver_new
                                                         (void);</pre>
 <p>
 
@@ -122,7 +112,7 @@ id "convert.colorspace"</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -132,5 +122,8 @@ id "convert.colorspace"</p>
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

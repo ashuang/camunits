@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamUnitControlWidget</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam-gtk Reference Manual">
 <link rel="up" href="ch01.html" title="GTK Widgets for libcam Types">
 <link rel="prev" href="ch01.html" title="GTK Widgets for libcam Types">
 <link rel="next" href="CamUnitChainWidget.html" title="CamUnitChainWidget">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="GTK Widgets for libcam Types">
 <link rel="chapter" href="ch02.html" title="Subclasses of GTK Widgets">
@@ -22,54 +22,47 @@
 <th width="100%" align="center">libcam-gtk Reference Manual</th>
 <td><a accesskey="n" href="CamUnitChainWidget.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id350297" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id287238" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id286818" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id289964" class="shortcut">Implemented Interfaces</a>
-                  &#160;|&#160;
-                  <a href="#id287215" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#CamUnitControlWidget.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#CamUnitControlWidget.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#CamUnitControlWidget.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#CamUnitControlWidget.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#CamUnitControlWidget.signals" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitControlWidget"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id350297"></a><span class="refentrytitle">CamUnitControlWidget</span>
-</h2>
+<h2><span class="refentrytitle"><a name="CamUnitControlWidget.top_of_page"></a>CamUnitControlWidget</span></h2>
 <p>CamUnitControlWidget</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="CamUnitControlWidget.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a href="CamUnitControlWidget.html#CamUnitControlWidget-struct">CamUnitControlWidget</a>;
-<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* <a href="CamUnitControlWidget.html#cam-unit-control-widget-new">cam_unit_control_widget_new</a>       (<a
+                    <a class="link" href="CamUnitControlWidget.html#CamUnitControlWidget-struct" title="CamUnitControlWidget">CamUnitControlWidget</a>;
+<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-new" title="cam_unit_control_widget_new ()">cam_unit_control_widget_new</a>       (<a
 href="../libcam/CamUnit.html"
 >CamUnit</a> *unit);
-int                 <a href="CamUnitControlWidget.html#cam-unit-control-widget-set-unit">cam_unit_control_widget_set_unit</a>    (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
+int                 <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-set-unit" title="cam_unit_control_widget_set_unit ()">cam_unit_control_widget_set_unit</a>    (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
                                                          <a
 href="../libcam/CamUnit.html"
 >CamUnit</a> *unit);
-void                <a href="CamUnitControlWidget.html#cam-unit-control-widget-set-expanded">cam_unit_control_widget_set_expanded</a>
-                                                        (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
+void                <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-set-expanded" title="cam_unit_control_widget_set_expanded ()">cam_unit_control_widget_set_expanded</a>
+                                                        (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
                                                          gboolean expanded);
-extern              GtkTargetEntry <a href="CamUnitControlWidget.html#cam-unit-control-widget-target-entry">cam_unit_control_widget_target_entry</a>;
-void                <a href="CamUnitControlWidget.html#cam-unit-control-widget-detach">cam_unit_control_widget_detach</a>      (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self);
-#define             <a href="CamUnitControlWidget.html#CAM-UNIT-CONTROL-WIDGET-DND-ID:CAPS">CAM_UNIT_CONTROL_WIDGET_DND_ID</a>
-
+extern              GtkTargetEntry <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-target-entry" title="cam_unit_control_widget_target_entry">cam_unit_control_widget_target_entry</a>;
+void                <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-detach" title="cam_unit_control_widget_detach ()">cam_unit_control_widget_detach</a>      (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self);
+#define             <a class="link" href="CamUnitControlWidget.html#CAM-UNIT-CONTROL-WIDGET-DND-ID:CAPS" title="CAM_UNIT_CONTROL_WIDGET_DND_ID">CAM_UNIT_CONTROL_WIDGET_DND_ID</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id286818"></a><h2>Object Hierarchy</h2>
+<a name="CamUnitControlWidget.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   GObject
    +----GInitiallyUnowned
          +----GtkObject
@@ -81,39 +74,36 @@ void                <a href="CamUnitControlWidget.html#cam-unit-control-widget-d
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id289964"></a><h2>Implemented Interfaces</h2>
+<a name="CamUnitControlWidget.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitControlWidget implements
  GtkBuildable and  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id287215"></a><h2>Signals</h2>
+<a name="CamUnitControlWidget.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-
-  "<a href="CamUnitControlWidget.html#CamUnitControlWidget-close-button-clicked">close-button-clicked</a>"                           : Run First / Action
+  "<a class="link" href="CamUnitControlWidget.html#CamUnitControlWidget-close-button-clicked" title='The "close-button-clicked" signal'>close-button-clicked</a>"                           : Run First / Action
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id287238"></a><h2>Description</h2>
+<a name="CamUnitControlWidget.description"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id287254"></a><h2>Details</h2>
+<a name="CamUnitControlWidget.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id287265"></a><h3>
-<a name="CamUnitControlWidget-struct"></a>CamUnitControlWidget</h3>
-<a class="indexterm" name="id287276"></a><pre class="programlisting">typedef struct _CamUnitControlWidget CamUnitControlWidget;</pre>
+<a name="CamUnitControlWidget-struct"></a><h3>CamUnitControlWidget</h3>
+<pre class="programlisting">typedef struct _CamUnitControlWidget CamUnitControlWidget;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id287292"></a><h3>
-<a name="cam-unit-control-widget-new"></a>cam_unit_control_widget_new ()</h3>
-<a class="indexterm" name="id287304"></a><pre class="programlisting"><a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* cam_unit_control_widget_new       (<a
+<a name="cam-unit-control-widget-new"></a><h3>cam_unit_control_widget_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* cam_unit_control_widget_new       (<a
 href="../libcam/CamUnit.html"
 >CamUnit</a> *unit);</pre>
 <p>
@@ -123,12 +113,12 @@ href="../libcam/CamUnit.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -139,9 +129,8 @@ href="../libcam/CamUnit.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id339107"></a><h3>
-<a name="cam-unit-control-widget-set-unit"></a>cam_unit_control_widget_set_unit ()</h3>
-<a class="indexterm" name="id339119"></a><pre class="programlisting">int                 cam_unit_control_widget_set_unit    (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
+<a name="cam-unit-control-widget-set-unit"></a><h3>cam_unit_control_widget_set_unit ()</h3>
+<pre class="programlisting">int                 cam_unit_control_widget_set_unit    (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
                                                          <a
 href="../libcam/CamUnit.html"
 >CamUnit</a> *unit);</pre>
@@ -152,17 +141,17 @@ href="../libcam/CamUnit.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -173,10 +162,9 @@ href="../libcam/CamUnit.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id339195"></a><h3>
-<a name="cam-unit-control-widget-set-expanded"></a>cam_unit_control_widget_set_expanded ()</h3>
-<a class="indexterm" name="id339207"></a><pre class="programlisting">void                cam_unit_control_widget_set_expanded
-                                                        (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
+<a name="cam-unit-control-widget-set-expanded"></a><h3>cam_unit_control_widget_set_expanded ()</h3>
+<pre class="programlisting">void                cam_unit_control_widget_set_expanded
+                                                        (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
                                                          gboolean expanded);</pre>
 <p>
 
@@ -185,12 +173,12 @@ href="../libcam/CamUnit.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>expanded</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>expanded</code></em> :</span></p></td>
 <td>
 
 
@@ -201,9 +189,8 @@ href="../libcam/CamUnit.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id339274"></a><h3>
-<a name="cam-unit-control-widget-target-entry"></a>cam_unit_control_widget_target_entry</h3>
-<a class="indexterm" name="id339286"></a><pre class="programlisting">extern GtkTargetEntry cam_unit_control_widget_target_entry;
+<a name="cam-unit-control-widget-target-entry"></a><h3>cam_unit_control_widget_target_entry</h3>
+<pre class="programlisting">extern GtkTargetEntry cam_unit_control_widget_target_entry;
 </pre>
 <p>
 
@@ -211,16 +198,15 @@ href="../libcam/CamUnit.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id339302"></a><h3>
-<a name="cam-unit-control-widget-detach"></a>cam_unit_control_widget_detach ()</h3>
-<a class="indexterm" name="id339315"></a><pre class="programlisting">void                cam_unit_control_widget_detach      (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self);</pre>
+<a name="cam-unit-control-widget-detach"></a><h3>cam_unit_control_widget_detach ()</h3>
+<pre class="programlisting">void                cam_unit_control_widget_detach      (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 
 
@@ -230,9 +216,8 @@ href="../libcam/CamUnit.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id362329"></a><h3>
-<a name="CAM-UNIT-CONTROL-WIDGET-DND-ID:CAPS"></a>CAM_UNIT_CONTROL_WIDGET_DND_ID</h3>
-<a class="indexterm" name="id362339"></a><pre class="programlisting">#define CAM_UNIT_CONTROL_WIDGET_DND_ID 101
+<a name="CAM-UNIT-CONTROL-WIDGET-DND-ID:CAPS"></a><h3>CAM_UNIT_CONTROL_WIDGET_DND_ID</h3>
+<pre class="programlisting">#define CAM_UNIT_CONTROL_WIDGET_DND_ID 101
 </pre>
 <p>
 
@@ -240,11 +225,10 @@ href="../libcam/CamUnit.html"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id362354"></a><h2>Signal Details</h2>
+<a name="CamUnitControlWidget.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id362365"></a><h3>
-<a name="CamUnitControlWidget-close-button-clicked"></a>The "close-button-clicked" signal</h3>
-<a class="indexterm" name="id362373"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *camunitcontrolwidget,
+<a name="CamUnitControlWidget-close-button-clicked"></a><h3>The <code class="literal">"close-button-clicked"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *camunitcontrolwidget,
                                                         gpointer              user_data)                 : Run First / Action</pre>
 <p>
 
@@ -253,13 +237,13 @@ href="../libcam/CamUnit.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>camunitcontrolwidget</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>camunitcontrolwidget</code></em> :</span></p></td>
 <td>the object which received the signal.
 
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -267,5 +251,8 @@ href="../libcam/CamUnit.html"
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

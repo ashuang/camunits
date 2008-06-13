@@ -345,25 +345,14 @@
     <function name="PWC_FPS_MASK" link="libcam-pwc-ioctl.html#PWC-FPS-MASK:CAPS"/>
     <function name="PWC_FPS_FRMASK" link="libcam-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS"/>
     <function name="PWC_FPS_SNAPSHOT" link="libcam-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS"/>
-    <function name="struct pwc_coord" link="libcam-pwc-ioctl.html#pwc-coord"/>
-    <function name="struct pwc_probe" link="libcam-pwc-ioctl.html#pwc-probe"/>
-    <function name="struct pwc_serial" link="libcam-pwc-ioctl.html#pwc-serial"/>
     <function name="PWC_WB_INDOOR" link="libcam-pwc-ioctl.html#PWC-WB-INDOOR:CAPS"/>
     <function name="PWC_WB_OUTDOOR" link="libcam-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS"/>
     <function name="PWC_WB_FL" link="libcam-pwc-ioctl.html#PWC-WB-FL:CAPS"/>
     <function name="PWC_WB_MANUAL" link="libcam-pwc-ioctl.html#PWC-WB-MANUAL:CAPS"/>
     <function name="PWC_WB_AUTO" link="libcam-pwc-ioctl.html#PWC-WB-AUTO:CAPS"/>
-    <function name="struct pwc_whitebalance" link="libcam-pwc-ioctl.html#pwc-whitebalance"/>
-    <function name="struct pwc_wb_speed" link="libcam-pwc-ioctl.html#pwc-wb-speed"/>
-    <function name="struct pwc_leds" link="libcam-pwc-ioctl.html#pwc-leds"/>
-    <function name="struct pwc_imagesize" link="libcam-pwc-ioctl.html#pwc-imagesize"/>
     <function name="PWC_MPT_PAN" link="libcam-pwc-ioctl.html#PWC-MPT-PAN:CAPS"/>
     <function name="PWC_MPT_TILT" link="libcam-pwc-ioctl.html#PWC-MPT-TILT:CAPS"/>
     <function name="PWC_MPT_TIMEOUT" link="libcam-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS"/>
-    <function name="struct pwc_mpt_angles" link="libcam-pwc-ioctl.html#pwc-mpt-angles"/>
-    <function name="struct pwc_mpt_range" link="libcam-pwc-ioctl.html#pwc-mpt-range"/>
-    <function name="struct pwc_mpt_status" link="libcam-pwc-ioctl.html#pwc-mpt-status"/>
-    <function name="struct pwc_video_command" link="libcam-pwc-ioctl.html#pwc-video-command"/>
     <function name="PWCX_FLAG_PLANAR" link="libcam-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS"/>
     <function name="PWCX_FLAG_BAYER" link="libcam-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS"/>
     <function name="VIDIOCPWCRUSER" link="libcam-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS"/>
@@ -397,7 +386,6 @@
     <function name="VIDIOCPWCMPTGANGLE" link="libcam-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS"/>
     <function name="VIDIOCPWCMPTSTATUS" link="libcam-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS"/>
     <function name="VIDIOCPWCGVIDCMD" link="libcam-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS"/>
-    <function name="struct pwc_table_init_buffer" link="libcam-pwc-ioctl.html#pwc-table-init-buffer"/>
     <function name="VIDIOCPWCGVIDTABLE" link="libcam-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS"/>
   </functions>
 </book>

@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamUnitChainGLWidget</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam-gtk Reference Manual">
 <link rel="up" href="ch01.html" title="GTK Widgets for libcam Types">
 <link rel="prev" href="CamUnitChainWidget.html" title="CamUnitChainWidget">
 <link rel="next" href="CamUnitManagerWidget.html" title="CamUnitManagerWidget">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="GTK Widgets for libcam Types">
 <link rel="chapter" href="ch02.html" title="Subclasses of GTK Widgets">
@@ -22,52 +22,45 @@
 <th width="100%" align="center">libcam-gtk Reference Manual</th>
 <td><a accesskey="n" href="CamUnitManagerWidget.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id343789" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id358565" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id333787" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id357995" class="shortcut">Implemented Interfaces</a>
-                  &#160;|&#160;
-                  <a href="#id358022" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#CamUnitChainGLWidget.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#CamUnitChainGLWidget.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#CamUnitChainGLWidget.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#CamUnitChainGLWidget.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#CamUnitChainGLWidget.signals" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitChainGLWidget"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id343789"></a><span class="refentrytitle">CamUnitChainGLWidget</span>
-</h2>
+<h2><span class="refentrytitle"><a name="CamUnitChainGLWidget.top_of_page"></a>CamUnitChainGLWidget</span></h2>
 <p>CamUnitChainGLWidget</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="CamUnitChainGLWidget.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a href="CamUnitChainGLWidget.html#CamUnitChainGLWidget-struct">CamUnitChainGLWidget</a>;
-<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>* <a href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-new">cam_unit_chain_gl_widget_new</a>      (<a
+                    <a class="link" href="CamUnitChainGLWidget.html#CamUnitChainGLWidget-struct" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>;
+<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>* <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-new" title="cam_unit_chain_gl_widget_new ()">cam_unit_chain_gl_widget_new</a>      (<a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);
-int                 <a href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-set-chain">cam_unit_chain_gl_widget_set_chain</a>  (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self,
+int                 <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-set-chain" title="cam_unit_chain_gl_widget_set_chain ()">cam_unit_chain_gl_widget_set_chain</a>  (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self,
                                                          <a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);
-void                <a href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-request-redraw">cam_unit_chain_gl_widget_request_redraw</a>
-                                                        (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);
-GtkWidget*          <a href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area">cam_unit_chain_gl_widget_get_gl_area</a>
-                                                        (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);
-
+void                <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-request-redraw" title="cam_unit_chain_gl_widget_request_redraw ()">cam_unit_chain_gl_widget_request_redraw</a>
+                                                        (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);
+GtkWidget*          <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area" title="cam_unit_chain_gl_widget_get_gl_area ()">cam_unit_chain_gl_widget_get_gl_area</a>
+                                                        (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id333787"></a><h2>Object Hierarchy</h2>
+<a name="CamUnitChainGLWidget.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   GObject
    +----GInitiallyUnowned
          +----GtkObject
@@ -79,39 +72,36 @@ GtkWidget*          <a href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id357995"></a><h2>Implemented Interfaces</h2>
+<a name="CamUnitChainGLWidget.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitChainGLWidget implements
  GtkBuildable and  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id358022"></a><h2>Signals</h2>
+<a name="CamUnitChainGLWidget.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-
-  "<a href="CamUnitChainGLWidget.html#CamUnitChainGLWidget-gl-draw-finished">gl-draw-finished</a>"                               : Run First
+  "<a class="link" href="CamUnitChainGLWidget.html#CamUnitChainGLWidget-gl-draw-finished" title='The "gl-draw-finished" signal'>gl-draw-finished</a>"                               : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id358565"></a><h2>Description</h2>
+<a name="CamUnitChainGLWidget.description"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id358580"></a><h2>Details</h2>
+<a name="CamUnitChainGLWidget.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id358591"></a><h3>
-<a name="CamUnitChainGLWidget-struct"></a>CamUnitChainGLWidget</h3>
-<a class="indexterm" name="id358603"></a><pre class="programlisting">typedef struct _CamUnitChainGLWidget CamUnitChainGLWidget;</pre>
+<a name="CamUnitChainGLWidget-struct"></a><h3>CamUnitChainGLWidget</h3>
+<pre class="programlisting">typedef struct _CamUnitChainGLWidget CamUnitChainGLWidget;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id358618"></a><h3>
-<a name="cam-unit-chain-gl-widget-new"></a>cam_unit_chain_gl_widget_new ()</h3>
-<a class="indexterm" name="id358630"></a><pre class="programlisting"><a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>* cam_unit_chain_gl_widget_new      (<a
+<a name="cam-unit-chain-gl-widget-new"></a><h3>cam_unit_chain_gl_widget_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>* cam_unit_chain_gl_widget_new      (<a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
 <p>
@@ -121,12 +111,12 @@ href="../libcam/CamUnitChain.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>chain</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>chain</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -137,9 +127,8 @@ href="../libcam/CamUnitChain.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id358685"></a><h3>
-<a name="cam-unit-chain-gl-widget-set-chain"></a>cam_unit_chain_gl_widget_set_chain ()</h3>
-<a class="indexterm" name="id351268"></a><pre class="programlisting">int                 cam_unit_chain_gl_widget_set_chain  (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self,
+<a name="cam-unit-chain-gl-widget-set-chain"></a><h3>cam_unit_chain_gl_widget_set_chain ()</h3>
+<pre class="programlisting">int                 cam_unit_chain_gl_widget_set_chain  (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self,
                                                          <a
 href="../libcam/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
@@ -150,17 +139,17 @@ href="../libcam/CamUnitChain.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>chain</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>chain</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -171,17 +160,16 @@ href="../libcam/CamUnitChain.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id351344"></a><h3>
-<a name="cam-unit-chain-gl-widget-request-redraw"></a>cam_unit_chain_gl_widget_request_redraw ()</h3>
-<a class="indexterm" name="id351356"></a><pre class="programlisting">void                cam_unit_chain_gl_widget_request_redraw
-                                                        (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);</pre>
+<a name="cam-unit-chain-gl-widget-request-redraw"></a><h3>cam_unit_chain_gl_widget_request_redraw ()</h3>
+<pre class="programlisting">void                cam_unit_chain_gl_widget_request_redraw
+                                                        (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 
 
@@ -191,10 +179,9 @@ href="../libcam/CamUnitChain.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id351402"></a><h3>
-<a name="cam-unit-chain-gl-widget-get-gl-area"></a>cam_unit_chain_gl_widget_get_gl_area ()</h3>
-<a class="indexterm" name="id351414"></a><pre class="programlisting">GtkWidget*          cam_unit_chain_gl_widget_get_gl_area
-                                                        (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);</pre>
+<a name="cam-unit-chain-gl-widget-get-gl-area"></a><h3>cam_unit_chain_gl_widget_get_gl_area ()</h3>
+<pre class="programlisting">GtkWidget*          cam_unit_chain_gl_widget_get_gl_area
+                                                        (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);</pre>
 <p>
 
 </p>
@@ -202,12 +189,12 @@ href="../libcam/CamUnitChain.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -218,11 +205,10 @@ href="../libcam/CamUnitChain.html"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id351472"></a><h2>Signal Details</h2>
+<a name="CamUnitChainGLWidget.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id351483"></a><h3>
-<a name="CamUnitChainGLWidget-gl-draw-finished"></a>The "gl-draw-finished" signal</h3>
-<a class="indexterm" name="id351492"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *camunitchainglwidget,
+<a name="CamUnitChainGLWidget-gl-draw-finished"></a><h3>The <code class="literal">"gl-draw-finished"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *camunitchainglwidget,
                                                         gpointer              user_data)                 : Run First</pre>
 <p>
 
@@ -231,13 +217,13 @@ href="../libcam/CamUnitChain.html"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>camunitchainglwidget</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>camunitchainglwidget</code></em> :</span></p></td>
 <td>the object which received the signal.
 
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -245,5 +231,8 @@ href="../libcam/CamUnitChain.html"
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

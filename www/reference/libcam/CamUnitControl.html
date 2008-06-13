@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamUnitControl</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch01.html" title="Units">
 <link rel="prev" href="CamUnitFormat.html" title="CamUnitFormat">
 <link rel="next" href="CamUnitDriver.html" title="CamUnitDriver">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
@@ -24,156 +24,148 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="CamUnitDriver.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id340718" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id375008" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id374954" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id374978" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#CamUnitControl.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#CamUnitControl.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#CamUnitControl.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#CamUnitControl.signals" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitControl"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id340718"></a><span class="refentrytitle">CamUnitControl</span>
-</h2>
-<p>CamUnitControl &#8212; User adjustable / automatically changing control value.</p>
+<h2><span class="refentrytitle"><a name="CamUnitControl.top_of_page"></a>CamUnitControl</span></h2>
+<p>CamUnitControl — User adjustable / automatically changing control value.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="CamUnitControl.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-enum                <a href="CamUnitControl.html#CamUnitControlType">CamUnitControlType</a>;
-enum                <a href="CamUnitControl.html#CamUnitControlUIHint">CamUnitControlUIHint</a>;
-gboolean            (<a href="CamUnitControl.html#CamUnitControlCallback">*CamUnitControlCallback</a>)           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+enum                <a class="link" href="CamUnitControl.html#CamUnitControlType" title="enum CamUnitControlType">CamUnitControlType</a>;
+enum                <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint">CamUnitControlUIHint</a>;
+gboolean            (<a class="link" href="CamUnitControl.html#CamUnitControlCallback" title="CamUnitControlCallback ()">*CamUnitControlCallback</a>)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
                                                          const GValue *proposed,
                                                          GValue *actual,
                                                          void *user_data);
-                    <a href="CamUnitControl.html#CamUnitControl-struct">CamUnitControl</a>;
-<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-enum">cam_unit_control_new_enum</a>           (const char *id,
+                    <a class="link" href="CamUnitControl.html#CamUnitControl-struct" title="CamUnitControl">CamUnitControl</a>;
+<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-enum" title="cam_unit_control_new_enum ()">cam_unit_control_new_enum</a>           (const char *id,
                                                          const char *name,
                                                          int initial_index,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);
-<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-int">cam_unit_control_new_int</a>            (const char *id,
+<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-int" title="cam_unit_control_new_int ()">cam_unit_control_new_int</a>            (const char *id,
                                                          const char *name,
                                                          int min,
                                                          int max,
                                                          int step,
                                                          int initial_val,
                                                          int enabled);
-<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-float">cam_unit_control_new_float</a>          (const char *id,
+<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-float" title="cam_unit_control_new_float ()">cam_unit_control_new_float</a>          (const char *id,
                                                          const char *name,
                                                          float min,
                                                          float max,
                                                          float step,
                                                          float initial_val,
                                                          int enabled);
-<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-boolean">cam_unit_control_new_boolean</a>        (const char *id,
+<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-boolean" title="cam_unit_control_new_boolean ()">cam_unit_control_new_boolean</a>        (const char *id,
                                                          const char *name,
                                                          int initial_val,
                                                          int enabled);
-<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a href="CamUnitControl.html#cam-unit-control-new-string">cam_unit_control_new_string</a>         (const char *id,
+<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-string" title="cam_unit_control_new_string ()">cam_unit_control_new_string</a>         (const char *id,
                                                          const char *name,
                                                          const char *initial_val,
                                                          int enabled);
-void                <a href="CamUnitControl.html#cam-unit-control-set-callback">cam_unit_control_set_callback</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         <a href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-callback" title="cam_unit_control_set_callback ()">cam_unit_control_set_callback</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         <a class="link" href="CamUnitControl.html#CamUnitControlCallback" title="CamUnitControlCallback ()">CamUnitControlCallback</a> callback,
                                                          void *user_data);
-void                <a href="CamUnitControl.html#cam-unit-control-modify-int">cam_unit_control_modify_int</a>         (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-int" title="cam_unit_control_modify_int ()">cam_unit_control_modify_int</a>         (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int min,
                                                          int max,
                                                          int step,
                                                          int enabled);
-void                <a href="CamUnitControl.html#cam-unit-control-modify-float">cam_unit_control_modify_float</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float" title="cam_unit_control_modify_float ()">cam_unit_control_modify_float</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float min,
                                                          float max,
                                                          float step,
                                                          int enabled);
-void                <a href="CamUnitControl.html#cam-unit-control-modify-enum">cam_unit_control_modify_enum</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-enum" title="cam_unit_control_modify_enum ()">cam_unit_control_modify_enum</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);
-int                 <a href="CamUnitControl.html#cam-unit-control-try-set-val">cam_unit_control_try_set_val</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-val" title="cam_unit_control_try_set_val ()">cam_unit_control_try_set_val</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const GValue *val);
-int                 <a href="CamUnitControl.html#cam-unit-control-try-set-int">cam_unit_control_try_set_int</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-int" title="cam_unit_control_try_set_int ()">cam_unit_control_try_set_int</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a href="CamUnitControl.html#cam-unit-control-try-set-float">cam_unit_control_try_set_float</a>      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-float" title="cam_unit_control_try_set_float ()">cam_unit_control_try_set_float</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);
-int                 <a href="CamUnitControl.html#cam-unit-control-try-set-enum">cam_unit_control_try_set_enum</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-enum" title="cam_unit_control_try_set_enum ()">cam_unit_control_try_set_enum</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int index);
-int                 <a href="CamUnitControl.html#cam-unit-control-try-set-boolean">cam_unit_control_try_set_boolean</a>    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-boolean" title="cam_unit_control_try_set_boolean ()">cam_unit_control_try_set_boolean</a>    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a href="CamUnitControl.html#cam-unit-control-try-set-string">cam_unit_control_try_set_string</a>     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-string" title="cam_unit_control_try_set_string ()">cam_unit_control_try_set_string</a>     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);
-int                 <a href="CamUnitControl.html#cam-unit-control-force-set-val">cam_unit_control_force_set_val</a>      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-val" title="cam_unit_control_force_set_val ()">cam_unit_control_force_set_val</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const GValue *value);
-int                 <a href="CamUnitControl.html#cam-unit-control-force-set-int">cam_unit_control_force_set_int</a>      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-int" title="cam_unit_control_force_set_int ()">cam_unit_control_force_set_int</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a href="CamUnitControl.html#cam-unit-control-force-set-float">cam_unit_control_force_set_float</a>    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-float" title="cam_unit_control_force_set_float ()">cam_unit_control_force_set_float</a>    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);
-int                 <a href="CamUnitControl.html#cam-unit-control-force-set-enum">cam_unit_control_force_set_enum</a>     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-enum" title="cam_unit_control_force_set_enum ()">cam_unit_control_force_set_enum</a>     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a href="CamUnitControl.html#cam-unit-control-force-set-boolean">cam_unit_control_force_set_boolean</a>  (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-boolean" title="cam_unit_control_force_set_boolean ()">cam_unit_control_force_set_boolean</a>  (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
-int                 <a href="CamUnitControl.html#cam-unit-control-force-set-string">cam_unit_control_force_set_string</a>   (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-string" title="cam_unit_control_force_set_string ()">cam_unit_control_force_set_string</a>   (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);
-void                <a href="CamUnitControl.html#cam-unit-control-get-val">cam_unit_control_get_val</a>            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-get-val" title="cam_unit_control_get_val ()">cam_unit_control_get_val</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          GValue *value);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-int">cam_unit_control_get_int</a>            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a href="CamUnitControl.html#cam-unit-control-get-float">cam_unit_control_get_float</a>          (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-enum">cam_unit_control_get_enum</a>           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-boolean">cam_unit_control_get_boolean</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-const char*         <a href="CamUnitControl.html#cam-unit-control-get-string">cam_unit_control_get_string</a>         (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-max-int">cam_unit_control_get_max_int</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-min-int">cam_unit_control_get_min_int</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-step-int">cam_unit_control_get_step_int</a>       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a href="CamUnitControl.html#cam-unit-control-get-max-float">cam_unit_control_get_max_float</a>      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a href="CamUnitControl.html#cam-unit-control-get-min-float">cam_unit_control_get_min_float</a>      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-float               <a href="CamUnitControl.html#cam-unit-control-get-step-float">cam_unit_control_get_step_float</a>     (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-void                <a href="CamUnitControl.html#cam-unit-control-set-enabled">cam_unit_control_set_enabled</a>        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-int" title="cam_unit_control_get_int ()">cam_unit_control_get_int</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-float" title="cam_unit_control_get_float ()">cam_unit_control_get_float</a>          (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-enum" title="cam_unit_control_get_enum ()">cam_unit_control_get_enum</a>           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-boolean" title="cam_unit_control_get_boolean ()">cam_unit_control_get_boolean</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-get-string" title="cam_unit_control_get_string ()">cam_unit_control_get_string</a>         (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-max-int" title="cam_unit_control_get_max_int ()">cam_unit_control_get_max_int</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-min-int" title="cam_unit_control_get_min_int ()">cam_unit_control_get_min_int</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-step-int" title="cam_unit_control_get_step_int ()">cam_unit_control_get_step_int</a>       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-max-float" title="cam_unit_control_get_max_float ()">cam_unit_control_get_max_float</a>      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-min-float" title="cam_unit_control_get_min_float ()">cam_unit_control_get_min_float</a>      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-step-float" title="cam_unit_control_get_step_float ()">cam_unit_control_get_step_float</a>     (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-enabled" title="cam_unit_control_set_enabled ()">cam_unit_control_set_enabled</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-enabled">cam_unit_control_get_enabled</a>        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-void                <a href="CamUnitControl.html#cam-unit-control-set-ui-hints">cam_unit_control_set_ui_hints</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-enabled" title="cam_unit_control_get_enabled ()">cam_unit_control_get_enabled</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-ui-hints" title="cam_unit_control_set_ui_hints ()">cam_unit_control_set_ui_hints</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int flags);
-int                 <a href="CamUnitControl.html#cam-unit-control-get-ui-hints">cam_unit_control_get_ui_hints</a>       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-const char*         <a href="CamUnitControl.html#cam-unit-control-get-type-str">cam_unit_control_get_type_str</a>       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);
-
+int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-ui-hints" title="cam_unit_control_get_ui_hints ()">cam_unit_control_get_ui_hints</a>       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-get-type-str" title="cam_unit_control_get_type_str ()">cam_unit_control_get_type_str</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id374954"></a><h2>Object Hierarchy</h2>
+<a name="CamUnitControl.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   GObject
    +----CamUnitControl
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id374978"></a><h2>Signals</h2>
+<a name="CamUnitControl.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-
-  "<a href="CamUnitControl.html#CamUnitControl-parameters-changed">parameters-changed</a>"                             : Run First / Action
-  "<a href="CamUnitControl.html#CamUnitControl-value-changed">value-changed</a>"                                  : Run First / Action
+  "<a class="link" href="CamUnitControl.html#CamUnitControl-parameters-changed" title='The "parameters-changed" signal'>parameters-changed</a>"                             : Run First / Action
+  "<a class="link" href="CamUnitControl.html#CamUnitControl-value-changed" title='The "value-changed" signal'>value-changed</a>"                                  : Run First / Action
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id375008"></a><h2>Description</h2>
+<a name="CamUnitControl.description"></a><h2>Description</h2>
 <p>
-If you just want to access a control provided by an existing <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, do
+If you just want to access a control provided by an existing <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, do
 not use this class directly.  Instead, use the cam_unit_set_control_* and
 cam_unit_get_control_* methods.
 </p>
 <p>
 The only time in which you use this class directly is when implementing a
-subclass of <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>.
+subclass of <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>.
 </p>
 <p>
 CamUnitControl represents a control value that can both change
@@ -181,7 +173,7 @@ asynchronously (e.g. the frame number of an advancing log playback unit) and
 can be adjusted by the user.
 </p>
 <p>
-Typically, a <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> will have a few of these controls that allow the user
+Typically, a <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> will have a few of these controls that allow the user
 to interact with the unit.  A control is strongly typed on construction, and
 the following types of controls are currently supported:  Integer, Boolean,
 Enum, String.  The current value of a control can be queried using
@@ -201,7 +193,7 @@ change, and the "value-changed" signal will be emitted.
 </p>
 <p>
 The polite way of setting a control involves using the
-<a href="CamUnitControl.html#cam-unit-control-set-callback"><span class="type">cam_unit_control_set_callback</span></a> and cam_unit_control_try_set_* methods.  
+<a class="link" href="CamUnitControl.html#cam-unit-control-set-callback" title="cam_unit_control_set_callback ()"><span class="type">cam_unit_control_set_callback</span></a> and cam_unit_control_try_set_* methods.  
 The idea is that it is sometimes possible that the requested control value
 is not acceptable, and should either not change at all, or should change to
 a value other than what the user requested.  Each time a
@@ -222,11 +214,10 @@ widget.</p>
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id375108"></a><h2>Details</h2>
+<a name="CamUnitControl.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id375119"></a><h3>
-<a name="CamUnitControlType"></a>enum CamUnitControlType</h3>
-<a class="indexterm" name="id375131"></a><pre class="programlisting">typedef enum {
+<a name="CamUnitControlType"></a><h3>enum CamUnitControlType</h3>
+<pre class="programlisting">typedef enum {
     /* no valid control should every have this type */
     CAM_UNIT_CONTROL_TYPE_INVALID = 0,
 
@@ -255,9 +246,8 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375155"></a><h3>
-<a name="CamUnitControlUIHint"></a>enum CamUnitControlUIHint</h3>
-<a class="indexterm" name="id375167"></a><pre class="programlisting">typedef enum {
+<a name="CamUnitControlUIHint"></a><h3>enum CamUnitControlUIHint</h3>
+<pre class="programlisting">typedef enum {
     CAM_UNIT_CONTROL_CHECK_BOX = (1 &lt;&lt; 1),
     CAM_UNIT_CONTROL_TOGGLE_BUTTON = (1 &lt;&lt; 2),
     CAM_UNIT_CONTROL_MENU = (1 &lt;&lt; 3),
@@ -275,9 +265,8 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375186"></a><h3>
-<a name="CamUnitControlCallback"></a>CamUnitControlCallback ()</h3>
-<a class="indexterm" name="id375198"></a><pre class="programlisting">gboolean            (*CamUnitControlCallback)           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+<a name="CamUnitControlCallback"></a><h3>CamUnitControlCallback ()</h3>
+<pre class="programlisting">gboolean            (*CamUnitControlCallback)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
                                                          const GValue *proposed,
                                                          GValue *actual,
                                                          void *user_data);</pre>
@@ -290,17 +279,17 @@ Enumerates the different types of controls available</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>ctl</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>ctl</code></em> :</span></p></td>
 <td>      the CamUnitControl in question
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>proposed</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>proposed</code></em> :</span></p></td>
 <td> the value passed in to cam_unit_control_try_set_val
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>actual</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>actual</code></em> :</span></p></td>
 <td>   output parameter.  If the control value is to change, the
            function must set actual to the new value for the control.
            Often, it is sufficient to simply call g_value_copy (proposed,
@@ -310,13 +299,13 @@ Enumerates the different types of controls available</p>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td> the user_data parameter passed in to
             cam_unit_control_set_callback
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> FALSE if the control value should not change.  TRUE if the control
          value should change to the output parameter actual.
 </td>
@@ -326,9 +315,8 @@ Enumerates the different types of controls available</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375298"></a><h3>
-<a name="CamUnitControl-struct"></a>CamUnitControl</h3>
-<a class="indexterm" name="id375309"></a><pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
+<a name="CamUnitControl-struct"></a><h3>CamUnitControl</h3>
+<pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
 <p>
 A control option on a CamUnit that the user or a program can adjust.</p>
 <p>
@@ -337,9 +325,8 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375326"></a><h3>
-<a name="cam-unit-control-new-enum"></a>cam_unit_control_new_enum ()</h3>
-<a class="indexterm" name="id375336"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
+<a name="cam-unit-control-new-enum"></a><h3>cam_unit_control_new_enum ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
                                                          const char *name,
                                                          int initial_index,
                                                          int enabled,
@@ -354,40 +341,40 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial_index</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>initial_index</code></em> :</span></p></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>entries</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>entries</code></em> :</span></p></td>
 <td> a NULL-terminated array of strings specifying the different
           options to present to the user.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>entries_enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em> :</span></p></td>
 <td> an array of integers indicating whether each entry
           in <em class="parameter"><code>entries</code></em> should be enabled.  1 indicates enabled, and 0
           disabled.  Specify NULL to implicitly enable all entries.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a new enum control.
 </td>
 </tr>
@@ -396,9 +383,8 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375491"></a><h3>
-<a name="cam-unit-control-new-int"></a>cam_unit_control_new_int ()</h3>
-<a class="indexterm" name="id375501"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_int            (const char *id,
+<a name="cam-unit-control-new-int"></a><h3>cam_unit_control_new_int ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_int            (const char *id,
                                                          const char *name,
                                                          int min,
                                                          int max,
@@ -414,42 +400,42 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>min</code></em> :</span></p></td>
 <td> the minimum value the control can take on
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>max</code></em> :</span></p></td>
 <td> the maximum value the control can take on
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>step</code></em> :</span></p></td>
 <td> the step size with which the control is allowed to change.  
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>initial_val</code></em> :</span></p></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a new integer control
 </td>
 </tr>
@@ -458,9 +444,8 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375666"></a><h3>
-<a name="cam-unit-control-new-float"></a>cam_unit_control_new_float ()</h3>
-<a class="indexterm" name="id375676"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_float          (const char *id,
+<a name="cam-unit-control-new-float"></a><h3>cam_unit_control_new_float ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_float          (const char *id,
                                                          const char *name,
                                                          float min,
                                                          float max,
@@ -476,42 +461,42 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>min</code></em> :</span></p></td>
 <td> the minimum value the control can take on
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>max</code></em> :</span></p></td>
 <td> the maximum value the control can take on
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>step</code></em> :</span></p></td>
 <td> the step size with which the control is allowed to change.  
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>initial_val</code></em> :</span></p></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a new floating-point control
 </td>
 </tr>
@@ -520,9 +505,8 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375842"></a><h3>
-<a name="cam-unit-control-new-boolean"></a>cam_unit_control_new_boolean ()</h3>
-<a class="indexterm" name="id375852"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_boolean        (const char *id,
+<a name="cam-unit-control-new-boolean"></a><h3>cam_unit_control_new_boolean ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_boolean        (const char *id,
                                                          const char *name,
                                                          int initial_val,
                                                          int enabled);</pre>
@@ -535,27 +519,27 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>initial_val</code></em> :</span></p></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a new boolean control
 </td>
 </tr>
@@ -564,9 +548,8 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id375961"></a><h3>
-<a name="cam-unit-control-new-string"></a>cam_unit_control_new_string ()</h3>
-<a class="indexterm" name="id375971"></a><pre class="programlisting"><a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_string         (const char *id,
+<a name="cam-unit-control-new-string"></a><h3>cam_unit_control_new_string ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_string         (const char *id,
                                                          const char *name,
                                                          const char *initial_val,
                                                          int enabled);</pre>
@@ -579,27 +562,27 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
 <td> a numerical identifier for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> a nickname / human-understandable-name for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>initial_val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>initial_val</code></em> :</span></p></td>
 <td> the initial value for the control.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td> TRUE of the control should be initially enabled
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a new string control
 </td>
 </tr>
@@ -608,18 +591,17 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376080"></a><h3>
-<a name="cam-unit-control-set-callback"></a>cam_unit_control_set_callback ()</h3>
-<a class="indexterm" name="id376090"></a><pre class="programlisting">void                cam_unit_control_set_callback       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         <a href="CamUnitControl.html#CamUnitControlCallback">CamUnitControlCallback</a> callback,
+<a name="cam-unit-control-set-callback"></a><h3>cam_unit_control_set_callback ()</h3>
+<pre class="programlisting">void                cam_unit_control_set_callback       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         <a class="link" href="CamUnitControl.html#CamUnitControlCallback" title="CamUnitControlCallback ()">CamUnitControlCallback</a> callback,
                                                          void *user_data);</pre>
 <p>
 Sets the function which will be invoked when any of the
 cam_unit_control_try_set_* methods are called.  If the callback returns
 FALSE, then the control will not be set.  If the callback returns TRUE,
-then the control will be adjusted.  See <a href="CamUnitControl.html#CamUnitControlCallback"><span class="type">CamUnitControlCallback</span></a>.  In
-general, you shouldn't need to call this when subclassing from <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, as
-<a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> does it automagically.</p>
+then the control will be adjusted.  See <a class="link" href="CamUnitControl.html#CamUnitControlCallback" title="CamUnitControlCallback ()"><span class="type">CamUnitControlCallback</span></a>.  In
+general, you shouldn't need to call this when subclassing from <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>, as
+<a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> does it automagically.</p>
 <p>
 
 </p>
@@ -627,18 +609,18 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
 <td> the callback function to invoke when using the
            cam_unit_control_try_set_* methods.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>
 
 
@@ -649,9 +631,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376193"></a><h3>
-<a name="cam-unit-control-modify-int"></a>cam_unit_control_modify_int ()</h3>
-<a class="indexterm" name="id376203"></a><pre class="programlisting">void                cam_unit_control_modify_int         (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-modify-int"></a><h3>cam_unit_control_modify_int ()</h3>
+<pre class="programlisting">void                cam_unit_control_modify_int         (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int min,
                                                          int max,
                                                          int step,
@@ -663,27 +644,27 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>min</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>max</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>step</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td>
 
 
@@ -694,9 +675,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376317"></a><h3>
-<a name="cam-unit-control-modify-float"></a>cam_unit_control_modify_float ()</h3>
-<a class="indexterm" name="id376328"></a><pre class="programlisting">void                cam_unit_control_modify_float       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-modify-float"></a><h3>cam_unit_control_modify_float ()</h3>
+<pre class="programlisting">void                cam_unit_control_modify_float       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float min,
                                                          float max,
                                                          float step,
@@ -708,27 +688,27 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>min</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>max</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>step</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>step</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td>
 
 
@@ -739,9 +719,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376442"></a><h3>
-<a name="cam-unit-control-modify-enum"></a>cam_unit_control_modify_enum ()</h3>
-<a class="indexterm" name="id376452"></a><pre class="programlisting">void                cam_unit_control_modify_enum        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-modify-enum"></a><h3>cam_unit_control_modify_enum ()</h3>
+<pre class="programlisting">void                cam_unit_control_modify_enum        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled,
                                                          const char **entries,
                                                          const int *entries_enabled);</pre>
@@ -752,22 +731,22 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>entries</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>entries</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>entries_enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em> :</span></p></td>
 <td>
 
 
@@ -778,9 +757,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376548"></a><h3>
-<a name="cam-unit-control-try-set-val"></a>cam_unit_control_try_set_val ()</h3>
-<a class="indexterm" name="id376558"></a><pre class="programlisting">int                 cam_unit_control_try_set_val        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-try-set-val"></a><h3>cam_unit_control_try_set_val ()</h3>
+<pre class="programlisting">int                 cam_unit_control_try_set_val        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const GValue *val);</pre>
 <p>
 
@@ -789,17 +767,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -810,9 +788,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376626"></a><h3>
-<a name="cam-unit-control-try-set-int"></a>cam_unit_control_try_set_int ()</h3>
-<a class="indexterm" name="id376636"></a><pre class="programlisting">int                 cam_unit_control_try_set_int        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-try-set-int"></a><h3>cam_unit_control_try_set_int ()</h3>
+<pre class="programlisting">int                 cam_unit_control_try_set_int        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -821,17 +798,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -842,9 +819,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376704"></a><h3>
-<a name="cam-unit-control-try-set-float"></a>cam_unit_control_try_set_float ()</h3>
-<a class="indexterm" name="id376714"></a><pre class="programlisting">int                 cam_unit_control_try_set_float      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-try-set-float"></a><h3>cam_unit_control_try_set_float ()</h3>
+<pre class="programlisting">int                 cam_unit_control_try_set_float      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);</pre>
 <p>
 
@@ -853,17 +829,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -874,9 +850,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376782"></a><h3>
-<a name="cam-unit-control-try-set-enum"></a>cam_unit_control_try_set_enum ()</h3>
-<a class="indexterm" name="id376793"></a><pre class="programlisting">int                 cam_unit_control_try_set_enum       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-try-set-enum"></a><h3>cam_unit_control_try_set_enum ()</h3>
+<pre class="programlisting">int                 cam_unit_control_try_set_enum       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int index);</pre>
 <p>
 
@@ -885,17 +860,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>index</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>index</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -906,9 +881,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376861"></a><h3>
-<a name="cam-unit-control-try-set-boolean"></a>cam_unit_control_try_set_boolean ()</h3>
-<a class="indexterm" name="id376871"></a><pre class="programlisting">int                 cam_unit_control_try_set_boolean    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-try-set-boolean"></a><h3>cam_unit_control_try_set_boolean ()</h3>
+<pre class="programlisting">int                 cam_unit_control_try_set_boolean    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -917,17 +891,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -938,9 +912,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id376939"></a><h3>
-<a name="cam-unit-control-try-set-string"></a>cam_unit_control_try_set_string ()</h3>
-<a class="indexterm" name="id376949"></a><pre class="programlisting">int                 cam_unit_control_try_set_string     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-try-set-string"></a><h3>cam_unit_control_try_set_string ()</h3>
+<pre class="programlisting">int                 cam_unit_control_try_set_string     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);</pre>
 <p>
 
@@ -949,17 +922,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -970,9 +943,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377017"></a><h3>
-<a name="cam-unit-control-force-set-val"></a>cam_unit_control_force_set_val ()</h3>
-<a class="indexterm" name="id377028"></a><pre class="programlisting">int                 cam_unit_control_force_set_val      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-force-set-val"></a><h3>cam_unit_control_force_set_val ()</h3>
+<pre class="programlisting">int                 cam_unit_control_force_set_val      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const GValue *value);</pre>
 <p>
 
@@ -981,17 +953,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1002,9 +974,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377095"></a><h3>
-<a name="cam-unit-control-force-set-int"></a>cam_unit_control_force_set_int ()</h3>
-<a class="indexterm" name="id377106"></a><pre class="programlisting">int                 cam_unit_control_force_set_int      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-force-set-int"></a><h3>cam_unit_control_force_set_int ()</h3>
+<pre class="programlisting">int                 cam_unit_control_force_set_int      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1013,17 +984,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1034,9 +1005,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377174"></a><h3>
-<a name="cam-unit-control-force-set-float"></a>cam_unit_control_force_set_float ()</h3>
-<a class="indexterm" name="id377184"></a><pre class="programlisting">int                 cam_unit_control_force_set_float    (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-force-set-float"></a><h3>cam_unit_control_force_set_float ()</h3>
+<pre class="programlisting">int                 cam_unit_control_force_set_float    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          float val);</pre>
 <p>
 
@@ -1045,17 +1015,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1066,9 +1036,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377252"></a><h3>
-<a name="cam-unit-control-force-set-enum"></a>cam_unit_control_force_set_enum ()</h3>
-<a class="indexterm" name="id377262"></a><pre class="programlisting">int                 cam_unit_control_force_set_enum     (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-force-set-enum"></a><h3>cam_unit_control_force_set_enum ()</h3>
+<pre class="programlisting">int                 cam_unit_control_force_set_enum     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1077,17 +1046,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1098,9 +1067,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377330"></a><h3>
-<a name="cam-unit-control-force-set-boolean"></a>cam_unit_control_force_set_boolean ()</h3>
-<a class="indexterm" name="id377341"></a><pre class="programlisting">int                 cam_unit_control_force_set_boolean  (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-force-set-boolean"></a><h3>cam_unit_control_force_set_boolean ()</h3>
+<pre class="programlisting">int                 cam_unit_control_force_set_boolean  (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);</pre>
 <p>
 
@@ -1109,17 +1077,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1130,9 +1098,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377408"></a><h3>
-<a name="cam-unit-control-force-set-string"></a>cam_unit_control_force_set_string ()</h3>
-<a class="indexterm" name="id377419"></a><pre class="programlisting">int                 cam_unit_control_force_set_string   (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-force-set-string"></a><h3>cam_unit_control_force_set_string ()</h3>
+<pre class="programlisting">int                 cam_unit_control_force_set_string   (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);</pre>
 <p>
 
@@ -1141,17 +1108,17 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1162,9 +1129,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377487"></a><h3>
-<a name="cam-unit-control-get-val"></a>cam_unit_control_get_val ()</h3>
-<a class="indexterm" name="id377497"></a><pre class="programlisting">void                cam_unit_control_get_val            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-get-val"></a><h3>cam_unit_control_get_val ()</h3>
+<pre class="programlisting">void                cam_unit_control_get_val            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          GValue *value);</pre>
 <p>
 
@@ -1173,12 +1139,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
 
 
@@ -1189,9 +1155,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377556"></a><h3>
-<a name="cam-unit-control-get-int"></a>cam_unit_control_get_int ()</h3>
-<a class="indexterm" name="id377566"></a><pre class="programlisting">int                 cam_unit_control_get_int            (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-int"></a><h3>cam_unit_control_get_int ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_int            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1199,12 +1164,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1215,9 +1180,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377616"></a><h3>
-<a name="cam-unit-control-get-float"></a>cam_unit_control_get_float ()</h3>
-<a class="indexterm" name="id377627"></a><pre class="programlisting">float               cam_unit_control_get_float          (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-float"></a><h3>cam_unit_control_get_float ()</h3>
+<pre class="programlisting">float               cam_unit_control_get_float          (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1225,12 +1189,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1241,9 +1205,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377677"></a><h3>
-<a name="cam-unit-control-get-enum"></a>cam_unit_control_get_enum ()</h3>
-<a class="indexterm" name="id377687"></a><pre class="programlisting">int                 cam_unit_control_get_enum           (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-enum"></a><h3>cam_unit_control_get_enum ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_enum           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1251,12 +1214,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1267,9 +1230,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377737"></a><h3>
-<a name="cam-unit-control-get-boolean"></a>cam_unit_control_get_boolean ()</h3>
-<a class="indexterm" name="id377748"></a><pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-boolean"></a><h3>cam_unit_control_get_boolean ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1277,12 +1239,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1293,9 +1255,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377798"></a><h3>
-<a name="cam-unit-control-get-string"></a>cam_unit_control_get_string ()</h3>
-<a class="indexterm" name="id377811"></a><pre class="programlisting">const char*         cam_unit_control_get_string         (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-string"></a><h3>cam_unit_control_get_string ()</h3>
+<pre class="programlisting">const char*         cam_unit_control_get_string         (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1303,12 +1264,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1319,9 +1280,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377868"></a><h3>
-<a name="cam-unit-control-get-max-int"></a>cam_unit_control_get_max_int ()</h3>
-<a class="indexterm" name="id377882"></a><pre class="programlisting">int                 cam_unit_control_get_max_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-max-int"></a><h3>cam_unit_control_get_max_int ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_max_int        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1329,12 +1289,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1345,9 +1305,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id377938"></a><h3>
-<a name="cam-unit-control-get-min-int"></a>cam_unit_control_get_min_int ()</h3>
-<a class="indexterm" name="id377951"></a><pre class="programlisting">int                 cam_unit_control_get_min_int        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-min-int"></a><h3>cam_unit_control_get_min_int ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_min_int        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1355,12 +1314,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1371,9 +1330,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378007"></a><h3>
-<a name="cam-unit-control-get-step-int"></a>cam_unit_control_get_step_int ()</h3>
-<a class="indexterm" name="id378020"></a><pre class="programlisting">int                 cam_unit_control_get_step_int       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-step-int"></a><h3>cam_unit_control_get_step_int ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_step_int       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1381,12 +1339,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1397,9 +1355,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378076"></a><h3>
-<a name="cam-unit-control-get-max-float"></a>cam_unit_control_get_max_float ()</h3>
-<a class="indexterm" name="id378090"></a><pre class="programlisting">float               cam_unit_control_get_max_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-max-float"></a><h3>cam_unit_control_get_max_float ()</h3>
+<pre class="programlisting">float               cam_unit_control_get_max_float      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1407,12 +1364,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1423,9 +1380,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378146"></a><h3>
-<a name="cam-unit-control-get-min-float"></a>cam_unit_control_get_min_float ()</h3>
-<a class="indexterm" name="id378159"></a><pre class="programlisting">float               cam_unit_control_get_min_float      (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-min-float"></a><h3>cam_unit_control_get_min_float ()</h3>
+<pre class="programlisting">float               cam_unit_control_get_min_float      (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1433,12 +1389,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1449,9 +1405,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378215"></a><h3>
-<a name="cam-unit-control-get-step-float"></a>cam_unit_control_get_step_float ()</h3>
-<a class="indexterm" name="id378229"></a><pre class="programlisting">float               cam_unit_control_get_step_float     (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-step-float"></a><h3>cam_unit_control_get_step_float ()</h3>
+<pre class="programlisting">float               cam_unit_control_get_step_float     (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1459,12 +1414,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1475,9 +1430,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378285"></a><h3>
-<a name="cam-unit-control-set-enabled"></a>cam_unit_control_set_enabled ()</h3>
-<a class="indexterm" name="id378298"></a><pre class="programlisting">void                cam_unit_control_set_enabled        (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-set-enabled"></a><h3>cam_unit_control_set_enabled ()</h3>
+<pre class="programlisting">void                cam_unit_control_set_enabled        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int enabled);</pre>
 <p>
 
@@ -1486,12 +1440,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td>
 
 
@@ -1502,9 +1456,8 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378364"></a><h3>
-<a name="cam-unit-control-get-enabled"></a>cam_unit_control_get_enabled ()</h3>
-<a class="indexterm" name="id378377"></a><pre class="programlisting">int                 cam_unit_control_get_enabled        (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-enabled"></a><h3>cam_unit_control_get_enabled ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_enabled        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
 
 </p>
@@ -1512,12 +1465,12 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1528,12 +1481,11 @@ general, you shouldn't need to call this when subclassing from <a href="CamUnit.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378433"></a><h3>
-<a name="cam-unit-control-set-ui-hints"></a>cam_unit_control_set_ui_hints ()</h3>
-<a class="indexterm" name="id378446"></a><pre class="programlisting">void                cam_unit_control_set_ui_hints       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+<a name="cam-unit-control-set-ui-hints"></a><h3>cam_unit_control_set_ui_hints ()</h3>
+<pre class="programlisting">void                cam_unit_control_set_ui_hints       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int flags);</pre>
 <p>
-See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
+See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
 <p>
 
 </p>
@@ -1541,13 +1493,13 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
-<td> a logical OR of <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td> a logical OR of <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
 </td>
 </tr>
 </tbody>
@@ -1555,11 +1507,10 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378529"></a><h3>
-<a name="cam-unit-control-get-ui-hints"></a>cam_unit_control_get_ui_hints ()</h3>
-<a class="indexterm" name="id378542"></a><pre class="programlisting">int                 cam_unit_control_get_ui_hints       (const <a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<a name="cam-unit-control-get-ui-hints"></a><h3>cam_unit_control_get_ui_hints ()</h3>
+<pre class="programlisting">int                 cam_unit_control_get_ui_hints       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
-See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
+See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a></p>
 <p>
 
 </p>
@@ -1567,13 +1518,13 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a logical OR of <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a logical OR of <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
 </td>
 </tr>
 </tbody>
@@ -1581,9 +1532,8 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378615"></a><h3>
-<a name="cam-unit-control-get-type-str"></a>cam_unit_control_get_type_str ()</h3>
-<a class="indexterm" name="id378628"></a><pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
+<a name="cam-unit-control-get-type-str"></a><h3>cam_unit_control_get_type_str ()</h3>
+<pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
 <p>
 
 </p>
@@ -1591,12 +1541,12 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>ctl</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>ctl</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1607,17 +1557,16 @@ See also: <a href="CamUnitControl.html#CamUnitControlUIHint"><span class="type">
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id378687"></a><h2>Signal Details</h2>
+<a name="CamUnitControl.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id378698"></a><h3>
-<a name="CamUnitControl-parameters-changed"></a>The "parameters-changed" signal</h3>
-<a class="indexterm" name="id378707"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
+<a name="CamUnitControl-parameters-changed"></a><h3>The <code class="literal">"parameters-changed"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
                                                         gpointer        user_data)      : Run First / Action</pre>
 <p>
 The parameters-changed signal is emitted when properties of a
 control are changed, such as min, max, step, or enabled by
-<a href="CamUnitControl.html#cam-unit-control-set-enabled"><code class="function">cam_unit_control_set_enabled()</code></a>, <a href="CamUnitControl.html#cam-unit-control-modify-int"><code class="function">cam_unit_control_modify_int()</code></a>,
-or <a href="CamUnitControl.html#cam-unit-control-modify-float"><code class="function">cam_unit_control_modify_float()</code></a>.</p>
+<a class="link" href="CamUnitControl.html#cam-unit-control-set-enabled" title="cam_unit_control_set_enabled ()"><code class="function">cam_unit_control_set_enabled()</code></a>, <a class="link" href="CamUnitControl.html#cam-unit-control-modify-int" title="cam_unit_control_modify_int ()"><code class="function">cam_unit_control_modify_int()</code></a>,
+or <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float" title="cam_unit_control_modify_float ()"><code class="function">cam_unit_control_modify_float()</code></a>.</p>
 <p>
 
 </p>
@@ -1625,12 +1574,12 @@ or <a href="CamUnitControl.html#cam-unit-control-modify-float"><code class="func
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
 <td> the CamUnit emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -1638,9 +1587,8 @@ or <a href="CamUnitControl.html#cam-unit-control-modify-float"><code class="func
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id378806"></a><h3>
-<a name="CamUnitControl-value-changed"></a>The "value-changed" signal</h3>
-<a class="indexterm" name="id378816"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
+<a name="CamUnitControl-value-changed"></a><h3>The <code class="literal">"value-changed"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
                                                         gpointer        user_data)      : Run First / Action</pre>
 <p>
 The value-changed signal is emitted when the value of the control is
@@ -1654,12 +1602,12 @@ functions are called</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
 <td> the CamUnit emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -1667,5 +1615,8 @@ functions are called</p>
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

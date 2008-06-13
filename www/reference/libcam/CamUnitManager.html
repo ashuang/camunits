@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamUnitManager</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="libcam Reference Manual">
 <link rel="up" href="ch02.html" title="Image Processing Chains">
 <link rel="prev" href="CamUnitChain.html" title="CamUnitChain">
 <link rel="next" href="ch03.html" title="Built-in Units">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
@@ -24,114 +24,105 @@
 <th width="100%" align="center">libcam Reference Manual</th>
 <td><a accesskey="n" href="ch03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id361837" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id336970" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id327044" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id327068" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#CamUnitManager.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#CamUnitManager.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#CamUnitManager.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#CamUnitManager.signals" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="CamUnitManager"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id361837"></a><span class="refentrytitle">CamUnitManager</span>
-</h2>
-<p>CamUnitManager &#8212; Factory-like class that manages a collection of 
-<a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> objects.</p>
+<h2><span class="refentrytitle"><a name="CamUnitManager.top_of_page"></a>CamUnitManager</span></h2>
+<p>CamUnitManager — Factory-like class that manages a collection of 
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> objects.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="CamUnitManager.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a href="CamUnitManager.html#CamUnitManager-struct">CamUnitManager</a>;
-<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a href="CamUnitManager.html#cam-unit-manager-new">cam_unit_manager_new</a>                (gboolean start_drivers);
-void                <a href="CamUnitManager.html#cam-unit-manager-add-driver">cam_unit_manager_add_driver</a>         (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
-                                                         <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
-int                 <a href="CamUnitManager.html#cam-unit-manager-remove-driver">cam_unit_manager_remove_driver</a>      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
-                                                         <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
-int                 <a href="CamUnitManager.html#cam-unit-manager-start-drivers">cam_unit_manager_start_drivers</a>      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
-int                 <a href="CamUnitManager.html#cam-unit-manager-stop-drivers">cam_unit_manager_stop_drivers</a>       (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
-GList*              <a href="CamUnitManager.html#cam-unit-manager-get-drivers">cam_unit_manager_get_drivers</a>        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
-const <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a href="CamUnitManager.html#cam-unit-manager-find-unit-description">cam_unit_manager_find_unit_description</a>
-                                                        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+                    <a class="link" href="CamUnitManager.html#CamUnitManager-struct" title="CamUnitManager">CamUnitManager</a>;
+<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a class="link" href="CamUnitManager.html#cam-unit-manager-new" title="cam_unit_manager_new ()">cam_unit_manager_new</a>                (gboolean start_drivers);
+void                <a class="link" href="CamUnitManager.html#cam-unit-manager-add-driver" title="cam_unit_manager_add_driver ()">cam_unit_manager_add_driver</a>         (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+                                                         <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
+int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-remove-driver" title="cam_unit_manager_remove_driver ()">cam_unit_manager_remove_driver</a>      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+                                                         <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
+int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-start-drivers" title="cam_unit_manager_start_drivers ()">cam_unit_manager_start_drivers</a>      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
+int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-stop-drivers" title="cam_unit_manager_stop_drivers ()">cam_unit_manager_stop_drivers</a>       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
+GList*              <a class="link" href="CamUnitManager.html#cam-unit-manager-get-drivers" title="cam_unit_manager_get_drivers ()">cam_unit_manager_get_drivers</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
+const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitManager.html#cam-unit-manager-find-unit-description" title="cam_unit_manager_find_unit_description ()">cam_unit_manager_find_unit_description</a>
+                                                        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);
-GList*              <a href="CamUnitManager.html#cam-unit-manager-list-package">cam_unit_manager_list_package</a>       (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+GList*              <a class="link" href="CamUnitManager.html#cam-unit-manager-list-package" title="cam_unit_manager_list_package ()">cam_unit_manager_list_package</a>       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *driver_package,
                                                          gboolean recurse);
-<a href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a href="CamUnitManager.html#cam-unit-manager-create-unit-by-id">cam_unit_manager_create_unit_by_id</a>  (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a class="link" href="CamUnitManager.html#cam-unit-manager-create-unit-by-id" title="cam_unit_manager_create_unit_by_id ()">cam_unit_manager_create_unit_by_id</a>  (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);
-void                <a href="CamUnitManager.html#cam-unit-manager-add-plugin-dir">cam_unit_manager_add_plugin_dir</a>     (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+void                <a class="link" href="CamUnitManager.html#cam-unit-manager-add-plugin-dir" title="cam_unit_manager_add_plugin_dir ()">cam_unit_manager_add_plugin_dir</a>     (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *path);
-void                <a href="CamUnitManager.html#cam-unit-manager-attach-glib">cam_unit_manager_attach_glib</a>        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+void                <a class="link" href="CamUnitManager.html#cam-unit-manager-attach-glib" title="cam_unit_manager_attach_glib ()">cam_unit_manager_attach_glib</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          int priority,
                                                          GMainContext *context);
-void                <a href="CamUnitManager.html#cam-unit-manager-detach-glib">cam_unit_manager_detach_glib</a>        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
-void                <a href="CamUnitManager.html#cam-unit-manager-update">cam_unit_manager_update</a>             (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
-
+void                <a class="link" href="CamUnitManager.html#cam-unit-manager-detach-glib" title="cam_unit_manager_detach_glib ()">cam_unit_manager_detach_glib</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
+void                <a class="link" href="CamUnitManager.html#cam-unit-manager-update" title="cam_unit_manager_update ()">cam_unit_manager_update</a>             (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id327044"></a><h2>Object Hierarchy</h2>
+<a name="CamUnitManager.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-
   GObject
    +----CamUnitManager
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id327068"></a><h2>Signals</h2>
+<a name="CamUnitManager.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-
-  "<a href="CamUnitManager.html#CamUnitManager-unit-description-added">unit-description-added</a>"                         : Run First
-  "<a href="CamUnitManager.html#CamUnitManager-unit-description-removed">unit-description-removed</a>"                       : Run First
-  "<a href="CamUnitManager.html#CamUnitManager-unit-driver-added">unit-driver-added</a>"                              : Run First
+  "<a class="link" href="CamUnitManager.html#CamUnitManager-unit-description-added" title='The "unit-description-added" signal'>unit-description-added</a>"                         : Run First
+  "<a class="link" href="CamUnitManager.html#CamUnitManager-unit-description-removed" title='The "unit-description-removed" signal'>unit-description-removed</a>"                       : Run First
+  "<a class="link" href="CamUnitManager.html#CamUnitManager-unit-driver-added" title='The "unit-driver-added" signal'>unit-driver-added</a>"                              : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id336970"></a><h2>Description</h2>
+<a name="CamUnitManager.description"></a><h2>Description</h2>
 <p>
 CamUnitManager is a factory-like class that provide a (hopefully) convenient
-way to list and instantiate all available units.  A single <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> is
+way to list and instantiate all available units.  A single <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> is
 responsible only for describing and instantiating units of a specific type,
 whereas a CamUnitManager attempts to aggregate all of the information
-provided by all known <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> objects into a single object.
+provided by all known <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> objects into a single object.
 </p>
 <p>
-Before becoming available for use, a <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> must first be
+Before becoming available for use, a <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> must first be
 registered with a CamUnitManager.  There are three ways this can happen.
 First, libcam provides a set of "core" drivers that are always loaded when
 a CamUnitManager is created.  Second, a CamUnitManager searches the plugin
 directories (typically /usr/lib/libcam/ and the colon-separated list of
 directories in the "LIBCAM_PLUGIN_PATH" environment variable) for
 dynamically loadable plugins.  Finally, it is possible to subclass
-<a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> and register drivers at runtime via 
-<a href="CamUnitManager.html#cam-unit-manager-add-driver"><code class="function">cam_unit_manager_add_driver()</code></a>.
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> and register drivers at runtime via 
+<a class="link" href="CamUnitManager.html#cam-unit-manager-add-driver" title="cam_unit_manager_add_driver ()"><code class="function">cam_unit_manager_add_driver()</code></a>.
 </p>
 <p>
 In a simple libcam application, there is no need to work directly with the
 CamUnitManager.  Instead, a simple libcam application may use a
-<a href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> object, which itself contains a CamUnitManager.  Reasons for
+<a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> object, which itself contains a CamUnitManager.  Reasons for
 using a CamUnitManager directly could be sharing a manager across multiple
-chains, implementing new <a href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> and <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> subclasses, or
-completely foregoing the <a href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> for a non-standard arrangement of
-<a href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> objects.</p>
+chains, implementing new <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> and <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> subclasses, or
+completely foregoing the <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> for a non-standard arrangement of
+<a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> objects.</p>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id337079"></a><h2>Details</h2>
+<a name="CamUnitManager.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id337090"></a><h3>
-<a name="CamUnitManager-struct"></a>CamUnitManager</h3>
-<a class="indexterm" name="id337102"></a><pre class="programlisting">typedef struct {
+<a name="CamUnitManager-struct"></a><h3>CamUnitManager</h3>
+<pre class="programlisting">typedef struct {
 } CamUnitManager;
 </pre>
 <p>
@@ -140,9 +131,8 @@ completely foregoing the <a href="CamUnitChain.html" title="CamUnitChain"><span 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id337117"></a><h3>
-<a name="cam-unit-manager-new"></a>cam_unit_manager_new ()</h3>
-<a class="indexterm" name="id337129"></a><pre class="programlisting"><a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_manager_new                (gboolean start_drivers);</pre>
+<a name="cam-unit-manager-new"></a><h3>cam_unit_manager_new ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_manager_new                (gboolean start_drivers);</pre>
 <p>
 Constructor.  Instantiates a new unit manager with a core set of unit
 drivers already registered.</p>
@@ -153,14 +143,14 @@ drivers already registered.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>start_drivers</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>start_drivers</code></em> :</span></p></td>
 <td> TRUE if the unit manager should automatically call
-                <a href="CamUnitDriver.html#cam-unit-driver-start"><span class="type">cam_unit_driver_start</span></a> on unit drivers as they are added to
+                <a class="link" href="CamUnitDriver.html#cam-unit-driver-start" title="cam_unit_driver_start ()"><span class="type">cam_unit_driver_start</span></a> on unit drivers as they are added to
                 the unit manager.  If in doubt, set this to TRUE.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly allocated CamUnitManager
 </td>
 </tr>
@@ -169,10 +159,9 @@ drivers already registered.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id337197"></a><h3>
-<a name="cam-unit-manager-add-driver"></a>cam_unit_manager_add_driver ()</h3>
-<a class="indexterm" name="id337210"></a><pre class="programlisting">void                cam_unit_manager_add_driver         (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
-                                                         <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);</pre>
+<a name="cam-unit-manager-add-driver"></a><h3>cam_unit_manager_add_driver ()</h3>
+<pre class="programlisting">void                cam_unit_manager_add_driver         (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+                                                         <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);</pre>
 <p>
 Adds a driver to the unit manager.  Only use this method when implementing
 custom units and unit drivers.  After a unit driver has been added to the
@@ -188,12 +177,12 @@ Calls g_object_ref_sink on the driver.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em> :</span></p></td>
 <td>
 
 
@@ -204,10 +193,9 @@ Calls g_object_ref_sink on the driver.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383420"></a><h3>
-<a name="cam-unit-manager-remove-driver"></a>cam_unit_manager_remove_driver ()</h3>
-<a class="indexterm" name="id383432"></a><pre class="programlisting">int                 cam_unit_manager_remove_driver      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
-                                                         <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);</pre>
+<a name="cam-unit-manager-remove-driver"></a><h3>cam_unit_manager_remove_driver ()</h3>
+<pre class="programlisting">int                 cam_unit_manager_remove_driver      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+                                                         <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);</pre>
 <p>
 not yet implemented, do not use.</p>
 <p>
@@ -217,17 +205,17 @@ not yet implemented, do not use.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -238,11 +226,10 @@ not yet implemented, do not use.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383512"></a><h3>
-<a name="cam-unit-manager-start-drivers"></a>cam_unit_manager_start_drivers ()</h3>
-<a class="indexterm" name="id383524"></a><pre class="programlisting">int                 cam_unit_manager_start_drivers      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
+<a name="cam-unit-manager-start-drivers"></a><h3>cam_unit_manager_start_drivers ()</h3>
+<pre class="programlisting">int                 cam_unit_manager_start_drivers      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
 <p>
-Invokes cam_unit_driver_start on each of the <a href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> objects
+Invokes cam_unit_driver_start on each of the <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> objects
 registered with the manager.</p>
 <p>
 
@@ -251,12 +238,12 @@ registered with the manager.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> 0
 </td>
 </tr>
@@ -265,9 +252,8 @@ registered with the manager.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383591"></a><h3>
-<a name="cam-unit-manager-stop-drivers"></a>cam_unit_manager_stop_drivers ()</h3>
-<a class="indexterm" name="id383603"></a><pre class="programlisting">int                 cam_unit_manager_stop_drivers       (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
+<a name="cam-unit-manager-stop-drivers"></a><h3>cam_unit_manager_stop_drivers ()</h3>
+<pre class="programlisting">int                 cam_unit_manager_stop_drivers       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
 <p>
 calls cam_unit_driver_stop on all unit drivers managed by this unit manager.
 This method is called automatically when the manager is destroyed.</p>
@@ -278,12 +264,12 @@ This method is called automatically when the manager is destroyed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> 0
 </td>
 </tr>
@@ -292,9 +278,8 @@ This method is called automatically when the manager is destroyed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383663"></a><h3>
-<a name="cam-unit-manager-get-drivers"></a>cam_unit_manager_get_drivers ()</h3>
-<a class="indexterm" name="id383676"></a><pre class="programlisting">GList*              cam_unit_manager_get_drivers        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
+<a name="cam-unit-manager-get-drivers"></a><h3>cam_unit_manager_get_drivers ()</h3>
+<pre class="programlisting">GList*              cam_unit_manager_get_drivers        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
 <p>
 Retrieves a list of all CamUnitDriver objects registered with the manager.
 This list should be freed with g_list_free when no longer needed</p>
@@ -305,12 +290,12 @@ This list should be freed with g_list_free when no longer needed</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a GList of CamUnitDriver objects
 </td>
 </tr>
@@ -319,10 +304,9 @@ This list should be freed with g_list_free when no longer needed</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383736"></a><h3>
-<a name="cam-unit-manager-find-unit-description"></a>cam_unit_manager_find_unit_description ()</h3>
-<a class="indexterm" name="id383749"></a><pre class="programlisting">const <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_manager_find_unit_description
-                                                        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a name="cam-unit-manager-find-unit-description"></a><h3>cam_unit_manager_find_unit_description ()</h3>
+<pre class="programlisting">const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* cam_unit_manager_find_unit_description
+                                                        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);</pre>
 <p>
 Searches all known drivers for a unit description matching unit_id.</p>
@@ -333,18 +317,18 @@ Searches all known drivers for a unit description matching unit_id.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_id</code></em> :</span></p></td>
 <td> a string of the form "driver:id".
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a matching <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>, or NULL if not found
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a matching <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>, or NULL if not found
 </td>
 </tr>
 </tbody>
@@ -352,9 +336,8 @@ Searches all known drivers for a unit description matching unit_id.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383838"></a><h3>
-<a name="cam-unit-manager-list-package"></a>cam_unit_manager_list_package ()</h3>
-<a class="indexterm" name="id383851"></a><pre class="programlisting">GList*              cam_unit_manager_list_package       (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a name="cam-unit-manager-list-package"></a><h3>cam_unit_manager_list_package ()</h3>
+<pre class="programlisting">GList*              cam_unit_manager_list_package       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *driver_package,
                                                          gboolean recurse);</pre>
 <p>
@@ -368,23 +351,23 @@ by listing everything in the package "input"</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver_package</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver_package</code></em> :</span></p></td>
 <td>  the package to check
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>recurse</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>recurse</code></em> :</span></p></td>
 <td>  TRUE to recursively list unit descriptions in subpackages
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a newly allocated GList of <a href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects, which must
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a newly allocated GList of <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects, which must
 be freed with g_list_free when no longer needed.  Do not modify the
 descriptions within the list.
 </td>
@@ -394,9 +377,8 @@ descriptions within the list.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id383961"></a><h3>
-<a name="cam-unit-manager-create-unit-by-id"></a>cam_unit_manager_create_unit_by_id ()</h3>
-<a class="indexterm" name="id383974"></a><pre class="programlisting"><a href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_manager_create_unit_by_id  (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a name="cam-unit-manager-create-unit-by-id"></a><h3>cam_unit_manager_create_unit_by_id ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            cam_unit_manager_create_unit_by_id  (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);</pre>
 <p>
 Convenience method to instantiate a unit.</p>
@@ -407,17 +389,17 @@ Convenience method to instantiate a unit.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>unit_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>unit_id</code></em> :</span></p></td>
 <td> ID of the unit to instantiate
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly created unit, or NULL
 </td>
 </tr>
@@ -426,9 +408,8 @@ Convenience method to instantiate a unit.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384054"></a><h3>
-<a name="cam-unit-manager-add-plugin-dir"></a>cam_unit_manager_add_plugin_dir ()</h3>
-<a class="indexterm" name="id384066"></a><pre class="programlisting">void                cam_unit_manager_add_plugin_dir     (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a name="cam-unit-manager-add-plugin-dir"></a><h3>cam_unit_manager_add_plugin_dir ()</h3>
+<pre class="programlisting">void                cam_unit_manager_add_plugin_dir     (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *path);</pre>
 <p>
 Causes the unit manager to scan the specified directory for plugins.
@@ -440,12 +421,12 @@ Discovered plugins will be loaded into the manager.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>path</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
 <td> target directory containing libcam plugins
 </td>
 </tr>
@@ -454,9 +435,8 @@ Discovered plugins will be loaded into the manager.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384136"></a><h3>
-<a name="cam-unit-manager-attach-glib"></a>cam_unit_manager_attach_glib ()</h3>
-<a class="indexterm" name="id384148"></a><pre class="programlisting">void                cam_unit_manager_attach_glib        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a name="cam-unit-manager-attach-glib"></a><h3>cam_unit_manager_attach_glib ()</h3>
+<pre class="programlisting">void                cam_unit_manager_attach_glib        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          int priority,
                                                          GMainContext *context);</pre>
 <p>
@@ -476,18 +456,18 @@ the old context.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>priority</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
 <td> the GLib event priority to give the event sources in the
            CamUnitManager.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>context</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
 <td> a GMainContext to which the manager will be attached.  May be
           NULL, in which case the default GMainContext is used.
 </td>
@@ -497,9 +477,8 @@ the old context.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384247"></a><h3>
-<a name="cam-unit-manager-detach-glib"></a>cam_unit_manager_detach_glib ()</h3>
-<a class="indexterm" name="id384259"></a><pre class="programlisting">void                cam_unit_manager_detach_glib        (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
+<a name="cam-unit-manager-detach-glib"></a><h3>cam_unit_manager_detach_glib ()</h3>
+<pre class="programlisting">void                cam_unit_manager_detach_glib        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
 <p>
 Detaches a CamUnitManager from a GLib event context.
 </p>
@@ -511,7 +490,7 @@ This method is idempotent.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 
 
@@ -521,11 +500,10 @@ This method is idempotent.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id346260"></a><h3>
-<a name="cam-unit-manager-update"></a>cam_unit_manager_update ()</h3>
-<a class="indexterm" name="id358959"></a><pre class="programlisting">void                cam_unit_manager_update             (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
+<a name="cam-unit-manager-update"></a><h3>cam_unit_manager_update ()</h3>
+<pre class="programlisting">void                cam_unit_manager_update             (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
 <p>
-Convenience function to call <a href="CamUnitDriver.html#cam-unit-driver-update"><code class="function">cam_unit_driver_update()</code></a> on all the drivers
+Convenience function to call <a class="link" href="CamUnitDriver.html#cam-unit-driver-update" title="cam_unit_driver_update ()"><code class="function">cam_unit_driver_update()</code></a> on all the drivers
 managed by this UnitManager.</p>
 <p>
 
@@ -533,7 +511,7 @@ managed by this UnitManager.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>self</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>
 
 
@@ -543,12 +521,11 @@ managed by this UnitManager.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id384351"></a><h2>Signal Details</h2>
+<a name="CamUnitManager.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id384361"></a><h3>
-<a name="CamUnitManager-unit-description-added"></a>The "unit-description-added" signal</h3>
-<a class="indexterm" name="id384368"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>     *manager,
-                                                        <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
+<a name="CamUnitManager-unit-description-added"></a><h3>The <code class="literal">"unit-description-added"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>     *manager,
+                                                        <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
                                                         gpointer            user_data)      : Run First</pre>
 <p>
 The unit-description-added signal is emitted when the CamUnitManager
@@ -561,17 +538,17 @@ available units.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>manager</code></em> :</span></p></td>
 <td> the CamUnitManager emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em> :</span></p></td>
 <td> the CamUnitDescription just added
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -579,10 +556,9 @@ available units.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384448"></a><h3>
-<a name="CamUnitManager-unit-description-removed"></a>The "unit-description-removed" signal</h3>
-<a class="indexterm" name="id384456"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>     *driver,
-                                                        <a href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
+<a name="CamUnitManager-unit-description-removed"></a><h3>The <code class="literal">"unit-description-removed"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>     *driver,
+                                                        <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
                                                         gpointer            user_data)      : Run First</pre>
 <p>
 The unit-description-removed signal is emitted when a CamUnitDriver
@@ -599,17 +575,17 @@ handlers should not retain references to <code class="literal">udesc</code>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em> :</span></p></td>
 <td> the CamUnitManager emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>udesc</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em> :</span></p></td>
 <td> the CamUnitDescription being removed
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -617,10 +593,9 @@ handlers should not retain references to <code class="literal">udesc</code>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id384557"></a><h3>
-<a name="CamUnitManager-unit-driver-added"></a>The "unit-driver-added" signal</h3>
-<a class="indexterm" name="id384564"></a><pre class="programlisting">void                user_function                      (<a href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager,
-                                                        <a href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>  *driver,
+<a name="CamUnitManager-unit-driver-added"></a><h3>The <code class="literal">"unit-driver-added"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager,
+                                                        <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>  *driver,
                                                         gpointer        user_data)      : Run First</pre>
 <p>
 The unit-driver-added signal is emitted when the CamUnitManager adds
@@ -632,17 +607,17 @@ a new CamUnitDriver to its list of managed drivers.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>manager</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>manager</code></em> :</span></p></td>
 <td> the CamUnitManager emitting the signal
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>driver</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>driver</code></em> :</span></p></td>
 <td> the CamUnitDriver just added
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -650,5 +625,8 @@ a new CamUnitDriver to its list of managed drivers.</p>
 </div>
 </div>
 </div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

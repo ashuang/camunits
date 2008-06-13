@@ -345,25 +345,14 @@
     <keyword type="macro" name="PWC_FPS_MASK" link="libcam-pwc-ioctl.html#PWC-FPS-MASK:CAPS"/>
     <keyword type="macro" name="PWC_FPS_FRMASK" link="libcam-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS"/>
     <keyword type="macro" name="PWC_FPS_SNAPSHOT" link="libcam-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS"/>
-    <keyword type="struct" name="struct pwc_coord" link="libcam-pwc-ioctl.html#pwc-coord"/>
-    <keyword type="struct" name="struct pwc_probe" link="libcam-pwc-ioctl.html#pwc-probe"/>
-    <keyword type="struct" name="struct pwc_serial" link="libcam-pwc-ioctl.html#pwc-serial"/>
     <keyword type="macro" name="PWC_WB_INDOOR" link="libcam-pwc-ioctl.html#PWC-WB-INDOOR:CAPS"/>
     <keyword type="macro" name="PWC_WB_OUTDOOR" link="libcam-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS"/>
     <keyword type="macro" name="PWC_WB_FL" link="libcam-pwc-ioctl.html#PWC-WB-FL:CAPS"/>
     <keyword type="macro" name="PWC_WB_MANUAL" link="libcam-pwc-ioctl.html#PWC-WB-MANUAL:CAPS"/>
     <keyword type="macro" name="PWC_WB_AUTO" link="libcam-pwc-ioctl.html#PWC-WB-AUTO:CAPS"/>
-    <keyword type="struct" name="struct pwc_whitebalance" link="libcam-pwc-ioctl.html#pwc-whitebalance"/>
-    <keyword type="struct" name="struct pwc_wb_speed" link="libcam-pwc-ioctl.html#pwc-wb-speed"/>
-    <keyword type="struct" name="struct pwc_leds" link="libcam-pwc-ioctl.html#pwc-leds"/>
-    <keyword type="struct" name="struct pwc_imagesize" link="libcam-pwc-ioctl.html#pwc-imagesize"/>
     <keyword type="macro" name="PWC_MPT_PAN" link="libcam-pwc-ioctl.html#PWC-MPT-PAN:CAPS"/>
     <keyword type="macro" name="PWC_MPT_TILT" link="libcam-pwc-ioctl.html#PWC-MPT-TILT:CAPS"/>
     <keyword type="macro" name="PWC_MPT_TIMEOUT" link="libcam-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS"/>
-    <keyword type="struct" name="struct pwc_mpt_angles" link="libcam-pwc-ioctl.html#pwc-mpt-angles"/>
-    <keyword type="struct" name="struct pwc_mpt_range" link="libcam-pwc-ioctl.html#pwc-mpt-range"/>
-    <keyword type="struct" name="struct pwc_mpt_status" link="libcam-pwc-ioctl.html#pwc-mpt-status"/>
-    <keyword type="struct" name="struct pwc_video_command" link="libcam-pwc-ioctl.html#pwc-video-command"/>
     <keyword type="macro" name="PWCX_FLAG_PLANAR" link="libcam-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS"/>
     <keyword type="macro" name="PWCX_FLAG_BAYER" link="libcam-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS"/>
     <keyword type="macro" name="VIDIOCPWCRUSER" link="libcam-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS"/>
@@ -397,7 +386,6 @@
     <keyword type="macro" name="VIDIOCPWCMPTGANGLE" link="libcam-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS"/>
     <keyword type="macro" name="VIDIOCPWCMPTSTATUS" link="libcam-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS"/>
     <keyword type="macro" name="VIDIOCPWCGVIDCMD" link="libcam-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS"/>
-    <keyword type="struct" name="struct pwc_table_init_buffer" link="libcam-pwc-ioctl.html#pwc-table-init-buffer"/>
     <keyword type="macro" name="VIDIOCPWCGVIDTABLE" link="libcam-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS"/>
   </functions>
 </book>
