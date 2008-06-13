@@ -1,0 +1,34 @@
+demonstration plugins for the computer vision functions in libCVD.
+Specifically, a demonstration plugin for the FAST feature detector:
+
+http://mi.eng.cam.ac.uk/~er258/work/fast.html
+
+@inproceedings{rosten_2005_tracking,
+    title       =    "Fusing points and lines for high performance tracking.",
+    author      =    "Edward Rosten and Tom Drummond",
+    year        =    "2005",
+    month       =    "October",
+    pages       =    "1508--1511",
+    volume      =    "2",
+    booktitle   =    "IEEE International Conference on Computer Vision",
+    notes       =    "Oral presentation",
+    doi         =    "10.1109/ICCV.2005.104",
+    url         =    "http://mi.eng.cam.ac.uk/~er258/work/rosten_2005_tracking.pdf"
+}
+
+@inproceedings{rosten_2006_machine,
+    title       =    "Machine learning for high-speed corner detection",
+    author      =    "Edward Rosten and Tom Drummond",
+    year        =    "2006",
+    month       =    "May",
+    pages       =    "430--443",
+    volume      =    "1",
+    doi         =    "10.1007/11744023_34",
+    booktitle   =    "European Conference on Computer Vision",
+    notes       =    "Poster presentation",
+    url         =    "http://mi.eng.cam.ac.uk/~er258/work/rosten_2006_machine.pdf"
+}
+
+As of June, 2008, libCVD is licensed under the LGPL and can be obtained here:
+
+http://mi.eng.cam.ac.uk/~er258/cvd

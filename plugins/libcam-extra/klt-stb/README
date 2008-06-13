@@ -1,0 +1,7 @@
+demonstration plugin for the Kanade-Lucas-Tomasi corner detector and tracker
+implemented by Stan Birchfield
+
+http://www.ces.clemson.edu/~stb/klt/
+
+The source code for the tracker is included in this directory, and is in the
+public domain.

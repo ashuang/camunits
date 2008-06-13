@@ -29,6 +29,15 @@ AM_PATH_FRAMEWAVE(,,
        [AC_MSG_WARN([Framewave is not found, Framewave plugins will not be built.])])
 AM_CONDITIONAL(HAVE_FRAMEWAVE, test "x$FRAMEWAVE_LIBS" != x)
 
+dnl check for libCVD
+AC_MSG_CHECKING(for libCVD)
+have_cvd=yes
+AC_LANG_PUSH(C++)
+AC_CHECK_HEADERS(cvd/fast_corner.h,[],[have_cvd=no])
+AC_CHECK_LIB(cvd, main,[],[have_cvd=no])
+AC_LANG_POP(C++)
+AM_CONDITIONAL(HAVE_CVD, test x$have_cvd = xyes)
+
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
@@ -75,6 +84,7 @@ AC_OUTPUT([
   klt-stb/Makefile
   klt-stb/klt/Makefile
   fh-segment/Makefile
+  cvd/Makefile
   po/Makefile.in
 ])
 
@@ -97,6 +107,11 @@ else
 fi
 
 KLTSTB_MSG="Enabled"
+if test x$have_cvd = xyes; then
+    CVD_MSG="Enabled"
+else
+    CVD_MSG="Disabled"
+fi
 
 echo "
 
@@ -108,5 +123,6 @@ Configuration (libcam-extra):
 	IPP plugins:                       ${IPP_MSG}
 	Framewave plugins:                 ${FRAMEWAVE_MSG}
 	KLT (Birchfield) plugin:           ${KLTSTB_MSG}
-    Felzenszwalb-Huttenlocher plugin:  Enabled
+	Felzenszwalb-Huttenlocher plugin:  Enabled
+	libCVD (FAST features) plugins:    ${CVD_MSG}
 "

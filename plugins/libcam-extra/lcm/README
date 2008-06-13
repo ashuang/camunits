@@ -1,0 +1,8 @@
+This directory contains LCM type definitions and libcam plugins for using
+libcam with LCM.  Plugins are provided to transmit images over LCM, receive
+images over LCM, send synchronization messages, and to play back a libcam log
+file synchronized to the playback of a LCM log file.
+
+LCM can be found at:
+
+http://lcm.googlecode.com

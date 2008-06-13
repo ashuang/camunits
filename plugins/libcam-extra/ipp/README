@@ -1,0 +1,7 @@
+This directory contains plugins that use the Intel Integrated Performance
+Primitives library (Intel IPP).
+
+Most plugins are thin wrappers around IPP functions.  As of June, 2008, IPP can
+be obtained at:
+
+http://www.intel.com/cd/software/products/asmo-na/eng/302910.htm

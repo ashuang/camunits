@@ -1,0 +1,7 @@
+This directory contains plugins that use the AMD Framewave
+library.
+
+Most plugins are thin wrappers around Framewave functions.  As of June, 2008,
+Framewave can be obtained at:
+
+http://framewave.sourceforge.net
