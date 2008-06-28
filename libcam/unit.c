@@ -750,6 +750,7 @@ cam_unit_remove_output_format (CamUnit *self, CamUnitFormat *fmt)
 void 
 cam_unit_remove_all_output_formats (CamUnit *self)
 {
+    g_assert (! self->is_streaming);
     dbg (DBG_UNIT, "[%s] removing all output formats\n", self->unit_id);
     for (GList *ofiter=self->output_formats; ofiter; ofiter=ofiter->next) {
         g_object_unref (ofiter->data);

@@ -164,7 +164,7 @@ _log_set_file (CamInputLog *self, const char *fname)
     }
 
     int max_data_size;
-    if (cam_pixel_format_nicknameide_meaningful (format.pixelformat))
+    if (cam_pixel_format_stride_meaningful (format.pixelformat))
         max_data_size = format.height * format.stride;
     else
         max_data_size = format.width * format.height * 4;

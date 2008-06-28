@@ -134,7 +134,7 @@ cam_pixel_format_bpp (CamPixelFormat p)
     return 0;
 }
 
-int cam_pixel_format_nicknameide_meaningful (CamPixelFormat p)
+int cam_pixel_format_stride_meaningful (CamPixelFormat p)
 {
     switch (p) {
         case CAM_PIXEL_FORMAT_MJPEG:

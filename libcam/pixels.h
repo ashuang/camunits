@@ -83,7 +83,7 @@ int cam_pixel_format_bpp (CamPixelFormat p);
  *
  * Returns: 1 if rowstride is meaningful for the pixelformat, 0 if not.
  */
-int cam_pixel_format_nicknameide_meaningful (CamPixelFormat p);
+int cam_pixel_format_stride_meaningful (CamPixelFormat p);
 
 /**
  * cam_pixel_convert_8u_gray_to_64f_gray:
