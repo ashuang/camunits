@@ -495,7 +495,7 @@ cprintf
 <FILE>pixels</FILE>
 cam_pf_fourcc
 CamPixelFormat
-cam_pixel_format_str
+cam_pixel_format_nickname
 cam_pixel_format_bpp
 cam_pixel_format_stride_meaningful
 cam_pixel_convert_8u_gray_to_64f_gray

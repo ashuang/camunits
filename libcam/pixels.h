@@ -79,7 +79,7 @@ const char * cam_pixel_format_nickname (CamPixelFormat p);
 int cam_pixel_format_bpp (CamPixelFormat p);
 
 /**
- * cam_pixel_format_nicknameide_meaningful:
+ * cam_pixel_format_stride_meaningful:
  *
  * Returns: 1 if rowstride is meaningful for the pixelformat, 0 if not.
  */
