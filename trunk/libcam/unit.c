@@ -776,6 +776,24 @@ void
 cam_unit_produce_frame (CamUnit *self, const CamFrameBuffer *buffer,
         const CamUnitFormat *fmt)
 {
+    if (0 == buffer->timestamp) {
+        static int64_t __last_warn_utime = 0;
+        int64_t now = _timestamp_now ();
+        if (now - __last_warn_utime > 1000000) {
+            g_warning ("%s:%d framebuffer has timestamp 0", 
+                    __FUNCTION__, __LINE__);
+            __last_warn_utime = now;
+        }
+    }
+    if (0 == buffer->bytesused) {
+        static int64_t __last_warn_utime = 0;
+        int64_t now = _timestamp_now ();
+        if (now - __last_warn_utime > 1000000) {
+            g_warning ("%s:%d framebuffer has bytesused 0", 
+                    __FUNCTION__, __LINE__);
+            __last_warn_utime = now;
+        }
+    }
     g_signal_emit (G_OBJECT (self),
             cam_unit_signals[FRAME_READY_SIGNAL], 0, buffer, fmt);
 }

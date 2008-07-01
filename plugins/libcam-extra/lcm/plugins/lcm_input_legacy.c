@@ -256,6 +256,8 @@ _try_produce_frame (CamUnit *super)
     }
 
     CamFrameBuffer *buf = cam_framebuffer_new (msg->image, msg->size);
+    buf->timestamp = msg->utime;
+    buf->bytesused = msg->size;
     const char *chan = cam_unit_control_get_string (self->channel_ctl);
     cam_framebuffer_metadata_set (buf, "lcm-channel", 
             (const uint8_t*)chan, strlen(chan) + 1);
