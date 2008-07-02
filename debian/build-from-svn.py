@@ -68,3 +68,5 @@ do_or_die ("dch --newversion %s.svn%d-1 \"New subversion build\"" % \
 
 print "Building..."
 do_or_die ("svn-buildpackage -us -uc -rfakeroot --svn-ignore")
+
+os.system ("svn revert debian/changelog")
