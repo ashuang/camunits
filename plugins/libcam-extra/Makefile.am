@@ -1,2 +1,2 @@
-SUBDIRS = po lcm ipp framewave klt-stb fh-segment cvd
+SUBDIRS = po lcm ipp framewave klt-stb fh-segment cvd util
 ACLOCAL_AMFLAGS = -I m4

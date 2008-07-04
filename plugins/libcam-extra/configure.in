@@ -85,6 +85,7 @@ AC_OUTPUT([
   klt-stb/klt/Makefile
   fh-segment/Makefile
   cvd/Makefile
+  util/Makefile
   po/Makefile.in
 ])
 
