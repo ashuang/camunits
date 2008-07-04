@@ -437,6 +437,12 @@ add_spinbutton (CamUnitControlWidget * self,
     gtk_widget_show (spinb);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spinb), initial_value);
 
+    if (ctl->type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
+        gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spinb), 6);
+    } else {
+        gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spinb), 0);
+    }
+
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) calloc(1, sizeof(ControlWidgetInfo));
     g_object_set_data( G_OBJECT(spinb), "ControlWidgetInfo", ci );
@@ -459,9 +465,15 @@ add_spinbutton (CamUnitControlWidget * self,
 static void
 add_float_control (CamUnitControlWidget * self, CamUnitControl * ctl)
 {
-    add_slider (self, ctl->min_float, ctl->max_float,
-            ctl->step_float, cam_unit_control_get_float (ctl),
-            0, ctl);
+    int ui_hints = cam_unit_control_get_ui_hints (ctl);
+    if (ui_hints & CAM_UNIT_CONTROL_SPINBUTTON) {
+        add_spinbutton (self, ctl->min_float, ctl->max_float, ctl->step_float,
+                cam_unit_control_get_float (ctl), 1, ctl);
+    } else {
+        add_slider (self, ctl->min_float, ctl->max_float,
+                ctl->step_float, cam_unit_control_get_float (ctl),
+                0, ctl);
+    }
 }
 
 static void
@@ -687,11 +699,11 @@ on_file_entry_choser_bt_clicked(GtkButton *button, CamUnitControlWidget *self)
     CamUnitControl *ctl = ci->ctl;
 
     GtkWidget *dialog;
-    dialog = gtk_file_chooser_dialog_new ("New Log File",
+    dialog = gtk_file_chooser_dialog_new ("Choose File",
             GTK_WINDOW( gtk_widget_get_toplevel(GTK_WIDGET(self)) ),
             GTK_FILE_CHOOSER_ACTION_OPEN,
             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-            GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
             NULL);
     char *newval = NULL;
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -900,9 +912,17 @@ on_control_value_changed(CamUnit *unit, CamUnitControl *ctl,
                 }
                 break;
             case CAM_UNIT_CONTROL_TYPE_FLOAT:
-                gtk_range_set_value (GTK_RANGE(ci->widget), 
+                if (GTK_IS_SPIN_BUTTON (ci->widget)) {
+//                    printf("set value %d\n", g_value_get_int(&val));
+                    gtk_spin_button_set_value (GTK_SPIN_BUTTON(ci->widget),
                         g_value_get_float(&val));
-                set_slider_label(self, ci);
+                } else if (GTK_IS_RANGE (ci->widget)) {
+                    gtk_range_set_value (GTK_RANGE(ci->widget), 
+                            g_value_get_float(&val));
+                    set_slider_label(self, ci);
+                } else {
+                    err ("wtf?? %s:%d", __FILE__, __LINE__);
+                }
                 break;
             case CAM_UNIT_CONTROL_TYPE_BOOLEAN:
                 if (GTK_IS_TOGGLE_BUTTON (ci->widget))
