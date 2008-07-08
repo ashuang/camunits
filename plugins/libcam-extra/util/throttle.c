@@ -75,7 +75,7 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("filter", "throttle", "Throttle", 
+    return cam_unit_driver_new_stock_full ("util", "throttle", "Throttle", 
             0, (CamUnitConstructor)camutil_throttle_new, module);
 }
 
@@ -99,6 +99,8 @@ camutil_throttle_init (CamutilThrottle *self)
             "Pause", 0, 1);
     self->repeat_last_frame_ctl = cam_unit_add_control_boolean (super, 
             "repeat", "Repeat Last Frame", 0, 1);
+    cam_unit_control_set_ui_hints (self->repeat_last_frame_ctl, 
+            CAM_UNIT_CONTROL_ONE_SHOT);
 
     const char *throttle_mode_options[] = { 
         "Do Not Throttle",
@@ -158,6 +160,16 @@ static int64_t _timestamp_now()
     return (int64_t) tv.tv_sec * 1000000 + tv.tv_usec;
 }
 
+static void
+_copy_framebuffer (CamutilThrottle *self, const CamFrameBuffer *inbuf)
+{
+    if (self->prev_buf)
+        g_object_unref (self->prev_buf);
+    self->prev_buf = cam_framebuffer_new_alloc (inbuf->bytesused);
+    memcpy (self->prev_buf->data, inbuf->data, inbuf->bytesused);
+    cam_framebuffer_copy_metadata (self->prev_buf, inbuf);
+}
+
 static void 
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
@@ -166,7 +178,6 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     if (cam_unit_control_get_boolean (self->pause_ctl)) {
         // unit is paused.  Only allow a frame if the user says to allow one
-
         return;
     }
 
@@ -176,6 +187,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     if (tm == THROTTLE_DISABLED) {
         self->last_allowed_actual_timestamp = _timestamp_now ();
         self->last_allowed_reported_timestamp = inbuf->timestamp;
+        _copy_framebuffer (self, inbuf);
         cam_unit_produce_frame (super, inbuf, infmt);
         return;
     }
@@ -196,6 +208,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     if (min_interval < dt || dt < 0) {
         self->last_allowed_actual_timestamp = now;
         self->last_allowed_reported_timestamp = inbuf->timestamp;
+        _copy_framebuffer (self, inbuf);
         cam_unit_produce_frame (super, inbuf, infmt);
     }
 }
@@ -205,7 +218,9 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual)
 {
     CamutilThrottle *self = CAMUTIL_THROTTLE (super);
-
+    if (ctl == self->repeat_last_frame_ctl && self->prev_buf) {
+        cam_unit_produce_frame (super, self->prev_buf, super->fmt);
+    }
     g_value_copy (proposed, actual);
     return TRUE;
 }
