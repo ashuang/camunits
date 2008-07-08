@@ -104,8 +104,8 @@ camutil_throttle_init (CamutilThrottle *self)
 
     const char *throttle_mode_options[] = { 
         "Do Not Throttle",
-        "Elapsed Time", 
-        "Reported Timestamps", 
+        "Actual Time (Wall clock)", 
+        "Image Timestamps", 
         NULL 
     };
     int throttle_mode_enabled[] = { 1, 1, 1, 0 };
