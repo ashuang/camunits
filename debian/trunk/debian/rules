@@ -4,6 +4,8 @@
 
 #DEB_SHLIBDEPS_INCLUDE = debian/libcam/usr/lib
 
+DEB_CONFIGURE_USER_FLAGS = --with-plugin-extra-path=/usr/local/lib/libcam
+
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/buildcore.mk
 include /usr/share/cdbs/1/class/autotools.mk
