@@ -65,6 +65,7 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
             GTK_TREE_MODEL (self->tree_store));
     GtkTreeViewColumn * column = gtk_tree_view_column_new ();
     gtk_tree_view_column_set_title (column, "Available Units");
+//    gtk_tree_view_column_set_sort_column_id (column, COL_TEXT);
 
     GtkCellRenderer * renderer = gtk_cell_renderer_text_new ();
     gtk_tree_view_column_pack_start (column, renderer, TRUE);
@@ -100,6 +101,9 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
             &cam_unit_manager_widget_target_entry, 1, GDK_ACTION_PRIVATE);
     g_signal_connect (G_OBJECT (self), "row-activated", 
             G_CALLBACK (on_row_selected), self);
+
+    gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->tree_store),
+            COL_TEXT, GTK_SORT_ASCENDING);
 
     self->manager = NULL;
 }
@@ -422,8 +426,17 @@ on_row_selected (GtkTreeView *tv, GtkTreePath *path,
     CamUnitDescription *udesc = NULL;
     gtk_tree_model_get (GTK_TREE_MODEL (self->tree_store), &iter, 
             COL_DESC_PTR, &udesc, -1);
-    if (!udesc) return;
-    g_signal_emit (G_OBJECT(self), 
-            unit_manager_widget_signals[UNIT_DESCRIPTION_ACTIVATED_SIGNAL], 0,
-            udesc);
+    if (udesc) {
+        // a unit description was activated, create a new instance of that
+        // unit.
+        g_signal_emit (G_OBJECT(self), 
+                unit_manager_widget_signals[UNIT_DESCRIPTION_ACTIVATED_SIGNAL],
+                0, udesc);
+    } else {
+        // a package name was activated.  toggle expansion of that package.
+        if (! gtk_tree_view_row_expanded (tv, path)) 
+            gtk_tree_view_expand_row (tv, path, FALSE);
+        else 
+            gtk_tree_view_collapse_row (tv, path);
+    }
 }
