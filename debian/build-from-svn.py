@@ -46,7 +46,7 @@ do_or_die ("svn export -r %d %s %s" % (svn_revision, svn_url, export_dir))
 os.chdir (export_dir)
 
 print ("Extracting version number")
-regex = re.compile("AM_INIT_AUTOMAKE\s*\(\s*%s\s*,\s*([^\s)]+)\s*\)", 
+regex = re.compile("AM_INIT_AUTOMAKE\s*\(\s*%s\s*,\s*([^\s)]+)\s*\)" % \
         package_name)
 release_version = None
 for line in file("configure.in"):
