@@ -5,6 +5,7 @@ import os
 import os.path
 import commands
 import shutil
+import re
 from xml.dom import minidom
 
 def do_or_die(cmd):
@@ -12,11 +13,10 @@ def do_or_die(cmd):
     if 0 != os.system(cmd):
         raise RuntimeError ("damn.")
 
-if len (sys.argv) < 2:
-    print ("usage: %s <version>" % (os.path.basename(sys.argv[0])))
+if len (sys.argv) > 1:
+    print ("usage: %s" % (os.path.basename(sys.argv[0])))
     sys.exit(1)
 
-release_version = sys.argv[1]
 package_name = "libcam"
 svn_url = "https://libcam.googlecode.com/svn/trunk"
 
@@ -27,11 +27,6 @@ info = minidom.parseString (xml_str)
 entry_node = info.documentElement.getElementsByTagName ("entry")[0]
 svn_revision = int (entry_node.getAttribute("revision"))
 
-# setup some useful variables
-export_dir = "%s-%s.svn%d" % (package_name, release_version, svn_revision)
-orig_tarball = "../tarballs/%s_%s.svn%d.orig.tar.gz" % \
-        (package_name, release_version, svn_revision) 
-
 # start the process...
 print "Cleaning out build-area"
 do_or_die ("rm -rf build-area/*")
@@ -40,6 +35,7 @@ print ("Reverting trunk")
 do_or_die ("svn revert --recursive trunk")
 os.chdir("trunk")
 
+export_dir = "%s.svn%d" % (package_name, svn_revision)
 if os.path.exists (export_dir):
     print "Clearing out %s" % export_dir
     do_or_die ("rm -rf %s" % export_dir)
@@ -47,8 +43,23 @@ if os.path.exists (export_dir):
 print ("Checking out a copy of source tree")
 do_or_die ("svn export -r %d %s %s" % (svn_revision, svn_url, export_dir))
 
-print ("Building orig.tar.gz")
 os.chdir (export_dir)
+
+print ("Extracting version number")
+regex = re.compile("AM_INIT_AUTOMAKE\s*\(\s*%s\s*,\s*([^\s)]+)\s*\)", 
+        package_name)
+release_version = None
+for line in file("configure.in"):
+    match = regex.match(line)
+    if match:
+        release_version = match.group(1)
+        break
+if not release_version:
+    print "unable to determine release version!"
+    sys.exit(1)
+print "release version: %s" % release_version
+
+print ("Building orig.tar.gz")
 do_or_die ("gtkdocize --copy")
 do_or_die ("autoreconf -i")
 do_or_die ("./configure --enable-gtk-doc")
@@ -57,6 +68,8 @@ do_or_die ("make")
 do_or_die ("make")
 do_or_die ("make distcheck")
 os.chdir ("..")
+orig_tarball = "../tarballs/%s_%s.svn%d.orig.tar.gz" % \
+        (package_name, release_version, svn_revision) 
 if os.path.exists (orig_tarball):
     os.unlink (orig_tarball)
 shutil.copyfile ("%s/%s-%s.tar.gz" % (export_dir, package_name, 

@@ -23,8 +23,6 @@
 #define CONTROL_CHANNEL "channel"
 #define CONTROL_DATA_RATE_INFO "data-rate"
 
-#define DEFAULT_LCM_URL "udpm://?transmit_only=true"
-
 struct _CamlcmPublish {
     CamUnit parent;
 
@@ -99,7 +97,7 @@ camlcm_publish_init( CamlcmPublish *self )
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT( self );
 
-    self->lcm = lcm_create (DEFAULT_LCM_URL);
+    self->lcm = lcm_create (NULL);
 
     self->next_image_announce_time = 0;
     self->announce_interval = CAMLCM_PUBLISH_DEFAULT_ANNOUNCE_INTERVAL_USEC;
@@ -109,7 +107,7 @@ camlcm_publish_init( CamlcmPublish *self )
     self->lcm_name_ctl = cam_unit_add_control_string (super, CONTROL_CHANNEL,
             "Channel", "CAMLCM_IMAGE", 1);
     self->lcm_url_ctl = cam_unit_add_control_string (super, "lcm-url", 
-            "LCM URL", DEFAULT_LCM_URL, 1);
+            "LCM URL", "", 1);
     self->data_rate_ctl = cam_unit_add_control_string (super, 
             CONTROL_DATA_RATE_INFO, "Data Rate", "0", 0);
 
@@ -259,7 +257,11 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
         if (self->lcm) {
             lcm_destroy (self->lcm);
         }
-        self->lcm = lcm_create (url);
+        if (strlen (url)) {
+            self->lcm = lcm_create (url);
+        } else {
+            self->lcm = lcm_create (NULL);
+        }
     } 
 
     g_value_copy (proposed, actual);

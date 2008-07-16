@@ -56,7 +56,7 @@ cam_plugin_create (GTypeModule * module)
                 g_object_new (CAMLCM_TYPE_INPUT_DRIVER, NULL));
 
     // create LCM object
-    self->lcm = lcm_create ("udpm://?recv_buf_size=2000000");
+    self->lcm = lcm_create (NULL);
     if (!self->lcm) {
         err ("%s:%d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
         goto fail;

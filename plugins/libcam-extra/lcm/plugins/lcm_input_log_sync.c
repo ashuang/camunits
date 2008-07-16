@@ -166,7 +166,7 @@ cam_input_log_sync_init (CamInputLogSync *self)
             "pause", "Pause", 0, 1);
 #endif
 
-    self->lcm = lcm_create ("udpm://?recv_buf_size=2000000");
+    self->lcm = lcm_create (NULL);
     if (!self->lcm) {
         err ("%s:%d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
         // TODO: handle this error better?

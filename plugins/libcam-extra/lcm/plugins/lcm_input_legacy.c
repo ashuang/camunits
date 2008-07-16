@@ -112,7 +112,7 @@ cam_input_legacy_init (CamInputLegacy *self)
     self->channel_ctl = cam_unit_add_control_string (super, "channel", 
             "Channel", "", 1);
 
-    self->lcm = lcm_create ("udpm://?recv_buf_size=2000000");
+    self->lcm = lcm_create (NULL);
     if (!self->lcm) {
         err ("%s:%d -- Couldn't initialize LCM\n", __FILE__, __LINE__);
         // TODO: handle this error better?
