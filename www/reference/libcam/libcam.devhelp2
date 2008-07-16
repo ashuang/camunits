@@ -272,7 +272,9 @@
     <keyword type="macro" name="cprintf()" link="libcam-dbg.html#cprintf"/>
     <keyword type="macro" name="cam_pf_fourcc()" link="libcam-pixels.html#cam-pf-fourcc"/>
     <keyword type="enum" name="enum CamPixelFormat" link="libcam-pixels.html#CamPixelFormat"/>
+    <keyword type="function" name="cam_pixel_format_nickname ()" link="libcam-pixels.html#cam-pixel-format-nickname"/>
     <keyword type="function" name="cam_pixel_format_bpp ()" link="libcam-pixels.html#cam-pixel-format-bpp"/>
+    <keyword type="function" name="cam_pixel_format_stride_meaningful ()" link="libcam-pixels.html#cam-pixel-format-stride-meaningful"/>
     <keyword type="function" name="cam_pixel_convert_8u_gray_to_64f_gray ()" link="libcam-pixels.html#cam-pixel-convert-8u-gray-to-64f-gray"/>
     <keyword type="function" name="cam_pixel_convert_8u_gray_to_8u_RGB ()" link="libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGB"/>
     <keyword type="function" name="cam_pixel_convert_8u_gray_to_8u_RGBA ()" link="libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGBA"/>

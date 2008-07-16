@@ -1,3 +1,30 @@
+2008-07-11  ashuang
+
+	* [r246] libcam-gtk/unit_manager_widget.c: unit manager widget UI
+	  enhancements sort unit descriptions by unit name toggle expansion
+	  of packages when package is double-clicked/activated
+
+2008-07-04  ashuang
+
+	* [r240] libcam-gtk/unit_control_widget.c: enable spinbutton for
+	  float unit control widget
+
+2008-07-01  ashuang
+
+	* [r237] libcam/unit.c: warn when units produce framebuffers with
+	  zero bytesused and timestamp fields
+	* [r236] docs/reference/libcam/libcam-sections.txt,
+	  libcam/pixels.h: fix some docs
+
+2008-06-28  ashuang
+
+	* [r235] libcam/input_log.c, libcam/pixels.c, libcam/pixels.h,
+	  libcam/unit.c: fix accidental API change. add lcm input legacy.
+
+2008-06-13  ashuang
+
+	* [r234] ChangeLog, NEWS, configure.in: release 0.0.8
+
 2008-06-02  ashuang
 
 	* [r225] camview/camview.1, camview/camview.c, camview/gtk_util.c,

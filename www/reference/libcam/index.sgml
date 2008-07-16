@@ -346,7 +346,9 @@
 <ANCHOR id="libcam-pixels.details" href="libcam/libcam-pixels.html#libcam-pixels.details">
 <ANCHOR id="cam-pf-fourcc" href="libcam/libcam-pixels.html#cam-pf-fourcc">
 <ANCHOR id="CamPixelFormat" href="libcam/libcam-pixels.html#CamPixelFormat">
+<ANCHOR id="cam-pixel-format-nickname" href="libcam/libcam-pixels.html#cam-pixel-format-nickname">
 <ANCHOR id="cam-pixel-format-bpp" href="libcam/libcam-pixels.html#cam-pixel-format-bpp">
+<ANCHOR id="cam-pixel-format-stride-meaningful" href="libcam/libcam-pixels.html#cam-pixel-format-stride-meaningful">
 <ANCHOR id="cam-pixel-convert-8u-gray-to-64f-gray" href="libcam/libcam-pixels.html#cam-pixel-convert-8u-gray-to-64f-gray">
 <ANCHOR id="cam-pixel-convert-8u-gray-to-8u-RGB" href="libcam/libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGB">
 <ANCHOR id="cam-pixel-convert-8u-gray-to-8u-RGBA" href="libcam/libcam-pixels.html#cam-pixel-convert-8u-gray-to-8u-RGBA">

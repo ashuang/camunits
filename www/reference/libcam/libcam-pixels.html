@@ -42,7 +42,9 @@
 <pre class="synopsis">
 #define             <a class="link" href="libcam-pixels.html#cam-pf-fourcc" title="cam_pf_fourcc()">cam_pf_fourcc</a>                       (a,b,c,d)
 enum                <a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a>;
+const char*         <a class="link" href="libcam-pixels.html#cam-pixel-format-nickname" title="cam_pixel_format_nickname ()">cam_pixel_format_nickname</a>           (<a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> p);
 int                 <a class="link" href="libcam-pixels.html#cam-pixel-format-bpp" title="cam_pixel_format_bpp ()">cam_pixel_format_bpp</a>                (<a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> p);
+int                 <a class="link" href="libcam-pixels.html#cam-pixel-format-stride-meaningful" title="cam_pixel_format_stride_meaningful ()">cam_pixel_format_stride_meaningful</a>  (<a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> p);
 int                 <a class="link" href="libcam-pixels.html#cam-pixel-convert-8u-gray-to-64f-gray" title="cam_pixel_convert_8u_gray_to_64f_gray ()">cam_pixel_convert_8u_gray_to_64f_gray</a>
                                                         (double *dest,
                                                          int dstride,
@@ -328,6 +330,32 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="cam-pixel-format-nickname"></a><h3>cam_pixel_format_nickname ()</h3>
+<pre class="programlisting">const char*         cam_pixel_format_nickname           (<a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> p);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a short, descriptive string that indicates the meaning of
+CamPixelFormat <em class="parameter"><code>p</code></em>, useful for debugging and UI elements.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="cam-pixel-format-bpp"></a><h3>cam_pixel_format_bpp ()</h3>
 <pre class="programlisting">int                 cam_pixel_format_bpp                (<a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> p);</pre>
 <p>
@@ -348,6 +376,31 @@ int                 <a class="link" href="libcam-pixels.html#cam-pixel-copy-8u-g
 <td>the number of bits per pixel of a given CamPixelFormat.  Note that
 if the format has multiple color components per pixel, the returned
 value is the total bits per pixel, not per component.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-pixel-format-stride-meaningful"></a><h3>cam_pixel_format_stride_meaningful ()</h3>
+<pre class="programlisting">int                 cam_pixel_format_stride_meaningful  (<a class="link" href="libcam-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> p);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 1 if rowstride is meaningful for the pixelformat, 0 if not.
 </td>
 </tr>
 </tbody>

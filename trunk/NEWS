@@ -1,3 +1,13 @@
+libcam 0.0.9 - Jul 16, 2008
+===========================
+* unit manager widget UI enhancements
+  - sort unit descriptions by unit name
+  - toggle expansion of packages when package is double-clicked/activated
+* enable spinbutton for float unit control widget
+* warn when units produce framebuffers with zero bytesused and timestamp fields
+* fix some docs
+* fix accidental API change in 0.0.8.
+
 libcam 0.0.8 - Jun 13, 2008
 ===========================
 * add --no-gui option to camview
