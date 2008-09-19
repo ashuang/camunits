@@ -780,8 +780,8 @@ cam_unit_produce_frame (CamUnit *self, const CamFrameBuffer *buffer,
         static int64_t __last_warn_utime = 0;
         int64_t now = _timestamp_now ();
         if (now - __last_warn_utime > 1000000) {
-            g_warning ("%s:%d framebuffer has timestamp 0", 
-                    __FUNCTION__, __LINE__);
+            g_warning ("%s:%d %s framebuffer has timestamp 0", 
+                    __FUNCTION__, __LINE__, self->unit_id);
             __last_warn_utime = now;
         }
     }
@@ -789,8 +789,8 @@ cam_unit_produce_frame (CamUnit *self, const CamFrameBuffer *buffer,
         static int64_t __last_warn_utime = 0;
         int64_t now = _timestamp_now ();
         if (now - __last_warn_utime > 1000000) {
-            g_warning ("%s:%d framebuffer has bytesused 0", 
-                    __FUNCTION__, __LINE__);
+            g_warning ("%s:%d %s framebuffer has bytesused 0", 
+                    __FUNCTION__, __LINE__, self->unit_id);
             __last_warn_utime = now;
         }
     }
