@@ -1,10 +1,16 @@
-libcam (0.0.6-1) gutsy; urgency=low
+libcam (0.0.9-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Albert Huang <albert@csail.mit.edu>  Fri, 19 Sep 2008 17:45:06 -0400
+
+libcam (0.0.6-1) unstable; urgency=low
 
   * New upstream release
 
  -- Albert Huang <albert@csail.mit.edu>  Wed, 09 Apr 2008 16:23:00 -0400
 
-libcam (0.0.4-1) gutsy; urgency=low
+libcam (0.0.4-1) unstable; urgency=low
 
   * New upstream release
 
@@ -16,13 +22,13 @@ libcam (0.0.3-2) unstable; urgency=low
 
  -- Albert Huang <albert@csail.mit.edu>  Mon, 07 Jan 2008 20:05:33 -0500
 
-libcam (0.0.3-1) gutsy; urgency=low
+libcam (0.0.3-1) unstable; urgency=low
 
   * New upstream release
 
  -- Albert Huang <albert@csail.mit.edu>  Thu, 20 Dec 2007 01:42:46 -0500
 
-libcam (0.0.2-1) gutsy; urgency=low
+libcam (0.0.2-1) unstable; urgency=low
 
   * New upstream release
 

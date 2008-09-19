@@ -1,9 +1,5 @@
 #!/usr/bin/make -f
 
-#DEB_DH_ALWAYS_EXCLUDE = README
-
-#DEB_SHLIBDEPS_INCLUDE = debian/libcam/usr/lib
-
 DEB_CONFIGURE_USER_FLAGS = --with-plugin-extra-path=/usr/local/lib/libcam
 
 include /usr/share/cdbs/1/rules/debhelper.mk
