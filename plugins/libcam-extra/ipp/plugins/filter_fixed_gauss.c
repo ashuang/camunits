@@ -67,7 +67,7 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("ipp.filter", "fixed-gauss",
+    return cam_unit_driver_new_stock_full ("ipp", "filter-fixed-gauss",
             "Fixed Gaussian Blur", 0, 
             (CamUnitConstructor)camipp_filter_fixed_gauss_new, module);
 }
@@ -162,6 +162,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
             // TODO
             break;
     }
+
+    cam_framebuffer_copy_metadata(self->outbuf, inbuf);
+    self->outbuf->bytesused = super->fmt->row_stride * super->fmt->height;
 
     cam_unit_produce_frame (super, self->outbuf, super->fmt);
 }

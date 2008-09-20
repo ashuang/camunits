@@ -178,6 +178,9 @@ _stream_shutdown (CamUnit * super)
     free (self->prev_img);
     self->prev_img = NULL;
 
+    free (self->feature_ages);
+    self->feature_ages = NULL;
+
 //    free (self->corners);
     return 0;
 }
