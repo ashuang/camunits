@@ -1,3 +1,14 @@
+
+===========================
+* better support for 16-bit pixel formats
+* input_dc1394: include format7 mode in output format string
+* unit_manager: on failure to open plugin dir, warn in dbg instead of stderr
+* unit_chain:   store output format name in saved XML.
+* unit_control_widget: slightly smarter about format changing
+* minor bugfixes all around.
+
+This release breaks a rarely-used part of the API (16-bit pixel format defs.)
+
 libcam 0.0.9 - Jul 16, 2008
 ===========================
 * unit manager widget UI enhancements

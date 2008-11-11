@@ -19,11 +19,12 @@
         colorspace conversion.  To reflect this capability, a
         <classname>CamUnit</classname> provides a list of formats that it is
         able to produce, represented by a list of
-        <classname>CamUnitFormat</classname> objects.  In some cases, for
-        example if a <classname>CamUnit</classname> is not properly initialized
+        <classname>CamUnitFormat</classname> objects.  In some cases this list
+        is empty to reflect that the unit is unable to produce any output
+        formats with its current input, for example if a
+        <classname>CamUnit</classname> is not properly initialized
         or is not able to deal with its input format (e.g. if it expects 8bpp
-        grayscale data and is instead given 24bpp RGB) then it may report that
-        it is unable to produce any output formats with its current input.
+        grayscale data and is instead given 24bpp RGB).
     </para>
     <para>
         When a <classname>CamUnit</classname> is initialized, a specific output

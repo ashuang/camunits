@@ -99,8 +99,8 @@ cam_color_conversion_filter_init( CamColorConversionFilter *self )
 {
     dbg(DBG_FILTER, "color_conv filter constructor\n");
     add_conv (self, CAM_PIXEL_FORMAT_GRAY, CAM_PIXEL_FORMAT_RGB,  gray_to_rgb);
-    add_conv (self, CAM_PIXEL_FORMAT_GRAY, CAM_PIXEL_FORMAT_FLOAT_GRAY32, 
-            gray_8u_to_32f);
+//    add_conv (self, CAM_PIXEL_FORMAT_GRAY, CAM_PIXEL_FORMAT_FLOAT_GRAY32, 
+//            gray_8u_to_32f);
     add_conv (self, CAM_PIXEL_FORMAT_RGB,  CAM_PIXEL_FORMAT_GRAY, rgb_to_gray);
     add_conv (self, CAM_PIXEL_FORMAT_RGB,  CAM_PIXEL_FORMAT_BGRA, rgb_to_bgra);
     add_conv (self, CAM_PIXEL_FORMAT_RGB,  CAM_PIXEL_FORMAT_BGR, rgb_to_bgr);

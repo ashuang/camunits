@@ -216,6 +216,7 @@ cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
         fprintf (stderr, "Error: gl_texture data is NULL\n");
         return -1;
     }
+    int swap_bytes = 0;
     GLenum format;
     GLenum type = GL_UNSIGNED_BYTE;
     if (pixelformat == CAM_PIXEL_FORMAT_GRAY ||
@@ -237,13 +238,16 @@ cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
     else if (pixelformat == CAM_PIXEL_FORMAT_BGRA) {
         format = GL_BGRA;
     }
-    else if (pixelformat == CAM_PIXEL_FORMAT_SIGNED_GRAY16) {
+    else if (pixelformat == CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16) {
         format = GL_LUMINANCE;
         type = GL_SHORT;
     }
-    else if (pixelformat == CAM_PIXEL_FORMAT_GRAY16) {
+    else if (pixelformat == CAM_PIXEL_FORMAT_BE_GRAY16) {
         format = GL_LUMINANCE;
         type = GL_UNSIGNED_SHORT;
+
+        if(G_BYTE_ORDER != G_BIG_ENDIAN)
+            swap_bytes = 1;
     }
     else if (pixelformat == CAM_PIXEL_FORMAT_FLOAT_GRAY32) {
         format = GL_LUMINANCE;
@@ -266,6 +270,9 @@ cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
         glPixelStorei (GL_UNPACK_ALIGNMENT, 2);
     } else {
         glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
+    }
+    if(swap_bytes) {
+        glPixelStorei (GL_UNPACK_SWAP_BYTES, GL_TRUE);
     }
 
     glPixelStorei (GL_UNPACK_ROW_LENGTH, 
@@ -291,6 +298,9 @@ cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
     } else {
         glTexImage2D (t->target, 0, t->int_format, t->width, t->height, 0,
                 format, type, data);
+    }
+    if(swap_bytes) {
+        glPixelStorei (GL_UNPACK_SWAP_BYTES, GL_FALSE);
     }
     glPixelStorei (GL_UNPACK_ROW_LENGTH, 0);
     glBindTexture (t->target, 0);

@@ -379,7 +379,7 @@ cam_unit_manager_add_plugin_dir (CamUnitManager *self, const char *path)
 
     DIR * dir = opendir (path);
     if (!dir) {
-        fprintf (stderr, "Warning: failed to open %s: %s\n", path,
+        dbg (DBG_MANAGER, "Warning: failed to open %s: %s\n", path,
                 strerror (errno));
         return;
     }

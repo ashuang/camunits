@@ -47,13 +47,12 @@ typedef enum {
     CAM_PIXEL_FORMAT_BAYER_GRBG=cam_pf_fourcc('X','X','X','3'),
     CAM_PIXEL_FORMAT_BAYER_RGGB=cam_pf_fourcc('X','X','X','4'),
     CAM_PIXEL_FORMAT_MJPEG=cam_pf_fourcc('M','J','P','G'),
-    CAM_PIXEL_FORMAT_RGB16=1,
-    CAM_PIXEL_FORMAT_GRAY16,
-//    CAM_PIXEL_FORMAT_BAYER16,
-    CAM_PIXEL_FORMAT_SIGNED_GRAY16,
-    CAM_PIXEL_FORMAT_SIGNED_RGB16,
-    CAM_PIXEL_FORMAT_FLOAT_GRAY32,
-    CAM_PIXEL_FORMAT_FLOAT_RGB32,
+    CAM_PIXEL_FORMAT_BE_GRAY16=357,         /* 16-bpp luminance/grayscale, big-endian */
+    CAM_PIXEL_FORMAT_BE_RGB16=358,          /* 48-bpp rgb (16-bits per channel), big-endian */
+    CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16=359,
+    CAM_PIXEL_FORMAT_BE_SIGNED_RGB16=360,
+    CAM_PIXEL_FORMAT_FLOAT_GRAY32=cam_pf_fourcc('F','G','3','2'), /* 32-bit grayscale IEEE float, native byte order */
+//    CAM_PIXEL_FORMAT_FLOAT_RGB32,
     CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFE,
     CAM_PIXEL_FORMAT_ANY=0xFFFFFFFF,
 } CamPixelFormat;

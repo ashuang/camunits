@@ -9,7 +9,7 @@ Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
 
 Package: libcam3
 Section: libs
-Architecture: amd64 i386 
+Architecture: any
 Recommends: libcam-utils, libcam-gtk3
 Suggests: libcam-plugins-dc1394
 Depends: ${shlibs:Depends}
@@ -22,7 +22,7 @@ Description: device-independent image acquisition and processing API
 
 Package: libcam3-dev
 Section: libdevel
-Architecture: amd64 i386 
+Architecture: any
 Depends: libcam3 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcam is a library primarily intended for robotics and machine vision
@@ -33,7 +33,7 @@ Description: device-independent image acquisition and processing API
 
 Package: libcam-utils
 Section: utils
-Architecture: amd64 i386 
+Architecture: any
 Depends: ${shlibs:Depends}
 Description: utility programs for libcam
  This package contains utility programs to support users of the libcam image
@@ -42,7 +42,7 @@ Description: utility programs for libcam
 
 Package: libcam-gtk3
 Section: libs
-Architecture: amd64 i386 
+Architecture: any
 Recommends: camview
 Depends: ${shlibs:Depends}
 Description: GTK+ widgets for libcam
@@ -54,7 +54,7 @@ Description: GTK+ widgets for libcam
 
 Package: libcam-gtk3-dev
 Section: libdevel
-Architecture: amd64 i386 
+Architecture: any
 Depends: libcam-gtk3 (= ${binary:Version}), libcam3-dev, libc6-dev
 Description: GTK+ widgets for libcam
  libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
@@ -65,7 +65,7 @@ Description: GTK+ widgets for libcam
 
 Package: camview
 Section: utils
-Architecture: amd64 i386 
+Architecture: any
 Conflicts: libcam-gtk-utils
 Depends: ${shlibs:Depends}
 Recommends: libcam-utils
@@ -78,7 +78,7 @@ Description: libcam viewer
 Package: libcam-plugins-dc1394
 Section: libs
 Conflicts: libcam0-plugins-dc1394
-Architecture: amd64 i386 
+Architecture: any
 Depends: ${shlibs:Depends}
 Description: IEEE 1394 Digital Camera device input plugins for libcam
  libcam is a library primarily intended for robotics and machine vision
