@@ -1,0 +1,9 @@
+#include <camunits-gtk/cam-gtk.h>
+
+cam_tree_store_get_type
+cam_gl_drawing_area_get_type
+cam_unit_chain_gl_widget_get_type
+cam_unit_chain_widget_get_type
+cam_unit_control_widget_get_type
+cam_unit_description_widget_get_type
+cam_unit_manager_widget_get_type

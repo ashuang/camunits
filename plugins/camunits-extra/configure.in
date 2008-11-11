@@ -1,0 +1,132 @@
+AC_PREREQ(2.50)
+AC_INIT(lcm/plugins/lcm_publish.h)
+AM_CONFIG_HEADER(config.h)
+AC_CANONICAL_SYSTEM
+AM_INIT_AUTOMAKE(camunits-extra, 0.0.1)
+
+AC_PROG_CC
+
+dnl check for GLib
+AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
+PKG_PROG_PKG_CONFIG
+
+dnl check for camunits
+AM_PATH_CAMUNITS(,,
+       [AC_MSG_ERROR([camunits is not found, but is required by camunits-lcm.])])
+
+dnl check for lcm
+AM_PATH_LCM(,,
+       [AC_MSG_WARN([lcm is not found, lcm plugins will not be built.])])
+AM_CONDITIONAL(HAVE_LCM, test "x$LCM_LIBS" != x)
+
+dnl check for IPP
+AM_PATH_IPP(,,
+       [AC_MSG_WARN([IPP is not found, IPP plugins will not be built.])])
+AM_CONDITIONAL(HAVE_IPP, test "x$IPP_LIBS" != x)
+
+dnl check for Framewave
+AM_PATH_FRAMEWAVE(,,
+       [AC_MSG_WARN([Framewave is not found, Framewave plugins will not be built.])])
+AM_CONDITIONAL(HAVE_FRAMEWAVE, test "x$FRAMEWAVE_LIBS" != x)
+
+dnl check for libCVD
+AC_MSG_CHECKING(for libCVD)
+have_cvd=yes
+AC_LANG_PUSH(C++)
+AC_CHECK_HEADERS(cvd/fast_corner.h,[],[have_cvd=no])
+AC_CHECK_LIB(cvd, main,[],[have_cvd=no])
+AC_LANG_POP(C++)
+AM_CONDITIONAL(HAVE_CVD, test x$have_cvd = xyes)
+
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+camunitsdatadir="$datadir/camunits"
+AC_SUBST(camunitsdatadir)
+camunitsplugindir="$libdir/camunits"
+AC_SUBST(camunitsplugindir)
+
+dnl ---------------------------------------------------------------------------
+dnl i18n support
+dnl ---------------------------------------------------------------------------
+ALL_LINGUAS=""
+
+dnl The gettext domain of the library
+GETTEXT_PACKAGE=${PACKAGE}
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[The gettext domain for the library])
+AC_SUBST(GETTEXT_PACKAGE)
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.14.3)
+
+AM_ICONV()
+
+dnl ---------------------------------------------------------------------------
+dnl Warnings
+dnl ---------------------------------------------------------------------------
+if test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+    LDFLAGS="$LDFLAGS -g -Wall"
+    AC_SUBST(CFLAGS)
+    AC_SUBST(LDFLAGS)
+fi
+
+AC_OUTPUT([
+  Makefile
+  lcm/Makefile
+  lcm/plugins/Makefile
+  lcm/lcmtypes/Makefile
+  ipp/Makefile
+  ipp/plugins/Makefile
+  ipp/jpeg-plugins/Makefile
+  framewave/Makefile
+  framewave/plugins/Makefile
+  framewave/jpeg-plugins/Makefile
+  klt-stb/Makefile
+  klt-stb/klt/Makefile
+  fh-segment/Makefile
+  cvd/Makefile
+  ptgrey/Makefile
+  util/Makefile
+  progs/Makefile
+  po/Makefile.in
+])
+
+if test "x$LCM_LIBS" = x; then
+    LCM_MSG="Disabled (LCM not found)"
+else
+    LCM_MSG="Enabled"
+fi
+
+if test "x$IPP_LIBS" = x; then
+    IPP_MSG="Disabled (IPP not found)"
+else
+    IPP_MSG="Enabled"
+fi
+
+if test "x$FRAMEWAVE_LIBS" = x; then
+    FRAMEWAVE_MSG="Disabled (Framewave not found)"
+else
+    FRAMEWAVE_MSG="Enabled"
+fi
+
+KLTSTB_MSG="Enabled"
+if test x$have_cvd = xyes; then
+    CVD_MSG="Enabled"
+else
+    CVD_MSG="Disabled"
+fi
+
+echo "
+
+Configuration (camunits-extra):
+
+	Source code location:              ${srcdir}
+	Compiler:                          ${CC}
+	LCM plugins:                       ${LCM_MSG}
+	IPP plugins:                       ${IPP_MSG}
+	Framewave plugins:                 ${FRAMEWAVE_MSG}
+	KLT (Birchfield) plugin:           ${KLTSTB_MSG}
+	Felzenszwalb-Huttenlocher plugin:  Enabled
+	libCVD (FAST features) plugins:    ${CVD_MSG}
+	Point Grey Bumblebee2 viewer:      Enabled
+"

@@ -2,11 +2,11 @@
 <title>Acquiring images (Quickstart guide)</title>
 
 <para>
-    The fundamental class in libcam is the <classname>CamUnit</classname> class.
+    The fundamental class in camunits is the <classname>CamUnit</classname> class.
     Conceptually, an instance of a <classname>CamUnit</classname> represents an
     object that can produce frames.  Units are typically connected in series,
     or in a tree-like fashion, to form an image processing application.
-    Because units connected in series are very common, libcam provides the
+    Because units connected in series are very common, camunits provides the
     convenience class <classname>CamUnitChain</classname> for managing units.
 </para>
 <para>
@@ -23,7 +23,7 @@
 #include <stdio.h>
 
 #include <glib.h>
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
         const CamFrameBuffer *buf, void *user_data)
@@ -82,19 +82,19 @@ int main(int argc, char **argv)
 </example>
 
 <sect1 id="acquiring-glib">
-    <title>Using libcam with GLib</title>
+    <title>Using camunits with GLib</title>
 
     <para>
-        libcam uses the <classname>GObject</classname> type
-        system, which must be initialized before any libcam classes are
+        camunits uses the <classname>GObject</classname> type
+        system, which must be initialized before any camunits classes are
         instantiated.
         <programlisting>
     g_type_init ();
         </programlisting>
 
-        libcam was designed for easy integration into a GLib event loop.
-        While libcam does not require the GLib event loop, and can be used
-        with other event loops such as Qt, libcam does provide convenience
+        camunits was designed for easy integration into a GLib event loop.
+        While camunits does not require the GLib event loop, and can be used
+        with other event loops such as Qt, camunits does provide convenience
         functions for working with the GLib mainloop, and the tutorials all
         assume the use of a <classname>GMainLoop</classname>.  To create a
         <classname>GMainLoop</classname>, use
@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 </programlisting>
 
         Since a <classname>CamUnitChain</classname>, along with every other
-        libcam class, is a reference-counted GObject, memory management is
+        camunits class, is a reference-counted GObject, memory management is
         handled using <function>g_object_ref</function> and
         <function>g_object_unref</function>.  A
         <classname>CamUnitChain</classname> is created with a reference count
@@ -147,9 +147,9 @@ int main(int argc, char **argv)
         <para>
             The easiest way to find out what sort of units are available on
             your system is to use the program <command>camview</command>,
-            which comes with libcam.  When first loaded,
+            which comes with camunits.  When first loaded,
             <command>camview</command> displays a list of units available to
-            libcam.  Clicking on a unit listed in <command>camview</command>
+            camunits.  Clicking on a unit listed in <command>camview</command>
             will reveal its unit ID.  <xref 
                 linkend="acquiring-camview-unit-id"/> illustrates this.
         </para>
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 </figure>
         <para>
             The <literal>input.example</literal> unit is a sample
-            <classname>CamUnit</classname> that is distributed with libcam and
+            <classname>CamUnit</classname> that is distributed with camunits and
             periodically generates a test image.  It can often be useful for
             testing when no other units area available.
         </para>
@@ -275,7 +275,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
         </para>
         <para>
             Since there is a wide range of binary representations for images,
-            such as sRGB, YUV422, Bayer, JPEG, etc., libcam provides a way to
+            such as sRGB, YUV422, Bayer, JPEG, etc., camunits provides a way to
             describe the actual format of the image data via the
             <classname>CamUnitFormat</classname> class.  The format of the
             images produced by a <classname>CamUnit</classname> can be

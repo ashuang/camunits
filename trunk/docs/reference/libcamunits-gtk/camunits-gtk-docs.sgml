@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>camunits-gtk Reference Manual</title>
+  </bookinfo>
+
+  <chapter>
+    <title>GTK Widgets for camunits Types</title>
+    <xi:include href="xml/unit_control_widget.xml"/>
+    <xi:include href="xml/unit_chain_widget.xml"/>
+    <xi:include href="xml/unit_chain_gl_widget.xml"/>
+    <xi:include href="xml/unit_manager_widget.xml"/>
+    <xi:include href="xml/unit_description_widget.xml"/>
+  </chapter>
+  <chapter>
+    <title>Subclasses of GTK Widgets</title>
+    <xi:include href="xml/gl_drawing_area.xml"/>
+    <xi:include href="xml/cam_tree_store.xml"/>
+  </chapter>
+</book>

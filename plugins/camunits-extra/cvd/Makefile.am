@@ -1,0 +1,12 @@
+if HAVE_CVD
+
+camunitsplugin_LTLIBRARIES = demo_libcvd_fast.la
+
+INCLUDES = $(GLIB_CFLAGS) $(CAMUNITS_CFLAGS)
+
+# FAST feature detector demo
+demo_libcvd_fast_la_SOURCES = demo_libcvd_fast.cpp
+demo_libcvd_fast_la_LDFLAGS = -avoid-version -module 
+demo_libcvd_fast_la_LIBADD = $(CAMUNITS_LIBS) -lcvd
+
+endif
