@@ -7,10 +7,10 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	$(GTK_CFLAGS)
 
-lib_LTLIBRARIES = camunits-gtk.la
+lib_LTLIBRARIES = libcamunits-gtk.la
 
-camunits_gtk_la_LDFLAGS = -version-info @CAMUNITS_GTK_VERSION_INFO@
-camunits_gtk_la_SOURCES = \
+libcamunits_gtk_la_LDFLAGS = -version-info @CAMUNITS_GTK_VERSION_INFO@
+libcamunits_gtk_la_SOURCES = \
 	cam-gtk.h \
 	gl_drawing_area.c \
 	gl_drawing_area.h \
@@ -27,7 +27,7 @@ camunits_gtk_la_SOURCES = \
 	unit_description_widget.c \
 	unit_description_widget.h
 
-camunits_gtk_la_LIBADD = $(GTK_LIBS) ../camunits/camunits.la
+libcamunits_gtk_la_LIBADD = $(GTK_LIBS) ../camunits/libcamunits.la
 
 camunitsgtkincludedir = $(includedir)/camunits-gtk
 camunitsgtkinclude_HEADERS = \

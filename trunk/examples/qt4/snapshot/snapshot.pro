@@ -12,4 +12,4 @@ HEADERS += CamUnitChainQtAdapter.hpp
 SOURCES += CamUnitChainQtAdapter.cpp snapshot.cpp
 
 CONFIG += link_pkgconfig
-PKGCONFIG += libcam glib-2.0 gobject-2.0 gmodule-2.0
+PKGCONFIG += camunits glib-2.0 gobject-2.0 gmodule-2.0

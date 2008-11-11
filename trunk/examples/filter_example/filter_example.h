@@ -3,7 +3,7 @@
 
 #include <glib-object.h>
 
-#include <libcam/unit.h>
+#include <camunits/unit.h>
 
 G_BEGIN_DECLS
 

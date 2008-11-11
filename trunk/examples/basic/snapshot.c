@@ -5,7 +5,7 @@
 
 #include <glib.h>
 
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 typedef struct _state_t {
     GMainLoop *mainloop;

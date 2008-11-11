@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 
     // abort if no input unit was specified
     if (argc < 2) {
-        fprintf (stderr, "usage: %s <libcam_unit_id>\n", argv[0]);
+        fprintf (stderr, "usage: %s <camunits_unit_id>\n", argv[0]);
         return 1;
     }
 

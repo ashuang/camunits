@@ -1,4 +1,4 @@
-installed_m4 = libcam.m4
+installed_m4 = camunits.m4
 
 EXTRA_DIST = $(installed_m4)
 

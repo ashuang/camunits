@@ -7,5 +7,5 @@ noinst_PROGRAMS = snapshot trivial-acquire
 snapshot_SOURCES = snapshot.c
 trivial_acquire_SOURCES = trivial-acquire.c
 
-LDADD = $(GLIB_LIBS) ../../libcam/libcam.la
+LDADD = $(GLIB_LIBS) ../../camunits/libcamunits.la
 

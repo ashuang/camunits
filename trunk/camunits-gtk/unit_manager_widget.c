@@ -76,7 +76,7 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
     renderer = gtk_cell_renderer_pixbuf_new ();
     gtk_tree_view_column_pack_start (column, renderer, FALSE);
     GdkPixbuf * pb =
-        gdk_pixbuf_new_from_file (LIBCAM_PIXMAP_PATH "/renderable.png", NULL);
+        gdk_pixbuf_new_from_file (CAMUNITS_PIXMAP_PATH "/renderable.png", NULL);
     if (pb) {
         g_object_set (G_OBJECT (renderer), "pixbuf", pb, NULL);
         g_object_unref (pb);
