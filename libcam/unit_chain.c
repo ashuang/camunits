@@ -241,7 +241,12 @@ cam_unit_chain_insert_unit (CamUnitChain *self, CamUnit *unit,
         update_unit_status (self, unit, FALSE);
         cam_unit_set_input (unit, prev_unit);
     }
-    update_unit_status (self, unit, self->streaming_desired);
+
+    if (cam_unit_is_streaming (unit) == self->streaming_desired) {
+        on_unit_status_changed (unit, self);
+    } else {
+        update_unit_status (self, unit, self->streaming_desired);
+    }
 
     // if the new unit comes before the end of the chain, then set the next
     // unit's input
@@ -696,10 +701,12 @@ cam_unit_chain_snapshot (const CamUnitChain *self)
             GEnumClass *pf_class = 
                 G_ENUM_CLASS (g_type_class_ref (CAM_TYPE_PIXEL_FORMAT));
 
+            char *fmt_name_escaped = g_strescape(fmt->name, NULL);
             g_string_append_printf (result, 
-                    " width=\"%d\" height=\"%d\" pixelformat=\"%s\"", 
+                    " width=\"%d\" height=\"%d\" pixelformat=\"%s\" format_name=\"%s\"", 
                     fmt->width, fmt->height, 
-                    g_enum_get_value (pf_class, fmt->pixelformat)->value_name);
+                    g_enum_get_value(pf_class, fmt->pixelformat)->value_name,
+                    fmt_name_escaped);
 
             g_type_class_unref (pf_class);
         }
@@ -796,6 +803,7 @@ _start_element (GMarkupParseContext *ctx, const char *element_name,
         int width = -1;
         int height = -1;
         CamPixelFormat pfmt = CAM_PIXEL_FORMAT_ANY;
+        char *fmt_name = NULL;
 
         for (int i=0; attribute_names[i]; i++) {
             if (!strcmp (attribute_names[i], "id")) {
@@ -807,6 +815,7 @@ _start_element (GMarkupParseContext *ctx, const char *element_name,
                     width = -1;
                     *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                             "Invalid unit width [%s]", attribute_values[i]);
+                    free(fmt_name);
                     return;
                 }
             } else if (!strcmp (attribute_names[i], "height")) {
@@ -816,6 +825,7 @@ _start_element (GMarkupParseContext *ctx, const char *element_name,
                     width = -1;
                     *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                             "Invalid unit height [%s]", attribute_values[i]);
+                    free(fmt_name);
                     return;
                 }
             } else if (!strcmp (attribute_names[i], "pixelformat")) {
@@ -825,18 +835,23 @@ _start_element (GMarkupParseContext *ctx, const char *element_name,
                     *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                             "Unrecognized pixelformat \"%s\"", 
                             attribute_values[i]);
+                    free(fmt_name);
                     return;
                 }
                 pfmt = ev->value;
+            } else if (!strcmp (attribute_names[i], "format_name")) {
+                fmt_name = g_strcompress(attribute_values[i]);
             } else {
                 *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                         "Unrecognized attribute \"%s\"", attribute_names[i]);
+                free(fmt_name);
                 return;
             }
         }
         if (!unit_id) {
             *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                     "<unit> element missing required id attribute");
+            free(fmt_name);
             return;
         }
 
@@ -845,12 +860,30 @@ _start_element (GMarkupParseContext *ctx, const char *element_name,
         if (!cpc->unit) {
             *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                     "Unable to instantiate [%s]", unit_id);
+            free(fmt_name);
             return;
         }
         cam_unit_set_preferred_format (cpc->unit, pfmt, width, height);
 
+        if(fmt_name) {
+            GList * formats = cam_unit_get_output_formats(cpc->unit);
+            for(GList * fiter=formats; fiter; fiter=fiter->next) {
+                CamUnitFormat *fmt = CAM_UNIT_FORMAT(fiter->data);
+
+                if(fmt->width == width && 
+                   fmt->height == height &&
+                   fmt->pixelformat == pfmt &&
+                   !strcmp(fmt->name, fmt_name)) {
+                    cam_unit_stream_init(cpc->unit, fmt);
+                    break;
+                }
+            }
+            g_list_free(formats);
+        }
+
         cam_unit_chain_insert_unit_tail (cpc->chain, cpc->unit);
 
+        free(fmt_name);
         return;
     }
     if (!strcmp (element_name, "control")) {

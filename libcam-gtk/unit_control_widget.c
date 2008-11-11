@@ -1179,11 +1179,9 @@ on_formats_combo_changed( GtkComboBox *combo, CamUnitControlWidget *self )
     g_assert (format_entry);
     if (format_entry->data != cam_unit_get_output_format (self->unit)) {
         CamUnitFormat *cfmt = CAM_UNIT_FORMAT (format_entry->data);
-        cam_unit_set_preferred_format (self->unit, 
-                cfmt->pixelformat, cfmt->width, cfmt->height);
         if (cam_unit_is_streaming (self->unit)) {
             cam_unit_stream_shutdown (self->unit);
-            cam_unit_stream_init (self->unit, NULL);
+            cam_unit_stream_init (self->unit, cfmt);
         }
     }
     g_list_free (output_formats);

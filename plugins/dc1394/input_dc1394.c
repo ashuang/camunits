@@ -283,7 +283,8 @@ dc1394_finalize (GObject * obj)
         dbg (DBG_INPUT, "forcibly shutting down dc1394 unit\n");
         dc1394_stream_shutdown (super);
     }
-    dc1394_camera_free (self->cam);
+    if(self->cam)
+        dc1394_camera_free (self->cam);
 
     G_OBJECT_CLASS (cam_dc1394_parent_class)->finalize (obj);
 }
@@ -317,17 +318,15 @@ dc1394_pixel_format (dc1394color_coding_t color,
         case DC1394_COLOR_CODING_RGB8:
             return CAM_PIXEL_FORMAT_RGB;
         case DC1394_COLOR_CODING_MONO16:
-            return CAM_PIXEL_FORMAT_GRAY16;
+            return CAM_PIXEL_FORMAT_BE_GRAY16;
         case DC1394_COLOR_CODING_RGB16:
-            return CAM_PIXEL_FORMAT_RGB16;
+            return CAM_PIXEL_FORMAT_BE_RGB16;
         case DC1394_COLOR_CODING_MONO16S:
-            return CAM_PIXEL_FORMAT_SIGNED_GRAY16;
+            return CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16;
         case DC1394_COLOR_CODING_RGB16S:
-            return CAM_PIXEL_FORMAT_SIGNED_RGB16;
-            //return CAM_PIXEL_FORMAT_BAYER;
+            return CAM_PIXEL_FORMAT_BE_SIGNED_RGB16;
         case DC1394_COLOR_CODING_RAW16:
-            return CAM_PIXEL_FORMAT_GRAY16;
-            //return CAM_PIXEL_FORMAT_BAYER16;
+            return CAM_PIXEL_FORMAT_BE_GRAY16;
     }
     return 0;
 }
@@ -382,8 +381,10 @@ cam_dc1394_new (dc1394camera_t * cam)
             CamPixelFormat pix =
                 dc1394_pixel_format (mode->color_codings.codings[j],
                         mode->color_filter);
-            sprintf (name, "%dx%d %s (F7)", mode->max_size_x, mode->max_size_y,
-                    cam_pixel_format_nickname (pix));
+            if (0 == pix)
+                continue;
+            sprintf (name, "%dx%d %s (F7-%d)", mode->max_size_x, 
+                    mode->max_size_y, cam_pixel_format_nickname (pix), i);
 
             int stride = mode->max_size_x * cam_pixel_format_bpp(pix) / 8;
 
@@ -417,7 +418,8 @@ cam_dc1394_new (dc1394camera_t * cam)
         stride = width * cam_pixel_format_bpp (pix) / 8;
 
         char name[256];
-        sprintf (name, "%dx%d %s", width, height, cam_pixel_format_nickname (pix));
+        sprintf (name, "%dx%d %s", width, height, 
+                cam_pixel_format_nickname (pix));
 
         CamUnitFormat * fmt =
             cam_unit_add_output_format_full (CAM_UNIT (self), pix, name,
@@ -435,7 +437,6 @@ cam_dc1394_new (dc1394camera_t * cam)
     return self;
 
 fail:
-    dc1394_camera_free (self->cam);
     g_object_unref (G_OBJECT (self));
     return NULL;
 }
