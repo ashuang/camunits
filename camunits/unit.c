@@ -5,7 +5,7 @@
 #include <poll.h>
 #include <errno.h>
 
-#include "libcam-gmarshal.h"
+#include "camunits-gmarshal.h"
 #include "unit.h"
 
 #include "dbg.h"

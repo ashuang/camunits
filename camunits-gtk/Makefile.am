@@ -1,16 +1,16 @@
 SUBDIRS = pixmaps
 
 AM_CFLAGS = \
-	-DLIBCAM_PIXMAP_PATH=\""$(libcampixmapdir)"\"
+	-DCAMUNITS_PIXMAP_PATH=\""$(camunitspixmapdir)"\"
 
 INCLUDES = \
 	-I$(top_srcdir) \
 	$(GTK_CFLAGS)
 
-lib_LTLIBRARIES = libcam-gtk.la
+lib_LTLIBRARIES = camunits-gtk.la
 
-libcam_gtk_la_LDFLAGS = -version-info @LIBCAM_GTK_VERSION_INFO@
-libcam_gtk_la_SOURCES = \
+camunits_gtk_la_LDFLAGS = -version-info @CAMUNITS_GTK_VERSION_INFO@
+camunits_gtk_la_SOURCES = \
 	cam-gtk.h \
 	gl_drawing_area.c \
 	gl_drawing_area.h \
@@ -27,10 +27,10 @@ libcam_gtk_la_SOURCES = \
 	unit_description_widget.c \
 	unit_description_widget.h
 
-libcam_gtk_la_LIBADD = $(GTK_LIBS) ../libcam/libcam.la
+camunits_gtk_la_LIBADD = $(GTK_LIBS) ../camunits/camunits.la
 
-libcamgtkincludedir = $(includedir)/libcam-gtk
-libcamgtkinclude_HEADERS = \
+camunitsgtkincludedir = $(includedir)/camunits-gtk
+camunitsgtkinclude_HEADERS = \
 	cam-gtk.h \
 	unit_chain_gl_widget.h \
 	unit_chain_widget.h \
@@ -41,5 +41,5 @@ libcamgtkinclude_HEADERS = \
 	cam_tree_store.h 
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libcam-gtk.pc
-EXTRA_DIST = libcam-gtk.pc.in
+pkgconfig_DATA = camunits-gtk.pc
+EXTRA_DIST = camunits-gtk.pc.in

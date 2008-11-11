@@ -7,7 +7,7 @@
 
 #include <glib.h>
 
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 #include "signal_pipe.h"
 

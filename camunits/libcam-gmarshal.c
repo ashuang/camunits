@@ -1,7 +1,7 @@
 
 #include	<glib-object.h>
 
-#include "libcam-gmarshal.h"
+#include "camunits-gmarshal.h"
 
 
 #ifdef G_ENABLE_DEBUG

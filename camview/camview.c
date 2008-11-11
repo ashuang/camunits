@@ -10,8 +10,8 @@
 
 #include <gtk/gtk.h>
 
-#include <libcam/cam.h>
-#include <libcam-gtk/cam-gtk.h>
+#include <camunits/cam.h>
+#include <camunits-gtk/cam-gtk.h>
 
 #include "gtk_util.h"
 

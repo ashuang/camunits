@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <ctype.h>
 
-#include <libcam/dbg.h>
+#include <camunits/dbg.h>
 #include "unit_control_widget.h"
 #include "unit_manager_widget.h"
 #include "cam_tree_store.h"

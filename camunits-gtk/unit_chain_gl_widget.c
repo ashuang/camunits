@@ -7,8 +7,8 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include <libcam/unit.h>
-#include <libcam/dbg.h>
+#include <camunits/unit.h>
+#include <camunits/dbg.h>
 
 #include "gl_drawing_area.h"
 #include "unit_chain_gl_widget.h"

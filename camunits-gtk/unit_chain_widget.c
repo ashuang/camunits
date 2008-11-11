@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libcam/dbg.h>
+#include <camunits/dbg.h>
 
 #include "unit_manager_widget.h"
 #include "unit_control_widget.h"

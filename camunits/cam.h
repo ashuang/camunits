@@ -6,11 +6,4 @@
 #include "unit_manager.h"
 #include "unit_chain.h"
 
-/**
- * SECTION:cam
- * @short_description: Introduction to libcam
- *
- * TODO
- */
-
 #endif

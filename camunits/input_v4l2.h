@@ -10,7 +10,7 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:input_log
- * @short_description: input unit for libcam log files
+ * @short_description: input unit for libcamunits log files
  */
 
 
