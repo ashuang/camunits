@@ -1,5 +1,5 @@
-camunits 0.1.0 - ??? ??, ????
-===========================
+camunits 0.1.0 - Nov 11, 2008
+=============================
 
 NEW PROJECT NAME: camunits.
 
@@ -10,7 +10,15 @@ NEW PROJECT NAME: camunits.
 * unit_control_widget: slightly smarter about format changing
 * minor bugfixes all around.
 
-This release breaks a rarely-used part of the API (16-bit pixel format defs.)
+This release breaks the old API.  To port libcam code to Camunits code, 
+replace all instances of "libcam" and "LIBCAM" with "camunits" and "CAMUNITS",
+respectively.  This applies to source code, include paths, library names,
+linker flags, environment variables, pkg-config names, etc.
+
+The following two perl commands accomplish the search/replace:
+
+   $ perl -pi -e "s/LIBCAM/CAMUNITS/g;" <files>
+   $ perl -pi -e "s/libcam/camunits/g;" <files>
 
 libcam 0.0.9 - Jul 16, 2008
 ===========================
