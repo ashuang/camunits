@@ -1,5 +1,26 @@
 #summary Older News
 
+*July 16, 2008* - Released libcam 0.0.9
+
+The changes from version 0.0.8 are:
+  * unit manager widget UI enhancements
+    * sort unit descriptions by unit name
+    * toggle expansion of packages when package is double-clicked/activated
+  * enable spinbutton for float unit control widget
+  * warn when units produce framebuffers with zero bytesused and timestamp fields
+  * fix some docs
+  * fix accidental API change in 0.0.8
+
+*June 13, 2008* - Released libcam 0.0.8
+
+The changes from version 0.0.7 are:
+  * add --no-gui option to camview
+  * input_example: fix timestamps
+  * camlog: fix thrashing for inexact log seeking (e.g. timestamps)
+  * update tutorial
+  * add qt4 examples
+  * input_v4l: was not populating timestamp, bytesused.  fixed.
+
 *April 17, 2008* - Released libcam 0.0.7
 
 *April 9, 2008* - Released libcam 0.0.6
