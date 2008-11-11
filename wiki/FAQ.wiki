@@ -1,21 +1,21 @@
 #summary Frequently Asked Questions
 
-=== How does CamUnits compare with OpenCV? ===
+=== How does !CamUnits compare with OpenCV? ===
 
-Firstly, CamUnits is not a competitor with OpenCV.  They accomplish different goals in the same field, and it is perfectly reasonable and encouraged to use both CamUnits and OpenCV in the same application.
+Firstly, !CamUnits is not a competitor with OpenCV.  They accomplish different goals in the same field, and it is perfectly reasonable and encouraged to use both 1CamUnits and OpenCV in the same application.
 
-CamUnits differs from OpenCV in two major aspects.  The first is that CamUnits is a framework for developing image acquisition and processing algorithms and applications, whereas OpenCV provides a collection of already developed algorithms.  CamUnits is intended to simplify both the process of exposing and experimenting with parameters for machine vision algorithms, and the process of visualizing and debugging the result of such algorithms.
+!CamUnits differs from OpenCV in two major aspects.  The first is that !CamUnits is a framework for developing image acquisition and processing algorithms and applications, whereas OpenCV provides a collection of already developed algorithms.  !CamUnits is intended to simplify both the process of exposing and experimenting with parameters for machine vision algorithms, and the process of visualizing and debugging the result of such algorithms.
 
-Secondly, within this framework, CamUnits places great importance on a simple way to acquire images and control image acquisition and processing elements.  In contrast, while OpenCV does provide some image acquisition support, this support is fairly rudimentary and does not expose much of the functionality that most cameras provide.
+Secondly, within this framework, !CamUnits places great importance on a simple way to acquire images and control image acquisition and processing elements.  In contrast, while OpenCV does provide some image acquisition support, this support is fairly rudimentary and does not expose much of the functionality that most cameras provide.
 
-In short, CamUnits is designed to streamline the process of developing both image processing _algorithms_ and _applications_, and provides some core functionality for doing so;  OpenCV is primarily a collection of pre-developed algorithms available for use.  It will often be the case that an application developed using CamUnits will have great use for a specific algorithm provided by OpenCV.
+In short, !CamUnits is designed to streamline the process of developing both image processing _algorithms_ and _applications_, and provides some core functionality for doing so;  OpenCV is primarily a collection of pre-developed algorithms available for use.  It will often be the case that an application developed using CamUnits will have great use for a specific algorithm provided by OpenCV.
 
-=== Why is CamUnits written in C and not C++? ===
+=== Why is !CamUnits written in C and not C++? ===
 
 Simplicity and portability.
 
- * C++ is a complex language with many features that we do not need in CamUnits.  We do not need templates, smart pointers, operator and function overloading, multiple inheritance, etc.  CamUnits uses a straightforward single-inheritance class hierarchy, which is not too difficult to achieve in C, especially when using GLib.  At the end of the day, we simply do not need C++.
+ * C++ is a complex language with many features that we do not need in !CamUnits.  We do not need templates, smart pointers, operator and function overloading, multiple inheritance, etc.  !CamUnits uses a straightforward single-inheritance class hierarchy, which is not too difficult to achieve in C, especially when using GLib.  At the end of the day, we simply do not need C++.
 
  * The complexities of C++ make it less portable than C.  Specifically, namespace mangling often makes it difficult to link against a C++ library compiled with a different compiler than the one you'd like to use.
 
- * Eventually, we would like to create language bindings for CamUnits so that it can be used directly in languages other than C.  For example, it would be quite useful to have Matlab bindings to allow Matlab programs to use CamUnits directly.  C is the language of choice for this sort of application, and almost all major programming languages have a C API for creating these bindings.  While this is still possible in C++, it can be much more tedious.
+ * Eventually, we would like to create language bindings for !CamUnits so that it can be used directly in languages other than C.  For example, it would be quite useful to have Matlab bindings to allow Matlab programs to use !CamUnits directly.  C is the language of choice for this sort of application, and almost all major programming languages have a C API for creating these bindings.  While this is still possible in C++, it can be much more tedious.
