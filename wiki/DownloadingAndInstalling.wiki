@@ -14,7 +14,7 @@ make install
 
 == Mac OS X ==
 
-!CamUnits has been built and run successfully on Mac OS 10.5 (Leopard).  To build, you will need glib and gtk+ installed, which we suggest getting from [http://darwinports.com/ Darwinports].  After installing darwinports, run:
+Camunits has been built and run successfully on Mac OS 10.5 (Leopard).  To build, you will need glib and gtk+ installed, which we suggest getting from [http://darwinports.com/ Darwinports].  After installing darwinports, run:
 {{{
 sudo port install glib2
 sudo port install gtk2
@@ -25,11 +25,11 @@ IIDC camera support works if you have libdc1394 >= 2.0.0 installed.  After insta
 {{{
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 }}}
-in order for the !CamUnits ./configure script to detect libdc1394.
+in order for the Camunits ./configure script to detect libdc1394.
 
 == Subversion ==
 
-To stay on the bleeding edge of !CamUnits development, you'll want to work from our subversion repositories hosted on Google Code.
+To stay on the bleeding edge of Camunits development, you'll want to work from our subversion repositories hosted on Google Code.
 
 You will want at least the following:
  * libjpeg62 development files

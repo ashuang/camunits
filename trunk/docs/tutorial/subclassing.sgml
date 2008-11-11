@@ -2,7 +2,7 @@
     <title>Creating Custom Units -- Subclassing <classname>CamUnit</classname> and <classname>CamUnitDriver</classname></title>
 
     <para>
-        This chapter describes some of the more advanced features of the CamUnits
+        This chapter describes some of the more advanced features of the Camunits
         framework.  Specifically, it describes how to create subclasses of
         <classname>CamUnit</classname> that can also be inserted into
         image processing chains and used in conjunction with other units.
@@ -11,11 +11,11 @@
         While we believe strongly in building image procesing elements as
         subclasses of <classname>CamUnit</classname>,
         undertaking the creation of a <classname>CamUnit</classname>
-        requires a much deeper understanding of how the CamUnits library works than does
+        requires a much deeper understanding of how the Camunits library works than does
         simply using the output of an image processing chain.  
-        Productively using CamUnits in an image processing application
+        Productively using Camunits in an image processing application
         does not require one to build custom units.  Specifically, one can
-        choose to use CamUnits primarily as an image acquisition and colorspace
+        choose to use Camunits primarily as an image acquisition and colorspace
         conversion tool.  We encourage readers to look at the three features
         mentioned next, and then decide if they are worth the investment of
         learning how to create custom units.
@@ -45,7 +45,7 @@
                         accessed and modified programmatically just as easily
                         as hard-coded parameters.  Additionally,
                         when a <classname>CamUnit</classname> is used with
-                        the CamUnits GTK widgets (e.g.
+                        the Camunits GTK widgets (e.g.
                         <classname>CamUnitControlWidget</classname> and
                         <classname>CamUnitChain</classname>), 
                         GUI elements are automatically created that allow
@@ -57,7 +57,7 @@
                         image processing element.  These controls are
                         accessible programmatically for applications without a
                         GUI, and they are also accessible in GUI form for
-                        applications that use the CamUnits GTK widgets.
+                        applications that use the Camunits GTK widgets.
                     </para>
                 </listitem>
             </varlistentry>
@@ -71,7 +71,7 @@
                         algorithm by rendering into the input image.  For
                         example, a face detector might circle the detected
                         faces, an optical flow algorithm might draw flow
-                        vectors, etc.  CamUnits provides a framework for
+                        vectors, etc.  Camunits provides a framework for
                         integrating visualization routines into an image
                         processing element.  Subclasses of
                         <classname>CamUnit</classname> can override virtual
@@ -117,7 +117,7 @@
         <title>The GObject Type System</title>
 
         <para>
-            CamUnits is written in C, which was not designed specifically for
+            Camunits is written in C, which was not designed specifically for
             object-oriented programming techniques.  The GObject type system,
             included with GLib, is essentially an object-oriented programming
             framework designed in C.  It makes heavy use of C structs and
@@ -156,7 +156,7 @@
                     <listitem><para>
                             As mentioned earlier,
                             <classname>CamUnit</classname> is the fundamental
-                            class in CamUnits and represents an object that can
+                            class in Camunits and represents an object that can
                             produce images.  A <classname>CamUnit</classname>
                             typically produces images by processing input
                             images it receives from another
@@ -170,7 +170,7 @@
                             <classname>CamUnit</classname> is an abstract base
                             class and is only useful when subclassed.
                             However, a <classname>CamUnit</classname> should
-                            almost never be directly instantiated by a CamUnits
+                            almost never be directly instantiated by a Camunits
                             application.
                     </para></listitem>
                 </varlistentry>
@@ -298,7 +298,7 @@
         <para>
             <xref linkend="filter_example.h"/> and <xref
                 linkend="filter_example.c"/> contain the fully implemented
-            unit.  This example is also distributed with CamUnits.  A step
+            unit.  This example is also distributed with Camunits.  A step
             by step explanation of the example follows.
         </para>
 <example id="filter_example.h">
@@ -509,14 +509,14 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 a namespacing scheme<footnote><para><ulink
                 url="http://en.wikipedia.org/wiki/Namespace_%28programming%29#Emulating_namespaces">http://en.wikipedia.org/wiki/Namespace_(programming)#Emulating_namespaces</ulink></para></footnote>.  Although C does not inherently support
                 namespaces, we can achieve some of the benefits of a properly
-                namespaced language by following careful naming rules.  CamUnits
+                namespaced language by following careful naming rules.  Camunits
                 follows the GLib namespacing conventions and recommends
-                the same for other applications that use CamUnits.
+                the same for other applications that use Camunits.
             </para>
             <para>
                 The first step in adhering to these namespacing guidelines is
                 to choose a namespace.  GLib chose "g", GTK chose "gtk", and
-                CamUnits chose "cam".  The example filter uses the namespace
+                Camunits chose "cam".  The example filter uses the namespace
                 "my".  The rules for naming functions, macros, and structs
                 with this namespace are then:
                 <itemizedlist>
@@ -635,7 +635,7 @@ struct _MyFilterExampleClass {
                 The next struct, <literal>struct
                 _MyFilterExampleClass</literal>, primarily defines the virtual
                 methods for the class.  Unless your class will itself be a
-                superclass and provide virtual methods not defined in CamUnits,
+                superclass and provide virtual methods not defined in Camunits,
                 just rename the struct and leave it alone.
 
 <programlisting>
@@ -758,7 +758,7 @@ my_filter_example_driver_new()
                 This is the constructor for the unit driver.  As mentioned
                 earlier in this chapter, drivers for image processing units
                 typically offer exactly one unit.  To reduce complexity,
-                CamUnits provides a default constructor for creating one of
+                Camunits provides a default constructor for creating one of
                 these "stock" drivers.  The result of invoking
                 <function>cam_unit_driver_new_stock</function> with these
                 parameters is a driver that always has one unit available with
@@ -1033,12 +1033,12 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             </para>
         </sect2>
         <sect2 id="subclassing-example-using">
-            <title>Using Filter Example in a CamUnits application</title>
+            <title>Using Filter Example in a Camunits application</title>
             <para>
                 So far we have demonstrated how to create the filter example,
-                but not how to actually use it in a CamUnits application.  This
+                but not how to actually use it in a Camunits application.  This
                 process is actually pretty simple, and the only change we must
-                make to an existing CamUnits application is to register the
+                make to an existing Camunits application is to register the
                 new driver with the unit manager used by the application.
             </para>
             <para>
@@ -1071,7 +1071,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 </programlisting>
 
                 Full source code for both this example and a program that uses
-                it is included in the CamUnits source code.
+                it is included in the Camunits source code.
                 
             </para>
         </sect2>
@@ -1085,15 +1085,15 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 the features available to subclasses of
                 <classname>CamUnit</classname>.  It exposes a single control
                 that will automatically be given a UI element when used in a
-                graphical application and the CamUnits GTK widgets.  It also
+                graphical application and the Camunits GTK widgets.  It also
                 adapts its output format as its input changes, making it
                 useful for a variety of images and not just a single pixel
                 format and resolution.
             </para>
             <para>
-                As always, if some parts of CamUnits are not well documented
+                As always, if some parts of Camunits are not well documented
                 elsewhere in our tutorial, the best place to look is the source
-                code that is distributed with CamUnits.
+                code that is distributed with Camunits.
             </para>
         </sect2>
     </sect1>

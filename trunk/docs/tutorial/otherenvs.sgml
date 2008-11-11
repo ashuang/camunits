@@ -9,9 +9,9 @@
         </para>
 
         <para>
-        For an example on how to use CamUnits with a Qt event loop, take a look
+        For an example on how to use Camunits with a Qt event loop, take a look
         at the <filename>examples/qt4/snapshot</filename> directory,
-        distributed with CamUnits.
+        distributed with Camunits.
         </para>
     </sect1>
 </chapter>

@@ -24,7 +24,7 @@ extern "C" {
  *
  * Before becoming available for use, a #CamUnitDriver must first be
  * registered with a CamUnitManager.  There are three ways this can happen.
- * First, CamUnits provides a set of "core" drivers that are always loaded
+ * First, Camunits provides a set of "core" drivers that are always loaded
  * when
  * a CamUnitManager is created.  Second, a CamUnitManager searches the plugin
  * directories (typically /usr/lib/camunits/ and the colon-separated list of
@@ -33,9 +33,9 @@ extern "C" {
  * #CamUnitDriver and register drivers at runtime via 
  * cam_unit_manager_add_driver().
  *
- * In a simple CamUnits application, there is no need to work directly with
+ * In a simple Camunits application, there is no need to work directly with
  * the
- * CamUnitManager.  Instead, a simple CamUnits application may use a
+ * CamUnitManager.  Instead, a simple Camunits application may use a
  * #CamUnitChain object, which itself contains a CamUnitManager.  Reasons for
  * using a CamUnitManager directly could be sharing a manager across multiple
  * chains, implementing new #CamUnit and #CamUnitDriver subclasses, or
@@ -188,7 +188,7 @@ CamUnit * cam_unit_manager_create_unit_by_id (CamUnitManager *self,
 
 /**
  * cam_unit_manager_add_plugin_dir:
- * @path: target directory containing CamUnits plugins
+ * @path: target directory containing Camunits plugins
  *
  * Causes the unit manager to scan the specified directory for plugins.
  * Discovered plugins will be loaded into the manager.
