@@ -7,6 +7,19 @@ Standards-Version: 3.8.0
 Xs-Vcs-Svn: https://camunits.googlecode.com/svn/debian/trunk
 Xs-Vcs-Browser: http://camunits.googlecode.com/svn/debian/trunk
 
+Package: camunits
+Architecture: any
+Depends: libcamunits5, libcamunits5-dev, camunits-utils, libcamunits-gtk5, libcamunits-gtk5-dev, camview, camunits-plugins-dc1394
+Conflicts: ${ar-conflicts}
+Description: Camunits metapackage
+ Camunits is a collection of software libraries and utilities primarily 
+ inteded for robotics and machine vision researchers.
+ .
+ This is a convenience metapackage that provides no files of substances itself,
+ but does depend on all of the packages provided by the Camunits source
+ package.
+ .
+
 Package: libcamunits5
 Section: libs
 Architecture: any
