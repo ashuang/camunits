@@ -86,6 +86,7 @@ AC_OUTPUT([
   fh-segment/Makefile
   cvd/Makefile
   util/Makefile
+  progs/Makefile
   po/Makefile.in
 ])
 
