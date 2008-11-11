@@ -5,7 +5,7 @@
 #include <QSocketNotifier>
 #include <QTimer>
 
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 class CamUnitChainQtAdapterUnitHandler : public QObject
 {

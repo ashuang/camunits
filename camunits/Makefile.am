@@ -6,10 +6,10 @@ INCLUDES = \
 	-I$(top_srcdir)/camunits \
 	$(GLIB_CFLAGS)
 
-lib_LTLIBRARIES = camunits.la
+lib_LTLIBRARIES = libcamunits.la
 
-camunits_la_LDFLAGS = -version-info @CAMUNITS_VERSION_INFO@
-camunits_la_SOURCES = \
+libcamunits_la_LDFLAGS = -version-info @CAMUNITS_VERSION_INFO@
+libcamunits_la_SOURCES = \
 	unit.c \
 	unit_driver.c \
 	unit_manager.c \
@@ -45,30 +45,30 @@ camunits_la_SOURCES = \
 	dbg.h \
 	pwc-ioctl.h
 
-camunits_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS)
+libcamunits_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS)
 
 if INTEL
-camunits_la_SOURCES += cpuid.c
+libcamunits_la_SOURCES += cpuid.c
 
-noinst_LTLIBRARIES = camunits_sse2.la camunits_sse3.la
+noinst_LTLIBRARIES = libcamunits_sse2.la libcamunits_sse3.la
 
-camunits_sse2_la_CFLAGS = -msse2
-camunits_sse2_la_SOURCES = \
+libcamunits_sse2_la_CFLAGS = -msse2
+libcamunits_sse2_la_SOURCES = \
 	pixels_sse2.c \
 	pixels_sse2.h
 
-camunits_sse3_la_CFLAGS = -msse3
-camunits_sse3_la_SOURCES = \
+libcamunits_sse3_la_CFLAGS = -msse3
+libcamunits_sse3_la_SOURCES = \
 	pixels_sse3.c \
 	pixels_sse3.h
 
-camunits_la_LIBADD += camunits_sse3.la camunits_sse2.la
+libcamunits_la_LIBADD += libcamunits_sse3.la libcamunits_sse2.la
 else
-camunits_la_SOURCES += cpuid_generic.c
+libcamunits_la_SOURCES += cpuid_generic.c
 endif
 
 if LINUX
-camunits_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h
+libcamunits_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h
 AM_CFLAGS += -DUSE_V4L -DUSE_V4L2
 endif
 

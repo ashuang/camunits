@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 #include "filter_example.h"
 

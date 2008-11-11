@@ -1,1 +1,1 @@
-dist_libcampixmap_DATA = renderable.png unit.png
+dist_camunitspixmap_DATA = renderable.png unit.png

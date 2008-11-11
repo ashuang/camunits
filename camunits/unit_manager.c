@@ -36,8 +36,8 @@ static const char* PLUGIN_PATH_SEPARATOR = ":";
 #endif
 
 // if the compiler doesn't define plugin path, then don't use one
-#ifndef LIBCAM_PLUGIN_PATH
-#define LIBCAM_PLUGIN_PATH ""
+#ifndef CAMUNITS_PLUGIN_PATH
+#define CAMUNITS_PLUGIN_PATH ""
 #endif
 
 struct _CamUnitManagerSource {
@@ -548,14 +548,14 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     cam_unit_manager_add_driver (self, cam_logger_unit_driver_new ());
 
     // scan for plugins
-    char **path_dirs = g_strsplit (LIBCAM_PLUGIN_PATH, 
+    char **path_dirs = g_strsplit (CAMUNITS_PLUGIN_PATH, 
             PLUGIN_PATH_SEPARATOR, 0);
     for (int i=0; path_dirs[i]; i++) {
         cam_unit_manager_add_plugin_dir (self, path_dirs[i]);
     }
     g_strfreev (path_dirs);
 
-    const char *plugin_path_env = g_getenv ("LIBCAM_PLUGIN_PATH");
+    const char *plugin_path_env = g_getenv ("CAMUNITS_PLUGIN_PATH");
     if (plugin_path_env && strlen (plugin_path_env)) {
         char **env_dirs = g_strsplit (plugin_path_env, 
                 PLUGIN_PATH_SEPARATOR, 0);

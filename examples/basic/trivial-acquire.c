@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include <glib.h>
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 static void on_frame_ready (CamUnitChain *chain, CamUnit *unit, 
         const CamFrameBuffer *buf, void *user_data)

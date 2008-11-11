@@ -11,5 +11,5 @@ Name: libcamunits
 Description: Image acquisition library for machine vision researchers
 Requires:
 Version: @VERSION@
-Libs: -L${libdir} -lcam
+Libs: -L${libdir} -lcamunits
 Cflags: -I${includedir}/camunits -I${includedir}
