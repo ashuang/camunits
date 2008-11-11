@@ -1,8 +1,0 @@
-#!/bin/sh
-
-[ -d html ] || mkdir html
-cd html
-rm -f *.html
-rm -rf images
-docbook2html ../tutorial.sgml
-cp -r ../images .
