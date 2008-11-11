@@ -2,13 +2,13 @@
 
 === How does !CamUnits compare with OpenCV? ===
 
-Firstly, !CamUnits is not a competitor with OpenCV.  They accomplish different goals in the same field, and it is perfectly reasonable and encouraged to use both 1CamUnits and OpenCV in the same application.
+Firstly, !CamUnits is not a competitor with OpenCV.  They accomplish different goals in the same field, and it is perfectly reasonable and encouraged to use both !CamUnits and OpenCV in the same application.
 
 !CamUnits differs from OpenCV in two major aspects.  The first is that !CamUnits is a framework for developing image acquisition and processing algorithms and applications, whereas OpenCV provides a collection of already developed algorithms.  !CamUnits is intended to simplify both the process of exposing and experimenting with parameters for machine vision algorithms, and the process of visualizing and debugging the result of such algorithms.
 
 Secondly, within this framework, !CamUnits places great importance on a simple way to acquire images and control image acquisition and processing elements.  In contrast, while OpenCV does provide some image acquisition support, this support is fairly rudimentary and does not expose much of the functionality that most cameras provide.
 
-In short, !CamUnits is designed to streamline the process of developing both image processing _algorithms_ and _applications_, and provides some core functionality for doing so;  OpenCV is primarily a collection of pre-developed algorithms available for use.  It will often be the case that an application developed using CamUnits will have great use for a specific algorithm provided by OpenCV.
+In short, !CamUnits is designed to streamline the process of developing both image processing _algorithms_ and _applications_, and provides some core functionality for doing so;  OpenCV is primarily a collection of pre-developed algorithms available for use.  It will often be the case that an application developed using !CamUnits will have great use for a specific algorithm provided by OpenCV.
 
 === Why is !CamUnits written in C and not C++? ===
 
