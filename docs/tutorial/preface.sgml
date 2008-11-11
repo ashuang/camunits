@@ -5,10 +5,10 @@
 <!-- ================= About this book ====================== -->
 <!-- ======================================================== -->
 <sect1 id="preface-about">
-<title>Introduction to CamUnits</title>
+<title>Introduction to Camunits</title>
 
 <para>
-    The central piece of CamUnits is a device independent library for image acquisition and
+    The central piece of Camunits is a device independent library for image acquisition and
     processing.  A major design point of this library is to provide a very simple
     API that allows an image processing routine to operate without any code
     modifications on any image source, whether it be a Firewire camera, USB
@@ -20,7 +20,7 @@
 </para>
 
 <para>
-    CamUnits is motivated by the current state of image acquisition libraries.
+    Camunits is motivated by the current state of image acquisition libraries.
     To date, writing a program to process and work with images is a much
     more complicated procedure than it needs to be.  Camera manufacturers
     often distribute proprietary development kits for working with their
@@ -36,16 +36,16 @@
 </para>
 
 <para>
-    CamUnits addresses these problems by providing a simple, general, and useful
+    Camunits addresses these problems by providing a simple, general, and useful
     abstraction for image sources.  It was developed and used by Team MIT in
     the 2007 DARPA Urban Challenge<footnote><para><ulink
                 url="http://www.darpa.mil/grandchallenge">http://www.darpa.mil/grandchallenge</ulink></para></footnote>.
-    In that context, CamUnits provided a
+    In that context, Camunits provided a
     framework for processing high resolution images (5 cameras, 752x480 Bayer
     @ 22.8 fps) to achieve real time vision-based lane detection and tracking
     on an autonomous vehicle in an urban setting.  This tutorial provides an
-    introduction to programming with CamUnits, and describes the various ways
-    that CamUnits can be used in an image processing application.
+    introduction to programming with Camunits, and describes the various ways
+    that Camunits can be used in an image processing application.
 </para>
 
 </sect1>
@@ -53,24 +53,24 @@
     <title>Audience</title>
 
     <para>
-        The primary audience for CamUnits is other machine vision researchers
+        The primary audience for Camunits is other machine vision researchers
         and people who actively develop and use image processing algorithms.
-        Currently, CamUnits is supported on GNU/Linux and OS X.  There are no
-        immediate plans to support Windows XP.  CamUnits is written in C, and so
+        Currently, Camunits is supported on GNU/Linux and OS X.  There are no
+        immediate plans to support Windows XP.  Camunits is written in C, and so
         can be used in C or C++ applications.
     </para>
 
     <para>
-        CamUnits is written in C using the GObject framework for object-oriented
-        programming.  All classes in CamUnits are derived from
+        Camunits is written in C using the GObject framework for object-oriented
+        programming.  All classes in Camunits are derived from
         <classname>GObject</classname>, and memory management is handled via 
         <classname>GObject</classname> reference counting.  Additionally,
-        CamUnits objects make heavy use of the GLib signalling framework to
+        Camunits objects make heavy use of the GLib signalling framework to
         deliver information.
     </para>
     <para>
         It is not necessary to have a deep understanding of
-        <classname>GObject</classname> in order to understand CamUnits.
+        <classname>GObject</classname> in order to understand Camunits.
         However, familiarity with object-oriented programming techniques and
         the publish/subscribe method (also known as signals/slots or the
         Observer design pattern) is assumed.
@@ -84,7 +84,7 @@
     <itemizedlist>
         <listitem><para>GNU/Linux or OS X</para></listitem>
         <listitem><para>OpenGL<footnote><para>OpenGL is a linkage requirement,
-                        but CamUnits itself can be run without an OpenGL
+                        but Camunits itself can be run without an OpenGL
                         context.</para></footnote></para></listitem>
         <listitem><para>GLib</para></listitem>
     </itemizedlist>
@@ -98,14 +98,14 @@
 </sect1>
 
 <sect1 id="preface-obtaining">
-    <title>Downloading and Installing CamUnits</title>
+    <title>Downloading and Installing Camunits</title>
     <para>
         <emphasis>TODO</emphasis>
     </para>
     <sect2 id="preface-obtaining-svn">
         <title>Subversion</title>
         <para>
-            CamUnits is developed in a publicly accessible subversion
+            Camunits is developed in a publicly accessible subversion
             repository on Google Code.  Instructions for accessing the
             repository are available at <ulink
                 url="http://code.google.com/p/camunits/source">http://code.google.com/p/camunits/source</ulink>

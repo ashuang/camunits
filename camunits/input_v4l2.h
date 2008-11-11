@@ -10,7 +10,7 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:input_log
- * @short_description: input unit for CamUnits log files
+ * @short_description: input unit for Camunits log files
  */
 
 

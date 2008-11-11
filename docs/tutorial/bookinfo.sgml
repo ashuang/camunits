@@ -1,5 +1,5 @@
 <bookinfo>
-    <title>CamUnits Tutorial</title>
+    <title>Camunits Tutorial</title>
 <authorgroup>
 <author>
     <firstname>Albert</firstname>
@@ -10,7 +10,7 @@
 <abstract>
 <para>
     This tutorial provides an introduction to developing image processing and
-    machine vision applications with CamUnits.
+    machine vision applications with Camunits.
 </para>
 </abstract>
 
