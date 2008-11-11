@@ -4,12 +4,12 @@ libdir=@libdir@
 includedir=@includedir@
 datarootdir=@datarootdir@
 
-libcamlibdir=@libcamplugindir@
-libcamdatadir=@libcamdatadir@
+camunitslibdir=@camunitsplugindir@
+camunitsdatadir=@camunitsdatadir@
 
-Name: libcam
+Name: libcamunits
 Description: Image acquisition library for machine vision researchers
 Requires:
 Version: @VERSION@
 Libs: -L${libdir} -lcam
-Cflags: -I${includedir}/libcam -I${includedir}
+Cflags: -I${includedir}/camunits -I${includedir}

@@ -385,7 +385,7 @@
 	  libcam/unit_manager.h: rename cam_plugin_load_plugins to
 	  cam_unit_manager_add_plugin_dir
 	  cam_unit_manager_register_core_drivers now searches all
-	  directories specified in colon separated LIBCAM_PLUGIN_PATH
+	  directories specified in colon separated CAMUNITS_PLUGIN_PATH
 	  environment variable for plugins.
 	* [r92] libcam/filter_jpeg.c: install jpeg error_exit handler so
 	  that libcam programs don't abort on bad jpeg data

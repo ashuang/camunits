@@ -4,7 +4,7 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include <libcam/dbg.h>
+#include <camunits/dbg.h>
 #include "unit_control_widget.h"
 
 #define err(args...) fprintf(stderr, args)

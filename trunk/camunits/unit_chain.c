@@ -6,7 +6,7 @@
 
 #include <glib-object.h>
 
-#include "libcam-gmarshal.h"
+#include "camunits-gmarshal.h"
 #include "unit_chain.h"
 #include "dbg.h"
 

@@ -3,8 +3,8 @@
 
 #include <gtk/gtk.h>
 
-#include <libcam/unit.h>
-#include <libcam/unit_control.h>
+#include <camunits/unit.h>
+#include <camunits/unit_control.h>
 
 G_BEGIN_DECLS
 

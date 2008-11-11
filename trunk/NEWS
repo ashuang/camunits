@@ -1,5 +1,8 @@
-
+camunits 0.1.0 - ??? ??, ????
 ===========================
+
+NEW PROJECT NAME: camunits.
+
 * better support for 16-bit pixel formats
 * input_dc1394: include format7 mode in output format string
 * unit_manager: on failure to open plugin dir, warn in dbg instead of stderr

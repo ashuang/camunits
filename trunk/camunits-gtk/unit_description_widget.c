@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <ctype.h>
 
-#include <libcam/dbg.h>
+#include <camunits/dbg.h>
 #include "unit_description_widget.h"
 
 #define err(args...) fprintf(stderr, args)

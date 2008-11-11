@@ -3,7 +3,7 @@
 
 #include <gtk/gtk.h>
 
-#include <libcam/unit.h>
+#include <camunits/unit.h>
 #include "unit_manager_widget.h"
 
 

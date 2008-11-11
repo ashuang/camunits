@@ -14,11 +14,11 @@
 #include <dc1394/control.h>
 #include <dc1394/vendor/avt.h>
 
-#include <libcam/dbg.h>
-#include <libcam/pixels.h>
-#include <libcam/plugin.h>
-#include <libcam/unit.h>
-#include <libcam/unit_driver.h>
+#include <camunits/dbg.h>
+#include <camunits/pixels.h>
+#include <camunits/plugin.h>
+#include <camunits/unit.h>
+#include <camunits/unit_driver.h>
 #include "input_dc1394.h"
 
 #define NUM_BUFFERS 10

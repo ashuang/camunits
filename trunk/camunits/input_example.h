@@ -19,7 +19,7 @@ G_BEGIN_DECLS
  * unit driver and unit with basic controls.
  *
  * Programmers writing their first units are advised to look at the source code
- * for CamInputExampleDriver and CamInputExample (see libcam/input_example.h)
+ * for CamInputExampleDriver and CamInputExample (see camunits/input_example.h)
  */
 
 

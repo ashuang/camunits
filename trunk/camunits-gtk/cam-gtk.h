@@ -1,7 +1,7 @@
 #ifndef __cam2_gtk_h__
 #define __cam2_gtk_h__
 
-#include <libcam/cam.h>
+#include <camunits/cam.h>
 
 #include "unit_control_widget.h"
 #include "unit_chain_widget.h"

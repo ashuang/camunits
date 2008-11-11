@@ -1,8 +1,8 @@
 AC_PREREQ(2.50)
-AC_INIT(libcam/unit.h)
+AC_INIT(camunits/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(libcam, 0.0.9)
+AM_INIT_AUTOMAKE(camunits, 0.0.9)
 
 case "$target_os" in
 	linux*) arch=linux;;
@@ -17,9 +17,9 @@ AC_PROG_CC
 AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
 AM_PATH_GTK_2_0
 AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
-             [AC_MSG_ERROR([GL not found, but is required by libcam.])])
+             [AC_MSG_ERROR([GL not found, but is required by camunits.])])
 AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, JPEG_LIBS='-ljpeg',
-             [AC_MSG_ERROR([libjpeg not found, but is required by libcam.])])
+             [AC_MSG_ERROR([libjpeg not found, but is required by camunits.])])
 PKG_PROG_PKG_CONFIG
 PKG_CHECK_MODULES(DC1394, [libdc1394-2 >= 2.0.0],,
                   [AC_MSG_WARN([libdc1394 not found, firewire camera support will be disabled])])
@@ -48,23 +48,23 @@ dnl     CURRENT, and set REVISION to 0.
 dnl  3. If the interface changes consist solely of additions, increment AGE.
 dnl  4. If the interface has removed elements, set AGE to 0.
 dnl ---------------------------------------------------------------------------
-LIBCAM_AGE=1
-LIBCAM_REVISION=3
-LIBCAM_CURRENT=4
-AC_SUBST(LIBCAM_AGE)
-AC_SUBST(LIBCAM_REVISION)
-AC_SUBST(LIBCAM_CURRENT)
-LIBCAM_VERSION_INFO=$LIBCAM_CURRENT:$LIBCAM_REVISION:$LIBCAM_AGE
-AC_SUBST(LIBCAM_VERSION_INFO)
+CAMUNITS_AGE=1
+CAMUNITS_REVISION=3
+CAMUNITS_CURRENT=4
+AC_SUBST(CAMUNITS_AGE)
+AC_SUBST(CAMUNITS_REVISION)
+AC_SUBST(CAMUNITS_CURRENT)
+CAMUNITS_VERSION_INFO=$CAMUNITS_CURRENT:$CAMUNITS_REVISION:$CAMUNITS_AGE
+AC_SUBST(CAMUNITS_VERSION_INFO)
 
-LIBCAM_GTK_AGE=1
-LIBCAM_GTK_REVISION=3
-LIBCAM_GTK_CURRENT=4
-AC_SUBST(LIBCAM_GTK_AGE)
-AC_SUBST(LIBCAM_GTK_REVISION)
-AC_SUBST(LIBCAM_GTK_CURRENT)
-LIBCAM_GTK_VERSION_INFO=$LIBCAM_GTK_CURRENT:$LIBCAM_GTK_REVISION:$LIBCAM_GTK_AGE
-AC_SUBST(LIBCAM_GTK_VERSION_INFO)
+CAMUNITS_GTK_AGE=1
+CAMUNITS_GTK_REVISION=3
+CAMUNITS_GTK_CURRENT=4
+AC_SUBST(CAMUNITS_GTK_AGE)
+AC_SUBST(CAMUNITS_GTK_REVISION)
+AC_SUBST(CAMUNITS_GTK_CURRENT)
+CAMUNITS_GTK_VERSION_INFO=$CAMUNITS_GTK_CURRENT:$CAMUNITS_GTK_REVISION:$CAMUNITS_GTK_AGE
+AC_SUBST(CAMUNITS_GTK_VERSION_INFO)
 
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
@@ -86,16 +86,16 @@ AM_ICONV()
 
 GTK_DOC_CHECK([1.4])
 
-libcamplugindir="$libdir/$PACKAGE"
-AC_SUBST(libcamplugindir)
-libcampluginincludedir="$includedir/$PACKAGE/plugins"
-AC_SUBST(libcampluginincludedir)
+camunitsplugindir="$libdir/$PACKAGE"
+AC_SUBST(camunitsplugindir)
+camunitspluginincludedir="$includedir/$PACKAGE/plugins"
+AC_SUBST(camunitspluginincludedir)
 
-libcampixmapdir="$datadir/pixmaps/$PACKAGE"
-AC_SUBST(libcampixmapdir)
+camunitspixmapdir="$datadir/pixmaps/$PACKAGE"
+AC_SUBST(camunitspixmapdir)
 
-libcamdatadir="$datadir/$PACKAGE"
-AC_SUBST(libcamdatadir)
+camunitsdatadir="$datadir/$PACKAGE"
+AC_SUBST(camunitsdatadir)
 
 dnl ---------------------------------------------------------------------------
 dnl additional plugin paths can be specified as a configure argument
@@ -106,8 +106,8 @@ if ! test -z "$with_plugin_extra_path" ; then
 else
     extra_plugin_path=""
 fi
-LIBCAM_PLUGIN_PATH="$libcamplugindir:$with_plugin_extra_path"
-AC_SUBST(LIBCAM_PLUGIN_PATH)
+CAMUNITS_PLUGIN_PATH="$camunitsplugindir:$with_plugin_extra_path"
+AC_SUBST(CAMUNITS_PLUGIN_PATH)
 
 dnl ---------------------------------------------------------------------------
 dnl Warnings
@@ -121,16 +121,16 @@ fi
 
 AC_OUTPUT([
   Makefile
-  libcam.spec
-  libcam/Makefile
-  libcam-gtk/Makefile
+  camunits.spec
+  camunits/Makefile
+  camunits-gtk/Makefile
   camview/Makefile
   camlog/Makefile
   m4/Makefile
   m4macros/Makefile
-  libcam/libcam.pc
-  libcam-gtk/libcam-gtk.pc
-  libcam-gtk/pixmaps/Makefile
+  camunits/camunits.pc
+  camunits-gtk/camunits-gtk.pc
+  camunits-gtk/pixmaps/Makefile
   po/Makefile.in
   plugins/Makefile
   plugins/dc1394/Makefile
@@ -140,8 +140,8 @@ AC_OUTPUT([
   examples/qt4/Makefile
   docs/Makefile
   docs/reference/Makefile
-  docs/reference/libcam/Makefile
-  docs/reference/libcam-gtk/Makefile
+  docs/reference/libcamunits/Makefile
+  docs/reference/libcamunits-gtk/Makefile
   docs/tutorial/Makefile
 ])
 
@@ -159,7 +159,7 @@ fi
 
 echo "
 
-Configuration (libcam):
+Configuration (camunits):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}

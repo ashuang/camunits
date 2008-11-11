@@ -14,12 +14,12 @@
 
 /**
  * SECTION:unit
- * @short_description: CamUnit is the fundamental object in libcam.
+ * @short_description: CamUnit is the fundamental object in libcamunits.
  *
- * CamUnit is an abstract base class, and is the fundamental object in libcam.
- * CamUnit objects may consume images as input, produce images as output, and
- * are typically connected in sequence to form an image processing chain (see
- * also: #CamUnitChain)
+ * CamUnit is an abstract base class, and is the fundamental object in
+ * libcamunits.  CamUnit objects may consume images as input, produce images as
+ * output, and are typically connected in sequence to form an image processing
+ * chain (see also: #CamUnitChain)
  *
  * When implementing a subclass of a CamUnit, it is helpful to think of the
  * unit as falling into one of two categories: Input and Filter

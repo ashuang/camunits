@@ -1,5 +1,5 @@
 if HAVE_DC1394
-libcamplugin_LTLIBRARIES = input_dc1394.la
+camunitsplugin_LTLIBRARIES = input_dc1394.la
 endif
 
 INCLUDES = \
@@ -13,5 +13,5 @@ input_dc1394_la_SOURCES = \
 input_dc1394_la_LDFLAGS = -avoid-version -module
 input_dc1394_la_LIBADD = $(DC1394_LIBS)
 
-libcamplugininclude_HEADERS = \
+camunitsplugininclude_HEADERS = \
 	input_dc1394.h

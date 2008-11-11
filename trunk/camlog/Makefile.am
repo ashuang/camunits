@@ -4,7 +4,7 @@ bin_PROGRAMS = camlog
 
 camlog_SOURCES = camlog.c signal_pipe.c signal_pipe.h
 
-camlog_LDADD = $(GLIB_LIBS) ../libcam/libcam.la
+camlog_LDADD = $(GLIB_LIBS) ../camunits/camunits.la
 
 man_MANS = camlog.1
 
