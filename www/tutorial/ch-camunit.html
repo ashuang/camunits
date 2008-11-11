@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Conversion Units and Unit Controls</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
-<link rel="start" href="index.html" title="libcam Tutorial">
-<link rel="up" href="index.html" title="libcam Tutorial">
+<meta name="keywords" content="camunits, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="CamUnits Tutorial">
+<link rel="up" href="index.html" title="CamUnits Tutorial">
 <link rel="prev" href="acquiring-unit-chain.html" title="Using a CamUnitChain">
 <link rel="next" href="camunit-motivation.html" title="Conversion Units">
 <meta name="generator" content="GTK-Doc V1.10 (XML mode)">
@@ -23,7 +23,7 @@
 <td><a accesskey="p" href="acquiring-unit-chain.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td> </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libcam Tutorial</th>
+<th width="100%" align="center">CamUnits Tutorial</th>
 <td><a accesskey="n" href="camunit-motivation.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter" lang="en">
@@ -37,7 +37,7 @@
 </dl></div>
 <p>
         The example given in <a class="xref" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)"><i>Acquiring images (Quickstart guide)</i></a> provides a simple
-        description of how to use libcam to acquire images.  This chapter
+        description of how to use CamUnits to acquire images.  This chapter
         describes how to do two of the most basic operations:  insert
         units that convert frames from one image format to another, and
         accessing the controls exposed by a unit.
@@ -52,11 +52,12 @@
         colorspace conversion.  To reflect this capability, a
         <code class="classname">CamUnit</code> provides a list of formats that it is
         able to produce, represented by a list of
-        <code class="classname">CamUnitFormat</code> objects.  In some cases, for
-        example if a <code class="classname">CamUnit</code> is not properly initialized
+        <code class="classname">CamUnitFormat</code> objects.  In some cases this list
+        is empty to reflect that the unit is unable to produce any output
+        formats with its current input, for example if a
+        <code class="classname">CamUnit</code> is not properly initialized
         or is not able to deal with its input format (e.g. if it expects 8bpp
-        grayscale data and is instead given 24bpp RGB) then it may report that
-        it is unable to produce any output formats with its current input.
+        grayscale data and is instead given 24bpp RGB).
     </p>
 <p>
         When a <code class="classname">CamUnit</code> is initialized, a specific output

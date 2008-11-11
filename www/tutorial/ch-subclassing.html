@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Creating Custom Units -- Subclassing CamUnit and CamUnitDriver</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
-<link rel="start" href="index.html" title="libcam Tutorial">
-<link rel="up" href="index.html" title="libcam Tutorial">
+<meta name="keywords" content="camunits, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="CamUnits Tutorial">
+<link rel="up" href="index.html" title="CamUnits Tutorial">
 <link rel="prev" href="camunit-summary.html" title="Summary">
 <link rel="next" href="subclassing-class-relationships.html" title="The Relationship Between Libcam Classes">
 <meta name="generator" content="GTK-Doc V1.10 (XML mode)">
@@ -23,7 +23,7 @@
 <td><a accesskey="p" href="camunit-summary.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td> </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libcam Tutorial</th>
+<th width="100%" align="center">CamUnits Tutorial</th>
 <td><a accesskey="n" href="subclassing-class-relationships.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter" lang="en">
@@ -39,12 +39,12 @@
 <dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-naming">Naming Conventions</a></span></dt>
 <dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-hfile">Filter Example <code class="filename">.h</code> file</a></span></dt>
 <dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-cfile">Filter Example <code class="filename">.c</code> file</a></span></dt>
-<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-using">Using Filter Example in a libcam application</a></span></dt>
+<dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-using">Using Filter Example in a CamUnits application</a></span></dt>
 <dt><span class="sect2"><a href="subclassing-example-filter.html#subclassing-example-summary">Filter Example summary</a></span></dt>
 </dl></dd>
 </dl></div>
 <p>
-        This chapter describes some of the more advanced features of the libcam
+        This chapter describes some of the more advanced features of the CamUnits
         framework.  Specifically, it describes how to create subclasses of
         <code class="classname">CamUnit</code> that can also be inserted into
         image processing chains and used in conjunction with other units.
@@ -55,11 +55,11 @@
         While we believe strongly in building image procesing elements as
         subclasses of <code class="classname">CamUnit</code>,
         undertaking the creation of a <code class="classname">CamUnit</code>
-        requires a much deeper understanding of how libcam works than does
+        requires a much deeper understanding of how the CamUnits library works than does
         simply using the output of an image processing chain.  
-        Productively using libcam in an image processing application
+        Productively using CamUnits in an image processing application
         does not require one to build custom units.  Specifically, one can
-        choose to use libcam primarily as an image acquisition and colorspace
+        choose to use CamUnits primarily as an image acquisition and colorspace
         conversion tool.  We encourage readers to look at the three features
         mentioned next, and then decide if they are worth the investment of
         learning how to create custom units.
@@ -94,7 +94,7 @@
                         accessed and modified programmatically just as easily
                         as hard-coded parameters.  Additionally,
                         when a <code class="classname">CamUnit</code> is used with
-                        the libcam GTK widgets (e.g.
+                        the CamUnits GTK widgets (e.g.
                         <code class="classname">CamUnitControlWidget</code> and
                         <code class="classname">CamUnitChain</code>), 
                         GUI elements are automatically created that allow
@@ -106,7 +106,7 @@
                         image processing element.  These controls are
                         accessible programmatically for applications without a
                         GUI, and they are also accessible in GUI form for
-                        applications that use the libcam GTK widgets.
+                        applications that use the CamUnits GTK widgets.
                     </p>
 </td>
 </tr>
@@ -120,7 +120,7 @@
                         algorithm by rendering into the input image.  For
                         example, a face detector might circle the detected
                         faces, an optical flow algorithm might draw flow
-                        vectors, etc.  libcam provides a framework for
+                        vectors, etc.  CamUnits provides a framework for
                         integrating visualization routines into an image
                         processing element.  Subclasses of
                         <code class="classname">CamUnit</code> can override virtual
@@ -165,7 +165,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="subclassing-gobject-type-system"></a>The GObject Type System</h2></div></div></div>
 <p>
-            libcam is written in C, which was not designed specifically for
+            CamUnits is written in C, which was not designed specifically for
             object-oriented programming techniques.  The GObject type system,
             included with GLib, is essentially an object-oriented programming
             framework designed in C.  It makes heavy use of C structs and
@@ -189,12 +189,12 @@
             works.  For the most part, when we have to deal with the GObject
             type system in this tutorial, we'll say something like, "just do
             it this way" and expect that if you really want to know why,
-            you'll go look at the GObject documentation<sup>[<a name="id2578948" href="#ftn.id2578948" class="footnote">3</a>]</sup>.
+            you'll go look at the GObject documentation<sup>[<a name="id2549482" href="#ftn.id2549482" class="footnote">3</a>]</sup>.
         </p>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2578948" href="#id2578948" class="para">3</a>] </sup><a class="ulink" href="http://library.gnome.org/devel/gobject/" target="_top">http://library.gnome.org/devel/gobject/</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2549482" href="#id2549482" class="para">3</a>] </sup><a class="ulink" href="http://library.gnome.org/devel/gobject/" target="_top">http://library.gnome.org/devel/gobject/</a></p></div>
 </div>
 </div>
 <div class="footer">

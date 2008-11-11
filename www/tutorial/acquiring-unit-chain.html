@@ -4,8 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Using a CamUnitChain</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<meta name="keywords" content="libcam, dc1394, v4l, v4l2, camera, machine vision, image processing">
-<link rel="start" href="index.html" title="libcam Tutorial">
+<meta name="keywords" content="camunits, dc1394, v4l, v4l2, camera, machine vision, image processing">
+<link rel="start" href="index.html" title="CamUnits Tutorial">
 <link rel="up" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
 <link rel="prev" href="ch-acquiring.html" title="Acquiring images (Quickstart guide)">
 <link rel="next" href="ch-camunit.html" title="Conversion Units and Unit Controls">
@@ -23,7 +23,7 @@
 <td><a accesskey="p" href="ch-acquiring.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch-acquiring.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libcam Tutorial</th>
+<th width="100%" align="center">CamUnits Tutorial</th>
 <td><a accesskey="n" href="ch-camunit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="sect1" lang="en">
@@ -39,7 +39,7 @@
 <p>
 
         Since a <code class="classname">CamUnitChain</code>, along with every other
-        libcam class, is a reference-counted GObject, memory management is
+        camunits class, is a reference-counted GObject, memory management is
         handled using <code class="function">g_object_ref</code> and
         <code class="function">g_object_unref</code>.  A
         <code class="classname">CamUnitChain</code> is created with a reference count
@@ -68,9 +68,9 @@
 <p>
             The easiest way to find out what sort of units are available on
             your system is to use the program <span class="command"><strong>camview</strong></span>,
-            which comes with libcam.  When first loaded,
+            which comes with camunits.  When first loaded,
             <span class="command"><strong>camview</strong></span> displays a list of units available to
-            libcam.  Clicking on a unit listed in <span class="command"><strong>camview</strong></span>
+            camunits.  Clicking on a unit listed in <span class="command"><strong>camview</strong></span>
             will reveal its unit ID.  <a class="xref" href="acquiring-unit-chain.html#acquiring-camview-unit-id" title="Figure 1. Looking up Unit IDs in camview">Figure 1, “Looking up Unit IDs in <span class="command">camview</span>”</a> illustrates this.
         </p>
 <div class="figure">
@@ -85,7 +85,7 @@
 </div>
 <br class="figure-break"><p>
             The <code class="literal">input.example</code> unit is a sample
-            <code class="classname">CamUnit</code> that is distributed with libcam and
+            <code class="classname">CamUnit</code> that is distributed with camunits and
             periodically generates a test image.  It can often be useful for
             testing when no other units area available.
         </p>
@@ -205,7 +205,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
         </p>
 <p>
             Since there is a wide range of binary representations for images,
-            such as sRGB, YUV422, Bayer, JPEG, etc., libcam provides a way to
+            such as sRGB, YUV422, Bayer, JPEG, etc., camunits provides a way to
             describe the actual format of the image data via the
             <code class="classname">CamUnitFormat</code> class.  The format of the
             images produced by a <code class="classname">CamUnit</code> can be
@@ -257,7 +257,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
             8-bit RGB frames (pixelformat
             <code class="literal">CAM_PIXEL_FORMAT_RGB</code>) and so the example
             program is able to write the data directly to disk using the PPM
-            image file format<sup>[<a name="id2577021" href="#ftn.id2577021" class="footnote">2</a>]</sup>.
+            image file format<sup>[<a name="id2547553" href="#ftn.id2547553" class="footnote">2</a>]</sup>.
             If you decide to try this example with other units available on
             your system, you must ensure that they either output RGB directly,
             or you must insert a colorspace conversion unit (described in the
@@ -266,7 +266,7 @@ static void on_frame_ready (CamUnitChain *chain, CamUnit *unit,
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2577021" href="#id2577021" class="para">2</a>] </sup><a class="ulink" href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2547553" href="#id2547553" class="para">2</a>] </sup><a class="ulink" href="http://en.wikipedia.org/wiki/Portable_pixmap" target="_top">http://en.wikipedia.org/wiki/Portable_pixmap</a></p></div>
 </div>
 </div>
 <div class="footer">

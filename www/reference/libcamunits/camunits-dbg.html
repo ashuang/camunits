@@ -1,0 +1,466 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>dbg</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="CamUnits Reference Manual">
+<link rel="up" href="ch04.html" title="Other stuff">
+<link rel="prev" href="ch04.html" title="Other stuff">
+<link rel="next" href="camunits-pixels.html" title="pixels">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Units">
+<link rel="chapter" href="ch02.html" title="Image Processing Chains">
+<link rel="chapter" href="ch03.html" title="Built-in Units">
+<link rel="chapter" href="ch04.html" title="Other stuff">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch04.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">CamUnits Reference Manual</th>
+<td><a accesskey="n" href="camunits-pixels.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#camunits-dbg.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#camunits-dbg.description" class="shortcut">Description</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="camunits-dbg"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="camunits-dbg.top_of_page"></a>dbg</span></h2>
+<p>dbg</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="camunits-dbg.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a class="link" href="camunits-dbg.html#DBG-MODE:CAPS" title="DBG_MODE()">DBG_MODE</a>                            (x)
+#define             <a class="link" href="camunits-dbg.html#DBG-ALL:CAPS" title="DBG_ALL">DBG_ALL</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-ERROR:CAPS" title="DBG_ERROR">DBG_ERROR</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-DEFAULT:CAPS" title="DBG_DEFAULT">DBG_DEFAULT</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-UNIT:CAPS" title="DBG_UNIT">DBG_UNIT</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-CHAIN:CAPS" title="DBG_CHAIN">DBG_CHAIN</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-DRIVER:CAPS" title="DBG_DRIVER">DBG_DRIVER</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-MANAGER:CAPS" title="DBG_MANAGER">DBG_MANAGER</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-INPUT:CAPS" title="DBG_INPUT">DBG_INPUT</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-FILTER:CAPS" title="DBG_FILTER">DBG_FILTER</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-OUTPUT:CAPS" title="DBG_OUTPUT">DBG_OUTPUT</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-GUI:CAPS" title="DBG_GUI">DBG_GUI</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-CONTROL:CAPS" title="DBG_CONTROL">DBG_CONTROL</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-REF:CAPS" title="DBG_REF">DBG_REF</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-PLUGIN:CAPS" title="DBG_PLUGIN">DBG_PLUGIN</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-LOG:CAPS" title="DBG_LOG">DBG_LOG</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-13:CAPS" title="DBG_13">DBG_13</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-14:CAPS" title="DBG_14">DBG_14</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-15:CAPS" title="DBG_15">DBG_15</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-16:CAPS" title="DBG_16">DBG_16</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-NAMETAB:CAPS" title="DBG_NAMETAB">DBG_NAMETAB</a>
+#define             <a class="link" href="camunits-dbg.html#DBG-COLORTAB:CAPS" title="DBG_COLORTAB">DBG_COLORTAB</a>
+                    <a class="link" href="camunits-dbg.html#dbg-mode-t" title="dbg_mode_t">dbg_mode_t</a>;
+                    <a class="link" href="camunits-dbg.html#dbg-mode-color-t" title="dbg_mode_color_t">dbg_mode_color_t</a>;
+const char*         <a class="link" href="camunits-dbg.html#DCOLOR:CAPS" title="DCOLOR ()">DCOLOR</a>                              ();
+#define             <a class="link" href="camunits-dbg.html#dbg" title="dbg()">dbg</a>                                 (mode, args...)
+#define             <a class="link" href="camunits-dbg.html#dbgl" title="dbgl()">dbgl</a>                                (mode, args...)
+#define             <a class="link" href="camunits-dbg.html#dbg-active" title="dbg_active()">dbg_active</a>                          (mode)
+#define             <a class="link" href="camunits-dbg.html#cdbg" title="cdbg()">cdbg</a>                                (mode,color,dtag,arg)
+#define             <a class="link" href="camunits-dbg.html#cprintf" title="cprintf()">cprintf</a>                             (color, args...)
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="camunits-dbg.description"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="camunits-dbg.details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="DBG-MODE:CAPS"></a><h3>DBG_MODE()</h3>
+<pre class="programlisting">#define DBG_MODE(x) (1ULL &lt;&lt; (x))
+</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-ALL:CAPS"></a><h3>DBG_ALL</h3>
+<pre class="programlisting">#define DBG_ALL     (~0ULL)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-ERROR:CAPS"></a><h3>DBG_ERROR</h3>
+<pre class="programlisting">#define DBG_ERROR   DBG_MODE(0)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-DEFAULT:CAPS"></a><h3>DBG_DEFAULT</h3>
+<pre class="programlisting">#define DBG_DEFAULT DBG_ERROR
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-UNIT:CAPS"></a><h3>DBG_UNIT</h3>
+<pre class="programlisting">#define DBG_UNIT            DBG_MODE(1) /* foo */
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-CHAIN:CAPS"></a><h3>DBG_CHAIN</h3>
+<pre class="programlisting">#define DBG_CHAIN           DBG_MODE(2)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-DRIVER:CAPS"></a><h3>DBG_DRIVER</h3>
+<pre class="programlisting">#define DBG_DRIVER          DBG_MODE(3)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-MANAGER:CAPS"></a><h3>DBG_MANAGER</h3>
+<pre class="programlisting">#define DBG_MANAGER         DBG_MODE(4)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-INPUT:CAPS"></a><h3>DBG_INPUT</h3>
+<pre class="programlisting">#define DBG_INPUT           DBG_MODE(5)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-FILTER:CAPS"></a><h3>DBG_FILTER</h3>
+<pre class="programlisting">#define DBG_FILTER          DBG_MODE(6)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-OUTPUT:CAPS"></a><h3>DBG_OUTPUT</h3>
+<pre class="programlisting">#define DBG_OUTPUT          DBG_MODE(7)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-GUI:CAPS"></a><h3>DBG_GUI</h3>
+<pre class="programlisting">#define DBG_GUI             DBG_MODE(8)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-CONTROL:CAPS"></a><h3>DBG_CONTROL</h3>
+<pre class="programlisting">#define DBG_CONTROL         DBG_MODE(9)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-REF:CAPS"></a><h3>DBG_REF</h3>
+<pre class="programlisting">#define DBG_REF             DBG_MODE(10)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-PLUGIN:CAPS"></a><h3>DBG_PLUGIN</h3>
+<pre class="programlisting">#define DBG_PLUGIN          DBG_MODE(11)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-LOG:CAPS"></a><h3>DBG_LOG</h3>
+<pre class="programlisting">#define DBG_LOG             DBG_MODE(12)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-13:CAPS"></a><h3>DBG_13</h3>
+<pre class="programlisting">#define DBG_13              DBG_MODE(13)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-14:CAPS"></a><h3>DBG_14</h3>
+<pre class="programlisting">#define DBG_14              DBG_MODE(14)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-15:CAPS"></a><h3>DBG_15</h3>
+<pre class="programlisting">#define DBG_15              DBG_MODE(15)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-16:CAPS"></a><h3>DBG_16</h3>
+<pre class="programlisting">#define DBG_16              DBG_MODE(16)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-NAMETAB:CAPS"></a><h3>DBG_NAMETAB</h3>
+<pre class="programlisting">#define             DBG_NAMETAB</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DBG-COLORTAB:CAPS"></a><h3>DBG_COLORTAB</h3>
+<pre class="programlisting">#define             DBG_COLORTAB</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="dbg-mode-t"></a><h3>dbg_mode_t</h3>
+<pre class="programlisting">typedef struct {
+    const char *d_name;
+    unsigned long long d_mode;
+    const char *color;
+} dbg_mode_t;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="dbg-mode-color-t"></a><h3>dbg_mode_color_t</h3>
+<pre class="programlisting">typedef struct {
+    unsigned long long d_mode;
+    const char *color;
+} dbg_mode_color_t;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="DCOLOR:CAPS"></a><h3>DCOLOR ()</h3>
+<pre class="programlisting">const char*         DCOLOR                              ();</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="dbg"></a><h3>dbg()</h3>
+<pre class="programlisting">#define             dbg(mode, args...)</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>args...</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="dbgl"></a><h3>dbgl()</h3>
+<pre class="programlisting">#define             dbgl(mode, args...)</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>args...</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="dbg-active"></a><h3>dbg_active()</h3>
+<pre class="programlisting">#define             dbg_active(mode)</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cdbg"></a><h3>cdbg()</h3>
+<pre class="programlisting">#define cdbg(mode,color,dtag,arg) 
+</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dtag</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cprintf"></a><h3>cprintf()</h3>
+<pre class="programlisting">#define             cprintf(color, args...)</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>args...</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>

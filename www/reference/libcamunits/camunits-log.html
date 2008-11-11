@@ -1,0 +1,506 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>log</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="CamUnits Reference Manual">
+<link rel="up" href="ch04.html" title="Other stuff">
+<link rel="prev" href="camunits-camunits-gmarshal.html" title="camunits-gmarshal">
+<link rel="next" href="camunits-plugin.html" title="plugin">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Units">
+<link rel="chapter" href="ch02.html" title="Image Processing Chains">
+<link rel="chapter" href="ch03.html" title="Built-in Units">
+<link rel="chapter" href="ch04.html" title="Other stuff">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="camunits-camunits-gmarshal.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">CamUnits Reference Manual</th>
+<td><a accesskey="n" href="camunits-plugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#camunits-log.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#camunits-log.description" class="shortcut">Description</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="camunits-log"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="camunits-log.top_of_page"></a>log</span></h2>
+<p>log</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="camunits-log.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+                    <a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a>;
+                    <a class="link" href="camunits-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a>;
+                    <a class="link" href="camunits-log.html#CamLogFrameInfo" title="CamLogFrameInfo">CamLogFrameInfo</a>;
+<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a>*             <a class="link" href="camunits-log.html#cam-log-new" title="cam_log_new ()">cam_log_new</a>                         (const char *fname,
+                                                         const char *mode);
+void                <a class="link" href="camunits-log.html#cam-log-destroy" title="cam_log_destroy ()">cam_log_destroy</a>                     (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="camunits-log.html#cam-log-next-frame" title="cam_log_next_frame ()">cam_log_next_frame</a>                  (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="camunits-log.html#cam-log-prev-frame" title="cam_log_prev_frame ()">cam_log_prev_frame</a>                  (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="camunits-log.html#cam-log-get-frame-format" title="cam_log_get_frame_format ()">cam_log_get_frame_format</a>            (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="camunits-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format);
+int                 <a class="link" href="camunits-log.html#cam-log-get-frame-info" title="cam_log_get_frame_info ()">cam_log_get_frame_info</a>              (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="camunits-log.html#CamLogFrameInfo" title="CamLogFrameInfo">CamLogFrameInfo</a> *info);
+<a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     <a class="link" href="camunits-log.html#cam-log-get-frame" title="cam_log_get_frame ()">cam_log_get_frame</a>                   (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="camunits-log.html#cam-log-write-frame" title="cam_log_write_frame ()">cam_log_write_frame</a>                 (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="camunits-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format,
+                                                         <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *frame,
+                                                         int64_t *offset);
+int                 <a class="link" href="camunits-log.html#cam-log-count-frames" title="cam_log_count_frames ()">cam_log_count_frames</a>                (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);
+int                 <a class="link" href="camunits-log.html#cam-log-seek-to-frame" title="cam_log_seek_to_frame ()">cam_log_seek_to_frame</a>               (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         int frameno);
+int                 <a class="link" href="camunits-log.html#cam-log-seek-to-offset" title="cam_log_seek_to_offset ()">cam_log_seek_to_offset</a>              (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         int64_t file_offset);
+int                 <a class="link" href="camunits-log.html#cam-log-seek-to-timestamp" title="cam_log_seek_to_timestamp ()">cam_log_seek_to_timestamp</a>           (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         int64_t timestamp);
+int64_t             <a class="link" href="camunits-log.html#cam-log-get-file-size" title="cam_log_get_file_size ()">cam_log_get_file_size</a>               (const <a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="camunits-log.description"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="camunits-log.details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="CamLog"></a><h3>CamLog</h3>
+<pre class="programlisting">typedef struct _CamLog CamLog;</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="CamLogFrameFormat"></a><h3>CamLogFrameFormat</h3>
+<pre class="programlisting">typedef struct {
+    uint16_t width;
+    uint16_t height;
+    uint16_t stride;
+    uint32_t pixelformat;
+} CamLogFrameFormat;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="CamLogFrameInfo"></a><h3>CamLogFrameInfo</h3>
+<pre class="programlisting">typedef struct {
+    uint64_t timestamp;
+    uint64_t frameno;
+    int64_t offset;
+    uint64_t data_len;
+    int64_t data_offset;
+} CamLogFrameInfo;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-new"></a><h3>cam_log_new ()</h3>
+<pre class="programlisting"><a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a>*             cam_log_new                         (const char *fname,
+                                                         const char *mode);</pre>
+<p>
+constructor</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fname</code></em> :</span></p></td>
+<td> the file to read or create
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>  either "r" or "w"
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-destroy"></a><h3>cam_log_destroy ()</h3>
+<pre class="programlisting">void                cam_log_destroy                     (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-next-frame"></a><h3>cam_log_next_frame ()</h3>
+<pre class="programlisting">int                 cam_log_next_frame                  (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-prev-frame"></a><h3>cam_log_prev_frame ()</h3>
+<pre class="programlisting">int                 cam_log_prev_frame                  (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-get-frame-format"></a><h3>cam_log_get_frame_format ()</h3>
+<pre class="programlisting">int                 cam_log_get_frame_format            (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="camunits-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-get-frame-info"></a><h3>cam_log_get_frame_info ()</h3>
+<pre class="programlisting">int                 cam_log_get_frame_info              (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="camunits-log.html#CamLogFrameInfo" title="CamLogFrameInfo">CamLogFrameInfo</a> *info);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-get-frame"></a><h3>cam_log_get_frame ()</h3>
+<pre class="programlisting"><a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a>*     cam_log_get_frame                   (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-write-frame"></a><h3>cam_log_write_frame ()</h3>
+<pre class="programlisting">int                 cam_log_write_frame                 (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         <a class="link" href="camunits-log.html#CamLogFrameFormat" title="CamLogFrameFormat">CamLogFrameFormat</a> *format,
+                                                         <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *frame,
+                                                         int64_t *offset);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>offset</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-count-frames"></a><h3>cam_log_count_frames ()</h3>
+<pre class="programlisting">int                 cam_log_count_frames                (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the total number of frames in the logfile
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-seek-to-frame"></a><h3>cam_log_seek_to_frame ()</h3>
+<pre class="programlisting">int                 cam_log_seek_to_frame               (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         int frameno);</pre>
+<p>
+Positions the file pointer of the cam_log such that the next call to
+cam_log_read_next_frame reads frame number <code class="literal">frameno</code>
+</p>
+<p>
+Read-mode only.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>frameno</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on failure
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-seek-to-offset"></a><h3>cam_log_seek_to_offset ()</h3>
+<pre class="programlisting">int                 cam_log_seek_to_offset              (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         int64_t file_offset);</pre>
+<p>
+Positions the file pointer of the cam_log at the start of the first frame
+with file offset greater than or equal to <code class="literal">file_offset</code>
+</p>
+<p>
+Read-mode only.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file_offset</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on failure
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-seek-to-timestamp"></a><h3>cam_log_seek_to_timestamp ()</h3>
+<pre class="programlisting">int                 cam_log_seek_to_timestamp           (<a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self,
+                                                         int64_t timestamp);</pre>
+<p>
+Positions the file pointer of the cam_log at the start of the first frame
+with timestamp greater or equal to than <code class="literal">timestamp</code>
+</p>
+<p>
+Read-mode only.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timestamp</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 on failure
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-log-get-file-size"></a><h3>cam_log_get_file_size ()</h3>
+<pre class="programlisting">int64_t             cam_log_get_file_size               (const <a class="link" href="camunits-log.html#CamLog" title="CamLog">CamLog</a> *self);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the size of the camera log file.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>

@@ -1,3 +1,152 @@
+2008-11-11  ashuang
+
+	* [r261] ., camunits, camunits-gtk, camunits/input_v4l2.h,
+	  camunits/unit.h, camunits/unit_manager.h,
+	  docs/reference/libcamunits, docs/reference/libcamunits-gtk,
+	  docs/reference/libcamunits-gtk/Makefile.am,
+	  docs/reference/libcamunits-gtk/camunits-gtk-docs.sgml,
+	  docs/reference/libcamunits-gtk/camunits-gtk-sections.txt,
+	  docs/reference/libcamunits-gtk/camunits-gtk.types,
+	  docs/reference/libcamunits-gtk/libcam-gtk-docs.sgml,
+	  docs/reference/libcamunits-gtk/libcam-gtk-sections.txt,
+	  docs/reference/libcamunits-gtk/libcam-gtk.types,
+	  docs/reference/libcamunits/Makefile.am,
+	  docs/reference/libcamunits/camunits-docs.sgml,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  docs/reference/libcamunits/camunits.types,
+	  docs/reference/libcamunits/libcam-docs.sgml,
+	  docs/reference/libcamunits/libcam-sections.txt,
+	  docs/reference/libcamunits/libcam.types, docs/tutorial,
+	  docs/tutorial/acquiring.sgml, docs/tutorial/bookinfo.sgml,
+	  docs/tutorial/camunit.sgml, docs/tutorial/otherenvs.sgml,
+	  docs/tutorial/preface.sgml, docs/tutorial/subclassing.sgml:
+	  libcam-extra -> camunits-extra update documentation libcam ->
+	  camunits
+	* [r260] camlog/Makefile.am, camunits-gtk/Makefile.am,
+	  camunits-gtk/camunits-gtk.pc.in, camunits-gtk/libcam-gtk.pc.in,
+	  camunits-gtk/pixmaps/Makefile.am,
+	  camunits-gtk/unit_manager_widget.c, camunits/Makefile.am,
+	  camunits/camunits-gmarshal.c, camunits/camunits-gmarshal.h,
+	  camunits/camunits-gmarshal.list, camunits/camunits.pc.in,
+	  camunits/libcam-gmarshal.c, camunits/libcam-gmarshal.h,
+	  camunits/libcam-gmarshal.list, camunits/libcam.pc.in,
+	  camunits/unit_manager.c, camview/Makefile.am,
+	  docs/reference/Makefile.am, docs/reference/libcam,
+	  docs/reference/libcam-gtk, docs/reference/libcamunits,
+	  docs/reference/libcamunits-gtk, examples/basic/Makefile.am,
+	  examples/basic/snapshot.c, examples/basic/trivial-acquire.c,
+	  examples/filter_example/Makefile.am,
+	  examples/filter_example/filter_example.c,
+	  examples/filter_example/filter_example.h,
+	  examples/filter_example/main.c,
+	  examples/qt4/snapshot/CamUnitChainQtAdapter.hpp,
+	  examples/qt4/snapshot/snapshot.cpp,
+	  examples/qt4/snapshot/snapshot.pro, m4macros/Makefile.am,
+	  m4macros/camunits.m4, m4macros/libcam.m4: binaries and libraries
+	  appear to work now. documentation is stil wrong
+	* [r259] ChangeLog, Makefile.am, NEWS, camlog/Makefile.am,
+	  camlog/camlog.1, camlog/camlog.c, camunits, camunits-gtk,
+	  camunits-gtk/Makefile.am, camunits-gtk/cam-gtk.h,
+	  camunits-gtk/libcam-gtk.pc.in,
+	  camunits-gtk/unit_chain_gl_widget.c,
+	  camunits-gtk/unit_chain_gl_widget.h,
+	  camunits-gtk/unit_chain_widget.c,
+	  camunits-gtk/unit_chain_widget.h,
+	  camunits-gtk/unit_control_widget.c,
+	  camunits-gtk/unit_control_widget.h,
+	  camunits-gtk/unit_description_widget.c,
+	  camunits-gtk/unit_description_widget.h,
+	  camunits-gtk/unit_manager_widget.c,
+	  camunits-gtk/unit_manager_widget.h, camunits.spec.in,
+	  camunits/Makefile.am, camunits/cam.h, camunits/input_example.h,
+	  camunits/input_v4l2.h, camunits/libcam-gmarshal.c,
+	  camunits/libcam.pc.in, camunits/unit.c, camunits/unit.h,
+	  camunits/unit_chain.c, camunits/unit_manager.h,
+	  camview/Makefile.am, camview/camview.1, camview/camview.c,
+	  configure.in, docs/tutorial/Makefile.am, libcam, libcam-gtk,
+	  libcam.spec.in, plugins/dc1394/Makefile.am,
+	  plugins/dc1394/input_dc1394.c: start renaming things from libcam
+	  -> camunits
+	* [r257] NEWS, camlog/camlog.1, docs/tutorial/camunit.sgml,
+	  libcam-gtk/unit_control_widget.c, libcam/convert_colorspace.c,
+	  libcam/filter_gl.c, libcam/gl_texture.c, libcam/pixels.c,
+	  libcam/pixels.h, libcam/unit_chain.c, libcam/unit_manager.c,
+	  plugins/dc1394/input_dc1394.c: svnsync barfed at revision 256.
+	  Here is 256:266 from libcam
+	  
+	  ------------------------------------------------------------------------
+	  r266 | ashuang | 2008-11-10 18:50:44 -0500 (Mon, 10 Nov 2008) | 2
+	  lines
+	  
+	  some news
+	  
+	  ------------------------------------------------------------------------
+	  r265 | ashuang | 2008-10-18 15:23:03 -0400 (Sat, 18 Oct 2008) | 2
+	  lines
+	  
+	  gl_texture support for CAM_PIXEL_FORMAT_BE_GRAY16
+	  
+	  ------------------------------------------------------------------------
+	  r264 | ashuang | 2008-10-18 14:12:55 -0400 (Sat, 18 Oct 2008) | 3
+	  lines
+	  
+	  shoring up 16-bpp grayscale support. This commit breaks a
+	  rarely-used part of the API.
+	  
+	  ------------------------------------------------------------------------
+	  r263 | ashuang | 2008-10-10 16:03:51 -0400 (Fri, 10 Oct 2008) | 2
+	  lines
+	  
+	  move bumblebee2 plugin into libcam-extra
+	  
+	  ------------------------------------------------------------------------
+	  r262 | ashuang | 2008-10-10 15:31:06 -0400 (Fri, 10 Oct 2008) | 2
+	  lines
+	  
+	  debian: architecture any instead of i386/amd64
+	  
+	  ------------------------------------------------------------------------
+	  r261 | ashuang | 2008-10-10 15:30:34 -0400 (Fri, 10 Oct 2008) | 6
+	  lines
+	  
+	  input_dc1394: include format7 mode in output format string
+	  filter_gl: allow gray16 unit_manager: on failure to open plugin
+	  dir, warn in dbg instead of stderr unit_chain: store output
+	  format name in saved XML. unit_control_widget: slightly smarter
+	  about format changing
+	  
+	  ------------------------------------------------------------------------
+	  r260 | ashuang | 2008-10-10 15:19:24 -0400 (Fri, 10 Oct 2008) | 2
+	  lines
+	  
+	  add libcam-bumblebee2
+	  
+	  ------------------------------------------------------------------------
+	  r259 | ashuang | 2008-10-09 17:19:46 -0400 (Thu, 09 Oct 2008) | 1
+	  line
+	  
+	  documentation fixes
+	  ------------------------------------------------------------------------
+	  r258 | ashuang | 2008-10-09 17:18:55 -0400 (Thu, 09 Oct 2008) | 2
+	  lines
+	  
+	  fortify input_dc1394
+	  
+	  ------------------------------------------------------------------------
+	  r257 | ashuang | 2008-09-30 16:47:06 -0400 (Tue, 30 Sep 2008) | 2
+	  lines
+	  
+	  add snapshot plugin
+
+2008-09-19  ashuang
+
+	* [r254] camlog/camlog.1, camview/camview.1: fix manpages
+	* [r253] libcam/unit.c: tweak warning message
+
+2008-07-16  ashuang
+
+	* [r247] ChangeLog, NEWS, configure.in: release 0.0.9
+
 2008-07-11  ashuang
 
 	* [r246] libcam-gtk/unit_manager_widget.c: unit manager widget UI
@@ -385,7 +534,7 @@
 	  libcam/unit_manager.h: rename cam_plugin_load_plugins to
 	  cam_unit_manager_add_plugin_dir
 	  cam_unit_manager_register_core_drivers now searches all
-	  directories specified in colon separated CAMUNITS_PLUGIN_PATH
+	  directories specified in colon separated LIBCAM_PLUGIN_PATH
 	  environment variable for plugins.
 	* [r92] libcam/filter_jpeg.c: install jpeg error_exit handler so
 	  that libcam programs don't abort on bad jpeg data

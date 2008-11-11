@@ -1,0 +1,587 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>pwc-ioctl</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="CamUnits Reference Manual">
+<link rel="up" href="ch04.html" title="Other stuff">
+<link rel="prev" href="camunits-gl-texture.html" title="gl_texture">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Units">
+<link rel="chapter" href="ch02.html" title="Image Processing Chains">
+<link rel="chapter" href="ch03.html" title="Built-in Units">
+<link rel="chapter" href="ch04.html" title="Other stuff">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="camunits-gl-texture.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">CamUnits Reference Manual</th>
+<td> </td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#camunits-pwc-ioctl.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#camunits-pwc-ioctl.description" class="shortcut">Description</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="camunits-pwc-ioctl"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="camunits-pwc-ioctl.top_of_page"></a>pwc-ioctl</span></h2>
+<p>pwc-ioctl</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="camunits-pwc-ioctl.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-SQCIF:CAPS" title="PSZ_SQCIF">PSZ_SQCIF</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-QSIF:CAPS" title="PSZ_QSIF">PSZ_QSIF</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-QCIF:CAPS" title="PSZ_QCIF">PSZ_QCIF</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-SIF:CAPS" title="PSZ_SIF">PSZ_SIF</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-CIF:CAPS" title="PSZ_CIF">PSZ_CIF</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-VGA:CAPS" title="PSZ_VGA">PSZ_VGA</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PSZ-MAX:CAPS" title="PSZ_MAX">PSZ_MAX</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-FPS-SHIFT:CAPS" title="PWC_FPS_SHIFT">PWC_FPS_SHIFT</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-FPS-MASK:CAPS" title="PWC_FPS_MASK">PWC_FPS_MASK</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS" title="PWC_FPS_FRMASK">PWC_FPS_FRMASK</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS" title="PWC_FPS_SNAPSHOT">PWC_FPS_SNAPSHOT</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-WB-INDOOR:CAPS" title="PWC_WB_INDOOR">PWC_WB_INDOOR</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS" title="PWC_WB_OUTDOOR">PWC_WB_OUTDOOR</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-WB-FL:CAPS" title="PWC_WB_FL">PWC_WB_FL</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-WB-MANUAL:CAPS" title="PWC_WB_MANUAL">PWC_WB_MANUAL</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-WB-AUTO:CAPS" title="PWC_WB_AUTO">PWC_WB_AUTO</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-MPT-PAN:CAPS" title="PWC_MPT_PAN">PWC_MPT_PAN</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-MPT-TILT:CAPS" title="PWC_MPT_TILT">PWC_MPT_TILT</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS" title="PWC_MPT_TIMEOUT">PWC_MPT_TIMEOUT</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS" title="PWCX_FLAG_PLANAR">PWCX_FLAG_PLANAR</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS" title="PWCX_FLAG_BAYER">PWCX_FLAG_BAYER</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS" title="VIDIOCPWCRUSER">VIDIOCPWCRUSER</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSUSER:CAPS" title="VIDIOCPWCSUSER">VIDIOCPWCSUSER</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCFACTORY:CAPS" title="VIDIOCPWCFACTORY">VIDIOCPWCFACTORY</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSCQUAL:CAPS" title="VIDIOCPWCSCQUAL">VIDIOCPWCSCQUAL</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGCQUAL:CAPS" title="VIDIOCPWCGCQUAL">VIDIOCPWCGCQUAL</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGSERIAL:CAPS" title="VIDIOCPWCGSERIAL">VIDIOCPWCGSERIAL</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCPROBE:CAPS" title="VIDIOCPWCPROBE">VIDIOCPWCPROBE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSAGC:CAPS" title="VIDIOCPWCSAGC">VIDIOCPWCSAGC</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGAGC:CAPS" title="VIDIOCPWCGAGC">VIDIOCPWCGAGC</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSSHUTTER:CAPS" title="VIDIOCPWCSSHUTTER">VIDIOCPWCSSHUTTER</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSAWB:CAPS" title="VIDIOCPWCSAWB">VIDIOCPWCSAWB</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGAWB:CAPS" title="VIDIOCPWCGAWB">VIDIOCPWCGAWB</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSAWBSPEED:CAPS" title="VIDIOCPWCSAWBSPEED">VIDIOCPWCSAWBSPEED</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGAWBSPEED:CAPS" title="VIDIOCPWCGAWBSPEED">VIDIOCPWCGAWBSPEED</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSLED:CAPS" title="VIDIOCPWCSLED">VIDIOCPWCSLED</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGLED:CAPS" title="VIDIOCPWCGLED">VIDIOCPWCGLED</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSCONTOUR:CAPS" title="VIDIOCPWCSCONTOUR">VIDIOCPWCSCONTOUR</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGCONTOUR:CAPS" title="VIDIOCPWCGCONTOUR">VIDIOCPWCGCONTOUR</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSBACKLIGHT:CAPS" title="VIDIOCPWCSBACKLIGHT">VIDIOCPWCSBACKLIGHT</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGBACKLIGHT:CAPS" title="VIDIOCPWCGBACKLIGHT">VIDIOCPWCGBACKLIGHT</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSFLICKER:CAPS" title="VIDIOCPWCSFLICKER">VIDIOCPWCSFLICKER</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGFLICKER:CAPS" title="VIDIOCPWCGFLICKER">VIDIOCPWCGFLICKER</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCSDYNNOISE:CAPS" title="VIDIOCPWCSDYNNOISE">VIDIOCPWCSDYNNOISE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGDYNNOISE:CAPS" title="VIDIOCPWCGDYNNOISE">VIDIOCPWCGDYNNOISE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGREALSIZE:CAPS" title="VIDIOCPWCGREALSIZE">VIDIOCPWCGREALSIZE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCMPTRESET:CAPS" title="VIDIOCPWCMPTRESET">VIDIOCPWCMPTRESET</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCMPTGRANGE:CAPS" title="VIDIOCPWCMPTGRANGE">VIDIOCPWCMPTGRANGE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCMPTSANGLE:CAPS" title="VIDIOCPWCMPTSANGLE">VIDIOCPWCMPTSANGLE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS" title="VIDIOCPWCMPTGANGLE">VIDIOCPWCMPTGANGLE</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS" title="VIDIOCPWCMPTSTATUS">VIDIOCPWCMPTSTATUS</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS" title="VIDIOCPWCGVIDCMD">VIDIOCPWCGVIDCMD</a>
+#define             <a class="link" href="camunits-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS" title="VIDIOCPWCGVIDTABLE">VIDIOCPWCGVIDTABLE</a>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="camunits-pwc-ioctl.description"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="camunits-pwc-ioctl.details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="PSZ-SQCIF:CAPS"></a><h3>PSZ_SQCIF</h3>
+<pre class="programlisting">#define PSZ_SQCIF	0x00
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PSZ-QSIF:CAPS"></a><h3>PSZ_QSIF</h3>
+<pre class="programlisting">#define PSZ_QSIF	0x01
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PSZ-QCIF:CAPS"></a><h3>PSZ_QCIF</h3>
+<pre class="programlisting">#define PSZ_QCIF	0x02
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PSZ-SIF:CAPS"></a><h3>PSZ_SIF</h3>
+<pre class="programlisting">#define PSZ_SIF		0x03
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PSZ-CIF:CAPS"></a><h3>PSZ_CIF</h3>
+<pre class="programlisting">#define PSZ_CIF		0x04
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PSZ-VGA:CAPS"></a><h3>PSZ_VGA</h3>
+<pre class="programlisting">#define PSZ_VGA		0x05
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PSZ-MAX:CAPS"></a><h3>PSZ_MAX</h3>
+<pre class="programlisting">#define PSZ_MAX		6
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-FPS-SHIFT:CAPS"></a><h3>PWC_FPS_SHIFT</h3>
+<pre class="programlisting">#define PWC_FPS_SHIFT		16
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-FPS-MASK:CAPS"></a><h3>PWC_FPS_MASK</h3>
+<pre class="programlisting">#define PWC_FPS_MASK		0x00FF0000
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-FPS-FRMASK:CAPS"></a><h3>PWC_FPS_FRMASK</h3>
+<pre class="programlisting">#define PWC_FPS_FRMASK		0x003F0000
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-FPS-SNAPSHOT:CAPS"></a><h3>PWC_FPS_SNAPSHOT</h3>
+<pre class="programlisting">#define PWC_FPS_SNAPSHOT	0x00400000
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-WB-INDOOR:CAPS"></a><h3>PWC_WB_INDOOR</h3>
+<pre class="programlisting">#define PWC_WB_INDOOR		0
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-WB-OUTDOOR:CAPS"></a><h3>PWC_WB_OUTDOOR</h3>
+<pre class="programlisting">#define PWC_WB_OUTDOOR		1
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-WB-FL:CAPS"></a><h3>PWC_WB_FL</h3>
+<pre class="programlisting">#define PWC_WB_FL		2
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-WB-MANUAL:CAPS"></a><h3>PWC_WB_MANUAL</h3>
+<pre class="programlisting">#define PWC_WB_MANUAL		3
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-WB-AUTO:CAPS"></a><h3>PWC_WB_AUTO</h3>
+<pre class="programlisting">#define PWC_WB_AUTO		4
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-MPT-PAN:CAPS"></a><h3>PWC_MPT_PAN</h3>
+<pre class="programlisting">#define PWC_MPT_PAN		0x01
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-MPT-TILT:CAPS"></a><h3>PWC_MPT_TILT</h3>
+<pre class="programlisting">#define PWC_MPT_TILT		0x02
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWC-MPT-TIMEOUT:CAPS"></a><h3>PWC_MPT_TIMEOUT</h3>
+<pre class="programlisting">#define PWC_MPT_TIMEOUT		0x04 /* for status */
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWCX-FLAG-PLANAR:CAPS"></a><h3>PWCX_FLAG_PLANAR</h3>
+<pre class="programlisting">#define PWCX_FLAG_PLANAR	0x0001
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="PWCX-FLAG-BAYER:CAPS"></a><h3>PWCX_FLAG_BAYER</h3>
+<pre class="programlisting">#define PWCX_FLAG_BAYER		0x0008
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCRUSER:CAPS"></a><h3>VIDIOCPWCRUSER</h3>
+<pre class="programlisting">#define VIDIOCPWCRUSER		_IO('v', 192)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSUSER:CAPS"></a><h3>VIDIOCPWCSUSER</h3>
+<pre class="programlisting">#define VIDIOCPWCSUSER		_IO('v', 193)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCFACTORY:CAPS"></a><h3>VIDIOCPWCFACTORY</h3>
+<pre class="programlisting">#define VIDIOCPWCFACTORY	_IO('v', 194)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSCQUAL:CAPS"></a><h3>VIDIOCPWCSCQUAL</h3>
+<pre class="programlisting">#define VIDIOCPWCSCQUAL		_IOW('v', 195, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGCQUAL:CAPS"></a><h3>VIDIOCPWCGCQUAL</h3>
+<pre class="programlisting">#define VIDIOCPWCGCQUAL		_IOR('v', 195, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGSERIAL:CAPS"></a><h3>VIDIOCPWCGSERIAL</h3>
+<pre class="programlisting">#define VIDIOCPWCGSERIAL	_IOR('v', 198, struct pwc_serial)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCPROBE:CAPS"></a><h3>VIDIOCPWCPROBE</h3>
+<pre class="programlisting">#define VIDIOCPWCPROBE		_IOR('v', 199, struct pwc_probe)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSAGC:CAPS"></a><h3>VIDIOCPWCSAGC</h3>
+<pre class="programlisting">#define VIDIOCPWCSAGC		_IOW('v', 200, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGAGC:CAPS"></a><h3>VIDIOCPWCGAGC</h3>
+<pre class="programlisting">#define VIDIOCPWCGAGC		_IOR('v', 200, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSSHUTTER:CAPS"></a><h3>VIDIOCPWCSSHUTTER</h3>
+<pre class="programlisting">#define VIDIOCPWCSSHUTTER	_IOW('v', 201, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSAWB:CAPS"></a><h3>VIDIOCPWCSAWB</h3>
+<pre class="programlisting">#define VIDIOCPWCSAWB           _IOW('v', 202, struct pwc_whitebalance)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGAWB:CAPS"></a><h3>VIDIOCPWCGAWB</h3>
+<pre class="programlisting">#define VIDIOCPWCGAWB           _IOR('v', 202, struct pwc_whitebalance)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSAWBSPEED:CAPS"></a><h3>VIDIOCPWCSAWBSPEED</h3>
+<pre class="programlisting">#define VIDIOCPWCSAWBSPEED	_IOW('v', 203, struct pwc_wb_speed)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGAWBSPEED:CAPS"></a><h3>VIDIOCPWCGAWBSPEED</h3>
+<pre class="programlisting">#define VIDIOCPWCGAWBSPEED	_IOR('v', 203, struct pwc_wb_speed)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSLED:CAPS"></a><h3>VIDIOCPWCSLED</h3>
+<pre class="programlisting">#define VIDIOCPWCSLED           _IOW('v', 205, struct pwc_leds)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGLED:CAPS"></a><h3>VIDIOCPWCGLED</h3>
+<pre class="programlisting">#define VIDIOCPWCGLED           _IOR('v', 205, struct pwc_leds)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSCONTOUR:CAPS"></a><h3>VIDIOCPWCSCONTOUR</h3>
+<pre class="programlisting">#define VIDIOCPWCSCONTOUR	_IOW('v', 206, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGCONTOUR:CAPS"></a><h3>VIDIOCPWCGCONTOUR</h3>
+<pre class="programlisting">#define VIDIOCPWCGCONTOUR	_IOR('v', 206, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSBACKLIGHT:CAPS"></a><h3>VIDIOCPWCSBACKLIGHT</h3>
+<pre class="programlisting">#define VIDIOCPWCSBACKLIGHT	_IOW('v', 207, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGBACKLIGHT:CAPS"></a><h3>VIDIOCPWCGBACKLIGHT</h3>
+<pre class="programlisting">#define VIDIOCPWCGBACKLIGHT	_IOR('v', 207, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSFLICKER:CAPS"></a><h3>VIDIOCPWCSFLICKER</h3>
+<pre class="programlisting">#define VIDIOCPWCSFLICKER	_IOW('v', 208, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGFLICKER:CAPS"></a><h3>VIDIOCPWCGFLICKER</h3>
+<pre class="programlisting">#define VIDIOCPWCGFLICKER	_IOR('v', 208, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCSDYNNOISE:CAPS"></a><h3>VIDIOCPWCSDYNNOISE</h3>
+<pre class="programlisting">#define VIDIOCPWCSDYNNOISE	_IOW('v', 209, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGDYNNOISE:CAPS"></a><h3>VIDIOCPWCGDYNNOISE</h3>
+<pre class="programlisting">#define VIDIOCPWCGDYNNOISE	_IOR('v', 209, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGREALSIZE:CAPS"></a><h3>VIDIOCPWCGREALSIZE</h3>
+<pre class="programlisting">#define VIDIOCPWCGREALSIZE	_IOR('v', 210, struct pwc_imagesize)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCMPTRESET:CAPS"></a><h3>VIDIOCPWCMPTRESET</h3>
+<pre class="programlisting">#define VIDIOCPWCMPTRESET	_IOW('v', 211, int)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCMPTGRANGE:CAPS"></a><h3>VIDIOCPWCMPTGRANGE</h3>
+<pre class="programlisting">#define VIDIOCPWCMPTGRANGE	_IOR('v', 211, struct pwc_mpt_range)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCMPTSANGLE:CAPS"></a><h3>VIDIOCPWCMPTSANGLE</h3>
+<pre class="programlisting">#define VIDIOCPWCMPTSANGLE	_IOW('v', 212, struct pwc_mpt_angles)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCMPTGANGLE:CAPS"></a><h3>VIDIOCPWCMPTGANGLE</h3>
+<pre class="programlisting">#define VIDIOCPWCMPTGANGLE	_IOR('v', 212, struct pwc_mpt_angles)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCMPTSTATUS:CAPS"></a><h3>VIDIOCPWCMPTSTATUS</h3>
+<pre class="programlisting">#define VIDIOCPWCMPTSTATUS	_IOR('v', 213, struct pwc_mpt_status)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGVIDCMD:CAPS"></a><h3>VIDIOCPWCGVIDCMD</h3>
+<pre class="programlisting">#define VIDIOCPWCGVIDCMD	_IOR('v', 215, struct pwc_video_command)
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="VIDIOCPWCGVIDTABLE:CAPS"></a><h3>VIDIOCPWCGVIDTABLE</h3>
+<pre class="programlisting">#define VIDIOCPWCGVIDTABLE	_IOR('v', 216, struct pwc_table_init_buffer)
+</pre>
+<p>
+
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>
