@@ -15,7 +15,7 @@ libklt_la_SOURCES = convolve.c \
 				 error.h \
 				 klt.h \
 				 klt_util.h	\
-				 nmio.h \
+				 pnmio.h \
 				 pyramid.h
 
 libklt_la_LIBADD = -lm
