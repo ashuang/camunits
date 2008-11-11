@@ -1,0 +1,4 @@
+debian/tmp/usr/include/camunits/*.h
+debian/tmp/usr/lib/libcamunits.so
+debian/tmp/usr/lib/libcamunits.la
+debian/tmp/usr/lib/pkgconfig/camunits.pc

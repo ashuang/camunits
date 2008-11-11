@@ -1,0 +1,4 @@
+debian/tmp/usr/include/camunits-gtk/*.h
+debian/tmp/usr/lib/libcamunits-gtk.so
+debian/tmp/usr/lib/libcamunits-gtk.la
+debian/tmp/usr/lib/pkgconfig/camunits-gtk.pc

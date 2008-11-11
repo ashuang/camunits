@@ -17,8 +17,8 @@ if len (sys.argv) > 1:
     print ("usage: %s" % (os.path.basename(sys.argv[0])))
     sys.exit(1)
 
-package_name = "libcam"
-svn_url = "https://libcam.googlecode.com/svn/trunk"
+package_name = "camunits"
+svn_url = "https://camunits.googlecode.com/svn/trunk"
 
 do_or_die ("svn update")
 status, xml_str = commands.getstatusoutput("svn info --xml %s" % svn_url)

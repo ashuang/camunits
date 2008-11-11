@@ -1,90 +1,90 @@
-Source: libcam
+Source: camunits
 Section: libs
 Priority: extra
 Maintainer: Albert Huang <albert@csail.mit.edu>
 Build-Depends: debhelper (>> 4.2.0), cdbs, gcc (>= 3.0.0), linux-libc-dev, libgl1-mesa-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.10.0), libdc1394-22-dev (>= 2.0.0), libjpeg62-dev
 Standards-Version: 3.8.0
-Xs-Vcs-Svn: https://libcam.googlecode.com/svn/debian/trunk
-Xs-Vcs-Browser: http://libcam.googlecode.com/svn/debian/trunk
+Xs-Vcs-Svn: https://camunits.googlecode.com/svn/debian/trunk
+Xs-Vcs-Browser: http://camunits.googlecode.com/svn/debian/trunk
 
-Package: libcam3
+Package: libcamunits5
 Section: libs
 Architecture: any
-Recommends: libcam-utils, libcam-gtk3
-Suggests: libcam-plugins-dc1394
+Recommends: camunits-utils, libcamunits-gtk5
+Suggests: camunits-plugins-dc1394
 Depends: ${shlibs:Depends}
 Description: device-independent image acquisition and processing API
- libcam is a library primarily intended for robotics and machine vision
+ libcamunits is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
  processing images.
  .
  This package contains shared libraries. 
 
-Package: libcam3-dev
+Package: libcamunits5-dev
 Section: libdevel
 Architecture: any
-Depends: libcam3 (= ${binary:Version}), libc6-dev
+Provides: libcamunits-dev
+Depends: libcamunits5 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
- libcam is a library primarily intended for robotics and machine vision
+ libcamunits is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
  processing images.
  .
  This package contains development files.
 
-Package: libcam-utils
+Package: camunits-utils
 Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: utility programs for libcam
- This package contains utility programs to support users of the libcam image
+Description: Camunits utility programs
+ This package contains utility programs to support users of the Camunits image
  acquisition and processing API.  It currently provides camlog, a program for 
- logging image streams to disk using the libcam log format.
+ logging image streams to disk using the Camunits log format.
 
-Package: libcam-gtk3
+Package: libcamunits-gtk5
 Section: libs
 Architecture: any
 Recommends: camview
 Depends: ${shlibs:Depends}
-Description: GTK+ widgets for libcam
- libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
- intended to provide an easy, consistent, and uniform way to include libcam GUI
- elements in a GTK+ application.
+Description: GTK+ widgets for libcamunits
+ libcamunits-gtk is a library containing GTK+ widgets for Camunits classes.  It
+ is intended to provide an easy, consistent, and uniform way to include
+ Camunits GUI elements in a GTK+ application.
  .
  This package contains shared libraries. 
 
-Package: libcam-gtk3-dev
+Package: libcamunits-gtk5-dev
 Section: libdevel
 Architecture: any
-Depends: libcam-gtk3 (= ${binary:Version}), libcam3-dev, libc6-dev
-Description: GTK+ widgets for libcam
- libcam-gtk is a library containing GTK+ widgets for libcam classes.  It is
- intended to provide an easy, consistent, and uniform way to include GUI
- elements in a libcam application.
+Provides: libcamunits-gtk-dev
+Depends: libcamunits-gtk5 (= ${binary:Version}), libcamunits5-dev, libc6-dev
+Description: Camunits GTK+ widgets
+ libcamunits-gtk is a library containing GTK+ widgets for Camunits classes.  It
+ is intended to provide an easy, consistent, and uniform way to include
+ Camunits GUI elements in a GTK+ application.
  .
  This package contains development files.
 
 Package: camview
 Section: utils
 Architecture: any
-Conflicts: libcam-gtk-utils
 Depends: ${shlibs:Depends}
-Recommends: libcam-utils
-Description: libcam viewer
+Recommends: camunits-utils
+Description: Camunits viewer
  This package contains provides camview, a program for viewing image sources
  and testing image processing chains.  camview is primarily a tool for people
- using libcam to develop machine vision applications, and allows rapid 
+ using libcamunits to develop machine vision applications, and allows rapid
  assembly of previously created image processing elements.
 
-Package: libcam-plugins-dc1394
+Package: camunits-plugins-dc1394
 Section: libs
-Conflicts: libcam0-plugins-dc1394
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: IEEE 1394 Digital Camera device input plugins for libcam
- libcam is a library primarily intended for robotics and machine vision
+Description: IEEE 1394 Digital Camera device input plugins for Camunits
+ Camunits is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
  processing images.
  .
- This package contains plugins to provide libcam programs with access to
+ This package contains plugins to provide Camunits programs with access to
  IEEE 1394 Digital Camera devices. 
 

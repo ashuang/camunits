@@ -1,4 +1,0 @@
-debian/tmp/usr/include/libcam-gtk/*.h
-debian/tmp/usr/lib/libcam-gtk.so
-debian/tmp/usr/lib/libcam-gtk.la
-debian/tmp/usr/lib/pkgconfig/libcam-gtk.pc

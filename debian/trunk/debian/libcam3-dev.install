@@ -1,4 +1,0 @@
-debian/tmp/usr/include/libcam/*.h
-debian/tmp/usr/lib/libcam.so
-debian/tmp/usr/lib/libcam.la
-debian/tmp/usr/lib/pkgconfig/libcam.pc

@@ -1,12 +1,12 @@
 This package was debianized by Albert Huang <ashuang@alum.mit.edu> on
 Wed, 14 Nov 2007 20:38:00 -0500.
 
-It was downloaded from http://libcam.googlecode.com/svn
+It was downloaded from http://camunits.googlecode.com/svn
 
 Upstream Author: Albert Huang <ashuang@alum.mit.edu>
                  David Moore <dcm@acm.org>
 
 Copyright: © 2007-2008 Albert Huang, David Moore
 
-This package is license under LGPL. You may find a copy of LGPL license on your
-Debian system at /usr/share/common-licenses/LGPL .
+This package is licensed under the LGPL. You may find a copy of the LGPL on
+your Debian system at /usr/share/common-licenses/LGPL .

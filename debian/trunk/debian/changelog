@@ -1,41 +1,5 @@
-libcam (0.0.9-1) unstable; urgency=low
+camunits (0.1.0-1) unstable; urgency=low
 
   * New upstream release
 
- -- Albert Huang <albert@csail.mit.edu>  Fri, 19 Sep 2008 17:45:06 -0400
-
-libcam (0.0.6-1) unstable; urgency=low
-
-  * New upstream release
-
- -- Albert Huang <albert@csail.mit.edu>  Wed, 09 Apr 2008 16:23:00 -0400
-
-libcam (0.0.4-1) unstable; urgency=low
-
-  * New upstream release
-
- -- Albert Huang <albert@csail.mit.edu>  Tue, 08 Jan 2008 19:28:54 -0500
-
-libcam (0.0.3-2) unstable; urgency=low
-
-  * Require libdc1394 >= 2.0.0 for building source and for dc1394 plugin
-
- -- Albert Huang <albert@csail.mit.edu>  Mon, 07 Jan 2008 20:05:33 -0500
-
-libcam (0.0.3-1) unstable; urgency=low
-
-  * New upstream release
-
- -- Albert Huang <albert@csail.mit.edu>  Thu, 20 Dec 2007 01:42:46 -0500
-
-libcam (0.0.2-1) unstable; urgency=low
-
-  * New upstream release
-
- -- Albert Huang <albert@csail.mit.edu>  Tue, 18 Dec 2007 16:29:53 -0500
-
-libcam (0.0.1-1) unstable; urgency=low
-
-  * Initial release.
-
- -- Albert Huang <albert@csail.mit.edu>  Wed, 14 Nov 2007 20:41:28 -0500
+ -- Albert <albert@candle>  Tue, 11 Nov 2008 02:49:33 -0500
