@@ -14,10 +14,10 @@
 
 /**
  * SECTION:unit
- * @short_description: CamUnit is the fundamental object in libcamunits.
+ * @short_description: CamUnit is the fundamental object in the CamUnits API.
  *
  * CamUnit is an abstract base class, and is the fundamental object in
- * libcamunits.  CamUnit objects may consume images as input, produce images as
+ * the CamUnits API.  CamUnit objects may consume images as input, produce images as
  * output, and are typically connected in sequence to form an image processing
  * chain (see also: #CamUnitChain)
  *

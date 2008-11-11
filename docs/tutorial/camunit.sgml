@@ -3,7 +3,7 @@
 
     <para>
         The example given in <xref linkend="ch-acquiring"/> provides a simple
-        description of how to use libcam to acquire images.  This chapter
+        description of how to use CamUnits to acquire images.  This chapter
         describes how to do two of the most basic operations:  insert
         units that convert frames from one image format to another, and
         accessing the controls exposed by a unit.
@@ -58,7 +58,7 @@
         specific colorspace and binary representation.
     </para>
     <para>
-        libcam provides a set of conversion <classname>CamUnit</classname>
+        CamUnits provides a set of conversion <classname>CamUnit</classname>
         classes to handle this.  These units can be found in the "convert"
         namespace.  Each unit can only perform a certain number of
         conversions, and also has certain input requirements.  A few examples

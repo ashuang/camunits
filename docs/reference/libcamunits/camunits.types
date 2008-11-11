@@ -1,15 +1,15 @@
-#include <libcam/cam.h>
-#include <libcam/input_v4l.h>
-#include <libcam/input_v4l2.h>
-#include <libcam/input_example.h>
-#include <libcam/input_log.h>
-#include <libcam/filter_gl.h>
-#include <libcam/convert_colorspace.h>
-#include <libcam/convert_to_rgb8.h>
-#include <libcam/filter_fast_bayer.h>
-#include <libcam/convert_jpeg_compress.h>
-#include <libcam/convert_jpeg_decompress.h>
-#include <libcam/output_logger.h>
+#include <camunits/cam.h>
+#include <camunits/input_v4l.h>
+#include <camunits/input_v4l2.h>
+#include <camunits/input_example.h>
+#include <camunits/input_log.h>
+#include <camunits/filter_gl.h>
+#include <camunits/convert_colorspace.h>
+#include <camunits/convert_to_rgb8.h>
+#include <camunits/filter_fast_bayer.h>
+#include <camunits/convert_jpeg_compress.h>
+#include <camunits/convert_jpeg_decompress.h>
+#include <camunits/output_logger.h>
 
 cam_unit_get_type
 cam_unit_driver_get_type

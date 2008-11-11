@@ -1,5 +1,5 @@
 <bookinfo>
-    <title>libcam Tutorial</title>
+    <title>CamUnits Tutorial</title>
 <authorgroup>
 <author>
     <firstname>Albert</firstname>
@@ -10,7 +10,7 @@
 <abstract>
 <para>
     This tutorial provides an introduction to developing image processing and
-    machine vision applications with libcam.
+    machine vision applications with CamUnits.
 </para>
 </abstract>
 
@@ -20,7 +20,7 @@
 </copyright>
 
 <keywordset>
-    <keyword>libcam</keyword>
+    <keyword>camunits</keyword>
     <keyword>dc1394</keyword>
     <keyword>v4l</keyword>
     <keyword>v4l2</keyword>

@@ -3,7 +3,7 @@
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>libcam Reference Manual</title>
+    <title>CamUnits Reference Manual</title>
   </bookinfo>
 
   <chapter>
@@ -37,7 +37,7 @@
     <title>Other stuff</title>
     <xi:include href="xml/dbg.xml"/>
     <xi:include href="xml/pixels.xml"/>
-    <xi:include href="xml/libcam-gmarshal.xml"/>
+    <xi:include href="xml/camunits-gmarshal.xml"/>
     <xi:include href="xml/log.xml"/>
     <xi:include href="xml/plugin.xml"/>
     <xi:include href="xml/gl_texture.xml"/>

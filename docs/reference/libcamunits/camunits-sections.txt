@@ -530,7 +530,7 @@ cam_pixel_copy_8u_generic
 </SECTION>
 
 <SECTION>
-<FILE>libcam-gmarshal</FILE>
+<FILE>camunits-gmarshal</FILE>
 g_cclosure_user_marshal_VOID__OBJECT_OBJECT
 </SECTION>
 

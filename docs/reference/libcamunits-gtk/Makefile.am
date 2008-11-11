@@ -9,7 +9,7 @@ AUTOMAKE_OPTIONS = 1.6
 # of using the various options.
 
 # The name of the module, e.g. 'glib'.
-DOC_MODULE=libcam-gtk
+DOC_MODULE=camunits-gtk
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
@@ -18,7 +18,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk
-DOC_SOURCE_DIR=../../../libcam-gtk
+DOC_SOURCE_DIR=../../../camunits-gtk
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -37,13 +37,13 @@ MKTMPL_OPTIONS=
 
 # Extra options to supply to gtkdoc-fixref. Not normally needed.
 # e.g. FIXXREF_OPTIONS=--extra-dir=../gdk-pixbuf/html --extra-dir=../gdk/html
-FIXXREF_OPTIONS=--extra-dir=../libcam/html
+FIXXREF_OPTIONS=--extra-dir=../camunits/html
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/libcam-gtk/*.h
-CFILE_GLOB=$(top_srcdir)/libcam-gtk/*.c
+HFILE_GLOB=$(top_srcdir)/camunits-gtk/*.h
+CFILE_GLOB=$(top_srcdir)/camunits-gtk/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -68,8 +68,8 @@ expand_content_files=
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 INCLUDES=-I$(top_srcdir) $(GLIB_CFLAGS) $(GTK_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/libcam-gtk/libcam-gtk.la \
-	    $(top_builddir)/libcam/libcam.la \
+GTKDOC_LIBS=$(top_builddir)/camunits-gtk/libcamunits-gtk.la \
+	    $(top_builddir)/camunits/libcamunits.la \
 	    -ljpeg -lGL -lm $(GTK_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
