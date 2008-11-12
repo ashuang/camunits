@@ -2,7 +2,7 @@ Source: camunits-extra
 Section: libs
 Priority: extra
 Maintainer: Albert Huang <albert@csail.mit.edu>
-Build-Depends: debhelper (>> 4.2.0), cdbs, gcc (>= 3.0.0), libgl1-mesa-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.10.0), libjpeg62-dev, libcamunits5-dev, libcamunits-gtk5-dev
+Build-Depends: debhelper (>> 4.2.0), cdbs, gcc (>= 3.0.0), libgl1-mesa-dev, libglib2.0-dev (>= 2.12.0), libgtk2.0-dev (>= 2.10.0), libjpeg62-dev, libcamunits5-dev, libcamunits-gtk5-dev, liblcm1-dev
 Standards-Version: 3.8.0
 Xs-Vcs-Svn: https://camunits.googlecode.com/svn/debian/plugins/camunits-extra
 Xs-Vcs-Browser: http://camunits.googlecode.com/svn/debian/plugins/camunits-extra
@@ -14,3 +14,11 @@ Depends: ${shlibs:Depends}
 Description: Camunits LCM plugins
  This package provides Camunits plugins for transmitting and receiving images
  over LCM.
+
+Package: camunits-plugins-misc
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Camunits miscellaneous plugins
+ This package provides miscellaneous Camunits plugins that Albert has found
+ useful.
