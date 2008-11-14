@@ -271,6 +271,13 @@ state_setup (state_t *self)
     // create the image processing chain
     self->chain = cam_unit_chain_new ();
 
+    // setup the GUI
+    if (self->use_gui) {
+        setup_gtk (self);
+    } else {
+        assert (self->xml_fname);
+    }
+
     cam_unit_chain_all_units_stream_init (self->chain);
     cam_unit_chain_attach_glib (self->chain, 1000, NULL);
     g_signal_connect (G_OBJECT (self->chain), "frame-ready",
@@ -282,13 +289,6 @@ state_setup (state_t *self)
             cam_unit_chain_load_from_str (self->chain, xml_str, NULL);
         }
         free (xml_str);
-    }
-
-    // setup the GUI
-    if (self->use_gui) {
-        setup_gtk (self);
-    } else {
-        assert (self->xml_fname);
     }
 
     return 0;
