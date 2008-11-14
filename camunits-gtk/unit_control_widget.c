@@ -980,9 +980,9 @@ on_control_parameters_changed(CamUnit *unit, CamUnitControl *ctl,
                 }
             case CAM_UNIT_CONTROL_TYPE_FLOAT:
                 {
-                    float min = cam_unit_control_get_min_int (ctl);
-                    float max = cam_unit_control_get_max_int (ctl);
-                    float step = cam_unit_control_get_step_int (ctl);
+                    float min = cam_unit_control_get_min_float (ctl);
+                    float max = cam_unit_control_get_max_float (ctl);
+                    float step = cam_unit_control_get_step_float (ctl);
 
                     if (GTK_IS_SPIN_BUTTON (ci->widget)) {
                         GtkSpinButton *sb = GTK_SPIN_BUTTON (ci->widget);

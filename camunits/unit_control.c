@@ -15,6 +15,15 @@ enum {
     LAST_SIGNAL
 };
 
+static const char *__control_type_names[] = {
+    "invalid",
+    "int",
+    "boolean",
+    "enum",
+    "string",
+    "float"
+};
+
 static guint cam_unit_control_signals[LAST_SIGNAL] = { 0 };
 
 static void cam_unit_control_finalize (GObject *obj);
@@ -355,6 +364,18 @@ check_type (CamUnitControl *self, const GValue *value)
     return 1;
 }
 
+static inline int
+warn_if_wrong_type(const CamUnitControl *self, CamUnitControlType correct_type)
+{
+    if(self->type != correct_type) {
+        g_warning("CamUnitControl is type %s not %s\n",
+                __control_type_names[self->type],
+                __control_type_names[correct_type]);
+        return 1;
+    }
+    return 0;
+}
+
 // ============ force set ============
 int
 cam_unit_control_force_set_val (CamUnitControl *self, const GValue *value)
@@ -447,6 +468,8 @@ cam_unit_control_try_set_val (CamUnitControl *self, const GValue *value)
 int 
 cam_unit_control_try_set_int (CamUnitControl *self, int val)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_INT))
+        return -1;
     GValue gv = { 0, };
     g_value_init (&gv, G_TYPE_INT);
     g_value_set_int (&gv, val);
@@ -458,6 +481,8 @@ cam_unit_control_try_set_int (CamUnitControl *self, int val)
 int 
 cam_unit_control_try_set_float (CamUnitControl *self, float val)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_FLOAT))
+        return -1;
     GValue gv = { 0, };
     g_value_init (&gv, G_TYPE_FLOAT);
     g_value_set_float (&gv, val);
@@ -469,12 +494,16 @@ cam_unit_control_try_set_float (CamUnitControl *self, float val)
 int 
 cam_unit_control_try_set_enum (CamUnitControl *self, int index)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_ENUM))
+        return -1;
     return cam_unit_control_try_set_int (self, index);
 }
 
 int 
 cam_unit_control_try_set_boolean (CamUnitControl *self, int val)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_BOOLEAN))
+        return -1;
     GValue gv = { 0, };
     g_value_init (&gv, G_TYPE_BOOLEAN);
     g_value_set_boolean (&gv, val);
@@ -486,6 +515,8 @@ cam_unit_control_try_set_boolean (CamUnitControl *self, int val)
 int 
 cam_unit_control_try_set_string (CamUnitControl *self, const char *val)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_STRING))
+        return -1;
     GValue gv = { 0, };
     g_value_init (&gv, G_TYPE_STRING);
     g_value_set_string (&gv, val);
@@ -504,49 +535,83 @@ cam_unit_control_get_val (const CamUnitControl *self, GValue *value)
 int 
 cam_unit_control_get_int (const CamUnitControl *self)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_INT))
+        return 0;
     return g_value_get_int (&self->val);
 }
 float
 cam_unit_control_get_float (const CamUnitControl *self)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_FLOAT))
+        return 0;
     return g_value_get_float (&self->val);
 }
 int 
 cam_unit_control_get_enum (const CamUnitControl *self)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_ENUM))
+        return 0;
     return g_value_get_int (&self->val);
 }
 int 
 cam_unit_control_get_boolean (const CamUnitControl *self)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_BOOLEAN))
+        return 0;
     return g_value_get_boolean (&self->val);
 }
 const char *
 cam_unit_control_get_string (const CamUnitControl *self)
 {
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_STRING))
+        return "";
     return g_value_get_string (&self->val);
 }
 
 // =========
 int 
 cam_unit_control_get_max_int (const CamUnitControl *self)
-{ return self->max_int; }
+{ 
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_INT))
+        return 0;
+    return self->max_int; 
+}
 int 
 cam_unit_control_get_min_int (const CamUnitControl *self)
-{ return self->min_int; }
+{ 
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_INT))
+        return 0;
+    return self->min_int; 
+}
 int 
 cam_unit_control_get_step_int (const CamUnitControl *self)
-{ return self->step_int; }
+{ 
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_INT))
+        return 0;
+    return self->step_int; 
+}
 
 float 
 cam_unit_control_get_max_float (const CamUnitControl *self)
-{ return self->max_float; }
+{ 
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_FLOAT))
+        return 0;
+    return self->max_float; 
+}
 float
 cam_unit_control_get_min_float (const CamUnitControl *self)
-{ return self->min_float; }
+{ 
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_FLOAT))
+        return 0;
+    return self->min_float; 
+}
 float
 cam_unit_control_get_step_float (const CamUnitControl *self)
-{ return self->step_float; }
+{ 
+    if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_FLOAT))
+        return 0;
+    return self->step_float; 
+}
 
 void 
 cam_unit_control_set_enabled (CamUnitControl *self, int enabled)
