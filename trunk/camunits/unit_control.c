@@ -496,7 +496,12 @@ cam_unit_control_try_set_enum (CamUnitControl *self, int index)
 {
     if(warn_if_wrong_type(self, CAM_UNIT_CONTROL_TYPE_ENUM))
         return -1;
-    return cam_unit_control_try_set_int (self, index);
+    GValue gv = { 0, };
+    g_value_init (&gv, G_TYPE_INT);
+    g_value_set_int (&gv, index);
+    int result = cam_unit_control_try_set_val (self, &gv);
+    g_value_unset (&gv);
+    return result;
 }
 
 int 
