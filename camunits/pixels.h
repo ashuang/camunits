@@ -11,9 +11,9 @@
     ((uint32_t)(c)<<16) | \
     ((uint32_t)(d)<<24))
 
-#define IS_ALIGNED16(x) (((uintptr_t)(x) & 0xf) == 0)
-#define IS_ALIGNED32(x) (((uintptr_t)(x) & 0x1f) == 0)
-#define IS_ALIGNED128(x) (((uintptr_t)(x) & 0x7f) == 0)
+#define CAM_IS_ALIGNED16(x) (((uintptr_t)(x) & 0xf) == 0)
+#define CAM_IS_ALIGNED32(x) (((uintptr_t)(x) & 0x1f) == 0)
+#define CAM_IS_ALIGNED128(x) (((uintptr_t)(x) & 0x7f) == 0)
 
 #ifdef __cplusplus
 extern "C" {
