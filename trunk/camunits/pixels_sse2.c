@@ -12,13 +12,13 @@ cam_pixel_split_bayer_planes_8u_sse2 (uint8_t *dst[4], int dstride,
     int i, j;
 
     for (i = 0; i < 4; i++) {
-        if (!IS_ALIGNED16(dst[i]) || !IS_ALIGNED16(dstride)) {
+        if (!CAM_IS_ALIGNED16(dst[i]) || !CAM_IS_ALIGNED16(dstride)) {
             fprintf (stderr, "cam_pixel_split_bayer_planes_8u: dst[%d] is not "
                     "16-byte aligned\n", i);
             return -1;
         }
     }
-    if (!IS_ALIGNED16(src) || !IS_ALIGNED16(sstride)) {
+    if (!CAM_IS_ALIGNED16(src) || !CAM_IS_ALIGNED16(sstride)) {
         fprintf (stderr, "cam_pixel_split_bayer_planes_8u: src is not 16-byte "
                 "aligned\n");
         return -1;
@@ -26,7 +26,7 @@ cam_pixel_split_bayer_planes_8u_sse2 (uint8_t *dst[4], int dstride,
 
     /* If the source stride is not a multiple of 32 pixels, we need to
      * fix up the last column at the end. */
-    if (!IS_ALIGNED32 (sstride))
+    if (!CAM_IS_ALIGNED32 (sstride))
         width -= 8;
 
     mask = _mm_set1_epi16 (0xff);
@@ -69,7 +69,7 @@ cam_pixel_split_bayer_planes_8u_sse2 (uint8_t *dst[4], int dstride,
             _mm_store_si128 ((__m128i *)(drow4 + j), out);
         }
     }
-    if (IS_ALIGNED32 (sstride))
+    if (CAM_IS_ALIGNED32 (sstride))
         return 0;
 
     /* Fix up the last column if necessary */
@@ -464,13 +464,13 @@ cam_pixel_bayer_interpolate_to_8u_bgra_sse2 (uint8_t ** src, int sstride,
 {
     int i, j;
     for (i = 0; i < 4; i++) {
-        if (!IS_ALIGNED16(src[i]) || !IS_ALIGNED16(sstride)) {
+        if (!CAM_IS_ALIGNED16(src[i]) || !CAM_IS_ALIGNED16(sstride)) {
             fprintf (stderr, "%s: src[%d] is not 16-byte aligned\n",
                     __FUNCTION__, i);
             return -1;
         }
     }
-    if (!IS_ALIGNED16(dst) || !IS_ALIGNED128(dstride)) {
+    if (!CAM_IS_ALIGNED16(dst) || !CAM_IS_ALIGNED128(dstride)) {
         fprintf (stderr, "%s: dst is not 16-byte aligned or 128-byte stride "
                 "aligned\n", __FUNCTION__);
         return -1;
@@ -815,12 +815,12 @@ cam_pixel_bayer_interpolate_to_8u_gray_sse2 (uint8_t * src, int sstride,
         CamPixelFormat format)
 {
     int i, j;
-    if (!IS_ALIGNED16(src) || !IS_ALIGNED16(sstride)) {
+    if (!CAM_IS_ALIGNED16(src) || !CAM_IS_ALIGNED16(sstride)) {
         fprintf (stderr, "%s: src is not 16-byte aligned\n",
                 __FUNCTION__);
         return -1;
     }
-    if (!IS_ALIGNED16(dst) || !IS_ALIGNED16(dstride)) {
+    if (!CAM_IS_ALIGNED16(dst) || !CAM_IS_ALIGNED16(dstride)) {
         fprintf (stderr, "%s: dst is not 16-byte aligned\n",
                 __FUNCTION__);
         return -1;

@@ -973,7 +973,7 @@ cam_pixel_convert_bayer_to_8u_gray (uint8_t *dest, int dstride, int width,
 
     cam_pixel_replicate_border_8u (plane, plane_stride, width, height);
 
-    if (!IS_ALIGNED16 (dest) || !IS_ALIGNED16 (dstride)) {
+    if (!CAM_IS_ALIGNED16 (dest) || !CAM_IS_ALIGNED16 (dstride)) {
         void *gray_buf = MALLOC_ALIGNED (height * plane_stride);
 
         // interpolate
@@ -1026,15 +1026,15 @@ cam_pixel_split_2_planes_8u (uint8_t * dst1, int dstride1, uint8_t * dst2,
     __m128i mask;
     int i, j;
 
-    if (!IS_ALIGNED16(dst1) || !IS_ALIGNED16(dstride1)) {
+    if (!CAM_IS_ALIGNED16(dst1) || !CAM_IS_ALIGNED16(dstride1)) {
         fprintf (stderr, "cam_pixel_split_2_planes_8u: dst1 is not 16-byte aligned\n");
         return -1;
     }
-    if (!IS_ALIGNED16(dst2) || !IS_ALIGNED16(dstride2)) {
+    if (!CAM_IS_ALIGNED16(dst2) || !CAM_IS_ALIGNED16(dstride2)) {
         fprintf (stderr, "cam_pixel_split_2_planes_8u: dst2 is not 16-byte aligned\n");
         return -1;
     }
-    if (!IS_ALIGNED16(src) || !IS_ALIGNED32(sstride)) {
+    if (!CAM_IS_ALIGNED16(src) || !CAM_IS_ALIGNED32(sstride)) {
         fprintf (stderr, "cam_pixel_split_2_planes_8u: src is not 32-byte aligned\n");
         return -1;
     }
@@ -1071,15 +1071,15 @@ pixel_join_2_planes_8u (uint8_t * dest, int dstride, uint8_t * src1,
 {
     int i, j;
 
-    if (!IS_ALIGNED16(dest) || !IS_ALIGNED32(dstride)) {
+    if (!CAM_IS_ALIGNED16(dest) || !CAM_IS_ALIGNED32(dstride)) {
         fprintf (stderr, "pixel_join_2_planes_8u: dest is not 32-byte aligned\n");
         return -1;
     }
-    if (!IS_ALIGNED16(src1) || !IS_ALIGNED16(sstride1)) {
+    if (!CAM_IS_ALIGNED16(src1) || !CAM_IS_ALIGNED16(sstride1)) {
         fprintf (stderr, "pixel_join_2_planes_8u: src1 is not 16-byte aligned\n");
         return -1;
     }
-    if (!IS_ALIGNED16(src2) || !IS_ALIGNED16(sstride2)) {
+    if (!CAM_IS_ALIGNED16(src2) || !CAM_IS_ALIGNED16(sstride2)) {
         fprintf (stderr, "pixel_join_2_planes_8u: src2 is not 16-byte aligned\n");
         return -1;
     }
