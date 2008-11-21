@@ -40,6 +40,15 @@ static const char* PLUGIN_PATH_SEPARATOR = ":";
 #define CAMUNITS_PLUGIN_PATH ""
 #endif
 
+// class private data
+#define _GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_MANAGER, PrivateData))
+typedef struct _PrivateData PrivateData;
+
+struct _PrivateData {
+    GHashTable * running_drivers;
+};
+
+
 struct _CamUnitManagerSource {
     GSource gsource;
     CamUnitManager *manager;
@@ -88,6 +97,9 @@ cam_unit_manager_init (CamUnitManager *self)
     self->event_source->manager = self;
     self->driver_to_update = NULL;
     self->event_source_attached_glib = 0;
+
+    PrivateData * priv = _GET_PRIVATE(self);
+    priv->running_drivers = g_hash_table_new(g_direct_hash, g_direct_equal);
 }
 
 static void
@@ -152,6 +164,8 @@ cam_unit_manager_class_init (CamUnitManagerClass *klass)
                 g_cclosure_marshal_VOID__OBJECT,
                 G_TYPE_NONE, 1,
                 CAM_TYPE_UNIT_DRIVER);
+
+    g_type_class_add_private(gobject_class, sizeof(PrivateData));
 }
 
 static void
@@ -172,6 +186,9 @@ cam_unit_manager_finalize (GObject *obj)
         g_object_unref (driver);
     }
     g_list_free (self->drivers);
+
+    PrivateData * priv = _GET_PRIVATE(self);
+    g_hash_table_destroy(priv->running_drivers);
 
     G_OBJECT_CLASS (cam_unit_manager_parent_class)->finalize (obj);
 }
@@ -245,7 +262,13 @@ cam_unit_manager_add_driver (CamUnitManager *self, CamUnitDriver *driver)
 
     // maybe start the driver
     if (self->desired_driver_status == DRIVER_STARTED) {
-        cam_unit_driver_start (driver);
+        int status = cam_unit_driver_start (driver);
+
+        // mark the driver if it started successfully
+        if(0 != status) {
+            PrivateData * priv = _GET_PRIVATE(self);
+            g_hash_table_insert(priv->running_drivers, driver, driver);
+        }
     }
 }
 
@@ -273,6 +296,7 @@ cam_unit_manager_start_drivers (CamUnitManager * self)
 {
     dbg (DBG_MANAGER, "start all drivers \n");
 
+    PrivateData * priv = _GET_PRIVATE(self);
     self->desired_driver_status = DRIVER_STARTED;
 
     /* Loop through the list of drivers that the unit manager has discovered. */
@@ -280,10 +304,18 @@ cam_unit_manager_start_drivers (CamUnitManager * self)
     for (iter=self->drivers; iter; iter=iter->next) {
         CamUnitDriver * driver = (CamUnitDriver*) iter->data;
 
-        /* Assign callbacks and start the driver.  The driver will discover
-         * any units that it provides, and notify us of their availability
-         * by invoking the callbacks. */
-        cam_unit_driver_start (driver);
+        // only start drivers that haven't already been started
+        if(NULL == g_hash_table_lookup(priv->running_drivers, driver)) {
+            /* Assign callbacks and start the driver.  The driver will discover
+             * any units that it provides, and notify us of their availability
+             * by invoking the callbacks. */
+            int status = cam_unit_driver_start (driver);
+
+            if(0 == status) {
+                g_hash_table_insert(priv->running_drivers, driver, driver);
+            }
+        }
+
     }
 
     return 0;
@@ -293,12 +325,19 @@ int
 cam_unit_manager_stop_drivers (CamUnitManager * self)
 {
     dbg (DBG_MANAGER, "stopping all drivers\n");
+
+    PrivateData * priv = _GET_PRIVATE(self);
     self->desired_driver_status = DRIVER_STOPPED;
 
     GList *iter;
     for (iter=self->drivers; iter; iter=iter->next) {
         CamUnitDriver *driver = CAM_UNIT_DRIVER (iter->data);
-        cam_unit_driver_stop (driver);
+
+        // only try to stop running drivers
+        if(g_hash_table_lookup(priv->running_drivers, driver)) {
+            cam_unit_driver_stop (driver);
+            g_hash_table_remove(priv->running_drivers, driver);
+        }
     }
     return 0;
 }
