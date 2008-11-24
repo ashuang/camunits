@@ -3,9 +3,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <assert.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#include <sys/time.h>
 #include <errno.h>
 
 #include <gtk/gtk.h>
@@ -29,17 +27,68 @@ typedef struct _state_t {
     GtkWindow *window;
     GtkWidget *manager_frame;
     GtkWidget *chain_frame;
+
+    int64_t last_frame_utime;
+    double fps;
+    double non_decayed_fps;
+    int64_t last_fps_utime;
 } state_t;
 
 // ==================== signal handlers =====================
+
+static void
+update_fps_label(state_t * self, int64_t now)
+{
+    if(now - self->last_fps_utime < 300000) 
+        return;
+    GtkWidget *label = gtk_frame_get_label_widget(GTK_FRAME(self->chain_frame));
+    char text[80];
+    sprintf(text, "Chain (%.2f fps)", self->fps);
+    gtk_label_set_text(GTK_LABEL(label), text);
+    self->last_fps_utime = now;
+}
+
+static gboolean
+decay_fps(void * user_data)
+{
+    state_t *self = (state_t*) user_data;
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    int64_t now = (int64_t) tv.tv_sec * 1000000 + tv.tv_usec;
+    if(self->fps < 0.01 && self->fps > 0) {
+        self->fps = 0;
+        update_fps_label(self, now);
+    } else {
+        double dt = (now - self->last_frame_utime) * 1e-6;
+        if(dt > 1.5 * 1 / self->non_decayed_fps) {
+            self->fps *= 0.8;
+            update_fps_label(self, now);
+        }
+    }
+    return TRUE;
+}
 
 static void
 on_frame_ready (CamUnitChain *chain, CamUnit *unit, const CamFrameBuffer *buf, 
         void *user_data)
 {
     state_t *self = (state_t*) user_data;
-    if (self->use_gui) 
+    if (self->use_gui) {
         cam_unit_chain_gl_widget_request_redraw (self->chain_gl_widget);
+
+        // update FPS display
+        struct timeval tv;
+        gettimeofday (&tv, NULL);
+        int64_t now = (int64_t) tv.tv_sec * 1000000 + tv.tv_usec;
+        if(self->last_frame_utime) {
+            double dt = (now - self->last_frame_utime) * 1e-6;
+            double a = 0.5;
+            self->fps = a * (1/dt) + (1-a) * self->fps;
+            update_fps_label(self, now);
+            self->non_decayed_fps = self->fps;
+        }
+        self->last_frame_utime = now;
+    }
 }
 
 static void
@@ -263,6 +312,8 @@ setup_gtk (state_t *self)
             GTK_WIDGET (self->chain_widget));
 
     gtk_widget_show_all (GTK_WIDGET (self->window));
+
+    g_timeout_add(250, decay_fps, self);
 }
 
 static int
