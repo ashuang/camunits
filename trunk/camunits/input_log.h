@@ -1,7 +1,19 @@
 #ifndef __input_log_h__
 #define __input_log_h__
 
+#include <glib-object.h>
+
 G_BEGIN_DECLS
+
+/**
+ * SECTION:input_log
+ * @short_description: Log input unit
+ * CamInputLogDriver documentation goes here
+ */
+
+/*
+ * CamInputLogDriver
+ */
 
 typedef struct _CamInputLogDriver CamInputLogDriver;
 typedef struct _CamInputLogDriverClass CamInputLogDriverClass;
