@@ -6,8 +6,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <glib-object.h>
-
 #include "unit.h"
 #include "unit_driver.h"
 #include "pixels.h"
@@ -16,16 +14,6 @@
 #include "dbg.h"
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
-
-/**
- * SECTION:input_log
- * @short_description: Log input unit
- * CamInputLogDriver documentation goes here
- */
-
-/*
- * CamInputLogDriver
- */
 
 struct _CamInputLogDriver {
     CamUnitDriver parent;
