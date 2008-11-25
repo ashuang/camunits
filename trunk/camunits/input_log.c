@@ -6,12 +6,59 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "pixels.h"
+#include <glib-object.h>
 
+#include "unit.h"
+#include "unit_driver.h"
+#include "pixels.h"
+#include "log.h"
 #include "input_log.h"
 #include "dbg.h"
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
+
+/**
+ * SECTION:input_log
+ * @short_description: Log input unit
+ * CamInputLogDriver documentation goes here
+ */
+
+/*
+ * CamInputLogDriver
+ */
+
+struct _CamInputLogDriver {
+    CamUnitDriver parent;
+};
+
+struct _CamInputLogDriverClass {
+    CamUnitDriverClass parent_class;
+};
+
+struct _CamInputLog {
+    CamUnit parent;
+
+    CamLog *camlog;
+
+    int64_t next_frame_time;
+
+    int nframes;
+
+    int readone;
+
+    CamUnitControl *frame_ctl;
+    CamUnitControl *pause_ctl;
+    CamUnitControl *adv_mode_ctl;
+    CamUnitControl *adv_speed_ctl;
+    CamUnitControl *fname_ctl;
+    CamUnitControl *loop_ctl;
+    CamUnitControl *loop_start_ctl;
+    CamUnitControl *loop_end_ctl;
+};
+
+struct _CamInputLogClass {
+    CamUnitClass parent_class;
+};
 
 // ============== CamInputLogDriver ===============
 
@@ -105,7 +152,19 @@ cam_input_log_init (CamInputLog *self)
 
     self->adv_speed_ctl = cam_unit_add_control_float (super,
             "speed", "Playback Speed", 0.1, 20, 0.1, 1, 1);
+    cam_unit_control_set_ui_hints(self->adv_speed_ctl, 
+            CAM_UNIT_CONTROL_SPINBUTTON);
 
+    self->loop_ctl = cam_unit_add_control_boolean(super,
+            "loop", "Loop", 0, 1);
+    self->loop_start_ctl = cam_unit_add_control_int(super, 
+            "loop-start-frame", "Loop Start Frame", 0, 1, 1, 1, 0);
+    self->loop_end_ctl = cam_unit_add_control_int(super, 
+            "loop-end-frame", "Loop End Frame", 0, 1, 1, 1, 0);
+    cam_unit_control_set_ui_hints(self->loop_start_ctl, 
+            CAM_UNIT_CONTROL_SPINBUTTON);
+    cam_unit_control_set_ui_hints(self->loop_end_ctl, 
+            CAM_UNIT_CONTROL_SPINBUTTON);
 }
 
 static void
@@ -173,8 +232,14 @@ _log_set_file (CamInputLog *self, const char *fname)
             format.width, format.height, format.stride, max_data_size);
 
     self->nframes = cam_log_count_frames (self->camlog);
-    cam_unit_control_modify_int (self->frame_ctl, 0, self->nframes-1, 1, 1);
+    int maxframe = self->nframes - 1;
+    cam_unit_control_modify_int (self->frame_ctl, 0, maxframe, 1, 1);
     cam_unit_control_force_set_int (self->frame_ctl, 0);
+
+    cam_unit_control_modify_int(self->loop_start_ctl, 0, maxframe, 1, 0);
+    cam_unit_control_modify_int(self->loop_end_ctl, 0, maxframe, 1, 0);
+    cam_unit_control_force_set_int(self->loop_start_ctl, 0);
+    cam_unit_control_force_set_int(self->loop_end_ctl, maxframe);
 
     return 0;
 
@@ -266,6 +331,19 @@ log_try_produce_frame (CamUnit *super)
     CamLogFrameInfo frameinfo;
     cam_log_get_frame_info (self->camlog, &frameinfo);
 
+    // should we loop?
+    int loop = cam_unit_control_get_boolean(self->loop_ctl);
+    int just_looped = 0;
+    if(loop) {
+        int loop_end = cam_unit_control_get_int(self->loop_end_ctl);
+        int loop_start = cam_unit_control_get_int(self->loop_start_ctl);
+
+        if(frameinfo.frameno >= loop_end || frameinfo.frameno < loop_start) {
+            cam_log_seek_to_frame(self->camlog, loop_start);
+            just_looped = 1;
+        }
+    }
+
     // what is the timestamp of the next frame?
     int have_next_frame = (0 == cam_log_next_frame (self->camlog));
     if (! have_next_frame) {
@@ -276,14 +354,16 @@ log_try_produce_frame (CamUnit *super)
         CamLogFrameInfo next_frameinfo;
         cam_log_get_frame_info (self->camlog, &next_frameinfo);
 
-//        // XXX why does this blow up?
-//        int64_t dt = 
-//            (int64_t)((next_frameinfo.timestamp - frameinfo.timestamp) / speed);
-        int64_t dt = 
-            (int64_t)((int)(next_frameinfo.timestamp - frameinfo.timestamp) / speed);
+        int64_t frame_dt_usec = next_frameinfo.timestamp - frameinfo.timestamp;
+        int64_t dt_usec = (int64_t)((int)frame_dt_usec / speed);
 
-        self->next_frame_time = now + dt;
-        dbg (DBG_INPUT, "usec until next frame: %"PRId64"\n", dt);
+        if(just_looped) {
+            // frame time diffs are not useful if we just looped
+            dt_usec = 30000;
+        }
+
+        self->next_frame_time = now + dt_usec;
+        dbg (DBG_INPUT, "usec until next frame: %"PRId64"\n", dt_usec);
     }
 
     cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
@@ -327,12 +407,10 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
     } else if (ctl == self->adv_speed_ctl) {
         g_value_copy (proposed, actual);
         return TRUE;
-    }
-    else if (ctl == self->adv_mode_ctl) {
+    } else if (ctl == self->adv_mode_ctl) {
         g_value_copy (proposed, actual);
         return TRUE;
-    }
-    else if (ctl == self->fname_ctl) {
+    } else if (ctl == self->fname_ctl) {
         if (super->is_streaming) {
             cam_unit_stream_shutdown (super);
         }
@@ -346,6 +424,26 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
             g_value_set_string (actual, "");
             return FALSE;
         }
+    } else if(ctl == self->loop_ctl) {
+        int loop_enable = g_value_get_boolean(proposed);
+        cam_unit_control_set_enabled(self->loop_start_ctl, loop_enable);
+        cam_unit_control_set_enabled(self->loop_end_ctl, loop_enable);
+        g_value_copy (proposed, actual);
+        return TRUE;
+    } else if(ctl == self->loop_start_ctl) {
+        int frameno = g_value_get_int(proposed);
+        if(frameno > cam_unit_control_get_int(self->loop_end_ctl)) {
+            return FALSE;
+        }
+        g_value_copy (proposed, actual);
+        return TRUE;
+    } else if(ctl == self->loop_end_ctl) {
+        int frameno = g_value_get_int(proposed);
+        if(frameno < cam_unit_control_get_int(self->loop_start_ctl)) {
+            return FALSE;
+        }
+        g_value_copy (proposed, actual);
+        return TRUE;
     }
     return FALSE;
 }

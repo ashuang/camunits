@@ -1,24 +1,7 @@
 #ifndef __input_log_h__
 #define __input_log_h__
 
-#include <glib-object.h>
-
-#include "unit.h"
-#include "unit_driver.h"
-#include "log.h"
-
 G_BEGIN_DECLS
-
-/**
- * SECTION:input_v4l
- * @short_description: input unit for Video 4 Linux (V4L) devices
- * CamInputLogDriver documentation goes here
- */
-
-
-/*
- * CamInputLogDriver
- */
 
 typedef struct _CamInputLogDriver CamInputLogDriver;
 typedef struct _CamInputLogDriverClass CamInputLogDriverClass;
@@ -35,14 +18,6 @@ typedef struct _CamInputLogDriverClass CamInputLogDriverClass;
             (klass), CAM_INPUT_LOG_DRIVER_TYPE))
 #define CAM_INPUT_LOG_DRIVER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
             CAM_INPUT_LOG_DRIVER_TYPE, CamInputLogDriverClass))
-
-struct _CamInputLogDriver {
-    CamUnitDriver parent;
-};
-
-struct _CamInputLogDriverClass {
-    CamUnitDriverClass parent_class;
-};
 
 GType cam_input_log_driver_get_type (void);
 
@@ -73,28 +48,6 @@ typedef struct _CamInputLogClass CamInputLogClass;
             (klass), CAM_INPUT_LOG_TYPE))
 #define CAM_INPUT_LOG_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
             CAM_INPUT_LOG_TYPE, CamInputLogClass))
-
-struct _CamInputLog {
-    CamUnit parent;
-
-    CamLog *camlog;
-
-    int64_t next_frame_time;
-
-    int nframes;
-
-    CamUnitControl *frame_ctl;
-    CamUnitControl *pause_ctl;
-    CamUnitControl *adv_mode_ctl;
-    CamUnitControl *adv_speed_ctl;
-    CamUnitControl *fname_ctl;
-
-    int readone;
-};
-
-struct _CamInputLogClass {
-    CamUnitClass parent_class;
-};
 
 GType cam_input_log_get_type (void);
 
