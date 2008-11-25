@@ -265,7 +265,7 @@ setup_gtk (state_t *self)
     gtk_paned_pack2 (GTK_PANED(hpane2), self->chain_frame, FALSE, TRUE);
 
     gtk_paned_set_position (GTK_PANED (hpane1), 200);
-    gtk_paned_set_position (GTK_PANED (hpane2), 500);
+    gtk_paned_set_position (GTK_PANED (hpane2), 400);
 
 
     // manager widget
