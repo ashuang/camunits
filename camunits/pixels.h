@@ -51,6 +51,7 @@ typedef enum {
     CAM_PIXEL_FORMAT_BE_RGB16=358,          /* 48-bpp rgb (16-bits per channel), big-endian */
     CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16=359,
     CAM_PIXEL_FORMAT_BE_SIGNED_RGB16=360,
+    CAM_PIXEL_FORMAT_LE_GRAY16=cam_pf_fourcc('L','G','1','6'), /* 16-bit grayscale, little-endian */
     CAM_PIXEL_FORMAT_FLOAT_GRAY32=cam_pf_fourcc('F','G','3','2'), /* 32-bit grayscale IEEE float, native byte order */
 //    CAM_PIXEL_FORMAT_FLOAT_RGB32,
     CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFE,
