@@ -52,13 +52,14 @@ cam_pixel_format_get_type (void)
             { CAM_PIXEL_FORMAT_BE_RGB16, "CAM_PIXEL_FORMAT_RGB16", "RGB Big-EndianE 48bpp" },
             { CAM_PIXEL_FORMAT_BE_SIGNED_RGB16, "CAM_PIXEL_FORMAT_SIGNED_RGB16", "RGB Big-Endian signed 48bpp" },
             { CAM_PIXEL_FORMAT_GRAY, "CAM_PIXEL_FORMAT_GRAY", "Gray 8bpp" },
-            { CAM_PIXEL_FORMAT_BE_GRAY16, "CAM_PIXEL_FORMAT_GRAY16", "Gray Big-Endian 16bpp" },
-            { CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16, "CAM_PIXEL_FORMAT_SIGNED_GRAY16", "Gray Big-Endian signed 16bpp" },
+            { CAM_PIXEL_FORMAT_BE_GRAY16, "CAM_PIXEL_FORMAT_BE_GRAY16", "Gray Big-Endian 16bpp" },
+            { CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16, "CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16", "Gray Big-Endian signed 16bpp" },
             { CAM_PIXEL_FORMAT_BAYER_BGGR, "CAM_PIXEL_FORMAT_BAYER_BGGR", "Bayer BGGR 8bpp" },
             { CAM_PIXEL_FORMAT_BAYER_GBRG, "CAM_PIXEL_FORMAT_BAYER_GBRG", "Bayer GBRG 8bpp" },
             { CAM_PIXEL_FORMAT_BAYER_GRBG, "CAM_PIXEL_FORMAT_BAYER_GRBG", "Bayer GRBG 8bpp" },
             { CAM_PIXEL_FORMAT_BAYER_RGGB, "CAM_PIXEL_FORMAT_BAYER_RGGB", "Bayer RGGB 8bpp" },
             { CAM_PIXEL_FORMAT_MJPEG, "CAM_PIXEL_FORMAT_MJPEG", "Motion-JPEG" },
+            { CAM_PIXEL_FORMAT_LE_GRAY16, "CAM_PIXEL_FORMAT_LE_GRAY16", "Gray Little-Endian 16bpp" },
             { CAM_PIXEL_FORMAT_FLOAT_GRAY32, "CAM_PIXEL_FORMAT_FLOAT_GRAY32", "Gray float-32bpp" },
 //            { CAM_PIXEL_FORMAT_FLOAT_RGB32, "CAM_PIXEL_FORMAT_FLOAT_RGB32", "RGB float-96bpp" },
             { CAM_PIXEL_FORMAT_INVALID, "CAM_PIXEL_FORMAT_INVALID", "Invalid / Unsupported" },
@@ -117,6 +118,7 @@ cam_pixel_format_bpp (CamPixelFormat p)
         case CAM_PIXEL_FORMAT_BAYER_RGGB:
             return 8;
         case CAM_PIXEL_FORMAT_BE_GRAY16:
+        case CAM_PIXEL_FORMAT_LE_GRAY16:
         case CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16:
 //        case CAM_PIXEL_FORMAT_BAYER16:
             return 16;

@@ -249,6 +249,13 @@ cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
         if(G_BYTE_ORDER != G_BIG_ENDIAN)
             swap_bytes = 1;
     }
+    else if (pixelformat == CAM_PIXEL_FORMAT_LE_GRAY16) {
+        format = GL_LUMINANCE;
+        type = GL_UNSIGNED_SHORT;
+
+        if(G_BYTE_ORDER != G_LITTLE_ENDIAN)
+            swap_bytes = 1;
+    }
     else if (pixelformat == CAM_PIXEL_FORMAT_FLOAT_GRAY32) {
         format = GL_LUMINANCE;
         type = GL_FLOAT;

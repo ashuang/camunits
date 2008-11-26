@@ -171,6 +171,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
            infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_GRBG ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_BE_GRAY16 ||
+           infmt->pixelformat == CAM_PIXEL_FORMAT_LE_GRAY16 ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_FLOAT_GRAY32
            )) return;
 
