@@ -374,7 +374,7 @@ int main (int argc, char **argv)
     state_t * self = (state_t*) calloc (1, sizeof (state_t));
     self->use_gui = 1;
 
-    char *optstring = "hf:";
+    char *optstring = "hc:";
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
