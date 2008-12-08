@@ -26,18 +26,43 @@ camlog \- Image stream logger
 
 .SH DESCRIPTION
 .PP
-\fBcamlog\fR is a tool for logging video frames to disk using libcamunits.  
-Generated logfiles can then be used as image sources in libcamunits programs.
+\fBcamlog\fR is a tool for writing video data to disk, primarily to save
+data for post-processing and analysis.  The video source written to
+disk is determined by specifying either the -i or -c flag -- exactly
+one of these must be specified.  Logfiles produced by camlog are
+suitable for loading with the Camunits input.log unit.
+
+Using the -i option is simpler, and is useful for dealing with an
+input unit where the default settings are sufficient.  If the default
+unit settings are not sufficient, or pre-log processing is desired,
+then use the -c option and specify a chain description file as produced
+by camview or the cam_unit_chain_snapshot() function.
 
 .SH OPTIONS
 The following options are provided by \fBcamlog\fR using the standard GNU
 command line syntax:
 .TP
-.B \-i, \-\-input=\fISOURCE\fB
-Loads the specified input source.  \fISOURCE\fR should be a libcamunits unit id.
+.B \-i, \-\-input=\fIID\fB
+Loads the specified input source.  \fISOURCE\fR should be a Camunits unit id.
+.TP
+.B \-c, \-\-chain=\fINAME\fB
+Loads the chain from file NAME.
+.TP
+.B \-o, \-\-output=\fIFILE\fB
+Saves result to filename FILE.  If not specified, a a filename is automatically
+chosen.
+.TP
+.B \-f, \-\-force
+Force overwrite of output_file if it already exists
+.TP
+.B \-n, \-\-no-write
+Do not write video data to disk.  Useful for testing.
+.TP
+.B \-v, \-\-verbose
+Be more verbose.
 .TP
 .B \-h, \-\-help
-Print this help and exit.
+Print this help text and exit.
 
 .SH AUTHORS
 
