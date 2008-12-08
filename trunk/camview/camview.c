@@ -361,10 +361,10 @@ usage (const char *progname)
     fprintf (stderr, "usage: %s [options]\n"
             "\n"
             "Options:\n"
-            "    -f NAME, --file NAME   Load chain from file NAME\n"
-            "    --no-gui               Run without a GUI.  If --no-gui\n"
-            "                           is specified, -f is required.\n"
-            "    -h, --help             Show this help text and exit\n"
+            "    -c, --chain NAME   Load chain from file NAME\n"
+            "    --no-gui           Run without a GUI.  If --no-gui\n"
+            "                       is specified, -c is required.\n"
+            "    -h, --help         Show this help text and exit\n"
             , progname);
     exit(1);
 }
@@ -378,7 +378,7 @@ int main (int argc, char **argv)
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
-        { "file", required_argument, 0, 'f' },
+        { "chain", required_argument, 0, 'c' },
         { "no-gui", no_argument, 0, 'u' },
         { 0, 0, 0, 0 }
     };
@@ -386,7 +386,7 @@ int main (int argc, char **argv)
     while ((c = getopt_long (argc, argv, optstring, long_opts, 0)) >= 0)
     {
         switch (c) {
-            case 'f':
+            case 'c':
                 self->xml_fname = strdup (optarg);
                 break;
             case 'u':
