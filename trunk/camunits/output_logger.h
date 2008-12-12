@@ -34,24 +34,6 @@ typedef struct _CamLoggerUnitClass CamLoggerUnitClass;
 #define CAM_LOGGER_UNIT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
             CAM_TYPE_LOGGER_UNIT, CamLoggerUnitClass))
 
-struct _CamLoggerUnit {
-    CamUnit parent;
-    CamUnitControl *record_ctl;
-    CamUnitControl *filename_ctl;
-
-    GAsyncQueue *msg_q;
-    GThread *writer_thread;
-
-    // as long as the writer thread is active, it "owns" these members
-    CamLog *camlog;
-    char *fname;
-    char *basename;
-};
-
-struct _CamLoggerUnitClass {
-    CamUnitClass parent_class;
-};
-
 GType cam_logger_unit_get_type (void);
 
 /** 

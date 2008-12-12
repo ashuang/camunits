@@ -86,6 +86,10 @@ usage()
         " -o, --output FILE  Saves result to filename FILE.  If not specified, a\n"
         "                    filename is automatically chosen.\n"
         " -f, --force        Force overwrite of output_file if it already exists\n"
+        "                    If not specified, and the output file already\n"
+        "                    exists, then a suffix is automatically appended\n"
+        "                    to the filename to prevent overwriting existing\n"
+        "                    files.\n"
         " -n, --no-write     Do not write video data to disk.  Useful for testing.\n"
         " -v, --verbose      Print information about each frame.\n\n");
 }
@@ -168,12 +172,6 @@ int main(int argc, char **argv)
         usage();
         goto done;
     }
-    if(log_fname && !overwrite && g_file_test(log_fname, G_FILE_TEST_EXISTS)) {
-        // don't overwrite files unless -f was specified
-        fprintf(stderr, "output file exists and -f not specified.\n");
-        fprintf(stderr, "file: %s\n", log_fname);
-        goto done;
-    }
 
     // create the GLib mainloop
     mainloop = g_main_loop_new (NULL, FALSE);
@@ -200,7 +198,6 @@ int main(int argc, char **argv)
 
     CamUnit *logger_unit = NULL;
     if (do_logging) {
-        fprintf (stderr, "initializing logging unit\n");
         // create the logger unit and add it to the chain.
         logger_unit = cam_unit_chain_add_unit_by_id(chain, 
                 "output.logger");
@@ -208,9 +205,18 @@ int main(int argc, char **argv)
 
         // set the filename, and start the logger unit recording
         if (log_fname) {
-            cam_unit_set_control_string (logger_unit, "filename", log_fname);
+            cam_unit_set_control_string(logger_unit, "desired-filename", 
+                    log_fname);
+            cam_unit_set_control_boolean(logger_unit, "auto-suffix-enable",
+                    !overwrite);
         }
         cam_unit_set_control_boolean (logger_unit, "record", TRUE);
+
+        // print the actual filename
+        char *fname = g_object_get_data(logger_unit, "actual-filename");
+        if(fname) 
+            fprintf(stderr, "logging to: %s\n", fname);
+
     } else {
         fprintf (stderr, "not logging to disk\n");
     }
