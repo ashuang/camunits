@@ -1,6 +1,3 @@
-#define _GNU_SOURCE // so that basename () is the GNU version, and not the posix
-                    // version
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,8 +5,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include <ctype.h>
-#include <sys/time.h>
 
 #include "output_logger.h"
 #include "dbg.h"
@@ -18,9 +13,25 @@
 
 #define MAX_UNWRITTEN_FRAMES 100
 
-enum {
-    RECORD_CONTROL,
-    FILENAME_CONTROL
+struct _CamLoggerUnit {
+    CamUnit parent;
+    CamUnitControl *record_ctl;
+    CamUnitControl *desired_filename_ctl;
+    CamUnitControl *auto_suffix_ctl;
+//    CamUnitControl *actual_filename_ctl;
+
+    GAsyncQueue *msg_q;
+    GThread *writer_thread;
+
+    char *fname;
+    char *basename;
+
+    // as long as the writer thread is active, it "owns" these members
+    CamLog *camlog;
+};
+
+struct _CamLoggerUnitClass {
+    CamUnitClass parent_class;
 };
 
 CamUnitDriver *
@@ -55,15 +66,20 @@ cam_logger_unit_init (CamLoggerUnit *self)
 
     self->camlog = NULL;
     self->fname = NULL;
+    self->basename = NULL;
 
-    self->filename_ctl = 
-        cam_unit_add_control_string (super, "filename", "Filename",
-                "", 1);
-    self->record_ctl = 
-        cam_unit_add_control_boolean (super, "record", "Record", 0, 1); 
-
-    cam_unit_control_set_ui_hints (self->filename_ctl, 
+    self->desired_filename_ctl = cam_unit_add_control_string(super, 
+            "desired-filename", "Filename", "", 1);
+    cam_unit_control_set_ui_hints (self->desired_filename_ctl, 
             CAM_UNIT_CONTROL_FILENAME);
+
+    self->auto_suffix_ctl = cam_unit_add_control_boolean(super, 
+            "auto-suffix-enable", "Enable Filename Auto Suffix", 1, 1);
+//    self->actual_filename_ctl = cam_unit_add_control_string(super, 
+//            "actual-filename", "Filename Auto Suffix", "", 0);
+
+    self->record_ctl = cam_unit_add_control_boolean(super, "record", "Record", 
+            0, 1); 
 
     self->msg_q = g_async_queue_new ();
     self->writer_thread = NULL;
@@ -98,10 +114,9 @@ log_finalize (GObject *obj)
         self->camlog = NULL;
     }
 
-    if (self->fname) {
-        free (self->fname);
-        self->fname = NULL;
-    }
+    free(self->fname);
+    free(self->basename);
+
     G_OBJECT_CLASS (cam_logger_unit_parent_class)->finalize (obj);
 }
 
@@ -172,7 +187,7 @@ load_camlog (CamLoggerUnit *self, const char *fname)
     }
 
     char autoname[256];
-    if (!fname) {
+    if (!fname || !strlen(fname)) {
         time_t t = time (NULL);
         struct tm ti;
         localtime_r (&t, &ti);
@@ -190,32 +205,36 @@ load_camlog (CamLoggerUnit *self, const char *fname)
         cam_log_destroy (self->camlog);
         self->camlog = NULL;
     }
-    if (self->fname) {
-        free (self->fname);
-        self->fname = NULL;
+
+    free(self->fname);
+    self->fname = NULL;
+    free(self->basename);
+    self->basename = NULL;
+    g_object_set_data(G_OBJECT(self), "actual-filename", self->fname);
+
+    char filename[PATH_MAX];
+    if(cam_unit_control_get_boolean(self->auto_suffix_ctl)) {
+        /* Loop through possible file names until we find one that doesn't
+         * already exist.  This way, we never overwrite an existing file. */
+        int res;
+        int filenum = 0;
+        do {
+            struct stat statbuf;
+            snprintf (filename, sizeof (filename), "%s.%02d", fname, filenum);
+            res = stat (filename, &statbuf);
+            filenum++;
+        } while (res == 0);
+
+        if (errno != ENOENT) {
+            perror ("Error: checking for existing log filenames");
+            return -1;
+        }
+    } else {
+        strncpy(filename, fname, sizeof(filename));
     }
 
-    /* Loop through possible file names until we find one that doesn't already
-     * exist.  This way, we never overwrite an existing file. */
-    char filename[256];
-    int res;
-    int filenum = 0;
-    do {
-        struct stat statbuf;
-        snprintf (filename, sizeof (filename), "%s.%02d", fname, filenum);
-        res = stat (filename, &statbuf);
-        filenum++;
-    } while (res == 0);
-
-    if (errno != ENOENT) {
-        perror ("Error: checking for existing log filenames");
-        return -1;
-    }
-
-    self->fname = strdup (filename);
-    char *tmpstr = strdup (filename);
-    self->basename = strdup (basename (tmpstr));
-    free (tmpstr);
+    self->fname = strdup(filename);
+    self->basename = g_path_get_basename(filename);
 
     dbg (DBG_FILTER, "LoggerUnit: Trying to load log file [%s]\n", filename);
     self->camlog = cam_log_new (filename, "w");
@@ -223,7 +242,9 @@ load_camlog (CamLoggerUnit *self, const char *fname)
         err ("LoggerUnit: unable to open new log file [%s]\n", filename);
         return -1;
     }
-    printf ("Logging frames to \"%s\"\n", filename);
+
+    g_object_set_data(G_OBJECT(self), "actual-filename", self->fname);
+//    printf ("Logging frames to \"%s\"\n", filename);
 
     self->writer_thread = g_thread_create (writer_thread, self, TRUE, NULL);
 
@@ -237,18 +258,19 @@ try_set_control (CamUnit *super,
     CamLoggerUnit *self = CAM_LOGGER_UNIT (super);
 
     if (ctl == self->record_ctl) {
-        g_value_copy (proposed, actual);
         int recording = g_value_get_boolean (proposed);
-        cam_unit_control_set_enabled (self->filename_ctl, !recording);
-    }
-    else if (ctl == self->filename_ctl) {
-        const char *fname = g_value_get_string (proposed);
-        load_camlog (self, fname);
-        if (self->camlog)
-            g_value_copy (proposed, actual);
-        else
-            g_value_set_string (actual, "");
-        //cam_unit_control_set_enabled (self->record_ctl, (self->camlog!=NULL));
+        if(recording) {
+            const char *fname = cam_unit_control_get_string(self->desired_filename_ctl);
+            if(0 != load_camlog (self, fname)) {
+                return FALSE;
+            }
+        }
+        g_value_copy (proposed, actual);
+        cam_unit_control_set_enabled (self->desired_filename_ctl, !recording);
+    } else if (ctl == self->desired_filename_ctl) {
+        g_value_copy(proposed, actual);
+    } else if(ctl == self->auto_suffix_ctl) {
+        g_value_copy(proposed, actual);
     }
 
     return TRUE;
