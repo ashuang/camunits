@@ -36,7 +36,7 @@
                         hard-coded constants is often slow and tedious.
                         Using a GUI toolkit to implement widgets that control
                         the parameters is useful, but involves highly
-                        repetetive code and is often tedious.
+                        repetitive code and is often tedious.
                     </para>
                     <para>
                         The <classname>CamUnit</classname> base class provides
