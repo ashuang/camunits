@@ -147,7 +147,7 @@
         </para>
     </sect1>
     <sect1 id="subclassing-class-relationships">
-        <title>The Relationship Between Libcam Classes</title>
+        <title>The Relationship Between Camunits Classes</title>
         <para>
 
             <variablelist>
