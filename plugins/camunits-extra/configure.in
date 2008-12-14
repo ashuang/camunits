@@ -33,7 +33,7 @@ dnl check for libCVD
 AC_MSG_CHECKING(for libCVD)
 have_cvd=yes
 AC_LANG_PUSH(C++)
-AC_CHECK_HEADERS(cvd/fast_corner.h,[],[have_cvd=no])
+AC_CHECK_HEADERS(cvd/image.h,[],[have_cvd=no])
 AC_CHECK_LIB(cvd, main,[],[have_cvd=no])
 AC_LANG_POP(C++)
 AM_CONDITIONAL(HAVE_CVD, test x$have_cvd = xyes)
