@@ -288,6 +288,8 @@ control_set_sensitive (ControlWidgetInfo * ci)
                     CAM_UNIT_CONTROL_FILENAME) {
                 gtk_widget_set_sensitive(ci->file_chooser_bt,
                         ci->ctl->enabled);
+            } else if(ci->button) {
+                gtk_widget_set_sensitive(ci->button, ci->ctl->enabled);
             }
             break;
         default:

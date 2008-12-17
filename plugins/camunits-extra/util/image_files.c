@@ -239,7 +239,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     // write the image out to file.
     if (out_fmt == FILE_FORMAT_JPEG) {
-            fwrite (inbuf->data, inbuf->bytesused, 1, fp);
+        // TODO check if JPEG data is missing huffman tables.  If so, insert
+        // the standard tables
+        fwrite (inbuf->data, inbuf->bytesused, 1, fp);
     } else if (out_fmt == FILE_FORMAT_PPM) {
         _ppm_write (fp, inbuf->data, infmt->width, infmt->height, 
                 infmt->row_stride);
