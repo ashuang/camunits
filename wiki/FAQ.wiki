@@ -22,8 +22,8 @@ Simplicity and portability.
 
 === Can I do something like "{{{while(1) { img = grab_image(); } }}}"? ===
 
-In short, no.  Camunits always delivers images via function callbacks.  To receive an image, your program must connect to the {{{frame-ready}}} signal of a CamUnit or a CamUnitChain.
+In short, no.  Camunits always delivers images via function callbacks.  To receive an image, your program must connect to the {{{frame-ready}}} signal of a !CamUnit or a !CamUnitChain.
 
 More specifically, Camunits is designed for [http://en.wikipedia.org/wiki/Event_driven_programming event-driven programming], which means that it works best when used in a proper event loop. This allows Camunits to interact nicely with graphical applications and other event-driven libraries.
 
-However, in many machine vision applications, the sole purpose of the application is to grab images and process them, in which case a proper event loop is not completely necessary.  In these situations, we suggest using a barebones GLib event loop, as shown in the [http://camunits.googlecode.com/svn/www/tutorial/ch-acquiring.html tutorial].
+We realize that in many machine vision applications the sole purpose of the application is to grab images and process them, in which case a proper event loop is not completely necessary.  In these situations, we suggest using a barebones GLib event loop, as shown in the [http://camunits.googlecode.com/svn/www/tutorial/ch-acquiring.html tutorial].  We suspect that the overhead of using an event loop will be trivial compared to the complexity of the rest of your application.
