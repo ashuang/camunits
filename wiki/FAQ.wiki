@@ -18,7 +18,7 @@ Simplicity and portability.
 
  * The complexities of C++ make it less portable than C.  Specifically, namespace mangling often makes it difficult to link against a C++ library compiled with a different compiler than the one you'd like to use.
 
-* There are many C programmers out there who don't like C++.  Writing Camunits in C allows both C and C++ programmers to use Camunits.
+ * There are many C programmers out there who don't like C++.  Writing Camunits in C allows both C and C++ programmers to use Camunits.
 
 === Can I do something like "{{{while(1) { img = grab_image(); } }}}"? ===
 
