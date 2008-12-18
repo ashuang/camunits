@@ -19,3 +19,11 @@ Simplicity and portability.
  * The complexities of C++ make it less portable than C.  Specifically, namespace mangling often makes it difficult to link against a C++ library compiled with a different compiler than the one you'd like to use.
 
  * Eventually, we would like to create language bindings for Camunits so that it can be used directly in languages other than C.  For example, it would be quite useful to have Matlab bindings to allow Matlab programs to use Camunits directly.  C is the language of choice for this sort of application, and almost all major programming languages have a C API for creating these bindings.  While this is still possible in C++, it can be much more tedious.
+
+=== Can I do something like "{{{while(1) { img = grab_image(); } }}}"? ===
+
+In short, no.  Camunits always delivers images via function callbacks.  To receive an image, your program must connect to the {{{frame-ready}}} signal of a CamUnit or a CamUnitChain.
+
+More specifically, Camunits is designed for [http://en.wikipedia.org/wiki/Event_driven_programming event-driven programming], which means that it works best when used in a proper event loop. This allows Camunits to interact nicely with graphical applications and other event-driven libraries.
+
+However, in many machine vision applications, the sole purpose of the application is to grab images and process them, in which case a proper event loop is not completely necessary.  In these situations, we suggest using a barebones GLib event loop, as shown in the [http://camunits.googlecode.com/svn/www/tutorial/ch-acquiring.html tutorial].
