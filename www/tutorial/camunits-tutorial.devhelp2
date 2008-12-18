@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="CamUnits Tutorial" link="index.html" author="Albert Huang" name="camunits-tutorial" version="2">
+<book xmlns="http://www.devhelp.net/book" title="Camunits Tutorial" link="index.html" author="Albert Huang" name="camunits-tutorial" version="2">
   <chapters>
     <sub name="Preface" link="ch-preface.html">
-      <sub name="Introduction to CamUnits" link="ch-preface.html#preface-about"/>
+      <sub name="Introduction to Camunits" link="ch-preface.html#preface-about"/>
       <sub name="Audience" link="preface-audience.html"/>
       <sub name="License" link="preface-license.html"/>
     </sub>
@@ -19,7 +19,7 @@
     </sub>
     <sub name="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver" link="ch-subclassing.html">
       <sub name="The GObject Type System" link="ch-subclassing.html#subclassing-gobject-type-system"/>
-      <sub name="The Relationship Between Libcam Classes" link="subclassing-class-relationships.html"/>
+      <sub name="The Relationship Between Camunits Classes" link="subclassing-class-relationships.html"/>
       <sub name="Example Filter" link="subclassing-example-filter.html"/>
     </sub>
     <sub name="Other Environments" link="ch-otherenvs.html">
