@@ -18,7 +18,7 @@ Simplicity and portability.
 
  * The complexities of C++ make it less portable than C.  Specifically, namespace mangling often makes it difficult to link against a C++ library compiled with a different compiler than the one you'd like to use.
 
- * Eventually, we would like to create language bindings for Camunits so that it can be used directly in languages other than C.  For example, it would be quite useful to have Matlab bindings to allow Matlab programs to use Camunits directly.  C is the language of choice for this sort of application, and almost all major programming languages have a C API for creating these bindings.  While this is still possible in C++, it can be much more tedious.
+* There are many C programmers out there who don't like C++.  Writing Camunits in C allows both C and C++ programmers to use Camunits.
 
 === Can I do something like "{{{while(1) { img = grab_image(); } }}}"? ===
 
