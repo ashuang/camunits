@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CamUnitManager</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="CamUnits Reference Manual">
+<link rel="start" href="index.html" title="Camunits Reference Manual">
 <link rel="up" href="ch02.html" title="Image Processing Chains">
 <link rel="prev" href="CamUnitChain.html" title="CamUnitChain">
 <link rel="next" href="ch03.html" title="Built-in Units">
@@ -21,7 +21,7 @@
 <td><a accesskey="p" href="CamUnitChain.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">CamUnits Reference Manual</th>
+<th width="100%" align="center">Camunits Reference Manual</th>
 <td><a accesskey="n" href="ch03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts"><nobr><a href="#CamUnitManager.synopsis" class="shortcut">Top</a>
@@ -98,7 +98,7 @@ provided by all known <a class="link" href="CamUnitDriver.html" title="CamUnitDr
 <p>
 Before becoming available for use, a <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> must first be
 registered with a CamUnitManager.  There are three ways this can happen.
-First, CamUnits provides a set of "core" drivers that are always loaded
+First, Camunits provides a set of "core" drivers that are always loaded
 when
 a CamUnitManager is created.  Second, a CamUnitManager searches the plugin
 directories (typically /usr/lib/camunits/ and the colon-separated list of
@@ -108,9 +108,9 @@ dynamically loadable plugins.  Finally, it is possible to subclass
 <a class="link" href="CamUnitManager.html#cam-unit-manager-add-driver" title="cam_unit_manager_add_driver ()"><code class="function">cam_unit_manager_add_driver()</code></a>.
 </p>
 <p>
-In a simple CamUnits application, there is no need to work directly with
+In a simple Camunits application, there is no need to work directly with
 the
-CamUnitManager.  Instead, a simple CamUnits application may use a
+CamUnitManager.  Instead, a simple Camunits application may use a
 <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> object, which itself contains a CamUnitManager.  Reasons for
 using a CamUnitManager directly could be sharing a manager across multiple
 chains, implementing new <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> and <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> subclasses, or
@@ -429,7 +429,7 @@ Discovered plugins will be loaded into the manager.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
-<td> target directory containing CamUnits plugins
+<td> target directory containing Camunits plugins
 </td>
 </tr>
 </tbody>

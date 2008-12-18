@@ -11,9 +11,9 @@ Package: camunits
 Architecture: any
 Depends: libcamunits5, libcamunits5-dev, camunits-utils, libcamunits-gtk5, libcamunits-gtk5-dev, camview, camunits-plugins-dc1394
 Conflicts: ${ar-conflicts}
-Description: Camunits metapackage
- Camunits is a collection of software libraries and utilities primarily 
- inteded for robotics and machine vision researchers.
+Description: Metapackage for the camunits libraries and binaries
+ A collection of software libraries and utilities primarily inteded for
+ robotics and machine vision researchers.
  .
  This is a convenience metapackage that provides no files of substances itself,
  but does depend on all of the packages provided by the Camunits source

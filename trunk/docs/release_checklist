@@ -1,12 +1,12 @@
 1.  Update NEWS
 2.  Bump the version number in configure.in at the line:
-      AM_INIT_AUTOMAKE(libcam, x.y.z)
+      AM_INIT_AUTOMAKE(camunits, x.y.z)
 3.  Update the AGE, REVISION, and CURRENT variables.  See configure.in
       comments for details.
 4.  Run 'svn2cl --group-by-day --reparagraph -i' in the top-level dir to
       generate the ChangeLog file.
 5.  Check out a clean copy of the repository:
-      svn co https://libcam.googlecode.com/svn/trunk libcam-rel
+      svn co https://camunits.googlecode.com/svn/trunk camunits-rel
 6.  gtkdocize --copy 
 7.  autoreconf -i
 8.  ./configure --enable-gtk-doc
@@ -18,13 +18,13 @@
 13. Upload the tarball to google code.
 14. Make sure the outstanding changes are commited to SVN.
 15. Create a tag:
-      svn copy https://libcam.googlecode.com/svn/trunk https://libcam.googlecode.com/svn/tags/libcam_x_y_z
+      svn copy https://camunits.googlecode.com/svn/trunk https://camunits.googlecode.com/svn/tags/camunits_x_y_z
 16. Copy built docs to www directory:
       cd docs
       make install prefix=/somewhere_temporary
-      cp -r /somewhere_temporary/share/gtk-doc/html/libcam www/reference
-      cp -r /somewhere_temporary/share/gtk-doc/html/libcam-gtk www/reference
-      cp -r /somewhere_temporary/share/gtk-doc/html/libcam-tutorial/* www/tutorial
+      cp -r /somewhere_temporary/share/gtk-doc/html/camunits www/reference
+      cp -r /somewhere_temporary/share/gtk-doc/html/camunits-gtk www/reference
+      cp -r /somewhere_temporary/share/gtk-doc/html/camunits-tutorial/* www/tutorial
 17. Update any mime types if necessary:
       svn propset svn:mime-type text/html *.html
 18. Commit the docs

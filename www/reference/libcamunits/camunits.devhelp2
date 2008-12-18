@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="CamUnits Reference Manual" link="index.html" author="" name="camunits" version="2">
+<book xmlns="http://www.devhelp.net/book" title="Camunits Reference Manual" link="index.html" author="" name="camunits" version="2">
   <chapters>
     <sub name="Units" link="ch01.html">
       <sub name="CamUnit" link="CamUnit.html"/>

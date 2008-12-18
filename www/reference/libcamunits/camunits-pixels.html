@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>pixels</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="CamUnits Reference Manual">
+<link rel="start" href="index.html" title="Camunits Reference Manual">
 <link rel="up" href="ch04.html" title="Other stuff">
 <link rel="prev" href="camunits-dbg.html" title="dbg">
 <link rel="next" href="camunits-camunits-gmarshal.html" title="camunits-gmarshal">
@@ -21,7 +21,7 @@
 <td><a accesskey="p" href="camunits-dbg.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">CamUnits Reference Manual</th>
+<th width="100%" align="center">Camunits Reference Manual</th>
 <td><a accesskey="n" href="camunits-camunits-gmarshal.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts"><nobr><a href="#camunits-pixels.synopsis" class="shortcut">Top</a>
@@ -317,6 +317,7 @@ int                 <a class="link" href="camunits-pixels.html#cam-pixel-copy-8u
     CAM_PIXEL_FORMAT_BE_RGB16=358,          /* 48-bpp rgb (16-bits per channel), big-endian */
     CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16=359,
     CAM_PIXEL_FORMAT_BE_SIGNED_RGB16=360,
+    CAM_PIXEL_FORMAT_LE_GRAY16=cam_pf_fourcc('L','G','1','6'), /* 16-bit grayscale, little-endian */
     CAM_PIXEL_FORMAT_FLOAT_GRAY32=cam_pf_fourcc('F','G','3','2'), /* 32-bit grayscale IEEE float, native byte order */
 //    CAM_PIXEL_FORMAT_FLOAT_RGB32,
     CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFE,
