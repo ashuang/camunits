@@ -1,3 +1,22 @@
+camunits 0.1.1 - Dec 17, 2008
+=============================
+
+* camview: 
+  - add FPS display, other minor UI tweaks
+  - change "-f" option to "-c"
+* libcamunits:
+  - CamInputLog: add looping controls
+  - add CAM_PIXEL_FORMAT_LE_GRAY16, opengl support
+  - CamLoggerUnit: add "auto-suffix-enable" control, option to disable
+                   auto suffix on filename
+  - rename IS_ALIGNEDxx macros to CAM_IS_ALIGNEDxx
+  - add better type safety to CamUnitControl
+  - CamUnitManager bugfixes
+* libcamunits-gtk:
+  - bugfixes in UnitControlWidget
+* camlog
+  - add "-c" option to load chain from XML description file
+
 camunits 0.1.0 - Nov 11, 2008
 =============================
 

@@ -1,5 +1,76 @@
+2008-12-17  ashuang
+
+	* [r295] camunits-gtk/unit_control_widget.c: unit control widget
+	  text entry button set sensitive with control enable/disable
+
+2008-12-14  ashuang
+
+	* [r293] docs/tutorial/subclassing.sgml: doc fixes
+	* [r292] docs/tutorial/subclassing.sgml: typo
+
+2008-12-12  ashuang
+
+	* [r291] camlog/camlog.1, camlog/camlog.c,
+	  camunits/output_logger.c, camunits/output_logger.h: shore up
+	  logger unit and camlog change "filename" control id to
+	  "desired-filename" add "auto-suffix-enable" control, option to
+	  disable auto suffix on filename add -c option to camlog to load
+	  chain file instead of just an input ID.
+
+2008-12-08  ashuang
+
+	* [r290] camview/camview.c: missed something in last commit
+	* [r289] camlog/camlog.1, camlog/camlog.c, camview/camview.1,
+	  camview/camview.c: update camview, camlog usage and documentation
+
+2008-11-26  ashuang
+
+	* [r288] camunits/filter_gl.c, camunits/gl_texture.c,
+	  camunits/pixels.c, camunits/pixels.h: add
+	  CAM_PIXEL_FORMAT_LE_GRAY16, filter_gl support bugfix in
+	  big-endian gray16 format
+
+2008-11-25  ashuang
+
+	* [r287] camview/camview.c: tweak camview default widget sizes
+	* [r286] camunits/input_log.c, camunits/input_log.h: fixup includes
+	* [r285] camunits/input_log.c, camunits/input_log.h: add looping
+	  controls to input_log
+
+2008-11-24  ashuang
+
+	* [r284] camview/camview.c: add FPS display to camview
+
+2008-11-21  ashuang
+
+	* [r283] camunits/unit_manager.c: unit_manager: don't call
+	  cam_unit_driver_stop on a driver that did not successfully start
+
+2008-11-18  ashuang
+
+	* [r282] camunits/pixels.c, camunits/pixels.h,
+	  camunits/pixels_sse2.c, camunits/pixels_sse3.c: rename
+	  IS_ALIGNEDxx macros to CAM_IS_ALIGNEDxx
+
+2008-11-14  ashuang
+
+	* [r280] camunits-gtk/unit_control_widget.c,
+	  camunits/unit_control.c, camview/camview.c: some bugfixes
+	* [r279] camunits-gtk/unit_control_widget.c,
+	  camunits/unit_control.c, camunits/unit_control.h: fix
+	  unit_control_widget bug (thanks markus) add better type safety to
+	  unit_control
+
 2008-11-11  ashuang
 
+	* [r270] ChangeLog, NEWS, configure.in: Camunits release 0.1.0
+	* [r269] camunits/input_v4l2.h, camunits/unit.h,
+	  camunits/unit_manager.h,
+	  docs/reference/libcamunits/camunits-docs.sgml,
+	  docs/tutorial/bookinfo.sgml, docs/tutorial/camunit.sgml,
+	  docs/tutorial/otherenvs.sgml, docs/tutorial/preface.sgml,
+	  docs/tutorial/subclassing.sgml: Camunits is simpler and easier
+	  than CamUnits
 	* [r261] ., camunits, camunits-gtk, camunits/input_v4l2.h,
 	  camunits/unit.h, camunits/unit_manager.h,
 	  docs/reference/libcamunits, docs/reference/libcamunits-gtk,
