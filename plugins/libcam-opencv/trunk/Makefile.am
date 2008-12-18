@@ -1,2 +1,0 @@
-SUBDIRS = plugins po
-ACLOCAL_AMFLAGS = -I m4

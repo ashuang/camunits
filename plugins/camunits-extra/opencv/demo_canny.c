@@ -39,6 +39,7 @@ struct _CamcvCanny {
     CamUnitControl *thresh1_ctl;
     CamUnitControl *thresh2_ctl;
     CamUnitControl *apert_ctl;
+    CamUnitControl *render_original_ctl;
 };
 
 struct _CamcvCannyClass {
@@ -71,7 +72,7 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("demo.opencv", "canny",
+    return cam_unit_driver_new_stock_full ("opencv.demo", "canny",
             "Canny Edge Detector", CAM_UNIT_RENDERS_GL, 
             (CamUnitConstructor)camcv_canny_new,
             module);
@@ -83,11 +84,15 @@ camcv_canny_init (CamcvCanny *self)
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
     self->thresh1_ctl = cam_unit_add_control_float (super, "thresh1", 
-            "Threshold 1", 0, 10, 0.1, 0.1, 1);
+            "Threshold 1", 0, FLT_MAX, 1.0, 400, 1);
     self->thresh2_ctl = cam_unit_add_control_float (super, "thresh2", 
-            "Threshold 2", 0, 10, 0.1, 1.0, 1);
+            "Threshold 2", 0, FLT_MAX, 1.0, 600, 1);
     self->apert_ctl = cam_unit_add_control_int (super, "aperture",
             "Aperture", 3, 7, 2, 5, 1);
+    self->render_original_ctl = cam_unit_add_control_boolean(super, "render-original",
+            "Render Original Image", 0, 1);
+    cam_unit_control_set_ui_hints(self->thresh1_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
+    cam_unit_control_set_ui_hints(self->thresh2_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
 }
@@ -95,8 +100,7 @@ camcv_canny_init (CamcvCanny *self)
 static void
 camcv_canny_class_init (CamcvCannyClass *klass)
 {
-//    GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-//    gobject_class->finalize = camlcm_publish_finalize;
+    // override superclass methods
     klass->parent_class.draw_gl_init = _gl_draw_gl_init;
     klass->parent_class.draw_gl = _gl_draw_gl;
     klass->parent_class.draw_gl_shutdown = _gl_draw_gl_shutdown;
@@ -145,31 +149,31 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
              cam_unit_control_get_int (self->apert_ctl));
 
     if (self->gl_texture) {
-        cam_gl_texture_upload (self->gl_texture, CAM_PIXEL_FORMAT_GRAY, 
-                cvout->widthStep, cvout->imageData);
+        if(cam_unit_control_get_boolean(self->render_original_ctl)) {
+            cam_gl_texture_upload(self->gl_texture, CAM_PIXEL_FORMAT_GRAY, 
+                    infmt->row_stride, inbuf->data);
+        } else {
+            cam_gl_texture_upload(self->gl_texture, CAM_PIXEL_FORMAT_GRAY, 
+                    cvout->widthStep, cvout->imageData);
+        }
         self->texture_valid = 1;
     }
 
-#if 1
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (infmt->height * infmt->row_stride);
     for (int r=0; r<infmt->height; r++) {
-        memcpy (outbuf->data + r * infmt->row_stride,
-                cvout->imageData + r * cvout->widthStep, 
-                infmt->width);
+        memcpy(outbuf->data + r * infmt->row_stride,
+               cvout->imageData + r * cvout->widthStep, 
+               infmt->width);
     }
-    cam_unit_produce_frame (super, outbuf, infmt);
-    g_object_unref (outbuf);
+    cam_framebuffer_copy_metadata(outbuf, inbuf);
+    outbuf->bytesused = infmt->height * infmt->row_stride;
+    cam_unit_produce_frame(super, outbuf, infmt);
+    g_object_unref(outbuf);
 
-#else
-    cam_unit_produce_frame (super, inbuf, infmt);
-#endif
+    cvReleaseImage(&cvout);
 
-    cvReleaseImage (&cvout);
-
-    cvReleaseImage (&cvimg);
-
-    return;
+    cvReleaseImage(&cvimg);
 }
 
 static int 
