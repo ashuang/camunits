@@ -4,8 +4,8 @@
 #include <time.h>
 #include <sys/time.h>
 
-#include <libcam/plugin.h>
-#include <libcam/gl_texture.h>
+#include <camunits/plugin.h>
+#include <camunits/gl_texture.h>
 #include <opencv/cv.h>
 
 #define err(args...) fprintf(stderr, args)

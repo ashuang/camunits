@@ -6,7 +6,7 @@
 
 #include <GL/gl.h>
 
-#include <libcam/plugin.h>
+#include <camunits/plugin.h>
 #include <opencv/cv.h>
 
 #define err(args...) fprintf(stderr, args)
