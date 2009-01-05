@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chain>
+    <unit id="input.example" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
+        <control id="enum">2</control>
+    </unit>
+    <unit id="filter.plugin" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
+    </unit>
+    <unit id="output.opengl" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
+    </unit>
+</chain>
