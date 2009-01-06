@@ -241,7 +241,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     if (out_fmt == FILE_FORMAT_JPEG) {
         // TODO check if JPEG data is missing huffman tables.  If so, insert
         // the standard tables
-        fwrite (inbuf->data, inbuf->bytesused, 1, fp);
+        int status = fwrite (inbuf->data, inbuf->bytesused, 1, fp);
+        if(1 != status)
+            perror("fwrite");
     } else if (out_fmt == FILE_FORMAT_PPM) {
         _ppm_write (fp, inbuf->data, infmt->width, infmt->height, 
                 infmt->row_stride);

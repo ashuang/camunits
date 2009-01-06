@@ -168,6 +168,7 @@ _copy_framebuffer (CamutilThrottle *self, const CamFrameBuffer *inbuf)
     self->prev_buf = cam_framebuffer_new_alloc (inbuf->bytesused);
     memcpy (self->prev_buf->data, inbuf->data, inbuf->bytesused);
     cam_framebuffer_copy_metadata (self->prev_buf, inbuf);
+    self->prev_buf->bytesused = inbuf->bytesused;
 }
 
 static void 
