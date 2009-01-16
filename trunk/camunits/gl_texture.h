@@ -29,11 +29,12 @@ void
 cam_gl_texture_draw_alpha (CamGLTexture * t, double alpha);
 
 void
-cam_gl_texture_draw_partial (CamGLTexture * t, double x, double y, double w, double h);
+cam_gl_texture_draw_partial (CamGLTexture * t, double x, double y, 
+        double w, double h);
 
 int
 cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
-        void * data);
+        const void * data);
 
 /**
  * cam_gl_texture_set_interp:

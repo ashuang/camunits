@@ -205,7 +205,7 @@ gl_util_draw_frame_at (GLUtil * gu, double x, double y,
 
 int
 cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
-        void * data)
+        const void * data)
 {
     if (t->use_pbo && (stride * t->height) > t->max_data_size) {
         fprintf (stderr, "Error: gl_texture buffer (%d bytes) too small for "
