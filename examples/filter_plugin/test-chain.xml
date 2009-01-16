@@ -2,8 +2,12 @@
 <chain>
     <unit id="input.example" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
         <control id="enum">2</control>
+        <control id="boolean">0</control>
+        <control id="int1">50</control>
+        <control id="int2">127</control>
     </unit>
-    <unit id="filter.plugin" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
+    <unit id="example.plugin" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
+        <control id="enable">1</control>
     </unit>
     <unit id="output.opengl" width="640" height="480" pixelformat="CAM_PIXEL_FORMAT_RGB" format_name="640x480 RGB">
     </unit>
