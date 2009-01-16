@@ -12,8 +12,8 @@
 
 #define err(args...) fprintf(stderr, args)
 
-static int _jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
-        uint8_t * dest, int width, int height, int stride);
+static int _jpeg_decompress (const uint8_t * src, int src_size,
+        uint8_t * dest, int width, int height, int stride, J_COLOR_SPACE out_space);
 static void _jpeg_std_huff_tables (j_decompress_ptr cinfo);
 
 CamUnitDriver *
@@ -82,12 +82,20 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     CamConvertJpegDecompress *self = CAM_CONVERT_JPEG_DECOMPRESS (super);
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
+    J_COLOR_SPACE out_space;
     if (outfmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
-        _jpeg_decompress_to_8u_rgb (inbuf->data, inbuf->bytesused,
-                self->outbuf->data, infmt->width, infmt->height, 
-                outfmt->row_stride);
-        self->outbuf->bytesused = outfmt->row_stride * infmt->height;
+        out_space = JCS_RGB;
+    } else if(outfmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
+        out_space = JCS_GRAYSCALE;
+    } else {
+        g_warning("invalid output pixel format");
+        return;
     }
+
+    _jpeg_decompress (inbuf->data, inbuf->bytesused,
+                self->outbuf->data, infmt->width, infmt->height, 
+                outfmt->row_stride, out_space);
+    self->outbuf->bytesused = outfmt->row_stride * infmt->height;
     cam_framebuffer_copy_metadata (self->outbuf, inbuf);
 
     cam_unit_produce_frame (super, self->outbuf, outfmt);
@@ -99,11 +107,17 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     cam_unit_remove_all_output_formats (super);
     if (!infmt || infmt->pixelformat != CAM_PIXEL_FORMAT_MJPEG) return;
 
-    int stride = infmt->width * 3;
-    int max_data_size = stride * infmt->height;
+    int stride_rgb = infmt->width * 3;
+    int max_data_size_rgb = stride_rgb * infmt->height;
     cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB,
             NULL, infmt->width, infmt->height, 
-            stride, max_data_size);
+            stride_rgb, max_data_size_rgb);
+
+    int stride_gray = infmt->width;
+    int max_data_size_gray = stride_gray * infmt->height;
+    cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_GRAY,
+            NULL, infmt->width, infmt->height, 
+            stride_gray, max_data_size_gray);
 }
 
 static void
@@ -146,8 +160,8 @@ _error_exit (j_common_ptr cinfo)
 }
 
 static int
-_jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
-        uint8_t * dest, int width, int height, int stride)
+_jpeg_decompress (const uint8_t * src, int src_size,
+        uint8_t * dest, int width, int height, int stride, J_COLOR_SPACE out_space)
 {
     struct jpeg_decompress_struct cinfo;
     struct jpeg_source_mgr jsrc;
@@ -173,7 +187,7 @@ _jpeg_decompress_to_8u_rgb (const uint8_t * src, int src_size,
     cinfo.src = &jsrc;
 
     jpeg_read_header (&cinfo, TRUE);
-    cinfo.out_color_space = JCS_RGB;
+    cinfo.out_color_space = out_space;
 
     if (! (cinfo.dc_huff_tbl_ptrs[0] || cinfo.dc_huff_tbl_ptrs[1] ||
            cinfo.ac_huff_tbl_ptrs[0] || cinfo.ac_huff_tbl_ptrs[1])) {
