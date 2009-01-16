@@ -1,35 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <glib-object.h>
-
 #include <camunits/plugin.h>
-#include <camunits/unit.h>
 
 // This file demonstrates how to create a simple CamUnit plugin.  When
-// implementing a custom MyUnit, replace "FilterPlugin", "FILTER_PLUGIN",
-// and "filter_plugin" with your own names.  You'll also want to pick a
-// different namespace (i.e. prefix) from "My"
+// implementing a custom MyUnit, replace "MyFilterPlugin", "MY_FILTER_PLUGIN",
+// and "my_filter_plugin" with your own names.  
 
 typedef struct _MyFilterPlugin MyFilterPlugin;
 typedef struct _MyFilterPluginClass MyFilterPluginClass;
 
-// boilerplate.
-#define MY_TYPE_FILTER_PLUGIN  my_filter_plugin_get_type()
+// This macro is a type-safe alternative to "(MyFilterPlugin*)obj"
+// If obj is not a pointer to MyFilterPlugin, then a warning message
+// is printed to stderr, and the macro returns NULL.  It's reasonable to delete
+// this macro if you don't need it.
 #define MY_FILTER_PLUGIN(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        MY_TYPE_FILTER_PLUGIN, MyFilterPlugin))
-#define MY_FILTER_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            MY_TYPE_FILTER_PLUGIN, MyFilterPluginClass ))
-#define IS_MY_FILTER_PLUGIN(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            MY_TYPE_FILTER_PLUGIN ))
-#define IS_MY_FILTER_PLUGIN_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), MY_TYPE_FILTER_PLUGIN))
-#define MY_FILTER_PLUGIN_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            MY_TYPE_FILTER_PLUGIN, MyFilterPluginClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
+        my_filter_plugin_get_type(), MyFilterPlugin))
 
 // object definition struct.  member variables go in here
 struct _MyFilterPlugin {
@@ -48,20 +31,24 @@ struct _MyFilterPluginClass {
 
 GType my_filter_plugin_get_type (void);
 
+MyFilterPlugin * my_filter_plugin_new()
+{
+    return MY_FILTER_PLUGIN(g_object_new(my_filter_plugin_get_type(), NULL));
+}
+
+// magic macro.
 CAM_PLUGIN_TYPE (MyFilterPlugin, my_filter_plugin, CAM_TYPE_UNIT);
 
-MyFilterPlugin * my_filter_plugin_new();
-
-/* These next two functions are required as entry points for the
- * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+// These next two functions are required as entry points for the
+// Camunits plug-in API.
+void cam_plugin_initialize (GTypeModule * module)
 {
+    // this function is defined by the magic macro above, and registers
+    // the plugin with the GObject type system.
     my_filter_plugin_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("filter", "plugin",
             "Example Filter Plugin", 0, 
@@ -70,31 +57,25 @@ cam_plugin_create (GTypeModule * module)
 }
 
 // ============== MyFilterPlugin ===============
-static void my_filter_plugin_finalize (GObject *obj);
+static void _finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
-// Class initializer
+// Class initializer.  This function sets up the class vtable, and is most
+// commonly used for overriding superclass methods.
 static void
 my_filter_plugin_class_init (MyFilterPluginClass *klass)
 {
     // override the destructor
-    G_OBJECT_CLASS (klass)->finalize = my_filter_plugin_finalize;
+    G_OBJECT_CLASS (klass)->finalize = _finalize;
 
     // override the "on_input_frame_ready" method
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
 
-// First part of the constructor
-MyFilterPlugin * 
-my_filter_plugin_new()
-{
-    return MY_FILTER_PLUGIN (g_object_new(MY_TYPE_FILTER_PLUGIN, NULL));
-}
-
-// Initializer.  This is the second part of the constructor.
+// Initializer.  This is essentially a constructor.
 static void
 my_filter_plugin_init (MyFilterPlugin *self)
 {
@@ -112,11 +93,12 @@ my_filter_plugin_init (MyFilterPlugin *self)
 
 // destructor.
 static void
-my_filter_plugin_finalize (GObject *obj)
+_finalize (GObject *obj)
 {
     // If we allocated memory on the heap/freestore, we'd release it here
 
-    // invoke the superclass destructor
+    // invoke the superclass destructor.  my_filter_plugin_parent_class is 
+    // defined by the magic macro
     G_OBJECT_CLASS (my_filter_plugin_parent_class)->finalize(obj);
 }
 

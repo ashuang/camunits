@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CFLAGS="-fPIC `pkg-config --cflags camunits glib-2.0`"
+CFLAGS="-fPIC `pkg-config --cflags camunits glib-2.0` -Wall"
 kernel=`uname -s`
 if [ "$kernel" == "Darwin" ]; then
     ext=".dylib"
