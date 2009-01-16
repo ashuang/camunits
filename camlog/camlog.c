@@ -213,7 +213,8 @@ int main(int argc, char **argv)
         cam_unit_set_control_boolean (logger_unit, "record", TRUE);
 
         // print the actual filename
-        char *fname = g_object_get_data(logger_unit, "actual-filename");
+        char *fname = g_object_get_data(G_OBJECT(logger_unit), 
+                "actual-filename");
         if(fname) 
             fprintf(stderr, "logging to: %s\n", fname);
 
