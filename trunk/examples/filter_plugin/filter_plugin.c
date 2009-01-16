@@ -14,7 +14,7 @@ typedef struct _MyFilterPluginClass MyFilterPluginClass;
 #define MY_FILTER_PLUGIN(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
         my_filter_plugin_get_type(), MyFilterPlugin))
 
-// object definition struct.  member variables go in here
+// Class definition struct.  member variables go in here
 struct _MyFilterPlugin {
     // the first member must always be the superclass struct
     CamUnit parent;
@@ -50,10 +50,9 @@ void cam_plugin_initialize (GTypeModule * module)
 
 CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("filter", "plugin",
+    return cam_unit_driver_new_stock_full ("example", "plugin",
             "Example Filter Plugin", 0, 
-            (CamUnitConstructor)my_filter_plugin_new,
-            module);
+            (CamUnitConstructor)my_filter_plugin_new, module);
 }
 
 // ============== MyFilterPlugin ===============
@@ -84,7 +83,7 @@ my_filter_plugin_init (MyFilterPlugin *self)
 
     // create a control
     self->enable_ctl = cam_unit_add_control_boolean (super, 
-            "enable-intensity", "Swap Red/Green Channels", 1, 1);
+            "enable", "Swap Red/Green Channels", 1, 1);
 
     // request notification when the input of the unit changes
     g_signal_connect (G_OBJECT(self), "input-format-changed",
