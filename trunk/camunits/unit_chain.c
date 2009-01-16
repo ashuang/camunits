@@ -999,9 +999,9 @@ _text (GMarkupParseContext *ctx, const char *text, gsize text_len,
 static void
 _parse_error (GMarkupParseContext *ctx, GError *error, void *user_data)
 {
-    printf ("parse error?\n");
-    printf (error->message);
-    printf ("===\n");
+    fprintf (stderr, "parse error?\n");
+    fprintf (stderr, "%s\n", error->message);
+    fprintf (stderr, "===\n");
 }
 
 static GMarkupParser _parser = {

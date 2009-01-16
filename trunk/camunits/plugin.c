@@ -102,7 +102,7 @@ plugin_load (GTypeModule * super)
 
     self->module = g_module_open (self->filename, G_MODULE_BIND_LOCAL);
     if (!self->module) {
-        g_warning (g_module_error ());
+        g_warning ("%s", g_module_error ());
         return FALSE;
     }
 
@@ -110,7 +110,7 @@ plugin_load (GTypeModule * super)
                 (gpointer *) &self->initialize) ||
         !g_module_symbol (self->module, "cam_plugin_create",
                 (gpointer *) &self->create)) {
-        g_warning (g_module_error ());
+        g_warning ("%s", g_module_error ());
         g_module_close (self->module);
         self->module = NULL;
         return FALSE;
