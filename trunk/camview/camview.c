@@ -22,6 +22,7 @@ typedef struct _state_t {
     CamUnitDescriptionWidget * desc_widget;
 
     char *xml_fname;
+    char *extra_plugin_path;
     int use_gui;
 
     GtkWindow *window;
@@ -322,6 +323,18 @@ state_setup (state_t *self)
     // create the image processing chain
     self->chain = cam_unit_chain_new ();
 
+    // search for plugins in non-standard directories
+    if(self->extra_plugin_path) {
+        CamUnitManager *manager = cam_unit_chain_get_manager(self->chain);
+        char **path_dirs = g_strsplit(self->extra_plugin_path, ":", 0);
+        for (int i=0; path_dirs[i]; i++) {
+            cam_unit_manager_add_plugin_dir (manager, path_dirs[i]);
+        }
+        g_strfreev (path_dirs);
+        free(self->extra_plugin_path);
+        self->extra_plugin_path = NULL;
+    }
+
     // setup the GUI
     if (self->use_gui) {
         setup_gtk (self);
@@ -356,16 +369,21 @@ state_cleanup (state_t *self)
 }
 
 static void 
-usage (const char *progname)
+usage()
 {
-    fprintf (stderr, "usage: %s [options]\n"
-            "\n"
-            "Options:\n"
-            "    -c, --chain NAME   Load chain from file NAME\n"
-            "    --no-gui           Run without a GUI.  If --no-gui\n"
-            "                       is specified, -c is required.\n"
-            "    -h, --help         Show this help text and exit\n"
-            , progname);
+    fprintf (stderr, "usage: camview [options]\n"
+    "\n"
+    "camview is a graphical tool for viewing and testing image processing\n"
+    "chains.  It uses GTK+ 2.0, OpenGL, and libcamunits.\n"
+    "\n"
+    "Options:\n"
+    "  -c, --chain NAME     Load chain from file NAME\n"
+    "  --no-gui             Run without a GUI.  If --no-gui is specified,\n"
+    "                       then -c is required.\n"
+    "  --plugin-path PATH   Add the directories in PATH to the plugin\n"
+    "                       search path.  PATH should be a colon-delimited\n"
+    "                       list.\n"
+    "  -h, --help           Show this help text and exit\n");
     exit(1);
 }
 
@@ -374,11 +392,12 @@ int main (int argc, char **argv)
     state_t * self = (state_t*) calloc (1, sizeof (state_t));
     self->use_gui = 1;
 
-    char *optstring = "hc:";
+    char *optstring = "hc:p:";
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
         { "chain", required_argument, 0, 'c' },
+        { "plugin-path", required_argument, 0, 'p' },
         { "no-gui", no_argument, 0, 'u' },
         { 0, 0, 0, 0 }
     };
@@ -392,14 +411,17 @@ int main (int argc, char **argv)
             case 'u':
                 self->use_gui = 0;
                 break;
+            case 'p':
+                self->extra_plugin_path = strdup (optarg);
+                break;
             case 'h':
             default:
-                usage (argv[0]);
+                usage ();
                 break;
         };
     }
 
-    if (!self->use_gui && !self->xml_fname) usage(argv[0]);
+    if (!self->use_gui && !self->xml_fname) usage();
 
     if (self->use_gui) {
         gtk_init (&argc, &argv);

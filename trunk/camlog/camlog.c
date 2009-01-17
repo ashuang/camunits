@@ -79,19 +79,22 @@ usage()
         "by camview or the cam_unit_chain_snapshot() function.\n"
         "\n"
         "Options:\n"
-        " -h, --help         Shows this help text\n"
-        " -i, --input ID     Use the specified Camunit ID as input.\n"
-        " -c, --chain NAME   Load chain from file NAME.\n"
+        " -h, --help          Shows this help text\n"
+        " -i, --input ID      Use the specified Camunit ID as input.\n"
+        " -c, --chain NAME    Load chain from file NAME.\n"
         "\n"
-        " -o, --output FILE  Saves result to filename FILE.  If not specified, a\n"
-        "                    filename is automatically chosen.\n"
-        " -f, --force        Force overwrite of output_file if it already exists\n"
-        "                    If not specified, and the output file already\n"
-        "                    exists, then a suffix is automatically appended\n"
-        "                    to the filename to prevent overwriting existing\n"
-        "                    files.\n"
-        " -n, --no-write     Do not write video data to disk.  Useful for testing.\n"
-        " -v, --verbose      Print information about each frame.\n\n");
+        " -o, --output FILE   Saves result to filename FILE.  If not specified, a\n"
+        "                     filename is automatically chosen.\n"
+        " -f, --force         Force overwrite of output_file if it already exists\n"
+        "                     If not specified, and the output file already\n"
+        "                     exists, then a suffix is automatically appended\n"
+        "                     to the filename to prevent overwriting existing\n"
+        "                     files.\n"
+        " -n, --no-write      Do not write video data to disk.  Useful for testing.\n"
+        " -v, --verbose       Print information about each frame.\n\n"
+        " --plugin-path PATH  Add the directories in PATH to the plugin\n"
+        "                     search path.  PATH should be a colon-delimited\n"
+        "                     list.\n");
 }
 
 int main(int argc, char **argv)
@@ -104,6 +107,7 @@ int main(int argc, char **argv)
     int overwrite = 0;
     int do_logging = 1;
     GMainLoop *mainloop = NULL;
+    char *extra_plugin_path = NULL;
     state_t *self = (state_t*)calloc(1, sizeof(state_t));
     self->verbose = 0;
     self->frameno = 0;
@@ -111,7 +115,7 @@ int main(int argc, char **argv)
     setlinebuf (stdout);
     setlinebuf (stderr);
 
-    char *optstring = "hi:c:o:fnv";
+    char *optstring = "hi:c:o:fnvp:";
     char c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
@@ -121,6 +125,7 @@ int main(int argc, char **argv)
         { "force", no_argument, 0, 'f' },
         { "no-write", no_argument, 0, 'n' },
         { "verbose", no_argument, 0, 'v' },
+        { "plugin-path", no_argument, 0, 'p' },
         { 0, 0, 0, 0 }
     };
 
@@ -150,6 +155,9 @@ int main(int argc, char **argv)
             case 'v':
                 self->verbose = 1;
                 break;
+            case 'p':
+                extra_plugin_path = strdup (optarg);
+                break;
             case 'h':
             default:
                 usage();
@@ -159,6 +167,18 @@ int main(int argc, char **argv)
 
     // setup the image processing chain
     CamUnitChain * chain = cam_unit_chain_new();
+
+    // search for plugins in non-standard directories
+    if(extra_plugin_path) {
+        CamUnitManager *manager = cam_unit_chain_get_manager(chain);
+        char **path_dirs = g_strsplit(extra_plugin_path, ":", 0);
+        for (int i=0; path_dirs[i]; i++) {
+            cam_unit_manager_add_plugin_dir (manager, path_dirs[i]);
+        }
+        g_strfreev (path_dirs);
+        free(extra_plugin_path);
+        extra_plugin_path = NULL;
+    }
 
     // XXX hack... don't remember why this is there anymore...
     sleep (1);
