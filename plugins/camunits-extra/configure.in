@@ -90,7 +90,6 @@ AC_OUTPUT([
   klt-stb/klt/Makefile
   fh-segment/Makefile
   cvd/Makefile
-  ptgrey/Makefile
   opencv/Makefile
   util/Makefile
   progs/Makefile
@@ -140,6 +139,5 @@ Configuration (camunits-extra):
 	KLT (Birchfield) plugin:           ${KLTSTB_MSG}
 	Felzenszwalb-Huttenlocher plugin:  Enabled
 	libCVD (FAST features) plugins:    ${CVD_MSG}
-	Point Grey Bumblebee2 viewer:      Enabled
 	OpenCV plugins:                    ${OPENCV_MSG}
 "
