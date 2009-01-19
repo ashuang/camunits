@@ -1,6 +1,6 @@
 package camlcm;
 
-// Describes an image, for use with libcam.
+// Describes an image, for use with Camunits.
 
 struct image_t
 {

@@ -6,8 +6,7 @@ struct image_legacy_t
 
     int16_t  width, height, stride;
 
-    // pixelformat uses standard fourcc codings.  see common/pixels.h
-    //       /usr/include/linux/videodev2.h
+    // Camunits pixelformat.  See CamPixelFormat in cam/pixels.h
     int32_t  pixelformat;
 
     int32_t  size;

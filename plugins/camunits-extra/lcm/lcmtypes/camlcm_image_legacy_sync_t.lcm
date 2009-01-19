@@ -1,10 +1,10 @@
 package camlcm;
 
 // the image_lcsync_t message is used to synchronize a camera logfile with an
-// LC logfile.  Each time an image is captured by libcam2 and passed through
-// filter_logger, an image_lcsync_t is published.  When replaying camera logs
-// synchronized to the playback of an LC logfile, the input_log unit in libcam2
-// listens for image_lcsync_t messages
+// LCM logfile.  Each time an image is captured by Camunits and passed through
+// filter_logger, an image_legacy_sync_t is published.  When replaying camera
+// logs synchronized to the playback of an LCM logfile, the input_log_sync unit
+// in Camunits listens for image_legacy_sync_t messages
 
 struct image_legacy_sync_t
 {

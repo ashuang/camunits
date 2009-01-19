@@ -1,7 +1,7 @@
 package camlcm;
 
-// The output.lcm-publish unit of libcam announces all published image streams
-// on channel BOTLCM_IMAGE_ANNOUNCE  The purpose is to allow libcam to
+// The lcm.image_publish unit of Camunits announces all published image streams
+// on channel CAMLCM_IMAGE_ANNOUNCE  The purpose is to allow Camunits to
 // automatically discover image streams published via LCM.
 
 struct image_announce_t 
