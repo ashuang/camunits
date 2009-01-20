@@ -88,7 +88,6 @@ AC_OUTPUT([
   framewave/jpeg-plugins/Makefile
   klt-stb/Makefile
   klt-stb/klt/Makefile
-  fh-segment/Makefile
   cvd/Makefile
   opencv/Makefile
   util/Makefile
@@ -137,7 +136,6 @@ Configuration (camunits-extra):
 	IPP plugins:                       ${IPP_MSG}
 	Framewave plugins:                 ${FRAMEWAVE_MSG}
 	KLT (Birchfield) plugin:           ${KLTSTB_MSG}
-	Felzenszwalb-Huttenlocher plugin:  Enabled
 	libCVD (FAST features) plugins:    ${CVD_MSG}
 	OpenCV plugins:                    ${OPENCV_MSG}
 "
