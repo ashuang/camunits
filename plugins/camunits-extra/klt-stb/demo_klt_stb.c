@@ -84,8 +84,8 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("demo", 
-            "klt-stb",
+    return cam_unit_driver_new_stock_full ("klt-stb", 
+            "demo",
             "KLT tracker (Birchfield)", CAM_UNIT_RENDERS_GL, 
             (CamUnitConstructor)camklt_klt_new,
             module);

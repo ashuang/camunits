@@ -76,8 +76,8 @@ cam_plugin_initialize (GTypeModule * module)
 CamUnitDriver *
 cam_plugin_create (GTypeModule * module)
 {
-    return cam_unit_driver_new_stock_full ("demo", 
-            "cvd-fast",
+    return cam_unit_driver_new_stock_full ("cvd", 
+            "fast-demo",
             "FAST Features (Rosten, Drummond)", CAM_UNIT_RENDERS_GL, 
             (CamUnitConstructor)camcvd_fast_new,
             module);
