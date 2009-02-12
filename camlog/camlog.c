@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     setlinebuf (stderr);
 
     char *optstring = "hi:c:o:fnvp:";
-    char c;
+    int c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
         { "input", required_argument, 0, 'i' },

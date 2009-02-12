@@ -393,7 +393,7 @@ int main (int argc, char **argv)
     self->use_gui = 1;
 
     char *optstring = "hc:p:";
-    char c;
+    int c;
     struct option long_opts[] = { 
         { "help", no_argument, 0, 'h' },
         { "chain", required_argument, 0, 'c' },
