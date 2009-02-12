@@ -14,39 +14,18 @@
 #define MIN_WIDTH 1
 #define MIN_HEIGHT 1
 
-typedef struct _CamippResize CamippResize;
-typedef struct _CamippResizeClass CamippResizeClass;
-
-// boilerplate
-#define CAMIPP_TYPE_RESIZE  camipp_resize_get_type()
-#define CAMIPP_RESIZE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMIPP_TYPE_RESIZE, CamippResize))
-#define CAMIPP_RESIZE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMIPP_TYPE_RESIZE, CamippResizeClass ))
-#define IS_CAMIPP_RESIZE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMIPP_TYPE_RESIZE ))
-#define IS_CAMIPP_RESIZE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMIPP_TYPE_RESIZE))
-#define CAMIPP_RESIZE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMIPP_TYPE_RESIZE, CamippResizeClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-
-struct _CamippResize {
+typedef struct {
     CamUnit parent;
 
     int size_requested;
     CamUnitControl *width_ctl;
     CamUnitControl *height_ctl;
     CamUnitControl *lock_aspect_ctl;
-};
+} CamippResize;
 
-struct _CamippResizeClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camipp_resize_get_type (void);
+} CamippResizeClass;
 
 static CamippResize * camipp_resize_new(void);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
@@ -56,18 +35,19 @@ static void on_input_format_changed (CamUnit *super,
 static gboolean _try_set_control (CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
 
+GType camipp_resize_get_type (void);
 CAM_PLUGIN_TYPE (CamippResize, camipp_resize, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camipp_resize_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("ipp", "resize",
             "Resize", 0, (CamUnitConstructor)camipp_resize_new, module);
@@ -106,7 +86,7 @@ camipp_resize_init (CamippResize *self)
 static CamippResize * 
 camipp_resize_new()
 {
-    return CAMIPP_RESIZE(g_object_new(CAMIPP_TYPE_RESIZE, NULL));
+    return (CamippResize*)(g_object_new(camipp_resize_get_type(), NULL));
 }
 
 static void 
@@ -186,7 +166,7 @@ update_output_format (CamippResize *self, int width, int height,
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamippResize *self = CAMIPP_RESIZE (super);
+    CamippResize *self = (CamippResize*) (super);
     
     if (infmt) {
         int new_width, new_height;
@@ -213,7 +193,7 @@ static gboolean
 _try_set_control (CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual)
 {
-    CamippResize *self = CAMIPP_RESIZE (super);
+    CamippResize *self = (CamippResize*) (super);
 
     int old_width = cam_unit_control_get_int (self->width_ctl);
     int old_height = cam_unit_control_get_int (self->height_ctl);

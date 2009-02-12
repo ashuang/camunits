@@ -8,10 +8,26 @@
 
 #include <camunits/plugin.h>
 
-#include "convert_ipp_jpeg_compress.h"
-
 #define err(args...) fprintf(stderr, args)
 
+typedef struct {
+    CamUnit parent;
+    
+    /*< private >*/
+    CamUnitControl * quality_control;
+    CamFrameBuffer * outbuf;
+} CamippJpegCompress;
+
+typedef struct {
+    CamUnitClass parent_class;
+} CamippJpegCompressClass;
+
+/** 
+ * Constructor.
+ * 
+ * Don't call this function manually.  Instead, use the unit driver
+ */
+CamippJpegCompress * camipp_jpeg_compress_new (void);
 static int _jpegipp_compress_8u_gray (const uint8_t * src, int width, 
         int height, int stride, uint8_t * dest, int * destsize, int quality);
 static int _jpegipp_compress_8u_rgb (const uint8_t * src, int width, 
@@ -27,21 +43,19 @@ static void on_input_format_changed (CamUnit *super,
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
 
+GType camipp_jpeg_compress_get_type (void);
 CAM_PLUGIN_TYPE (CamippJpegCompress, camipp_jpeg_compress, CAM_TYPE_UNIT);
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camipp_jpeg_compress_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("ipp", "jpeg_compress",
             "JPEG Compress", 0, 
@@ -71,14 +85,14 @@ camipp_jpeg_compress_class_init (CamippJpegCompressClass *klass)
 CamippJpegCompress * 
 camipp_jpeg_compress_new()
 {
-    return CAMIPP_JPEG_COMPRESS(
-            g_object_new(CAMIPP_TYPE_JPEG_COMPRESS, NULL));
+    return (CamippJpegCompress*)
+            g_object_new(camipp_jpeg_compress_get_type(), NULL);
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamippJpegCompress *self = CAMIPP_JPEG_COMPRESS (super);
+    CamippJpegCompress *self = (CamippJpegCompress*) (super);
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
 }
@@ -86,8 +100,9 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    g_object_unref (CAMIPP_JPEG_COMPRESS (super)->outbuf);
-    CAMIPP_JPEG_COMPRESS (super)->outbuf = NULL;
+CamippJpegCompress* self = (CamippJpegCompress*) super;
+    g_object_unref (self->outbuf);
+    self->outbuf = NULL;
     return 0;
 }
 
@@ -95,7 +110,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
-    CamippJpegCompress * self = CAMIPP_JPEG_COMPRESS (super);
+    CamippJpegCompress * self = (CamippJpegCompress*) (super);
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     int width = infmt->width;

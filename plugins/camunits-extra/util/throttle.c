@@ -15,25 +15,7 @@ typedef enum {
     THROTTLE_BY_REPORTED,
 } throttle_mode_t;
 
-typedef struct _CamutilThrottle CamutilThrottle;
-typedef struct _CamutilThrottleClass CamutilThrottleClass;
-
-// boilerplate
-#define CAMUTIL_TYPE_THROTTLE  camutil_throttle_get_type()
-#define CAMUTIL_THROTTLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMUTIL_TYPE_THROTTLE, CamutilThrottle))
-#define CAMUTIL_THROTTLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMUTIL_TYPE_THROTTLE, CamutilThrottleClass ))
-#define IS_CAMUTIL_THROTTLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMUTIL_TYPE_THROTTLE ))
-#define IS_CAMUTIL_THROTTLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMUTIL_TYPE_THROTTLE))
-#define CAMUTIL_THROTTLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMUTIL_TYPE_THROTTLE, CamutilThrottleClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-struct _CamutilThrottle {
+typedef struct {
     CamUnit parent;
 
     CamFrameBuffer *prev_buf;
@@ -45,13 +27,11 @@ struct _CamutilThrottle {
 
     int64_t last_allowed_actual_timestamp;
     int64_t last_allowed_reported_timestamp;
-};
+} CamutilThrottle;
 
-struct _CamutilThrottleClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camutil_throttle_get_type (void);
+} CamutilThrottleClass;
 
 static CamutilThrottle * camutil_throttle_new(void);
 static int _stream_shutdown (CamUnit * super);
@@ -62,18 +42,19 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
+GType camutil_throttle_get_type (void);
 CAM_PLUGIN_TYPE (CamutilThrottle, camutil_throttle, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camutil_throttle_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("util", "throttle", "Throttle", 
             0, (CamUnitConstructor)camutil_throttle_new, module);
@@ -129,13 +110,13 @@ static CamutilThrottle *
 camutil_throttle_new()
 {
     // "public" constructor
-    return CAMUTIL_THROTTLE(g_object_new(CAMUTIL_TYPE_THROTTLE, NULL));
+    return (CamutilThrottle*)(g_object_new(camutil_throttle_get_type(), NULL));
 }
 
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    CamutilThrottle *self = CAMUTIL_THROTTLE (super);
+    CamutilThrottle *self = (CamutilThrottle*) (super);
     if (self->prev_buf) {
         g_object_unref (self->prev_buf);
         self->prev_buf = NULL;
@@ -175,7 +156,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamutilThrottle *self = CAMUTIL_THROTTLE(super);
+    CamutilThrottle *self = (CamutilThrottle*)(super);
 
     if (cam_unit_control_get_boolean (self->pause_ctl)) {
         // unit is paused.  Only allow a frame if the user says to allow one
@@ -218,7 +199,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamutilThrottle *self = CAMUTIL_THROTTLE (super);
+    CamutilThrottle *self = (CamutilThrottle*) (super);
     if (ctl == self->repeat_last_frame_ctl && self->prev_buf) {
         cam_unit_produce_frame (super, self->prev_buf, super->fmt);
     }

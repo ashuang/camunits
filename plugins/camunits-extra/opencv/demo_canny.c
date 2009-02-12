@@ -10,26 +10,7 @@
 
 #define err(args...) fprintf(stderr, args)
 
-typedef struct _CamcvCanny CamcvCanny;
-typedef struct _CamcvCannyClass CamcvCannyClass;
-
-// boilerplate
-#define CAMCV_TYPE_CANNY  camcv_canny_get_type()
-#define CAMCV_CANNY(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMCV_TYPE_CANNY, CamcvCanny))
-#define CAMCV_CANNY_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMCV_TYPE_CANNY, CamcvCannyClass ))
-#define IS_CAMCV_CANNY(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMCV_TYPE_CANNY ))
-#define IS_CAMCV_CANNY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMCV_TYPE_CANNY))
-#define CAMCV_CANNY_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMCV_TYPE_CANNY, CamcvCannyClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-
-struct _CamcvCanny {
+typedef struct {
     CamUnit parent;
 
     CamGLTexture * gl_texture;
@@ -40,13 +21,11 @@ struct _CamcvCanny {
     CamUnitControl *thresh2_ctl;
     CamUnitControl *apert_ctl;
     CamUnitControl *render_original_ctl;
-};
+} CamcvCanny;
 
-struct _CamcvCannyClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camcv_canny_get_type (void);
+} CamcvCannyClass;
 
 static CamcvCanny * camcv_canny_new(void);
 static int _gl_draw_gl_init (CamUnit *super);
@@ -59,18 +38,19 @@ static void on_input_format_changed (CamUnit *super,
 static gboolean _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual);
 
+GType camcv_canny_get_type (void);
 CAM_PLUGIN_TYPE (CamcvCanny, camcv_canny, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camcv_canny_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("opencv.demo", "canny",
             "Canny Edge Detector", CAM_UNIT_RENDERS_GL, 
@@ -111,7 +91,7 @@ camcv_canny_class_init (CamcvCannyClass *klass)
 static CamcvCanny * 
 camcv_canny_new()
 {
-    return CAMCV_CANNY(g_object_new(CAMCV_TYPE_CANNY, NULL));
+    return (CamcvCanny*)(g_object_new(camcv_canny_get_type(), NULL));
 }
 
 static void
@@ -130,7 +110,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamcvCanny *self = CAMCV_CANNY(super);
+    CamcvCanny *self = (CamcvCanny*)(super);
 
     CvSize img_size = { infmt->width, infmt->height };
     IplImage *cvimg = cvCreateImage (img_size, IPL_DEPTH_8U, 1);
@@ -179,7 +159,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static int 
 _gl_draw_gl_init (CamUnit *super)
 {
-    CamcvCanny *self = CAMCV_CANNY (super);
+    CamcvCanny *self = (CamcvCanny*) (super);
     if (! super->input_unit) 
         return -1;
     const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
@@ -202,7 +182,7 @@ _gl_draw_gl_init (CamUnit *super)
 static int 
 _gl_draw_gl (CamUnit *super)
 {
-    CamcvCanny *self = CAMCV_CANNY (super);
+    CamcvCanny *self = (CamcvCanny*) (super);
     if (! super->fmt) return -1;
     if (! self->gl_texture) return -1;
     glMatrixMode (GL_PROJECTION);
@@ -218,7 +198,7 @@ _gl_draw_gl (CamUnit *super)
 static int 
 _gl_draw_gl_shutdown (CamUnit *super)
 {
-    CamcvCanny *self = CAMCV_CANNY (super);
+    CamcvCanny *self = (CamcvCanny*) (super);
     if (self->gl_texture) {
         cam_gl_texture_free (self->gl_texture);
         self->gl_texture = NULL;
@@ -231,7 +211,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamcvCanny *self = CAMCV_CANNY (super);
+    CamcvCanny *self = (CamcvCanny*) (super);
     if (ctl == self->apert_ctl) {
         int requested = g_value_get_int (proposed);
         if (requested < 3 || requested > 7 || (requested % 2 == 0)) {

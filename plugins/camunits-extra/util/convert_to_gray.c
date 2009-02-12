@@ -1,41 +1,28 @@
 #include <stdio.h>
 #include <camunits/plugin.h>
 
-typedef struct _CamConvertToGray CamConvertToGray;
-typedef struct _CamConvertToGrayClass CamConvertToGrayClass;
-
-struct _CamConvertToGray {
+typedef struct {
     CamUnit parent;
     CamUnit *worker;
-};
+} CamConvertToGray;
 
-struct _CamConvertToGrayClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType cam_convert_to_gray_get_type (void);
+} CamConvertToGrayClass;
 
 CamConvertToGray * cam_convert_to_gray_new(void);
 
-// boilerplate
-#define CAM_TYPE_CONVERT_TO_GRAY  cam_convert_to_gray_get_type()
-#define CAM_CONVERT_TO_GRAY(obj)  \
-    (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAM_TYPE_CONVERT_TO_GRAY, CamConvertToGray))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-
+GType cam_convert_to_gray_get_type (void);
 CAM_PLUGIN_TYPE (CamConvertToGray, cam_convert_to_gray, CAM_TYPE_UNIT);
 
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     cam_convert_to_gray_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("convert", "to_gray", 
             "Convert to 8-bit Gray", 0, 
@@ -80,13 +67,13 @@ cam_convert_to_gray_init (CamConvertToGray *self)
 CamConvertToGray * 
 cam_convert_to_gray_new()
 {
-    return CAM_CONVERT_TO_GRAY(g_object_new(CAM_TYPE_CONVERT_TO_GRAY, NULL));
+    return (CamConvertToGray*)(g_object_new(cam_convert_to_gray_get_type(), NULL));
 }
 
 static void
 _finalize (GObject * obj)
 {
-    CamConvertToGray *self = CAM_CONVERT_TO_GRAY (obj);
+    CamConvertToGray *self = (CamConvertToGray*) (obj);
     if (self->worker) {
         g_signal_handlers_disconnect_by_func (self->worker, 
                 on_worker_frame_ready, self);
@@ -99,7 +86,7 @@ _finalize (GObject * obj)
 static int
 _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 {
-    CamConvertToGray * self = CAM_CONVERT_TO_GRAY (super);
+    CamConvertToGray * self = (CamConvertToGray*) (super);
     if (super->input_unit && super->input_unit->fmt &&
         super->input_unit->fmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         return 0;
@@ -118,7 +105,7 @@ _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 static int
 _stream_shutdown (CamUnit * super)
 {
-    CamConvertToGray *self = CAM_CONVERT_TO_GRAY (super);
+    CamConvertToGray *self = (CamConvertToGray*) (super);
     if (self->worker) {
         return cam_unit_stream_shutdown (self->worker);
     } else {
@@ -150,7 +137,7 @@ on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf,
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamConvertToGray *self = CAM_CONVERT_TO_GRAY (super);
+    CamConvertToGray *self = (CamConvertToGray*) (super);
     gboolean was_streaming = super->is_streaming;
     cam_unit_stream_shutdown (super);
 

@@ -14,25 +14,7 @@
 
 #define err(args...) fprintf(stderr, args)
 
-typedef struct _CamkltKLT CamkltKLT;
-typedef struct _CamkltKLTClass CamkltKLTClass;
-
-// boilerplate
-#define CAMKLT_TYPE_KLT  camklt_klt_get_type()
-#define CAMKLT_KLT(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMKLT_TYPE_KLT, CamkltKLT))
-#define CAMKLT_KLT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMKLT_TYPE_KLT, CamkltKLTClass ))
-#define IS_CAMKLT_KLT(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMKLT_TYPE_KLT ))
-#define IS_CAMKLT_KLT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMKLT_TYPE_KLT))
-#define CAMKLT_KLT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMKLT_TYPE_KLT, CamkltKLTClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-struct _CamkltKLT {
+typedef struct {
     CamUnit parent;
 //    int max_ncorners;
 //    CvPoint2D32f *corners;
@@ -52,13 +34,11 @@ struct _CamkltKLT {
 //    CamUnitControl *use_harris_ctl;
 //    CamUnitControl *harris_k_ctl;
     CamUnitControl *verbose_ctl;
-};
+} CamkltKLT;
 
-struct _CamkltKLTClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camklt_klt_get_type (void);
+} CamkltKLTClass;
 
 static CamkltKLT * camklt_klt_new(void);
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
@@ -71,18 +51,19 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
+GType camklt_klt_get_type (void);
 CAM_PLUGIN_TYPE (CamkltKLT, camklt_klt, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camklt_klt_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("klt-stb", 
             "demo",
@@ -138,13 +119,13 @@ static CamkltKLT *
 camklt_klt_new()
 {
     // "public" constructor
-    return CAMKLT_KLT(g_object_new(CAMKLT_TYPE_KLT, NULL));
+    return (CamkltKLT*)(g_object_new(camklt_klt_get_type(), NULL));
 }
 
 static int
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamkltKLT * self = CAMKLT_KLT (super);
+    CamkltKLT * self = (CamkltKLT*) (super);
 
     self->tc = KLTCreateTrackingContext ();
 
@@ -163,7 +144,7 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int
 _stream_shutdown (CamUnit * super)
 {
-    CamkltKLT * self = CAMKLT_KLT (super);
+    CamkltKLT * self = (CamkltKLT*) (super);
 
     KLTFreeTrackingContext (self->tc);
     self->tc = NULL;
@@ -201,7 +182,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamkltKLT *self = CAMKLT_KLT(super);
+    CamkltKLT *self = (CamkltKLT*)(super);
 
     // make a copy of the image data, both to remove pad bytes between rows,
     // and to keep a copy around for future frame processing
@@ -248,7 +229,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static int 
 _gl_draw_gl (CamUnit *super)
 {
-    CamkltKLT *self = CAMKLT_KLT (super);
+    CamkltKLT *self = (CamkltKLT*) (super);
     if (!super->fmt) return 0;
     if (!self->fl) return 0;
 
@@ -279,7 +260,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamkltKLT *self = CAMKLT_KLT (super);
+    CamkltKLT *self = (CamkltKLT*) (super);
     if (ctl == self->max_features_ctl) {
         int old_max = cam_unit_control_get_int (self->max_features_ctl);
         int new_max = g_value_get_int (proposed);

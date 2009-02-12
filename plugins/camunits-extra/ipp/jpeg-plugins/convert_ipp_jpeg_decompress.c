@@ -8,10 +8,20 @@
 
 #include <camunits/plugin.h>
 
-#include "convert_ipp_jpeg_decompress.h"
-
 #define err(args...) fprintf(stderr, args)
 
+typedef struct {
+    CamUnit parent;
+    
+    /*< private >*/
+    CamFrameBuffer * outbuf;
+} CamippJpegDecompress;
+
+typedef struct {
+    CamUnitClass parent_class;
+} CamippJpegDecompressClass;
+
+CamippJpegDecompress * camipp_jpeg_decompress_new (void);
 static int _jpegipp_decompress (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride, J_COLOR_SPACE ocs);
 static void _jpegipp_std_huff_tables (j_decompress_ptr cinfo);
@@ -24,21 +34,19 @@ static void on_input_format_changed (CamUnit *super,
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
 
+GType camipp_jpeg_decompress_get_type (void);
 CAM_PLUGIN_TYPE (CamippJpegDecompress, camipp_jpeg_decompress, CAM_TYPE_UNIT);
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camipp_jpeg_decompress_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("ipp", "jpeg_decompress",
             "JPEG Decompress", 0, 
@@ -65,14 +73,14 @@ camipp_jpeg_decompress_class_init (CamippJpegDecompressClass *klass)
 CamippJpegDecompress * 
 camipp_jpeg_decompress_new()
 {
-    return CAMIPP_JPEG_DECOMPRESS(
-            g_object_new(CAMIPP_TYPE_JPEG_DECOMPRESS, NULL));
+    return (CamippJpegDecompress*)
+        g_object_new(camipp_jpeg_decompress_get_type(), NULL);
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamippJpegDecompress *self = CAMIPP_JPEG_DECOMPRESS (super);
+    CamippJpegDecompress *self = (CamippJpegDecompress*) (super);
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
 }
@@ -80,8 +88,9 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    g_object_unref (CAMIPP_JPEG_DECOMPRESS (super)->outbuf);
-    CAMIPP_JPEG_DECOMPRESS (super)->outbuf = NULL;
+    CamippJpegDecompress *self = (CamippJpegDecompress*) super;
+    g_object_unref (self->outbuf);
+    self->outbuf = NULL;
     return 0;
 }
 
@@ -89,7 +98,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
-    CamippJpegDecompress *self = CAMIPP_JPEG_DECOMPRESS (super);
+    CamippJpegDecompress *self = (CamippJpegDecompress*) (super);
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     J_COLOR_SPACE out_space;

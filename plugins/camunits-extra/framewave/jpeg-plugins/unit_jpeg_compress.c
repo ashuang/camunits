@@ -8,9 +8,21 @@
 
 #include <camunits/plugin.h>
 
-#include "unit_jpeg_compress.h"
-
 #define err(args...) fprintf(stderr, args)
+
+typedef struct {
+    CamUnit parent;
+    
+    /*< private >*/
+    CamUnitControl * quality_control;
+    CamFrameBuffer * outbuf;
+} CamfwJpegCompress;
+
+typedef struct {
+    CamUnitClass parent_class;
+} CamfwJpegCompressClass;
+
+CamfwJpegCompress * camfw_jpeg_compress_new (void);
 
 static int _jpegfw_compress_8u_gray (const uint8_t * src, int width, 
         int height, int stride, uint8_t * dest, int * destsize, int quality);
@@ -27,6 +39,7 @@ static void on_input_format_changed (CamUnit *super,
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
 
+GType camfw_jpeg_compress_get_type (void);
 CAM_PLUGIN_TYPE (CamfwJpegCompress, camfw_jpeg_compress, CAM_TYPE_UNIT);
 
 void cam_plugin_initialize (GTypeModule * module);
@@ -71,14 +84,14 @@ camfw_jpeg_compress_class_init (CamfwJpegCompressClass *klass)
 CamfwJpegCompress * 
 camfw_jpeg_compress_new()
 {
-    return CAMFW_JPEG_COMPRESS(
-            g_object_new(CAMFW_TYPE_JPEG_COMPRESS, NULL));
+    return (CamfwJpegCompress*)(
+            g_object_new(camfw_jpeg_compress_get_type(), NULL));
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamfwJpegCompress *self = CAMFW_JPEG_COMPRESS (super);
+    CamfwJpegCompress *self = (CamfwJpegCompress*) (super);
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
 }
@@ -86,8 +99,9 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    g_object_unref (CAMFW_JPEG_COMPRESS (super)->outbuf);
-    CAMFW_JPEG_COMPRESS (super)->outbuf = NULL;
+    CamfwJpegCompress * self = (CamfwJpegCompress*) super;
+    g_object_unref(self->outbuf);
+    self->outbuf = NULL;
     return 0;
 }
 
@@ -95,7 +109,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
-    CamfwJpegCompress * self = CAMFW_JPEG_COMPRESS (super);
+    CamfwJpegCompress * self = (CamfwJpegCompress*) (super);
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     int width = infmt->width;

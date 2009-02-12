@@ -8,10 +8,25 @@
 
 #include <camunits/plugin.h>
 
-#include "unit_jpeg_decompress.h"
-
 #define err(args...) fprintf(stderr, args)
 
+typedef struct {
+    CamUnit parent;
+    
+    /*< private >*/
+    CamFrameBuffer * outbuf;
+} CamfwJpegDecompress;
+
+typedef struct {
+    CamUnitClass parent_class;
+} CamfwJpegDecompressClass;
+
+/** 
+ * Constructor.
+ * 
+ * Don't call this function manually.  Instead, use the unit driver
+ */
+CamfwJpegDecompress * camfw_jpeg_decompress_new (void);
 static int _jpegfw_decompress (const uint8_t * src, int src_size,
         uint8_t * dest, int width, int height, int stride, J_COLOR_SPACE ocs);
 static void _jpegfw_std_huff_tables (j_decompress_ptr cinfo);
@@ -24,21 +39,19 @@ static void on_input_format_changed (CamUnit *super,
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
 
+GType camfw_jpeg_decompress_get_type (void);
 CAM_PLUGIN_TYPE (CamfwJpegDecompress, camfw_jpeg_decompress, CAM_TYPE_UNIT);
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camfw_jpeg_decompress_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("framewave", "jpeg_decompress",
             "JPEG Decompress", 0, 
@@ -65,14 +78,14 @@ camfw_jpeg_decompress_class_init (CamfwJpegDecompressClass *klass)
 CamfwJpegDecompress * 
 camfw_jpeg_decompress_new()
 {
-    return CAMFW_JPEG_DECOMPRESS(
-            g_object_new(CAMFW_TYPE_JPEG_DECOMPRESS, NULL));
+    return (CamfwJpegDecompress*)
+        g_object_new(camfw_jpeg_decompress_get_type(), NULL);
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamfwJpegDecompress *self = CAMFW_JPEG_DECOMPRESS (super);
+    CamfwJpegDecompress *self = (CamfwJpegDecompress*) (super);
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
 }
@@ -80,8 +93,9 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    g_object_unref (CAMFW_JPEG_DECOMPRESS (super)->outbuf);
-    CAMFW_JPEG_DECOMPRESS (super)->outbuf = NULL;
+    CamfwJpegDecompress * self = (CamfwJpegDecompress*)super;
+    g_object_unref (self->outbuf);
+    self->outbuf = NULL;
     return 0;
 }
 
@@ -89,7 +103,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
-    CamfwJpegDecompress *self = CAMFW_JPEG_DECOMPRESS (super);
+    CamfwJpegDecompress *self = (CamfwJpegDecompress*) (super);
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     J_COLOR_SPACE out_space;

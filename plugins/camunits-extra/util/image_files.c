@@ -34,38 +34,18 @@ static const char *_suffixes[] = {
     NULL
 };
 
-typedef struct _CamutilFileWriter CamutilFileWriter;
-typedef struct _CamutilFileWriterClass CamutilFileWriterClass;
-
-// boilerplate
-#define CAMUTIL_TYPE_FILE_WRITER  camutil_file_writer_get_type()
-#define CAMUTIL_FILE_WRITER(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMUTIL_TYPE_FILE_WRITER, CamutilFileWriter))
-#define CAMUTIL_FILE_WRITER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMUTIL_TYPE_FILE_WRITER, CamutilFileWriterClass ))
-#define IS_CAMUTIL_FILE_WRITER(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMUTIL_TYPE_FILE_WRITER ))
-#define IS_CAMUTIL_FILE_WRITER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMUTIL_TYPE_FILE_WRITER))
-#define CAMUTIL_FILE_WRITER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMUTIL_TYPE_FILE_WRITER, CamutilFileWriterClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-struct _CamutilFileWriter {
+typedef struct {
     CamUnit parent;
     CamUnitControl *file_format_ctl;
     CamUnitControl *file_prefix_ctl;
     CamUnitControl *write_ctl;
     CamUnitControl *last_file_written_ctl;
     int counter;
-};
+} CamutilFileWriter;
 
-struct _CamutilFileWriterClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camutil_file_writer_get_type (void);
+} CamutilFileWriterClass;
 
 static CamutilFileWriter * camutil_file_writer_new(void);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
@@ -75,18 +55,19 @@ static void on_input_format_changed (CamUnit *super,
 static gboolean _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual);
 
+GType camutil_file_writer_get_type (void);
 CAM_PLUGIN_TYPE (CamutilFileWriter, camutil_file_writer, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camutil_file_writer_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("output", "image_files", 
             "Image File Writer", 0, (CamUnitConstructor)camutil_file_writer_new, 
@@ -131,13 +112,13 @@ static CamutilFileWriter *
 camutil_file_writer_new()
 {
     // "public" constructor
-    return CAMUTIL_FILE_WRITER(g_object_new(CAMUTIL_TYPE_FILE_WRITER, NULL));
+    return (CamutilFileWriter*)(g_object_new(camutil_file_writer_get_type(), NULL));
 }
 
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamutilFileWriter *self = CAMUTIL_FILE_WRITER (super);
+    CamutilFileWriter *self = (CamutilFileWriter*) (super);
     cam_unit_remove_all_output_formats (super);
     if (! infmt) return;
 
@@ -203,7 +184,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamutilFileWriter *self = CAMUTIL_FILE_WRITER(super);
+    CamutilFileWriter *self = (CamutilFileWriter*)(super);
 
     int out_fmt = cam_unit_control_get_enum (self->file_format_ctl);
 
@@ -265,7 +246,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamutilFileWriter *self = CAMUTIL_FILE_WRITER(super);
+    CamutilFileWriter *self = (CamutilFileWriter*)(super);
     if (ctl == self->last_file_written_ctl) {
         return FALSE;
     }

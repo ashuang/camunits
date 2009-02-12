@@ -11,25 +11,7 @@
 
 #define err(args...) fprintf(stderr, args)
 
-typedef struct _CamcvGFTT CamcvGFTT;
-typedef struct _CamcvGFTTClass CamcvGFTTClass;
-
-// boilerplate
-#define CAMCV_TYPE_GFTT  camcv_gftt_get_type()
-#define CAMCV_GFTT(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMCV_TYPE_GFTT, CamcvGFTT))
-#define CAMCV_GFTT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMCV_TYPE_GFTT, CamcvGFTTClass ))
-#define IS_CAMCV_GFTT(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMCV_TYPE_GFTT ))
-#define IS_CAMCV_GFTT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMCV_TYPE_GFTT))
-#define CAMCV_GFTT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMCV_TYPE_GFTT, CamcvGFTTClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-struct _CamcvGFTT {
+typedef struct {
     CamUnit parent;
     int max_ncorners;
     CvPoint2D32f *corners;
@@ -40,13 +22,11 @@ struct _CamcvGFTT {
     CamUnitControl *block_size_ctl;
     CamUnitControl *use_harris_ctl;
     CamUnitControl *harris_k_ctl;
-};
+} CamcvGFTT;
 
-struct _CamcvGFTTClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camcv_gftt_get_type (void);
+} CamcvGFTTClass;
 
 static CamcvGFTT * camcv_gftt_new(void);
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
@@ -59,18 +39,19 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
+GType camcv_gftt_get_type (void);
 CAM_PLUGIN_TYPE (CamcvGFTT, camcv_gftt, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camcv_gftt_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("opencv.demo", 
             "good-features-to-track",
@@ -115,13 +96,13 @@ static CamcvGFTT *
 camcv_gftt_new()
 {
     // "public" constructor
-    return CAMCV_GFTT(g_object_new(CAMCV_TYPE_GFTT, NULL));
+    return (CamcvGFTT*)(g_object_new(camcv_gftt_get_type(), NULL));
 }
 
 static int
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamcvGFTT * self = CAMCV_GFTT (super);
+    CamcvGFTT * self = (CamcvGFTT*) (super);
     self->max_ncorners = format->width * format->height / 4;
     self->corners = malloc (sizeof (CvPoint2D32f) * self->max_ncorners);
     self->ncorners = 0;
@@ -131,7 +112,7 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int
 _stream_shutdown (CamUnit * super)
 {
-    CamcvGFTT * self = CAMCV_GFTT (super);
+    CamcvGFTT * self = (CamcvGFTT*) (super);
     free (self->corners);
     return 0;
 }
@@ -152,7 +133,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamcvGFTT *self = CAMCV_GFTT(super);
+    CamcvGFTT *self = (CamcvGFTT*)(super);
 
     CvSize img_size = { infmt->width, infmt->height };
     IplImage *cvimg = cvCreateImage (img_size, IPL_DEPTH_8U, 1);
@@ -193,7 +174,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static int 
 _gl_draw_gl (CamUnit *super)
 {
-    CamcvGFTT *self = CAMCV_GFTT (super);
+    CamcvGFTT *self = (CamcvGFTT*) (super);
     if (!super->fmt) return 0;
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
@@ -215,7 +196,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamcvGFTT *self = CAMCV_GFTT (super);
+    CamcvGFTT *self = (CamcvGFTT*) (super);
     if (ctl == self->block_size_ctl) {
         int requested = g_value_get_int (proposed);
         if (requested < 3 || (requested % 2 == 0)) {

@@ -8,24 +8,6 @@
 #include <opencv/cv.h>
 
 typedef struct _CamcvUndistort CamcvUndistort;
-typedef struct _CamcvUndistortClass CamcvUndistortClass;
-
-// boilerplate
-#define CAMCV_TYPE_UNDISTORT  camcv_undistort_get_type()
-#define CAMCV_UNDISTORT(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMCV_TYPE_UNDISTORT, CamcvUndistort))
-#define CAMCV_UNDISTORT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST((klass), \
-            CAMCV_TYPE_UNDISTORT, CamcvUndistortClass ))
-#define IS_CAMCV_UNDISTORT(obj)   (G_TYPE_CHECK_INSTANCE_TYPE((obj), \
-            CAMCV_TYPE_UNDISTORT ))
-#define IS_CAMCV_UNDISTORT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMCV_TYPE_UNDISTORT))
-#define CAMCV_UNDISTORT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMCV_TYPE_UNDISTORT, CamcvUndistortClass))
-
-void cam_plugin_initialize(GTypeModule * module);
-CamUnitDriver * cam_plugin_create(GTypeModule * module);
-
 struct _CamcvUndistort {
     CamUnit parent;
 
@@ -45,11 +27,10 @@ struct _CamcvUndistort {
     CvMat * mapy;
 };
 
+typedef struct _CamcvUndistortClass CamcvUndistortClass;
 struct _CamcvUndistortClass {
     CamUnitClass parent_class;
 };
-
-GType camcv_undistort_get_type(void);
 
 static CamcvUndistort * camcv_undistort_new(void);
 static void on_input_frame_ready(CamUnit * super, const CamFrameBuffer *inbuf,
@@ -63,18 +44,19 @@ static gboolean _try_set_control(CamUnit *super, const CamUnitControl *ctl,
 static void _update_mapping(CamcvUndistort * self);
 static void _finalize (GObject * obj);
 
+GType camcv_undistort_get_type(void);
 CAM_PLUGIN_TYPE(CamcvUndistort, camcv_undistort, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize(GTypeModule * module)
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
     camcv_undistort_register_type(module);
 }
 
-CamUnitDriver *
-cam_plugin_create(GTypeModule * module)
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full("opencv", "undistort",
             "Undistort", 0, 
@@ -96,7 +78,7 @@ camcv_undistort_class_init(CamcvUndistortClass *klass)
 static void
 _finalize (GObject * obj)
 {
-    CamcvUndistort * self = CAMCV_UNDISTORT(obj);
+    CamcvUndistort * self = (CamcvUndistort*)(obj);
     if(self->dst_cv) {
         cvReleaseImage(&self->dst_cv);
        g_object_unref(self->outbuf);
@@ -143,13 +125,13 @@ camcv_undistort_init(CamcvUndistort *self)
 static CamcvUndistort * 
 camcv_undistort_new()
 {
-    return CAMCV_UNDISTORT(g_object_new(CAMCV_TYPE_UNDISTORT, NULL));
+    return (CamcvUndistort*)(g_object_new(camcv_undistort_get_type(), NULL));
 }
 
 static int 
 _stream_init(CamUnit * super, const CamUnitFormat * fmt)
 {
-    CamcvUndistort *self = CAMCV_UNDISTORT(super);
+    CamcvUndistort *self = (CamcvUndistort*)(super);
 
     self->mapx = cvCreateMat(fmt->height, fmt->width, CV_32F);
     self->mapy = cvCreateMat(fmt->height, fmt->width, CV_32F);
@@ -162,7 +144,7 @@ _stream_init(CamUnit * super, const CamUnitFormat * fmt)
 static int 
 _stream_shutdown(CamUnit * super)
 {
-    CamcvUndistort *self = CAMCV_UNDISTORT(super);
+    CamcvUndistort *self = (CamcvUndistort*)(super);
 
     cvReleaseMat(&self->mapx);
     cvReleaseMat(&self->mapy);
@@ -177,7 +159,7 @@ static void
 on_input_frame_ready(CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamcvUndistort *self = CAMCV_UNDISTORT(super);
+    CamcvUndistort *self = (CamcvUndistort*)(super);
 
     if(!cam_unit_control_get_boolean(self->enabled_ctl)) {
         cam_unit_produce_frame(super, inbuf, infmt);
@@ -208,7 +190,7 @@ on_input_frame_ready(CamUnit *super, const CamFrameBuffer *inbuf,
 static void
 on_input_format_changed(CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamcvUndistort *self = CAMCV_UNDISTORT(super);
+    CamcvUndistort *self = (CamcvUndistort*)(super);
     cam_unit_remove_all_output_formats(CAM_UNIT(self));
     if(!infmt) return;
     if(infmt->pixelformat != CAM_PIXEL_FORMAT_GRAY) return;
@@ -262,7 +244,7 @@ _update_mapping(CamcvUndistort * self)
 static gboolean
 _try_set_control(CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual) {
-    CamcvUndistort * self = CAMCV_UNDISTORT(super);
+    CamcvUndistort * self = (CamcvUndistort*)(super);
 
     g_value_copy(proposed, actual);
     if(ctl == self->enabled_ctl)

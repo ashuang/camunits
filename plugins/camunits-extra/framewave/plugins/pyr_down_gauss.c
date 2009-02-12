@@ -10,36 +10,15 @@
 
 #define err(args...) fprintf(stderr, args)
 
-typedef struct _CamippPyrDownGauss CamippPyrDownGauss;
-typedef struct _CamippPyrDownGaussClass CamippPyrDownGaussClass;
-
-// boilerplate
-#define CAMIPP_TYPE_PYR_DOWN_GAUSS  camipp_pyr_down_gauss_get_type()
-#define CAMIPP_PYR_DOWN_GAUSS(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMIPP_TYPE_PYR_DOWN_GAUSS, CamippPyrDownGauss))
-#define CAMIPP_PYR_DOWN_GAUSS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMIPP_TYPE_PYR_DOWN_GAUSS, CamippPyrDownGaussClass ))
-#define IS_CAMIPP_PYR_DOWN_GAUSS(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMIPP_TYPE_PYR_DOWN_GAUSS ))
-#define IS_CAMIPP_PYR_DOWN_GAUSS_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMIPP_TYPE_PYR_DOWN_GAUSS))
-#define CAMIPP_PYR_DOWN_GAUSS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMIPP_TYPE_PYR_DOWN_GAUSS, CamippPyrDownGaussClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-
-struct _CamippPyrDownGauss {
+typedef struct {
     CamUnit parent;
     uint8_t *pyrbuf;
     CamFrameBuffer *outbuf;
-};
+} CamippPyrDownGauss;
 
-struct _CamippPyrDownGaussClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camipp_pyr_down_gauss_get_type (void);
+} CamippPyrDownGaussClass;
 
 static CamippPyrDownGauss * camipp_pyr_down_gauss_new(void);
 static void _finalize (GObject *obj);
@@ -48,18 +27,19 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
+GType camipp_pyr_down_gauss_get_type (void);
 CAM_PLUGIN_TYPE (CamippPyrDownGauss, camipp_pyr_down_gauss, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camipp_pyr_down_gauss_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("filter.ipp", "pyr-down-gauss",
             "Pyramid Down Gaussian", 0, 
@@ -90,7 +70,7 @@ static void
 _finalize (GObject *obj)
 {
     // destructor.  release heap/freestore memory here
-    CamippPyrDownGauss *self = CAMIPP_PYR_DOWN_GAUSS (obj);
+    CamippPyrDownGauss *self = (CamippPyrDownGauss*) (obj);
     if (self->pyrbuf) {
         free (self->pyrbuf);
     }
@@ -103,13 +83,13 @@ _finalize (GObject *obj)
 static CamippPyrDownGauss * 
 camipp_pyr_down_gauss_new()
 {
-    return CAMIPP_PYR_DOWN_GAUSS(g_object_new(CAMIPP_TYPE_PYR_DOWN_GAUSS, NULL));
+    return (CamippPyrDownGauss*)(g_object_new(camipp_pyr_down_gauss_get_type(), NULL));
 }
 
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamippPyrDownGauss *self = CAMIPP_PYR_DOWN_GAUSS (super);
+    CamippPyrDownGauss *self = (CamippPyrDownGauss*) (super);
     cam_unit_remove_all_output_formats (super);
 
     if (! infmt || 
@@ -143,7 +123,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamippPyrDownGauss *self = CAMIPP_PYR_DOWN_GAUSS(super);
+    CamippPyrDownGauss *self = (CamippPyrDownGauss*)(super);
 
     const CamUnitFormat *outfmt = cam_unit_get_output_format (super);
 

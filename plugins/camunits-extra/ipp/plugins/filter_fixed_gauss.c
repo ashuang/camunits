@@ -13,38 +13,17 @@ enum {
     FILTER_SIZE_5x5
 };
 
-typedef struct _CamippFilterFixedGauss CamippFilterFixedGauss;
-typedef struct _CamippFilterFixedGaussClass CamippFilterFixedGaussClass;
-
-// boilerplate
-#define CAMIPP_TYPE_FIXED_FILTER_GAUSS  camipp_filter_fixed_gauss_get_type()
-#define CAMIPP_FILTER_FIXED_GAUSS(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMIPP_TYPE_FIXED_FILTER_GAUSS, CamippFilterFixedGauss))
-#define CAMIPP_FILTER_FIXED_GAUSS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMIPP_TYPE_FIXED_FILTER_GAUSS, CamippFilterFixedGaussClass ))
-#define IS_CAMIPP_FILTER_FIXED_GAUSS(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMIPP_TYPE_FIXED_FILTER_GAUSS ))
-#define IS_CAMIPP_FILTER_FIXED_GAUSS_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMIPP_TYPE_FIXED_FILTER_GAUSS))
-#define CAMIPP_FILTER_FIXED_GAUSS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMIPP_TYPE_FIXED_FILTER_GAUSS, CamippFilterFixedGaussClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-
-struct _CamippFilterFixedGauss {
+typedef struct {
     CamUnit parent;
 
     CamUnitControl *size_ctl;
 
     CamFrameBuffer *outbuf;
-};
+} CamippFilterFixedGauss;
 
-struct _CamippFilterFixedGaussClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camipp_filter_fixed_gauss_get_type (void);
+} CamippFilterFixedGaussClass;
 
 static CamippFilterFixedGauss * camipp_filter_fixed_gauss_new(void);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
@@ -54,18 +33,19 @@ static void on_input_format_changed (CamUnit *super,
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
 
+GType camipp_filter_fixed_gauss_get_type (void);
 CAM_PLUGIN_TYPE (CamippFilterFixedGauss, camipp_filter_fixed_gauss, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camipp_filter_fixed_gauss_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("ipp", "filter-fixed-gauss",
             "Fixed Gaussian Blur", 0, 
@@ -104,13 +84,13 @@ camipp_filter_fixed_gauss_init (CamippFilterFixedGauss *self)
 static CamippFilterFixedGauss * 
 camipp_filter_fixed_gauss_new()
 {
-    return CAMIPP_FILTER_FIXED_GAUSS(g_object_new(CAMIPP_TYPE_FIXED_FILTER_GAUSS, NULL));
+    return (CamippFilterFixedGauss*)(g_object_new(camipp_filter_fixed_gauss_get_type(), NULL));
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamippFilterFixedGauss *self = CAMIPP_FILTER_FIXED_GAUSS (super);
+    CamippFilterFixedGauss *self = (CamippFilterFixedGauss*) (super);
     assert (!self->outbuf);
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
@@ -119,7 +99,7 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    CamippFilterFixedGauss *self = CAMIPP_FILTER_FIXED_GAUSS (super);
+    CamippFilterFixedGauss *self = (CamippFilterFixedGauss*) (super);
     g_object_unref (self->outbuf);
     self->outbuf = NULL;
     return 0;
@@ -129,7 +109,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamippFilterFixedGauss *self = CAMIPP_FILTER_FIXED_GAUSS (super);
+    CamippFilterFixedGauss *self = (CamippFilterFixedGauss*) (super);
 
     int filter_size = cam_unit_control_get_enum (self->size_ctl);
 
@@ -172,7 +152,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamippFilterFixedGauss *self = CAMIPP_FILTER_FIXED_GAUSS (super);
+    CamippFilterFixedGauss *self = (CamippFilterFixedGauss*) (super);
     cam_unit_remove_all_output_formats (CAM_UNIT (self));
     if (!infmt) return;
     if (infmt->pixelformat != CAM_PIXEL_FORMAT_RGB &&

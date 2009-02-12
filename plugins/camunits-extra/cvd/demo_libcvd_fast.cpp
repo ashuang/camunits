@@ -17,25 +17,7 @@
 
 extern "C" {
 
-typedef struct _CamcvdFAST CamcvdFAST;
-typedef struct _CamcvdFASTClass CamcvdFASTClass;
-
-// boilerplate
-#define CAMCVD_TYPE_FAST  camcvd_fast_get_type()
-#define CAMCVD_FAST(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMCVD_TYPE_FAST, CamcvdFAST))
-#define CAMCVD_FAST_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMCVD_TYPE_FAST, CamcvdFASTClass ))
-#define IS_CAMCVD_FAST(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMCVD_TYPE_FAST ))
-#define IS_CAMCVD_FAST_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMCVD_TYPE_FAST))
-#define CAMCVD_FAST_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMCVD_TYPE_FAST, CamcvdFASTClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-struct _CamcvdFAST {
+typedef struct {
     CamUnit parent;
 
     CVD::Image< CVD::byte > *packed_img;
@@ -44,13 +26,11 @@ struct _CamcvdFAST {
     CamUnitControl *points_ctl;
     CamUnitControl *thresh_ctl;
     CamUnitControl *suppress_nonmax_ctl;
-};
+} CamcvdFAST;
 
-struct _CamcvdFASTClass {
+typedef struct {
     CamUnitClass parent_class;
-};
-
-GType camcvd_fast_get_type (void);
+} CamcvdFASTClass;
 
 static CamcvdFAST * camcvd_fast_new(void);
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
@@ -63,18 +43,19 @@ static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
+GType camcvd_fast_get_type (void);
 CAM_PLUGIN_TYPE (CamcvdFAST, camcvd_fast, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camcvd_fast_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("cvd", 
             "fast-demo",
@@ -116,13 +97,13 @@ static CamcvdFAST *
 camcvd_fast_new()
 {
     // "public" constructor
-    return CAMCVD_FAST(g_object_new(CAMCVD_TYPE_FAST, NULL));
+    return (CamcvdFAST*)(g_object_new(camcvd_fast_get_type(), NULL));
 }
 
 static int
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamcvdFAST * self = CAMCVD_FAST (super);
+    CamcvdFAST * self = (CamcvdFAST*) (super);
 
     CVD::ImageRef imsz(format->width, format->height);
     self->packed_img = new CVD::Image< CVD::byte >(imsz);
@@ -134,7 +115,7 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int
 _stream_shutdown (CamUnit * super)
 {
-    CamcvdFAST * self = CAMCVD_FAST (super);
+    CamcvdFAST * self = (CamcvdFAST*) (super);
     delete self->packed_img;
     self->packed_img = NULL;
     return 0;
@@ -156,7 +137,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamcvdFAST *self = CAMCVD_FAST(super);
+    CamcvdFAST *self = (CamcvdFAST*)(super);
 
     // make a copy of the image data, both to remove pad bytes between rows,
     // and to keep a copy around for future frame processing
@@ -221,7 +202,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static int 
 _gl_draw_gl (CamUnit *super)
 {
-    CamcvdFAST *self = CAMCVD_FAST (super);
+    CamcvdFAST *self = (CamcvdFAST*) (super);
     if (!super->fmt) return 0;
 
     glMatrixMode (GL_PROJECTION);
@@ -245,7 +226,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamcvdFAST *self = CAMCVD_FAST (super);
+    CamcvdFAST *self = (CamcvdFAST*) (super);
     if (ctl == self->points_ctl) {
         int n = g_value_get_int (proposed);
         

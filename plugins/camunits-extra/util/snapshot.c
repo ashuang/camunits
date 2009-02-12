@@ -9,25 +9,7 @@
 
 #define err(args...) fprintf(stderr, args)
 
-typedef struct _CamutilSnapshot CamutilSnapshot;
-typedef struct _CamutilSnapshotClass CamutilSnapshotClass;
-
-// boilerplate
-#define CAMUTIL_TYPE_SNAPSHOT  camutil_snapshot_get_type()
-#define CAMUTIL_SNAPSHOT(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        CAMUTIL_TYPE_SNAPSHOT, CamutilSnapshot))
-#define CAMUTIL_SNAPSHOT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            CAMUTIL_TYPE_SNAPSHOT, CamutilSnapshotClass ))
-#define IS_CAMUTIL_SNAPSHOT(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            CAMUTIL_TYPE_SNAPSHOT ))
-#define IS_CAMUTIL_SNAPSHOT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), CAMUTIL_TYPE_SNAPSHOT))
-#define CAMUTIL_SNAPSHOT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            CAMUTIL_TYPE_SNAPSHOT, CamutilSnapshotClass))
-
-void cam_plugin_initialize (GTypeModule * module);
-CamUnitDriver * cam_plugin_create (GTypeModule * module);
-struct _CamutilSnapshot {
+typedef struct {
     CamUnit parent;
 
     CamFrameBuffer *prev_buf;
@@ -36,11 +18,11 @@ struct _CamutilSnapshot {
     CamUnitControl *directory_ctl;
     CamUnitControl *snap_raw_ctl;
     CamUnitControl *snap_gl_ctl;
-};
+} CamutilSnapshot;
 
-struct _CamutilSnapshotClass {
+typedef struct {
     CamUnitClass parent_class;
-};
+} CamutilSnapshotClass;
 
 GType camutil_snapshot_get_type (void);
 
@@ -65,14 +47,14 @@ CAM_PLUGIN_TYPE (CamutilSnapshot, camutil_snapshot, CAM_TYPE_UNIT);
 
 /* These next two functions are required as entry points for the
  * plug-in API. */
-void
-cam_plugin_initialize (GTypeModule * module)
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
 {
     camutil_snapshot_register_type (module);
 }
 
-CamUnitDriver *
-cam_plugin_create (GTypeModule * module)
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("util", "snapshot", "Snapshot", 
             0, (CamUnitConstructor)camutil_snapshot_new, module);
@@ -120,13 +102,13 @@ static CamutilSnapshot *
 camutil_snapshot_new()
 {
     // "public" constructor
-    return CAMUTIL_SNAPSHOT(g_object_new(CAMUTIL_TYPE_SNAPSHOT, NULL));
+    return (CamutilSnapshot*)(g_object_new(camutil_snapshot_get_type(), NULL));
 }
 
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    CamutilSnapshot *self = CAMUTIL_SNAPSHOT (super);
+    CamutilSnapshot *self = (CamutilSnapshot*) (super);
     if (self->prev_buf) {
         g_object_unref (self->prev_buf);
         self->prev_buf = NULL;
@@ -222,7 +204,10 @@ _take_snapshot (CamutilSnapshot * self)
                 super->fmt->width, super->fmt->height,
                 super->fmt->row_stride);
     } else if (!strcmp(suffix, "jpg")) {
-        fwrite(self->prev_buf->data, self->prev_buf->bytesused, 1, fp);
+        int status = fwrite(self->prev_buf->data, self->prev_buf->bytesused, 1, fp);
+        if(1 != status) {
+            perror("fwrite");
+        }
     }
     fclose(fp);
     fprintf(stderr, "%s:%d  wrote to %s\n", __FILE__, __LINE__, fname);
@@ -231,7 +216,7 @@ _take_snapshot (CamutilSnapshot * self)
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamutilSnapshot * self = CAMUTIL_SNAPSHOT(super);
+    CamutilSnapshot * self = (CamutilSnapshot*)(super);
     cam_unit_remove_all_output_formats (super);
     if (! infmt) return;
 
@@ -314,7 +299,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamutilSnapshot *self = CAMUTIL_SNAPSHOT(super);
+    CamutilSnapshot *self = (CamutilSnapshot*)(super);
     _copy_framebuffer (self, inbuf);
     cam_unit_produce_frame (super, inbuf, infmt);
     if (!cam_unit_control_get_enabled(self->snap_raw_ctl)) {
@@ -326,7 +311,7 @@ static gboolean
 _try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamutilSnapshot *self = CAMUTIL_SNAPSHOT (super);
+    CamutilSnapshot *self = (CamutilSnapshot*) (super);
     if (ctl == self->directory_ctl) {
         // nothing to do...
     } else if (ctl == self->snap_raw_ctl) {
