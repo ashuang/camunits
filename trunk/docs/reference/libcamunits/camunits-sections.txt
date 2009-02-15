@@ -237,33 +237,6 @@ cam_input_example_get_type
 </SECTION>
 
 <SECTION>
-<FILE>input_v4l</FILE>
-<TITLE>CamV4LDriver</TITLE>
-CamV4LDriver
-cam_v4l_driver_new
-<TITLE>CamV4L</TITLE>
-CamV4L
-cam_v4l_new
-<SUBSECTION Standard>
-CAM_V4L_DRIVER_TYPE
-CAM_V4L_DRIVER
-CAM_IS_V4L_DRIVER
-cam_v4l_driver_get_type
-CAM_V4L_DRIVER_CLASS
-CAM_IS_V4L_DRIVER_CLASS
-CAM_V4L_DRIVER_GET_CLASS
-CAM_TYPE_V4L
-CAM_V4L
-CAM_V4L_CLASS
-CAM_IS_V4L
-CAM_IS_V4L_CLASS
-CAM_V4L_GET_CLASS
-cam_v4l_get_type
-CamV4LClass
-CamV4LDriverClass
-</SECTION>
-
-<SECTION>
 <FILE>convert_jpeg_compress</FILE>
 <TITLE>CamConvertJpegCompress</TITLE>
 CamConvertJpegCompress

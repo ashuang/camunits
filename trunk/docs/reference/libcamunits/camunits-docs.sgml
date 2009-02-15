@@ -22,7 +22,6 @@
   <chapter>
     <title>Built-in Units</title>
     <xi:include href="xml/input_v4l2.xml"/>
-    <xi:include href="xml/input_v4l.xml"/>
     <xi:include href="xml/input_example.xml"/>
     <xi:include href="xml/input_log.xml"/>
     <xi:include href="xml/convert_to_rgb8.xml"/>

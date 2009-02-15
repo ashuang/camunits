@@ -3,6 +3,7 @@ AC_INIT(camunits/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(camunits, 0.1.1)
+AC_CONFIG_MACRO_DIR([m4])
 
 case "$target_os" in
 	linux*) arch=linux;;
@@ -38,6 +39,14 @@ if test x$target_cpu = xi386 -o x$target_cpu = xi486 -o x$target_cpu = xi586 -o 
 fi
 AM_CONDITIONAL(INTEL, [test x$have_intel = xyes])
 
+AC_ARG_WITH(v4l1-plugin,
+            [AS_HELP_STRING([--with-v4l1-plugin],
+             [Compile V4L1 plugin])],
+            [], [with_v4l1_plugin=no])
+if test x$with_v4l1_plugin = xyes -a x$arch != xlinux; then
+    AC_MSG_ERROR([Video 4 Linux 1 plugin requires Linux])
+fi
+AM_CONDITIONAL([WITH_V4L1_PLUGIN], [test x$with_v4l1_plugin = xyes])
 
 dnl ---------------------------------------------------------------------------
 dnl When making a release:
@@ -134,6 +143,7 @@ AC_OUTPUT([
   po/Makefile.in
   plugins/Makefile
   plugins/dc1394/Makefile
+  plugins/v4l/Makefile
   examples/Makefile
   examples/basic/Makefile
   examples/filter_example/Makefile
@@ -165,5 +175,6 @@ Configuration (camunits):
 	Compiler:              ${CC}
 	x86 optimizations:     ${INTELMSG}
 	DC1394 plugin:         ${DC1394MSG}"
-
-
+if test x$with_v4l1_plugin = xyes; then
+    echo "	Video4Linux 1 plugin:  Enabled"
+fi
