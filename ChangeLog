@@ -1,3 +1,60 @@
+2009-02-15  ashuang
+
+	* [r325] camunits/Makefile.am, camunits/input_v4l.c,
+	  camunits/input_v4l.h, camunits/log.c, camunits/pwc-ioctl.h,
+	  camunits/unit_manager.c, configure.in,
+	  docs/reference/libcamunits/camunits-docs.sgml,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  docs/reference/libcamunits/camunits.types, plugins/Makefile.am,
+	  plugins/v4l, plugins/v4l/Makefile.am, plugins/v4l/input_v4l.c,
+	  plugins/v4l/pwc-ioctl.h: convert CamInputV4L to plugin, do not
+	  build by default. Must specify --with-v4l1-plugin to configure to
+	  build
+	* [r324] camunits/filter_fast_bayer.c,
+	  camunits/filter_fast_bayer.h: modify convert:fast_debayer to
+	  handle data that's not already 16-byte aligned
+
+2009-02-12  ashuang
+
+	* [r322] camlog/camlog.c, camview/camview.c: getopt returns int not
+	  char
+
+2009-01-17  ashuang
+
+	* [r314] camlog/camlog.1, camlog/camlog.c, camview/camview.1,
+	  camview/camview.c: add --plugin-path command line option to
+	  camview and camlog
+
+2009-01-16  ashuang
+
+	* [r313] examples/filter_plugin/filter_plugin.c,
+	  examples/filter_plugin/test-chain.xml: minor update to filter
+	  plugin example
+	* [r312] camlog/camlog.c, camunits/plugin.c, camunits/unit_chain.c:
+	  fix some gcc warnings
+	* [r311] examples/filter_plugin/build.sh,
+	  examples/filter_plugin/filter_plugin.c: simplify filter_plugin
+	  example
+	* [r309] camunits/gl_texture.c, camunits/gl_texture.h,
+	  camunits/unit_format.h: add some const correctness to gl_texture,
+	  fix some docs
+	* [r308] camunits/convert_jpeg_decompress.c: add jpeg decompress
+	  grayscale output format
+
+2009-01-05  ashuang
+
+	* [r305] examples/Makefile.am, examples/filter_plugin,
+	  examples/filter_plugin/build.sh, examples/filter_plugin/clean.sh,
+	  examples/filter_plugin/filter_plugin.c,
+	  examples/filter_plugin/test-chain.xml,
+	  examples/filter_plugin/test.sh: add filter_plugin example
+
+2008-12-18  ashuang
+
+	* [r297] camlog/camlog.1: fix typo in camlog manpage
+	* [r296] ChangeLog, NEWS, configure.in, docs/release_checklist:
+	  Camunits release 0.1.1
+
 2008-12-17  ashuang
 
 	* [r295] camunits-gtk/unit_control_widget.c: unit control widget
