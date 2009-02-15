@@ -34,12 +34,9 @@
   </chapter>
   <chapter>
     <title>Other stuff</title>
-    <xi:include href="xml/dbg.xml"/>
     <xi:include href="xml/pixels.xml"/>
-    <xi:include href="xml/camunits-gmarshal.xml"/>
     <xi:include href="xml/log.xml"/>
     <xi:include href="xml/plugin.xml"/>
-    <xi:include href="xml/gl_texture.xml"/>
-    <xi:include href="xml/pwc-ioctl.xml"/>
+    <!--<xi:include href="xml/gl_texture.xml"/>-->
   </chapter>
 </book>

@@ -1,47 +1,74 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <camunits/cam.h>
-
 #include "filter_example.h"
 
-/* Boilerplate */
+// This file demonstrates how to create a simple CamUnit subclass.  When
+// implementing a custom MyUnit, replace "MyFilterExample", "MY_FILTER_EXAMPLE",
+// and "my_filter_example" with your own names.  
+
+typedef struct _MyFilterExample MyFilterExample;
+typedef struct _MyFilterExampleClass MyFilterExampleClass;
+
+// This macro is a type-safe alternative to "(MyFilterPlugin*)obj"
+// If obj is not a pointer to MyFilterPlugin, then a warning message
+// is printed to stderr, and the macro returns NULL.  It's reasonable to delete
+// this macro if you don't need it.
+#define MY_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        my_filter_example_get_type(), MyFilterExample))
+
+// Class definition struct.  member variables go in here
+struct _MyFilterExample {
+    // the first member must always be the superclass struct
+    CamUnit parent;
+
+    // add one member variable
+    CamUnitControl *enable_ctl;
+};
+
+// Class definition.  This is pretty much a vtable, and you will rarely need to
+// change it
+struct _MyFilterExampleClass {
+    CamUnitClass parent_class;
+};
+
+GType my_filter_example_get_type (void);
+
+CamUnit * my_filter_example_new()
+{
+    return CAM_UNIT (g_object_new(my_filter_example_get_type(), NULL));
+}
+
+// GLib magic macro
 G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
 
+// Most CamUnit subclasses will not need complex drivers.  CamUnit provides a
+// "stock" driver that simply calls a programmer-specified constructor when
+// needed.
 CamUnitDriver *
 my_filter_example_driver_new()
 {
-    return cam_unit_driver_new_stock ("filter", "example",
-            "Example", 0, (CamUnitConstructor)my_filter_example_new);
+    return cam_unit_driver_new_stock ("example", "filter",
+            "Example Filter", 0, (CamUnitConstructor)my_filter_example_new);
 }
 
 // ============== MyFilterExample ===============
-static void my_filter_example_finalize (GObject *obj);
+static void _finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
-// Class initializer
+// Class initializer.  This function sets up the class vtable, and is most
+// commonly used for overriding superclass methods.
 static void
 my_filter_example_class_init (MyFilterExampleClass *klass)
 {
     // override the destructor
-    G_OBJECT_CLASS (klass)->finalize = my_filter_example_finalize;
+    G_OBJECT_CLASS (klass)->finalize = _finalize;
 
     // override the "on_input_frame_ready" method
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
 
-// First part of the constructor
-MyFilterExample * 
-my_filter_example_new()
-{
-    return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
-}
-
-// Initializer.  This is the second part of the constructor.
+// Initializer.  This is essentially a constructor.
 static void
 my_filter_example_init (MyFilterExample *self)
 {
@@ -49,8 +76,8 @@ my_filter_example_init (MyFilterExample *self)
     CamUnit *super = CAM_UNIT (self);
 
     // create a control
-    self->patch_intensity_control = cam_unit_add_control_int (super, 
-            "patch-intensity", "Patch Intensity", 0, 255, 1, 127, 1);
+    self->enable_ctl = cam_unit_add_control_boolean (super, 
+            "enable-intensity", "Swap Red/Blue Channels", 1, 1);
 
     // request notification when the input of the unit changes
     g_signal_connect (G_OBJECT(self), "input-format-changed",
@@ -59,11 +86,12 @@ my_filter_example_init (MyFilterExample *self)
 
 // destructor.
 static void
-my_filter_example_finalize (GObject *obj)
+_finalize (GObject *obj)
 {
     // If we allocated memory on the heap/freestore, we'd release it here
 
-    // invoke the superclass destructor
+    // invoke the superclass destructor.  my_filter_example_parent_class is 
+    // defined by the magic macro
     G_OBJECT_CLASS (my_filter_example_parent_class)->finalize(obj);
 }
 
@@ -74,26 +102,26 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 {
     MyFilterExample *self = MY_FILTER_EXAMPLE(super);
 
+    if(!cam_unit_control_get_boolean(self->enable_ctl)) {
+        cam_unit_produce_frame(super, inbuf, infmt);
+        return;
+    }
+
     CamFrameBuffer *outbuf = 
         cam_framebuffer_new_alloc (super->fmt->max_data_size);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format (super);
 
-    cam_pixel_copy_8u_generic (inbuf->data, infmt->row_stride,
-            outbuf->data, super->fmt->row_stride,
-            0, 0, 0, 0, infmt->width, infmt->height, 
-            cam_pixel_format_bpp (infmt->pixelformat));
-
-    // draw a little rectangle
-    int x0 = super->fmt->width / 4;
-    int x1 = x0 * 3;
-    int rw = x1 - x0;
-    int y0 = super->fmt->height / 4;
-    int y1 = y0 * 3;
-
-    int val = cam_unit_control_get_int (self->patch_intensity_control);
-
-    int i;
-    for (i=y0; i<y1; i++) {
-        memset (outbuf->data + i*super->fmt->row_stride + x0*3, val, rw*3);
+    // swap the red and blue channels
+    int row;
+    int col;
+    for(row=0; row<infmt->height; row++) {
+        uint8_t *src_row = inbuf->data + infmt->row_stride*row;
+        uint8_t *dst_row = outbuf->data + outfmt->row_stride*row;
+        for(col=0; col<infmt->width; col++) {
+            dst_row[col*3+0] = src_row[col*3+2];
+            dst_row[col*3+1] = src_row[col*3+1];
+            dst_row[col*3+2] = src_row[col*3+0];
+        }
     }
 
     // copy the timestamp and metadata dictionary

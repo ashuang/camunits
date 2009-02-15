@@ -73,9 +73,9 @@ setup_gtk (state_t *self)
 }
 
 static void
-print_usage_and_inputs (const char *progname, CamUnitManager *manager)
+print_usage_and_inputs (CamUnitManager *manager)
 {
-    fprintf (stderr, "usage: %s <input_id>\n\n", progname);
+    fprintf (stderr, "usage: filter_example <input_id>\n\n");
     fprintf (stderr, "Available inputs:\n\n"); 
     GList *udlist = cam_unit_manager_list_package (manager, "input", TRUE);
     for (GList *uditer=udlist; uditer; uditer=uditer->next) {
@@ -101,7 +101,7 @@ int main (int argc, char **argv)
 
     // abort if no input unit was specified
     if (argc < 2) {
-        print_usage_and_inputs (argv[0], self->chain->manager);
+        print_usage_and_inputs (self->chain->manager);
         goto failed;
     }
     const char *input_id = argv[1];
@@ -110,7 +110,7 @@ int main (int argc, char **argv)
     if (! cam_unit_chain_add_unit_by_id (self->chain, input_id)) {
         fprintf (stderr, "Oh no!  Couldn't create input unit [%s].\n\n", 
                 input_id);
-        print_usage_and_inputs (argv[0], self->chain->manager);
+        print_usage_and_inputs (self->chain->manager);
         goto failed;
     }
 
@@ -118,7 +118,7 @@ int main (int argc, char **argv)
     cam_unit_chain_add_unit_by_id (self->chain, "convert.to_rgb8");
 
     // add our custom unit
-    cam_unit_chain_add_unit_by_id (self->chain, "filter.example");
+    cam_unit_chain_add_unit_by_id (self->chain, "example.filter");
 
     // add a display unit
     cam_unit_chain_add_unit_by_id (self->chain, "output.opengl");
@@ -139,7 +139,6 @@ int main (int argc, char **argv)
     g_signal_connect (G_OBJECT (self->chain), "frame-ready",
             G_CALLBACK (on_frame_ready), self);
 
-//    camview_gtk_quit_on_interrupt ();
     gtk_main ();
 
     // halt and destroy chain
