@@ -61,7 +61,9 @@
                                                          const char *unit_name,
                                                          uint32_t flags,
                                                          <a class="link" href="CamUnitDriver.html#CamUnitConstructor" title="CamUnitConstructor ()">CamUnitConstructor</a> constructor,
-                                                         GTypeModule *module);
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
+>GTypeModule</a> *module);
 <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a class="link" href="CamUnitDriver.html#cam-unit-driver-create-unit" title="cam_unit_driver_create_unit ()">cam_unit_driver_create_unit</a>         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
 int                 <a class="link" href="CamUnitDriver.html#cam-unit-driver-start" title="cam_unit_driver_start ()">cam_unit_driver_start</a>               (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
@@ -70,7 +72,9 @@ const char*         <a class="link" href="CamUnitDriver.html#cam-unit-driver-get
 <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitDriver.html#cam-unit-driver-find-unit-description" title="cam_unit_driver_find_unit_description ()">cam_unit_driver_find_unit_description</a>
                                                         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
                                                          const char *unit_id);
-GList*              <a class="link" href="CamUnitDriver.html#cam-unit-driver-get-unit-descriptions" title="cam_unit_driver_get_unit_descriptions ()">cam_unit_driver_get_unit_descriptions</a>
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnitDriver.html#cam-unit-driver-get-unit-descriptions" title="cam_unit_driver_get_unit_descriptions ()">cam_unit_driver_get_unit_descriptions</a>
                                                         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);
 <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitDriver.html#cam-unit-driver-add-unit-description" title="cam_unit_driver_add_unit_description ()">cam_unit_driver_add_unit_description</a>
                                                         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self,
@@ -90,15 +94,22 @@ void                <a class="link" href="CamUnitDriver.html#cam-unit-driver-upd
 <div class="refsect1" lang="en">
 <a name="CamUnitDriver.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
          +----CamUnitDescription
 </pre>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
          +----CamUnitDriver
-               +----<a class="link" href="CamV4L.html#CamV4LDriver">CamV4LDriver</a>
                +----<a class="link" href="CamV4L2.html#CamV4L2Driver">CamV4L2Driver</a>
                +----<a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>
                +----<a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>
@@ -203,7 +214,9 @@ is actually instantiated.</p>
                                                          uint32_t flags);</pre>
 <p>
 constructor.  creates a new CamUnitDescription.  When the description is no
-longer needed, free it with <code class="function">g_object_unref()</code>.  You should not use this
+longer needed, free it with <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"
+><code class="function">g_object_unref()</code></a>.  You should not use this
 unless you're implementing a new <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a>.</p>
 <p>
 
@@ -332,7 +345,9 @@ need any special driver functionality.</p>
                                                          const char *unit_name,
                                                          uint32_t flags,
                                                          <a class="link" href="CamUnitDriver.html#CamUnitConstructor" title="CamUnitConstructor ()">CamUnitConstructor</a> constructor,
-                                                         GTypeModule *module);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/GTypeModule.html"
+>GTypeModule</a> *module);</pre>
 <p>
 
 </p>
@@ -521,7 +536,9 @@ was found
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-driver-get-unit-descriptions"></a><h3>cam_unit_driver_get_unit_descriptions ()</h3>
-<pre class="programlisting">GList*              cam_unit_driver_get_unit_descriptions
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_driver_get_unit_descriptions
                                                         (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *self);</pre>
 <p>
 Obtains a list of <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a> objects describing all units this
@@ -719,7 +736,9 @@ specific driver.</p>
 <a name="CamUnitDriver-unit-description-added"></a><h3>The <code class="literal">"unit-description-added"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>      *driver,
                                                         <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
-                                                        gpointer            user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>            user_data)      : Run First</pre>
 <p>
 The unit-description-added signal is emitted when a CamUnitDriver
 adds a CamUnitDescription to its list of available units.</p>
@@ -751,7 +770,9 @@ adds a CamUnitDescription to its list of available units.</p>
 <a name="CamUnitDriver-unit-description-removed"></a><h3>The <code class="literal">"unit-description-removed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>      *driver,
                                                         <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
-                                                        gpointer            user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>            user_data)      : Run First</pre>
 <p>
 The unit-description-removed signal is emitted when a CamUnitDriver
 removes a CamUnitDescription from its list of available units.

@@ -20,7 +20,7 @@
     <sub name="Creating Custom Units -- Subclassing CamUnit and CamUnitDriver" link="ch-subclassing.html">
       <sub name="The GObject Type System" link="ch-subclassing.html#subclassing-gobject-type-system"/>
       <sub name="The Relationship Between Camunits Classes" link="subclassing-class-relationships.html"/>
-      <sub name="Example Filter" link="subclassing-example-filter.html"/>
+      <sub name="Example Plugin" link="subclassing-example-filter.html"/>
     </sub>
     <sub name="Other Environments" link="ch-otherenvs.html">
       <sub name="Using non GLib event loops" link="ch-otherenvs.html#otherenvs-eventloops"/>

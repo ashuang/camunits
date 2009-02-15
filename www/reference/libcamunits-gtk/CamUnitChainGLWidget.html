@@ -46,28 +46,44 @@
 <pre class="synopsis">
                     <a class="link" href="CamUnitChainGLWidget.html#CamUnitChainGLWidget-struct" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>;
 <a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>* <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-new" title="cam_unit_chain_gl_widget_new ()">cam_unit_chain_gl_widget_new</a>      (<a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);
 int                 <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-set-chain" title="cam_unit_chain_gl_widget_set_chain ()">cam_unit_chain_gl_widget_set_chain</a>  (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self,
                                                          <a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);
 void                <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-request-redraw" title="cam_unit_chain_gl_widget_request_redraw ()">cam_unit_chain_gl_widget_request_redraw</a>
                                                         (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);
-GtkWidget*          <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area" title="cam_unit_chain_gl_widget_get_gl_area ()">cam_unit_chain_gl_widget_get_gl_area</a>
+<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="CamUnitChainGLWidget.html#cam-unit-chain-gl-widget-get-gl-area" title="cam_unit_chain_gl_widget_get_gl_area ()">cam_unit_chain_gl_widget_get_gl_area</a>
                                                         (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="CamUnitChainGLWidget.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBox
-                                 +----GtkVBox
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
+>GtkBox</a>
+                                 +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"
+>GtkVBox</a>
                                        +----CamUnitChainGLWidget
 </pre>
 </div>
@@ -75,7 +91,9 @@ GtkWidget*          <a class="link" href="CamUnitChainGLWidget.html#cam-unit-cha
 <a name="CamUnitChainGLWidget.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitChainGLWidget implements
- GtkBuildable and  AtkImplementorIface.</p>
+ <a
+href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a> and  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="CamUnitChainGLWidget.signals"></a><h2>Signals</h2>
@@ -102,7 +120,7 @@ CamUnitChainGLWidget implements
 <div class="refsect2" lang="en">
 <a name="cam-unit-chain-gl-widget-new"></a><h3>cam_unit_chain_gl_widget_new ()</h3>
 <pre class="programlisting"><a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a>* cam_unit_chain_gl_widget_new      (<a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
 <p>
 
@@ -130,7 +148,7 @@ href="../libcam/CamUnitChain.html"
 <a name="cam-unit-chain-gl-widget-set-chain"></a><h3>cam_unit_chain_gl_widget_set_chain ()</h3>
 <pre class="programlisting">int                 cam_unit_chain_gl_widget_set_chain  (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self,
                                                          <a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
 <p>
 
@@ -180,7 +198,9 @@ href="../libcam/CamUnitChain.html"
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-chain-gl-widget-get-gl-area"></a><h3>cam_unit_chain_gl_widget_get_gl_area ()</h3>
-<pre class="programlisting">GtkWidget*          cam_unit_chain_gl_widget_get_gl_area
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          cam_unit_chain_gl_widget_get_gl_area
                                                         (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *self);</pre>
 <p>
 
@@ -209,7 +229,9 @@ href="../libcam/CamUnitChain.html"
 <div class="refsect2" lang="en">
 <a name="CamUnitChainGLWidget-gl-draw-finished"></a><h3>The <code class="literal">"gl-draw-finished"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitChainGLWidget.html" title="CamUnitChainGLWidget">CamUnitChainGLWidget</a> *camunitchainglwidget,
-                                                        gpointer              user_data)                 : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>              user_data)                 : Run First</pre>
 <p>
 
 </p>

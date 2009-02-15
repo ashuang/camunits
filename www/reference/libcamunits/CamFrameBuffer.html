@@ -55,13 +55,17 @@ void                <a class="link" href="CamFrameBuffer.html#cam-framebuffer-me
                                                          const char *key,
                                                          const uint8_t *value,
                                                          int len);
-GList*              <a class="link" href="CamFrameBuffer.html#cam-framebuffer-metadata-list-keys" title="cam_framebuffer_metadata_list_keys ()">cam_framebuffer_metadata_list_keys</a>  (const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamFrameBuffer.html#cam-framebuffer-metadata-list-keys" title="cam_framebuffer_metadata_list_keys ()">cam_framebuffer_metadata_list_keys</a>  (const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="CamFrameBuffer.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
    +----CamFrameBuffer
 </pre>
 </div>
@@ -211,7 +215,7 @@ Convenience method to copy the metadata dictionary from the <em class="parameter
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
+<td> the CamFrameBuffer
 </td>
 </tr>
 <tr>
@@ -281,7 +285,7 @@ entries are overwritten.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
+<td> the CamFrameBuffer
 </td>
 </tr>
 <tr>
@@ -307,7 +311,9 @@ entries are overwritten.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-framebuffer-metadata-list-keys"></a><h3>cam_framebuffer_metadata_list_keys ()</h3>
-<pre class="programlisting">GList*              cam_framebuffer_metadata_list_keys  (const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_framebuffer_metadata_list_keys  (const <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *self);</pre>
 <p>
 </p>
 <p>
@@ -318,13 +324,17 @@ entries are overwritten.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
+<td> the CamFrameBuffer
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a GList of keys, each a string, that reference entries in the
-metadata dictionary.  The list should be freed with <code class="function">g_list_free()</code>.  Note
+<td> a <a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+><span class="type">GList</span></a> of keys, each a string, that reference entries in the
+metadata dictionary.  The list should be freed with <a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#g-list-free"
+><code class="function">g_list_free()</code></a>.  Note
 that the pointers to the keys themselves reference the dictionary and
 are only valid as long as the dictionary is not modified.
 

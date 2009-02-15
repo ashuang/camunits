@@ -49,12 +49,16 @@ enum                <a class="link" href="CamUnit.html#CamUnitFlags" title="enum
 int                 <a class="link" href="CamUnit.html#cam-unit-set-input" title="cam_unit_set_input ()">cam_unit_set_input</a>                  (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *input);
 <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a class="link" href="CamUnit.html#cam-unit-get-input" title="cam_unit_get_input ()">cam_unit_get_input</a>                  (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-is-streaming" title="cam_unit_is_streaming ()">cam_unit_is_streaming</a>               (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-is-streaming" title="cam_unit_is_streaming ()">cam_unit_is_streaming</a>               (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 uint32_t            <a class="link" href="CamUnit.html#cam-unit-get-flags" title="cam_unit_get_flags ()">cam_unit_get_flags</a>                  (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 const char*         <a class="link" href="CamUnit.html#cam-unit-get-name" title="cam_unit_get_name ()">cam_unit_get_name</a>                   (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 const char*         <a class="link" href="CamUnit.html#cam-unit-get-id" title="cam_unit_get_id ()">cam_unit_get_id</a>                     (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 const <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a>* <a class="link" href="CamUnit.html#cam-unit-get-output-format" title="cam_unit_get_output_format ()">cam_unit_get_output_format</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
-GList*              <a class="link" href="CamUnit.html#cam-unit-get-output-formats" title="cam_unit_get_output_formats ()">cam_unit_get_output_formats</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnit.html#cam-unit-get-output-formats" title="cam_unit_get_output_formats ()">cam_unit_get_output_formats</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 int                 <a class="link" href="CamUnit.html#cam-unit-stream-init" title="cam_unit_stream_init ()">cam_unit_stream_init</a>                (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a> *format);
 int                 <a class="link" href="CamUnit.html#cam-unit-set-preferred-format" title="cam_unit_set_preferred_format ()">cam_unit_set_preferred_format</a>       (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
@@ -62,41 +66,65 @@ int                 <a class="link" href="CamUnit.html#cam-unit-set-preferred-fo
                                                          int width,
                                                          int height);
 int                 <a class="link" href="CamUnit.html#cam-unit-stream-shutdown" title="cam_unit_stream_shutdown ()">cam_unit_stream_shutdown</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-try-produce-frame" title="cam_unit_try_produce_frame ()">cam_unit_try_produce_frame</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-try-produce-frame" title="cam_unit_try_produce_frame ()">cam_unit_try_produce_frame</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          int timeout_ms);
 int                 <a class="link" href="CamUnit.html#cam-unit-get-fileno" title="cam_unit_get_fileno ()">cam_unit_get_fileno</a>                 (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 int64_t             <a class="link" href="CamUnit.html#cam-unit-get-next-event-time" title="cam_unit_get_next_event_time ()">cam_unit_get_next_event_time</a>        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
-GList*              <a class="link" href="CamUnit.html#cam-unit-list-controls" title="cam_unit_list_controls ()">cam_unit_list_controls</a>              (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnit.html#cam-unit-list-controls" title="cam_unit_list_controls ()">cam_unit_list_controls</a>              (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnit.html#cam-unit-find-control" title="cam_unit_find_control ()">cam_unit_find_control</a>               (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-set-control-int" title="cam_unit_set_control_int ()">cam_unit_set_control_int</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-int" title="cam_unit_set_control_int ()">cam_unit_set_control_int</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-set-control-float" title="cam_unit_set_control_float ()">cam_unit_set_control_float</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-float" title="cam_unit_set_control_float ()">cam_unit_set_control_float</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          float val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-set-control-enum" title="cam_unit_set_control_enum ()">cam_unit_set_control_enum</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-enum" title="cam_unit_set_control_enum ()">cam_unit_set_control_enum</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int index);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-set-control-boolean" title="cam_unit_set_control_boolean ()">cam_unit_set_control_boolean</a>        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-boolean" title="cam_unit_set_control_boolean ()">cam_unit_set_control_boolean</a>        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-set-control-string" title="cam_unit_set_control_string ()">cam_unit_set_control_string</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-string" title="cam_unit_set_control_string ()">cam_unit_set_control_string</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          const char *val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-get-control-int" title="cam_unit_get_control_int ()">cam_unit_get_control_int</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-get-control-int" title="cam_unit_get_control_int ()">cam_unit_get_control_int</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int *val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-get-control-float" title="cam_unit_get_control_float ()">cam_unit_get_control_float</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-get-control-float" title="cam_unit_get_control_float ()">cam_unit_get_control_float</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          float *val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-get-control-enum" title="cam_unit_get_control_enum ()">cam_unit_get_control_enum</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-get-control-enum" title="cam_unit_get_control_enum ()">cam_unit_get_control_enum</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int *val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-get-control-boolean" title="cam_unit_get_control_boolean ()">cam_unit_get_control_boolean</a>        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-get-control-boolean" title="cam_unit_get_control_boolean ()">cam_unit_get_control_boolean</a>        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int *val);
-gboolean            <a class="link" href="CamUnit.html#cam-unit-get-control-string" title="cam_unit_get_control_string ()">cam_unit_get_control_string</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-get-control-string" title="cam_unit_get_control_string ()">cam_unit_get_control_string</a>         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          char **val);
 int                 <a class="link" href="CamUnit.html#cam-unit-draw-gl-init" title="cam_unit_draw_gl_init ()">cam_unit_draw_gl_init</a>               (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
@@ -157,10 +185,13 @@ void                <a class="link" href="CamUnit.html#cam-unit-produce-frame" t
 <div class="refsect1" lang="en">
 <a name="CamUnit.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
          +----CamUnit
-               +----<a class="link" href="CamV4L.html" title="CamV4L">CamV4L</a>
                +----<a class="link" href="CamV4L2.html" title="CamV4L2">CamV4L2</a>
                +----<a class="link" href="CamInputExample.html" title="CamInputExample">CamInputExample</a>
                +----<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a>
@@ -314,7 +345,9 @@ NULL.
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-is-streaming"></a><h3>cam_unit_is_streaming ()</h3>
-<pre class="programlisting">gboolean            cam_unit_is_streaming               (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_is_streaming               (const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);</pre>
 <p>
 
 </p>
@@ -440,7 +473,9 @@ This function returns the output format of the unit.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-get-output-formats"></a><h3>cam_unit_get_output_formats ()</h3>
-<pre class="programlisting">GList*              cam_unit_get_output_formats         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_get_output_formats         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);</pre>
 <p>
 Enumerates the output formats supported by the unit.</p>
 <p>
@@ -578,7 +613,9 @@ acquisition/processing</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-try-produce-frame"></a><h3>cam_unit_try_produce_frame ()</h3>
-<pre class="programlisting">gboolean            cam_unit_try_produce_frame          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_try_produce_frame          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          int timeout_ms);</pre>
 <p>
 Only meaningful for input units.  Tries for at most <code class="literal">timeout_ms</code> milliseconds
@@ -669,7 +706,9 @@ Only meaningful for input units with the flag CAM_UNIT_EVENT_METHOD_TIMEOUT</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-list-controls"></a><h3>cam_unit_list_controls ()</h3>
-<pre class="programlisting">GList*              cam_unit_list_controls              (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_list_controls              (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);</pre>
 <p>
 Retrieves the user controls available for this unit.  The list should be
 released with g_list_free after usage.  Do not modify the objects in the
@@ -727,7 +766,9 @@ Searches for the CamUnitControl with the specified id.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-set-control-int"></a><h3>cam_unit_set_control_int ()</h3>
-<pre class="programlisting">gboolean            cam_unit_set_control_int            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_set_control_int            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int val);</pre>
 <p>
@@ -765,7 +806,9 @@ Convenience function to set a control</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-set-control-float"></a><h3>cam_unit_set_control_float ()</h3>
-<pre class="programlisting">gboolean            cam_unit_set_control_float          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_set_control_float          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          float val);</pre>
 <p>
@@ -803,7 +846,9 @@ Convenience function to set a control</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-set-control-enum"></a><h3>cam_unit_set_control_enum ()</h3>
-<pre class="programlisting">gboolean            cam_unit_set_control_enum           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_set_control_enum           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int index);</pre>
 <p>
@@ -841,7 +886,9 @@ Convenience function to set a control</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-set-control-boolean"></a><h3>cam_unit_set_control_boolean ()</h3>
-<pre class="programlisting">gboolean            cam_unit_set_control_boolean        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_set_control_boolean        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int val);</pre>
 <p>
@@ -879,7 +926,9 @@ Convenience function to set a control</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-set-control-string"></a><h3>cam_unit_set_control_string ()</h3>
-<pre class="programlisting">gboolean            cam_unit_set_control_string         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_set_control_string         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          const char *val);</pre>
 <p>
@@ -917,7 +966,9 @@ Convenience function to set a control</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-get-control-int"></a><h3>cam_unit_get_control_int ()</h3>
-<pre class="programlisting">gboolean            cam_unit_get_control_int            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_get_control_int            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int *val);</pre>
 <p>
@@ -955,7 +1006,9 @@ Convenience function to retrieve the value of a control.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-get-control-float"></a><h3>cam_unit_get_control_float ()</h3>
-<pre class="programlisting">gboolean            cam_unit_get_control_float          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_get_control_float          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          float *val);</pre>
 <p>
@@ -993,7 +1046,9 @@ Convenience function to retrieve the value of a control.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-get-control-enum"></a><h3>cam_unit_get_control_enum ()</h3>
-<pre class="programlisting">gboolean            cam_unit_get_control_enum           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_get_control_enum           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int *val);</pre>
 <p>
@@ -1031,7 +1086,9 @@ Convenience function to retrieve the value of a control.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-get-control-boolean"></a><h3>cam_unit_get_control_boolean ()</h3>
-<pre class="programlisting">gboolean            cam_unit_get_control_boolean        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_get_control_boolean        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          int *val);</pre>
 <p>
@@ -1069,7 +1126,9 @@ Convenience function to retrieve the value of a control.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-get-control-string"></a><h3>cam_unit_get_control_string ()</h3>
-<pre class="programlisting">gboolean            cam_unit_get_control_string         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            cam_unit_get_control_string         (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          char **val);</pre>
 <p>
@@ -1701,7 +1760,9 @@ a new frame is ready for consumption.  Invoking this method emits the
 <a name="CamUnit-control-parameters-changed"></a><h3>The <code class="literal">"control-parameters-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>        *unit,
                                                         <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *control,
-                                                        gpointer        user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run First</pre>
 <p>
 The control-parameters-changed signal is emitted when a CamUnitControl of
 the unit has its min, max, or enabled property changed.</p>
@@ -1733,7 +1794,9 @@ the unit has its min, max, or enabled property changed.</p>
 <a name="CamUnit-control-value-changed"></a><h3>The <code class="literal">"control-value-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>        *unit,
                                                         <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *control,
-                                                        gpointer        user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run First</pre>
 <p>
 The control-value-changed signal is emitted when a CamUnitControl of the
 unit takes on a new value</p>
@@ -1766,7 +1829,9 @@ unit takes on a new value</p>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>        *unit,
                                                         <a class="link" href="CamFrameBuffer.html" title="CamFrameBuffer">CamFrameBuffer</a> *fbuf,
                                                         <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a>  *fmt,
-                                                        gpointer        user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run First</pre>
 <p>
 The frame-ready signal is emitted when the unit generates a new frame
 (i.e. when the unit calls cam_unit_produce_frame) .</p>
@@ -1803,7 +1868,9 @@ The frame-ready signal is emitted when the unit generates a new frame
 <a name="CamUnit-input-changed"></a><h3>The <code class="literal">"input-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *unit,
                                                         <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *arg1,
-                                                        gpointer user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data)      : Run First</pre>
 <p>
 The input-changed signal is emitted when the input unit changes.
 Specifically, when cam_unit_set_input is called.</p>
@@ -1830,7 +1897,9 @@ Specifically, when cam_unit_set_input is called.</p>
 <a name="CamUnit-input-format-changed"></a><h3>The <code class="literal">"input-format-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>       *unit,
                                                         <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a> *arg1,
-                                                        gpointer       user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>       user_data)      : Run First</pre>
 <p>
 The input-changed signal is emitted when the input unit changes, and
 when the input-unit is initialized.</p>
@@ -1856,7 +1925,9 @@ when the input-unit is initialized.</p>
 <div class="refsect2" lang="en">
 <a name="CamUnit-output-formats-changed"></a><h3>The <code class="literal">"output-formats-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *unit,
-                                                        gpointer user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data)      : Run First</pre>
 <p>
 The control-value-changed signal is emitted when the list of selectable
 output formats changes</p>
@@ -1882,7 +1953,9 @@ output formats changes</p>
 <div class="refsect2" lang="en">
 <a name="CamUnit-status-changed"></a><h3>The <code class="literal">"status-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *unit,
-                                                        gpointer user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data)      : Run First</pre>
 <p>
 The status-changed signal is emitted when the unit either starts
 streaming, or stops streaming.</p>

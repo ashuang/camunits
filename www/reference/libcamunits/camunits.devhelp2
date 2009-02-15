@@ -15,7 +15,6 @@
     </sub>
     <sub name="Built-in Units" link="ch03.html">
       <sub name="CamV4L2" link="CamV4L2.html"/>
-      <sub name="CamV4L" link="CamV4L.html"/>
       <sub name="CamInputExample" link="CamInputExample.html"/>
       <sub name="CamInputLog" link="CamInputLog.html"/>
       <sub name="CamConvertToRgb8" link="CamConvertToRgb8.html"/>
@@ -27,13 +26,9 @@
       <sub name="CamLoggerUnit" link="CamLoggerUnit.html"/>
     </sub>
     <sub name="Other stuff" link="ch04.html">
-      <sub name="dbg" link="camunits-dbg.html"/>
       <sub name="pixels" link="camunits-pixels.html"/>
-      <sub name="camunits-gmarshal" link="camunits-camunits-gmarshal.html"/>
       <sub name="log" link="camunits-log.html"/>
       <sub name="plugin" link="camunits-plugin.html"/>
-      <sub name="gl_texture" link="camunits-gl-texture.html"/>
-      <sub name="pwc-ioctl" link="camunits-pwc-ioctl.html"/>
     </sub>
   </chapters>
   <functions>
@@ -207,10 +202,6 @@
     <keyword type="function" name="cam_v4l2_driver_new ()" link="CamV4L2.html#cam-v4l2-driver-new"/>
     <keyword type="struct" name="CamV4L2" link="CamV4L2.html#CamV4L2-struct"/>
     <keyword type="function" name="cam_v4l2_new ()" link="CamV4L2.html#cam-v4l2-new"/>
-    <keyword type="struct" name="CamV4LDriver" link="CamV4L.html#CamV4LDriver-struct"/>
-    <keyword type="function" name="cam_v4l_driver_new ()" link="CamV4L.html#cam-v4l-driver-new"/>
-    <keyword type="struct" name="CamV4L" link="CamV4L.html#CamV4L-struct"/>
-    <keyword type="function" name="cam_v4l_new ()" link="CamV4L.html#cam-v4l-new"/>
     <keyword type="struct" name="CamInputExampleDriver" link="CamInputExample.html#CamInputExampleDriver-struct"/>
     <keyword type="function" name="cam_input_example_driver_new ()" link="CamInputExample.html#cam-input-example-driver-new"/>
     <keyword type="struct" name="CamInputExample" link="CamInputExample.html#CamInputExample-struct"/>
@@ -240,36 +231,6 @@
     <keyword type="struct" name="CamLoggerUnit" link="CamLoggerUnit.html#CamLoggerUnit-struct"/>
     <keyword type="function" name="cam_logger_unit_new ()" link="CamLoggerUnit.html#cam-logger-unit-new"/>
     <keyword type="function" name="cam_logger_unit_driver_new ()" link="CamLoggerUnit.html#cam-logger-unit-driver-new"/>
-    <keyword type="macro" name="DBG_MODE()" link="camunits-dbg.html#DBG-MODE:CAPS"/>
-    <keyword type="macro" name="DBG_ALL" link="camunits-dbg.html#DBG-ALL:CAPS"/>
-    <keyword type="macro" name="DBG_ERROR" link="camunits-dbg.html#DBG-ERROR:CAPS"/>
-    <keyword type="macro" name="DBG_DEFAULT" link="camunits-dbg.html#DBG-DEFAULT:CAPS"/>
-    <keyword type="macro" name="DBG_UNIT" link="camunits-dbg.html#DBG-UNIT:CAPS"/>
-    <keyword type="macro" name="DBG_CHAIN" link="camunits-dbg.html#DBG-CHAIN:CAPS"/>
-    <keyword type="macro" name="DBG_DRIVER" link="camunits-dbg.html#DBG-DRIVER:CAPS"/>
-    <keyword type="macro" name="DBG_MANAGER" link="camunits-dbg.html#DBG-MANAGER:CAPS"/>
-    <keyword type="macro" name="DBG_INPUT" link="camunits-dbg.html#DBG-INPUT:CAPS"/>
-    <keyword type="macro" name="DBG_FILTER" link="camunits-dbg.html#DBG-FILTER:CAPS"/>
-    <keyword type="macro" name="DBG_OUTPUT" link="camunits-dbg.html#DBG-OUTPUT:CAPS"/>
-    <keyword type="macro" name="DBG_GUI" link="camunits-dbg.html#DBG-GUI:CAPS"/>
-    <keyword type="macro" name="DBG_CONTROL" link="camunits-dbg.html#DBG-CONTROL:CAPS"/>
-    <keyword type="macro" name="DBG_REF" link="camunits-dbg.html#DBG-REF:CAPS"/>
-    <keyword type="macro" name="DBG_PLUGIN" link="camunits-dbg.html#DBG-PLUGIN:CAPS"/>
-    <keyword type="macro" name="DBG_LOG" link="camunits-dbg.html#DBG-LOG:CAPS"/>
-    <keyword type="macro" name="DBG_13" link="camunits-dbg.html#DBG-13:CAPS"/>
-    <keyword type="macro" name="DBG_14" link="camunits-dbg.html#DBG-14:CAPS"/>
-    <keyword type="macro" name="DBG_15" link="camunits-dbg.html#DBG-15:CAPS"/>
-    <keyword type="macro" name="DBG_16" link="camunits-dbg.html#DBG-16:CAPS"/>
-    <keyword type="macro" name="DBG_NAMETAB" link="camunits-dbg.html#DBG-NAMETAB:CAPS"/>
-    <keyword type="macro" name="DBG_COLORTAB" link="camunits-dbg.html#DBG-COLORTAB:CAPS"/>
-    <keyword type="struct" name="dbg_mode_t" link="camunits-dbg.html#dbg-mode-t"/>
-    <keyword type="struct" name="dbg_mode_color_t" link="camunits-dbg.html#dbg-mode-color-t"/>
-    <keyword type="function" name="DCOLOR ()" link="camunits-dbg.html#DCOLOR:CAPS"/>
-    <keyword type="macro" name="dbg()" link="camunits-dbg.html#dbg"/>
-    <keyword type="macro" name="dbgl()" link="camunits-dbg.html#dbgl"/>
-    <keyword type="macro" name="dbg_active()" link="camunits-dbg.html#dbg-active"/>
-    <keyword type="macro" name="cdbg()" link="camunits-dbg.html#cdbg"/>
-    <keyword type="macro" name="cprintf()" link="camunits-dbg.html#cprintf"/>
     <keyword type="macro" name="cam_pf_fourcc()" link="camunits-pixels.html#cam-pf-fourcc"/>
     <keyword type="enum" name="enum CamPixelFormat" link="camunits-pixels.html#CamPixelFormat"/>
     <keyword type="function" name="cam_pixel_format_nickname ()" link="camunits-pixels.html#cam-pixel-format-nickname"/>
@@ -304,7 +265,6 @@
     <keyword type="function" name="cam_pixel_convert_bayer_to_8u_bgra ()" link="camunits-pixels.html#cam-pixel-convert-bayer-to-8u-bgra"/>
     <keyword type="function" name="cam_pixel_convert_bayer_to_8u_gray ()" link="camunits-pixels.html#cam-pixel-convert-bayer-to-8u-gray"/>
     <keyword type="function" name="cam_pixel_copy_8u_generic ()" link="camunits-pixels.html#cam-pixel-copy-8u-generic"/>
-    <keyword type="function" name="g_cclosure_user_marshal_VOID__OBJECT_OBJECT ()" link="camunits-camunits-gmarshal.html#g-cclosure-user-marshal-VOID--OBJECT-OBJECT"/>
     <keyword type="struct" name="CamLog" link="camunits-log.html#CamLog"/>
     <keyword type="struct" name="CamLogFrameFormat" link="camunits-log.html#CamLogFrameFormat"/>
     <keyword type="struct" name="CamLogFrameInfo" link="camunits-log.html#CamLogFrameInfo"/>
@@ -328,66 +288,5 @@
     <keyword type="macro" name="CAM_PLUGIN_TYPE_EXTENDED()" link="camunits-plugin.html#CAM-PLUGIN-TYPE-EXTENDED:CAPS"/>
     <keyword type="macro" name="CAM_PLUGIN_INTERFACE()" link="camunits-plugin.html#CAM-PLUGIN-INTERFACE:CAPS"/>
     <keyword type="function" name="cam_plugin_unit_driver_create ()" link="camunits-plugin.html#cam-plugin-unit-driver-create"/>
-    <keyword type="struct" name="CamGLTexture" link="camunits-gl-texture.html#CamGLTexture"/>
-    <keyword type="function" name="cam_gl_texture_new ()" link="camunits-gl-texture.html#cam-gl-texture-new"/>
-    <keyword type="function" name="cam_gl_texture_free ()" link="camunits-gl-texture.html#cam-gl-texture-free"/>
-    <keyword type="function" name="cam_gl_texture_draw ()" link="camunits-gl-texture.html#cam-gl-texture-draw"/>
-    <keyword type="function" name="cam_gl_texture_draw_alpha ()" link="camunits-gl-texture.html#cam-gl-texture-draw-alpha"/>
-    <keyword type="function" name="cam_gl_texture_draw_partial ()" link="camunits-gl-texture.html#cam-gl-texture-draw-partial"/>
-    <keyword type="function" name="cam_gl_texture_upload ()" link="camunits-gl-texture.html#cam-gl-texture-upload"/>
-    <keyword type="function" name="cam_gl_texture_set_interp ()" link="camunits-gl-texture.html#cam-gl-texture-set-interp"/>
-    <keyword type="macro" name="PSZ_SQCIF" link="camunits-pwc-ioctl.html#PSZ-SQCIF:CAPS"/>
-    <keyword type="macro" name="PSZ_QSIF" link="camunits-pwc-ioctl.html#PSZ-QSIF:CAPS"/>
-    <keyword type="macro" name="PSZ_QCIF" link="camunits-pwc-ioctl.html#PSZ-QCIF:CAPS"/>
-    <keyword type="macro" name="PSZ_SIF" link="camunits-pwc-ioctl.html#PSZ-SIF:CAPS"/>
-    <keyword type="macro" name="PSZ_CIF" link="camunits-pwc-ioctl.html#PSZ-CIF:CAPS"/>
-    <keyword type="macro" name="PSZ_VGA" link="camunits-pwc-ioctl.html#PSZ-VGA:CAPS"/>
-    <keyword type="macro" name="PSZ_MAX" link="camunits-pwc-ioctl.html#PSZ-MAX:CAPS"/>
-    <keyword type="macro" name="PWC_FPS_SHIFT" link="camunits-pwc-ioctl.html#PWC-FPS-SHIFT:CAPS"/>
-    <keyword type="macro" name="PWC_FPS_MASK" link="camunits-pwc-ioctl.html#PWC-FPS-MASK:CAPS"/>
-    <keyword type="macro" name="PWC_FPS_FRMASK" link="camunits-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS"/>
-    <keyword type="macro" name="PWC_FPS_SNAPSHOT" link="camunits-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS"/>
-    <keyword type="macro" name="PWC_WB_INDOOR" link="camunits-pwc-ioctl.html#PWC-WB-INDOOR:CAPS"/>
-    <keyword type="macro" name="PWC_WB_OUTDOOR" link="camunits-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS"/>
-    <keyword type="macro" name="PWC_WB_FL" link="camunits-pwc-ioctl.html#PWC-WB-FL:CAPS"/>
-    <keyword type="macro" name="PWC_WB_MANUAL" link="camunits-pwc-ioctl.html#PWC-WB-MANUAL:CAPS"/>
-    <keyword type="macro" name="PWC_WB_AUTO" link="camunits-pwc-ioctl.html#PWC-WB-AUTO:CAPS"/>
-    <keyword type="macro" name="PWC_MPT_PAN" link="camunits-pwc-ioctl.html#PWC-MPT-PAN:CAPS"/>
-    <keyword type="macro" name="PWC_MPT_TILT" link="camunits-pwc-ioctl.html#PWC-MPT-TILT:CAPS"/>
-    <keyword type="macro" name="PWC_MPT_TIMEOUT" link="camunits-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS"/>
-    <keyword type="macro" name="PWCX_FLAG_PLANAR" link="camunits-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS"/>
-    <keyword type="macro" name="PWCX_FLAG_BAYER" link="camunits-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCRUSER" link="camunits-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSUSER" link="camunits-pwc-ioctl.html#VIDIOCPWCSUSER:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCFACTORY" link="camunits-pwc-ioctl.html#VIDIOCPWCFACTORY:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSCQUAL" link="camunits-pwc-ioctl.html#VIDIOCPWCSCQUAL:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGCQUAL" link="camunits-pwc-ioctl.html#VIDIOCPWCGCQUAL:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGSERIAL" link="camunits-pwc-ioctl.html#VIDIOCPWCGSERIAL:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCPROBE" link="camunits-pwc-ioctl.html#VIDIOCPWCPROBE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSAGC" link="camunits-pwc-ioctl.html#VIDIOCPWCSAGC:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGAGC" link="camunits-pwc-ioctl.html#VIDIOCPWCGAGC:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSSHUTTER" link="camunits-pwc-ioctl.html#VIDIOCPWCSSHUTTER:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSAWB" link="camunits-pwc-ioctl.html#VIDIOCPWCSAWB:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGAWB" link="camunits-pwc-ioctl.html#VIDIOCPWCGAWB:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSAWBSPEED" link="camunits-pwc-ioctl.html#VIDIOCPWCSAWBSPEED:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGAWBSPEED" link="camunits-pwc-ioctl.html#VIDIOCPWCGAWBSPEED:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSLED" link="camunits-pwc-ioctl.html#VIDIOCPWCSLED:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGLED" link="camunits-pwc-ioctl.html#VIDIOCPWCGLED:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSCONTOUR" link="camunits-pwc-ioctl.html#VIDIOCPWCSCONTOUR:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGCONTOUR" link="camunits-pwc-ioctl.html#VIDIOCPWCGCONTOUR:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSBACKLIGHT" link="camunits-pwc-ioctl.html#VIDIOCPWCSBACKLIGHT:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGBACKLIGHT" link="camunits-pwc-ioctl.html#VIDIOCPWCGBACKLIGHT:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSFLICKER" link="camunits-pwc-ioctl.html#VIDIOCPWCSFLICKER:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGFLICKER" link="camunits-pwc-ioctl.html#VIDIOCPWCGFLICKER:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCSDYNNOISE" link="camunits-pwc-ioctl.html#VIDIOCPWCSDYNNOISE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGDYNNOISE" link="camunits-pwc-ioctl.html#VIDIOCPWCGDYNNOISE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGREALSIZE" link="camunits-pwc-ioctl.html#VIDIOCPWCGREALSIZE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCMPTRESET" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTRESET:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCMPTGRANGE" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTGRANGE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCMPTSANGLE" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTSANGLE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCMPTGANGLE" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCMPTSTATUS" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGVIDCMD" link="camunits-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS"/>
-    <keyword type="macro" name="VIDIOCPWCGVIDTABLE" link="camunits-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS"/>
   </functions>
 </book>

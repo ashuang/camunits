@@ -15,7 +15,6 @@
     </sub>
     <sub name="Built-in Units" link="ch03.html">
       <sub name="CamV4L2" link="CamV4L2.html"/>
-      <sub name="CamV4L" link="CamV4L.html"/>
       <sub name="CamInputExample" link="CamInputExample.html"/>
       <sub name="CamInputLog" link="CamInputLog.html"/>
       <sub name="CamConvertToRgb8" link="CamConvertToRgb8.html"/>
@@ -27,13 +26,9 @@
       <sub name="CamLoggerUnit" link="CamLoggerUnit.html"/>
     </sub>
     <sub name="Other stuff" link="ch04.html">
-      <sub name="dbg" link="camunits-dbg.html"/>
       <sub name="pixels" link="camunits-pixels.html"/>
-      <sub name="camunits-gmarshal" link="camunits-camunits-gmarshal.html"/>
       <sub name="log" link="camunits-log.html"/>
       <sub name="plugin" link="camunits-plugin.html"/>
-      <sub name="gl_texture" link="camunits-gl-texture.html"/>
-      <sub name="pwc-ioctl" link="camunits-pwc-ioctl.html"/>
     </sub>
   </chapters>
   <functions>
@@ -207,10 +202,6 @@
     <function name="cam_v4l2_driver_new ()" link="CamV4L2.html#cam-v4l2-driver-new"/>
     <function name="CamV4L2" link="CamV4L2.html#CamV4L2-struct"/>
     <function name="cam_v4l2_new ()" link="CamV4L2.html#cam-v4l2-new"/>
-    <function name="CamV4LDriver" link="CamV4L.html#CamV4LDriver-struct"/>
-    <function name="cam_v4l_driver_new ()" link="CamV4L.html#cam-v4l-driver-new"/>
-    <function name="CamV4L" link="CamV4L.html#CamV4L-struct"/>
-    <function name="cam_v4l_new ()" link="CamV4L.html#cam-v4l-new"/>
     <function name="CamInputExampleDriver" link="CamInputExample.html#CamInputExampleDriver-struct"/>
     <function name="cam_input_example_driver_new ()" link="CamInputExample.html#cam-input-example-driver-new"/>
     <function name="CamInputExample" link="CamInputExample.html#CamInputExample-struct"/>
@@ -240,36 +231,6 @@
     <function name="CamLoggerUnit" link="CamLoggerUnit.html#CamLoggerUnit-struct"/>
     <function name="cam_logger_unit_new ()" link="CamLoggerUnit.html#cam-logger-unit-new"/>
     <function name="cam_logger_unit_driver_new ()" link="CamLoggerUnit.html#cam-logger-unit-driver-new"/>
-    <function name="DBG_MODE()" link="camunits-dbg.html#DBG-MODE:CAPS"/>
-    <function name="DBG_ALL" link="camunits-dbg.html#DBG-ALL:CAPS"/>
-    <function name="DBG_ERROR" link="camunits-dbg.html#DBG-ERROR:CAPS"/>
-    <function name="DBG_DEFAULT" link="camunits-dbg.html#DBG-DEFAULT:CAPS"/>
-    <function name="DBG_UNIT" link="camunits-dbg.html#DBG-UNIT:CAPS"/>
-    <function name="DBG_CHAIN" link="camunits-dbg.html#DBG-CHAIN:CAPS"/>
-    <function name="DBG_DRIVER" link="camunits-dbg.html#DBG-DRIVER:CAPS"/>
-    <function name="DBG_MANAGER" link="camunits-dbg.html#DBG-MANAGER:CAPS"/>
-    <function name="DBG_INPUT" link="camunits-dbg.html#DBG-INPUT:CAPS"/>
-    <function name="DBG_FILTER" link="camunits-dbg.html#DBG-FILTER:CAPS"/>
-    <function name="DBG_OUTPUT" link="camunits-dbg.html#DBG-OUTPUT:CAPS"/>
-    <function name="DBG_GUI" link="camunits-dbg.html#DBG-GUI:CAPS"/>
-    <function name="DBG_CONTROL" link="camunits-dbg.html#DBG-CONTROL:CAPS"/>
-    <function name="DBG_REF" link="camunits-dbg.html#DBG-REF:CAPS"/>
-    <function name="DBG_PLUGIN" link="camunits-dbg.html#DBG-PLUGIN:CAPS"/>
-    <function name="DBG_LOG" link="camunits-dbg.html#DBG-LOG:CAPS"/>
-    <function name="DBG_13" link="camunits-dbg.html#DBG-13:CAPS"/>
-    <function name="DBG_14" link="camunits-dbg.html#DBG-14:CAPS"/>
-    <function name="DBG_15" link="camunits-dbg.html#DBG-15:CAPS"/>
-    <function name="DBG_16" link="camunits-dbg.html#DBG-16:CAPS"/>
-    <function name="DBG_NAMETAB" link="camunits-dbg.html#DBG-NAMETAB:CAPS"/>
-    <function name="DBG_COLORTAB" link="camunits-dbg.html#DBG-COLORTAB:CAPS"/>
-    <function name="dbg_mode_t" link="camunits-dbg.html#dbg-mode-t"/>
-    <function name="dbg_mode_color_t" link="camunits-dbg.html#dbg-mode-color-t"/>
-    <function name="DCOLOR ()" link="camunits-dbg.html#DCOLOR:CAPS"/>
-    <function name="dbg()" link="camunits-dbg.html#dbg"/>
-    <function name="dbgl()" link="camunits-dbg.html#dbgl"/>
-    <function name="dbg_active()" link="camunits-dbg.html#dbg-active"/>
-    <function name="cdbg()" link="camunits-dbg.html#cdbg"/>
-    <function name="cprintf()" link="camunits-dbg.html#cprintf"/>
     <function name="cam_pf_fourcc()" link="camunits-pixels.html#cam-pf-fourcc"/>
     <function name="enum CamPixelFormat" link="camunits-pixels.html#CamPixelFormat"/>
     <function name="cam_pixel_format_nickname ()" link="camunits-pixels.html#cam-pixel-format-nickname"/>
@@ -304,7 +265,6 @@
     <function name="cam_pixel_convert_bayer_to_8u_bgra ()" link="camunits-pixels.html#cam-pixel-convert-bayer-to-8u-bgra"/>
     <function name="cam_pixel_convert_bayer_to_8u_gray ()" link="camunits-pixels.html#cam-pixel-convert-bayer-to-8u-gray"/>
     <function name="cam_pixel_copy_8u_generic ()" link="camunits-pixels.html#cam-pixel-copy-8u-generic"/>
-    <function name="g_cclosure_user_marshal_VOID__OBJECT_OBJECT ()" link="camunits-camunits-gmarshal.html#g-cclosure-user-marshal-VOID--OBJECT-OBJECT"/>
     <function name="CamLog" link="camunits-log.html#CamLog"/>
     <function name="CamLogFrameFormat" link="camunits-log.html#CamLogFrameFormat"/>
     <function name="CamLogFrameInfo" link="camunits-log.html#CamLogFrameInfo"/>
@@ -328,66 +288,5 @@
     <function name="CAM_PLUGIN_TYPE_EXTENDED()" link="camunits-plugin.html#CAM-PLUGIN-TYPE-EXTENDED:CAPS"/>
     <function name="CAM_PLUGIN_INTERFACE()" link="camunits-plugin.html#CAM-PLUGIN-INTERFACE:CAPS"/>
     <function name="cam_plugin_unit_driver_create ()" link="camunits-plugin.html#cam-plugin-unit-driver-create"/>
-    <function name="CamGLTexture" link="camunits-gl-texture.html#CamGLTexture"/>
-    <function name="cam_gl_texture_new ()" link="camunits-gl-texture.html#cam-gl-texture-new"/>
-    <function name="cam_gl_texture_free ()" link="camunits-gl-texture.html#cam-gl-texture-free"/>
-    <function name="cam_gl_texture_draw ()" link="camunits-gl-texture.html#cam-gl-texture-draw"/>
-    <function name="cam_gl_texture_draw_alpha ()" link="camunits-gl-texture.html#cam-gl-texture-draw-alpha"/>
-    <function name="cam_gl_texture_draw_partial ()" link="camunits-gl-texture.html#cam-gl-texture-draw-partial"/>
-    <function name="cam_gl_texture_upload ()" link="camunits-gl-texture.html#cam-gl-texture-upload"/>
-    <function name="cam_gl_texture_set_interp ()" link="camunits-gl-texture.html#cam-gl-texture-set-interp"/>
-    <function name="PSZ_SQCIF" link="camunits-pwc-ioctl.html#PSZ-SQCIF:CAPS"/>
-    <function name="PSZ_QSIF" link="camunits-pwc-ioctl.html#PSZ-QSIF:CAPS"/>
-    <function name="PSZ_QCIF" link="camunits-pwc-ioctl.html#PSZ-QCIF:CAPS"/>
-    <function name="PSZ_SIF" link="camunits-pwc-ioctl.html#PSZ-SIF:CAPS"/>
-    <function name="PSZ_CIF" link="camunits-pwc-ioctl.html#PSZ-CIF:CAPS"/>
-    <function name="PSZ_VGA" link="camunits-pwc-ioctl.html#PSZ-VGA:CAPS"/>
-    <function name="PSZ_MAX" link="camunits-pwc-ioctl.html#PSZ-MAX:CAPS"/>
-    <function name="PWC_FPS_SHIFT" link="camunits-pwc-ioctl.html#PWC-FPS-SHIFT:CAPS"/>
-    <function name="PWC_FPS_MASK" link="camunits-pwc-ioctl.html#PWC-FPS-MASK:CAPS"/>
-    <function name="PWC_FPS_FRMASK" link="camunits-pwc-ioctl.html#PWC-FPS-FRMASK:CAPS"/>
-    <function name="PWC_FPS_SNAPSHOT" link="camunits-pwc-ioctl.html#PWC-FPS-SNAPSHOT:CAPS"/>
-    <function name="PWC_WB_INDOOR" link="camunits-pwc-ioctl.html#PWC-WB-INDOOR:CAPS"/>
-    <function name="PWC_WB_OUTDOOR" link="camunits-pwc-ioctl.html#PWC-WB-OUTDOOR:CAPS"/>
-    <function name="PWC_WB_FL" link="camunits-pwc-ioctl.html#PWC-WB-FL:CAPS"/>
-    <function name="PWC_WB_MANUAL" link="camunits-pwc-ioctl.html#PWC-WB-MANUAL:CAPS"/>
-    <function name="PWC_WB_AUTO" link="camunits-pwc-ioctl.html#PWC-WB-AUTO:CAPS"/>
-    <function name="PWC_MPT_PAN" link="camunits-pwc-ioctl.html#PWC-MPT-PAN:CAPS"/>
-    <function name="PWC_MPT_TILT" link="camunits-pwc-ioctl.html#PWC-MPT-TILT:CAPS"/>
-    <function name="PWC_MPT_TIMEOUT" link="camunits-pwc-ioctl.html#PWC-MPT-TIMEOUT:CAPS"/>
-    <function name="PWCX_FLAG_PLANAR" link="camunits-pwc-ioctl.html#PWCX-FLAG-PLANAR:CAPS"/>
-    <function name="PWCX_FLAG_BAYER" link="camunits-pwc-ioctl.html#PWCX-FLAG-BAYER:CAPS"/>
-    <function name="VIDIOCPWCRUSER" link="camunits-pwc-ioctl.html#VIDIOCPWCRUSER:CAPS"/>
-    <function name="VIDIOCPWCSUSER" link="camunits-pwc-ioctl.html#VIDIOCPWCSUSER:CAPS"/>
-    <function name="VIDIOCPWCFACTORY" link="camunits-pwc-ioctl.html#VIDIOCPWCFACTORY:CAPS"/>
-    <function name="VIDIOCPWCSCQUAL" link="camunits-pwc-ioctl.html#VIDIOCPWCSCQUAL:CAPS"/>
-    <function name="VIDIOCPWCGCQUAL" link="camunits-pwc-ioctl.html#VIDIOCPWCGCQUAL:CAPS"/>
-    <function name="VIDIOCPWCGSERIAL" link="camunits-pwc-ioctl.html#VIDIOCPWCGSERIAL:CAPS"/>
-    <function name="VIDIOCPWCPROBE" link="camunits-pwc-ioctl.html#VIDIOCPWCPROBE:CAPS"/>
-    <function name="VIDIOCPWCSAGC" link="camunits-pwc-ioctl.html#VIDIOCPWCSAGC:CAPS"/>
-    <function name="VIDIOCPWCGAGC" link="camunits-pwc-ioctl.html#VIDIOCPWCGAGC:CAPS"/>
-    <function name="VIDIOCPWCSSHUTTER" link="camunits-pwc-ioctl.html#VIDIOCPWCSSHUTTER:CAPS"/>
-    <function name="VIDIOCPWCSAWB" link="camunits-pwc-ioctl.html#VIDIOCPWCSAWB:CAPS"/>
-    <function name="VIDIOCPWCGAWB" link="camunits-pwc-ioctl.html#VIDIOCPWCGAWB:CAPS"/>
-    <function name="VIDIOCPWCSAWBSPEED" link="camunits-pwc-ioctl.html#VIDIOCPWCSAWBSPEED:CAPS"/>
-    <function name="VIDIOCPWCGAWBSPEED" link="camunits-pwc-ioctl.html#VIDIOCPWCGAWBSPEED:CAPS"/>
-    <function name="VIDIOCPWCSLED" link="camunits-pwc-ioctl.html#VIDIOCPWCSLED:CAPS"/>
-    <function name="VIDIOCPWCGLED" link="camunits-pwc-ioctl.html#VIDIOCPWCGLED:CAPS"/>
-    <function name="VIDIOCPWCSCONTOUR" link="camunits-pwc-ioctl.html#VIDIOCPWCSCONTOUR:CAPS"/>
-    <function name="VIDIOCPWCGCONTOUR" link="camunits-pwc-ioctl.html#VIDIOCPWCGCONTOUR:CAPS"/>
-    <function name="VIDIOCPWCSBACKLIGHT" link="camunits-pwc-ioctl.html#VIDIOCPWCSBACKLIGHT:CAPS"/>
-    <function name="VIDIOCPWCGBACKLIGHT" link="camunits-pwc-ioctl.html#VIDIOCPWCGBACKLIGHT:CAPS"/>
-    <function name="VIDIOCPWCSFLICKER" link="camunits-pwc-ioctl.html#VIDIOCPWCSFLICKER:CAPS"/>
-    <function name="VIDIOCPWCGFLICKER" link="camunits-pwc-ioctl.html#VIDIOCPWCGFLICKER:CAPS"/>
-    <function name="VIDIOCPWCSDYNNOISE" link="camunits-pwc-ioctl.html#VIDIOCPWCSDYNNOISE:CAPS"/>
-    <function name="VIDIOCPWCGDYNNOISE" link="camunits-pwc-ioctl.html#VIDIOCPWCGDYNNOISE:CAPS"/>
-    <function name="VIDIOCPWCGREALSIZE" link="camunits-pwc-ioctl.html#VIDIOCPWCGREALSIZE:CAPS"/>
-    <function name="VIDIOCPWCMPTRESET" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTRESET:CAPS"/>
-    <function name="VIDIOCPWCMPTGRANGE" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTGRANGE:CAPS"/>
-    <function name="VIDIOCPWCMPTSANGLE" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTSANGLE:CAPS"/>
-    <function name="VIDIOCPWCMPTGANGLE" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTGANGLE:CAPS"/>
-    <function name="VIDIOCPWCMPTSTATUS" link="camunits-pwc-ioctl.html#VIDIOCPWCMPTSTATUS:CAPS"/>
-    <function name="VIDIOCPWCGVIDCMD" link="camunits-pwc-ioctl.html#VIDIOCPWCGVIDCMD:CAPS"/>
-    <function name="VIDIOCPWCGVIDTABLE" link="camunits-pwc-ioctl.html#VIDIOCPWCGVIDTABLE:CAPS"/>
   </functions>
 </book>

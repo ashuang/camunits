@@ -46,27 +46,37 @@
 <a name="CamUnitManager.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="CamUnitManager.html#CamUnitManager-struct" title="CamUnitManager">CamUnitManager</a>;
-<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a class="link" href="CamUnitManager.html#cam-unit-manager-new" title="cam_unit_manager_new ()">cam_unit_manager_new</a>                (gboolean start_drivers);
+<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a class="link" href="CamUnitManager.html#cam-unit-manager-new" title="cam_unit_manager_new ()">cam_unit_manager_new</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> start_drivers);
 void                <a class="link" href="CamUnitManager.html#cam-unit-manager-add-driver" title="cam_unit_manager_add_driver ()">cam_unit_manager_add_driver</a>         (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
 int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-remove-driver" title="cam_unit_manager_remove_driver ()">cam_unit_manager_remove_driver</a>      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
 int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-start-drivers" title="cam_unit_manager_start_drivers ()">cam_unit_manager_start_drivers</a>      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
 int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-stop-drivers" title="cam_unit_manager_stop_drivers ()">cam_unit_manager_stop_drivers</a>       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
-GList*              <a class="link" href="CamUnitManager.html#cam-unit-manager-get-drivers" title="cam_unit_manager_get_drivers ()">cam_unit_manager_get_drivers</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnitManager.html#cam-unit-manager-get-drivers" title="cam_unit_manager_get_drivers ()">cam_unit_manager_get_drivers</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
 const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a>* <a class="link" href="CamUnitManager.html#cam-unit-manager-find-unit-description" title="cam_unit_manager_find_unit_description ()">cam_unit_manager_find_unit_description</a>
                                                         (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);
-GList*              <a class="link" href="CamUnitManager.html#cam-unit-manager-list-package" title="cam_unit_manager_list_package ()">cam_unit_manager_list_package</a>       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnitManager.html#cam-unit-manager-list-package" title="cam_unit_manager_list_package ()">cam_unit_manager_list_package</a>       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *driver_package,
-                                                         gboolean recurse);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> recurse);
 <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            <a class="link" href="CamUnitManager.html#cam-unit-manager-create-unit-by-id" title="cam_unit_manager_create_unit_by_id ()">cam_unit_manager_create_unit_by_id</a>  (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);
 void                <a class="link" href="CamUnitManager.html#cam-unit-manager-add-plugin-dir" title="cam_unit_manager_add_plugin_dir ()">cam_unit_manager_add_plugin_dir</a>     (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *path);
 void                <a class="link" href="CamUnitManager.html#cam-unit-manager-attach-glib" title="cam_unit_manager_attach_glib ()">cam_unit_manager_attach_glib</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          int priority,
-                                                         GMainContext *context);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-The-Main-Event-Loop.html#GMainContext"
+>GMainContext</a> *context);
 void                <a class="link" href="CamUnitManager.html#cam-unit-manager-detach-glib" title="cam_unit_manager_detach_glib ()">cam_unit_manager_detach_glib</a>        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
 void                <a class="link" href="CamUnitManager.html#cam-unit-manager-update" title="cam_unit_manager_update ()">cam_unit_manager_update</a>             (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);
 </pre>
@@ -74,7 +84,9 @@ void                <a class="link" href="CamUnitManager.html#cam-unit-manager-u
 <div class="refsect1" lang="en">
 <a name="CamUnitManager.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
    +----CamUnitManager
 </pre>
 </div>
@@ -134,7 +146,9 @@ completely foregoing the <a class="link" href="CamUnitChain.html" title="CamUnit
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-manager-new"></a><h3>cam_unit_manager_new ()</h3>
-<pre class="programlisting"><a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_manager_new                (gboolean start_drivers);</pre>
+<pre class="programlisting"><a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_manager_new                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> start_drivers);</pre>
 <p>
 Constructor.  Instantiates a new unit manager with a core set of unit
 drivers already registered.</p>
@@ -281,7 +295,9 @@ This method is called automatically when the manager is destroyed.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-manager-get-drivers"></a><h3>cam_unit_manager_get_drivers ()</h3>
-<pre class="programlisting">GList*              cam_unit_manager_get_drivers        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_manager_get_drivers        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self);</pre>
 <p>
 Retrieves a list of all CamUnitDriver objects registered with the manager.
 This list should be freed with g_list_free when no longer needed</p>
@@ -339,9 +355,13 @@ Searches all known drivers for a unit description matching unit_id.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="cam-unit-manager-list-package"></a><h3>cam_unit_manager_list_package ()</h3>
-<pre class="programlisting">GList*              cam_unit_manager_list_package       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_manager_list_package       (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *driver_package,
-                                                         gboolean recurse);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> recurse);</pre>
 <p>
 Use this method to list unit descriptions in a specific package.
 For example, use this method to identify all known input unit descriptions
@@ -440,7 +460,9 @@ Discovered plugins will be loaded into the manager.</p>
 <a name="cam-unit-manager-attach-glib"></a><h3>cam_unit_manager_attach_glib ()</h3>
 <pre class="programlisting">void                cam_unit_manager_attach_glib        (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          int priority,
-                                                         GMainContext *context);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-The-Main-Event-Loop.html#GMainContext"
+>GMainContext</a> *context);</pre>
 <p>
 Attaches a CamUnitManager to a GLib event context.  When attached to a
 running GMainContext/GMainLoop, the unit manager will self-update
@@ -528,7 +550,9 @@ managed by this UnitManager.</p>
 <a name="CamUnitManager-unit-description-added"></a><h3>The <code class="literal">"unit-description-added"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>     *manager,
                                                         <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
-                                                        gpointer            user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>            user_data)      : Run First</pre>
 <p>
 The unit-description-added signal is emitted when the CamUnitManager
 detects that a driver has added a CamUnitDescription to its list of
@@ -561,7 +585,9 @@ available units.</p>
 <a name="CamUnitManager-unit-description-removed"></a><h3>The <code class="literal">"unit-description-removed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>     *driver,
                                                         <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc,
-                                                        gpointer            user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>            user_data)      : Run First</pre>
 <p>
 The unit-description-removed signal is emitted when a CamUnitDriver
 removes a CamUnitDescription from its list of available units.
@@ -598,7 +624,9 @@ handlers should not retain references to <code class="literal">udesc</code>.</p>
 <a name="CamUnitManager-unit-driver-added"></a><h3>The <code class="literal">"unit-driver-added"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager,
                                                         <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>  *driver,
-                                                        gpointer        user_data)      : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run First</pre>
 <p>
 The unit-driver-added signal is emitted when the CamUnitManager adds
 a new CamUnitDriver to its list of managed drivers.</p>

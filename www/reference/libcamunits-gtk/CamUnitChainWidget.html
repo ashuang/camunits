@@ -44,15 +44,17 @@
 <pre class="synopsis">
                     <a class="link" href="CamUnitChainWidget.html#CamUnitChainWidget-struct" title="CamUnitChainWidget">CamUnitChainWidget</a>;
 <a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a>* <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-new" title="cam_unit_chain_widget_new ()">cam_unit_chain_widget_new</a>           (<a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);
 int                 <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-set-chain" title="cam_unit_chain_widget_set_chain ()">cam_unit_chain_widget_set_chain</a>     (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          <a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);
 void                <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-set-orientation" title="cam_unit_chain_widget_set_orientation ()">cam_unit_chain_widget_set_orientation</a>
                                                         (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
-                                                         GtkOrientation orientation);
+                                                         <a
+href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
+>GtkOrientation</a> orientation);
 <a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* <a class="link" href="CamUnitChainWidget.html#cam-unit-chain-widget-find-unit-by-id" title="cam_unit_chain_widget_find_unit_by_id ()">cam_unit_chain_widget_find_unit_by_id</a>
                                                         (const <a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          const char *unit_id);
@@ -61,13 +63,27 @@ void                <a class="link" href="CamUnitChainWidget.html#cam-unit-chain
 <div class="refsect1" lang="en">
 <a name="CamUnitChainWidget.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkEventBox
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkEventBox.html"
+>GtkEventBox</a>
                                        +----CamUnitChainWidget
 </pre>
 </div>
@@ -75,7 +91,9 @@ void                <a class="link" href="CamUnitChainWidget.html#cam-unit-chain
 <a name="CamUnitChainWidget.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitChainWidget implements
- GtkBuildable and  AtkImplementorIface.</p>
+ <a
+href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a> and  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="CamUnitChainWidget.description"></a><h2>Description</h2>
@@ -96,7 +114,7 @@ CamUnitChainWidget implements
 <div class="refsect2" lang="en">
 <a name="cam-unit-chain-widget-new"></a><h3>cam_unit_chain_widget_new ()</h3>
 <pre class="programlisting"><a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a>* cam_unit_chain_widget_new           (<a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
 <p>
 
@@ -124,7 +142,7 @@ href="../libcam/CamUnitChain.html"
 <a name="cam-unit-chain-widget-set-chain"></a><h3>cam_unit_chain_widget_set_chain ()</h3>
 <pre class="programlisting">int                 cam_unit_chain_widget_set_chain     (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
                                                          <a
-href="../libcam/CamUnitChain.html"
+href="../camunits/CamUnitChain.html"
 >CamUnitChain</a> *chain);</pre>
 <p>
 
@@ -157,7 +175,9 @@ href="../libcam/CamUnitChain.html"
 <a name="cam-unit-chain-widget-set-orientation"></a><h3>cam_unit_chain_widget_set_orientation ()</h3>
 <pre class="programlisting">void                cam_unit_chain_widget_set_orientation
                                                         (<a class="link" href="CamUnitChainWidget.html" title="CamUnitChainWidget">CamUnitChainWidget</a> *self,
-                                                         GtkOrientation orientation);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
+>GtkOrientation</a> orientation);</pre>
 <p>
 
 </p>

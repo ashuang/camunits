@@ -46,9 +46,15 @@
 <pre class="synopsis">
 enum                <a class="link" href="CamUnitControl.html#CamUnitControlType" title="enum CamUnitControlType">CamUnitControlType</a>;
 enum                <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint">CamUnitControlUIHint</a>;
-gboolean            (<a class="link" href="CamUnitControl.html#CamUnitControlCallback" title="CamUnitControlCallback ()">*CamUnitControlCallback</a>)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
-                                                         const GValue *proposed,
-                                                         GValue *actual,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (<a class="link" href="CamUnitControl.html#CamUnitControlCallback" title="CamUnitControlCallback ()">*CamUnitControlCallback</a>)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+                                                         const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *proposed,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *actual,
                                                          void *user_data);
                     <a class="link" href="CamUnitControl.html#CamUnitControl-struct" title="CamUnitControl">CamUnitControl</a>;
 <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-enum" title="cam_unit_control_new_enum ()">cam_unit_control_new_enum</a>           (const char *id,
@@ -97,7 +103,9 @@ void                <a class="link" href="CamUnitControl.html#cam-unit-control-m
                                                          const char **entries,
                                                          const int *entries_enabled);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-val" title="cam_unit_control_try_set_val ()">cam_unit_control_try_set_val</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const GValue *val);
+                                                         const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *val);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-int" title="cam_unit_control_try_set_int ()">cam_unit_control_try_set_int</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-float" title="cam_unit_control_try_set_float ()">cam_unit_control_try_set_float</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
@@ -109,7 +117,9 @@ int                 <a class="link" href="CamUnitControl.html#cam-unit-control-t
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-string" title="cam_unit_control_try_set_string ()">cam_unit_control_try_set_string</a>     (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-val" title="cam_unit_control_force_set_val ()">cam_unit_control_force_set_val</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const GValue *value);
+                                                         const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *value);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-int" title="cam_unit_control_force_set_int ()">cam_unit_control_force_set_int</a>      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int val);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-float" title="cam_unit_control_force_set_float ()">cam_unit_control_force_set_float</a>    (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
@@ -121,7 +131,9 @@ int                 <a class="link" href="CamUnitControl.html#cam-unit-control-f
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-force-set-string" title="cam_unit_control_force_set_string ()">cam_unit_control_force_set_string</a>   (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const char *val);
 void                <a class="link" href="CamUnitControl.html#cam-unit-control-get-val" title="cam_unit_control_get_val ()">cam_unit_control_get_val</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         GValue *value);
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *value);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-int" title="cam_unit_control_get_int ()">cam_unit_control_get_int</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-float" title="cam_unit_control_get_float ()">cam_unit_control_get_float</a>          (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-enum" title="cam_unit_control_get_enum ()">cam_unit_control_get_enum</a>           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
@@ -145,7 +157,9 @@ const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-g
 <div class="refsect1" lang="en">
 <a name="CamUnitControl.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
    +----CamUnitControl
 </pre>
 </div>
@@ -266,9 +280,15 @@ Enumerates the different types of controls available</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="CamUnitControlCallback"></a><h3>CamUnitControlCallback ()</h3>
-<pre class="programlisting">gboolean            (*CamUnitControlCallback)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
-                                                         const GValue *proposed,
-                                                         GValue *actual,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (*CamUnitControlCallback)           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl,
+                                                         const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *proposed,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *actual,
                                                          void *user_data);</pre>
 <p>
 </p>
@@ -759,7 +779,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <div class="refsect2" lang="en">
 <a name="cam-unit-control-try-set-val"></a><h3>cam_unit_control_try_set_val ()</h3>
 <pre class="programlisting">int                 cam_unit_control_try_set_val        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const GValue *val);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *val);</pre>
 <p>
 </p>
 <p>
@@ -775,7 +797,8 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
-<td>
+<td> the new value
+Returns: 0 on success, -1 on failure
 </td>
 </tr>
 <tr>
@@ -947,7 +970,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <div class="refsect2" lang="en">
 <a name="cam-unit-control-force-set-val"></a><h3>cam_unit_control_force_set_val ()</h3>
 <pre class="programlisting">int                 cam_unit_control_force_set_val      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         const GValue *value);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *value);</pre>
 <p>
 
 </p>
@@ -1133,7 +1158,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <div class="refsect2" lang="en">
 <a name="cam-unit-control-get-val"></a><h3>cam_unit_control_get_val ()</h3>
 <pre class="programlisting">void                cam_unit_control_get_val            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
-                                                         GValue *value);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *value);</pre>
 <p>
 
 </p>
@@ -1563,7 +1590,9 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title=
 <div class="refsect2" lang="en">
 <a name="CamUnitControl-parameters-changed"></a><h3>The <code class="literal">"parameters-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
-                                                        gpointer        user_data)      : Run First / Action</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run First / Action</pre>
 <p>
 The parameters-changed signal is emitted when properties of a
 control are changed, such as min, max, step, or enabled by
@@ -1591,7 +1620,9 @@ or <a class="link" href="CamUnitControl.html#cam-unit-control-modify-float" titl
 <div class="refsect2" lang="en">
 <a name="CamUnitControl-value-changed"></a><h3>The <code class="literal">"value-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *unit,
-                                                        gpointer        user_data)      : Run First / Action</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run First / Action</pre>
 <p>
 The value-changed signal is emitted when the value of the control is
 changed.  This will always happen when any of cam_unit_control_force_set 

@@ -46,15 +46,17 @@
 <pre class="synopsis">
                     <a class="link" href="CamUnitControlWidget.html#CamUnitControlWidget-struct" title="CamUnitControlWidget">CamUnitControlWidget</a>;
 <a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-new" title="cam_unit_control_widget_new ()">cam_unit_control_widget_new</a>       (<a
-href="../libcam/CamUnit.html"
+href="../camunits/CamUnit.html"
 >CamUnit</a> *unit);
 int                 <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-set-unit" title="cam_unit_control_widget_set_unit ()">cam_unit_control_widget_set_unit</a>    (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
                                                          <a
-href="../libcam/CamUnit.html"
+href="../camunits/CamUnit.html"
 >CamUnit</a> *unit);
 void                <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-set-expanded" title="cam_unit_control_widget_set_expanded ()">cam_unit_control_widget_set_expanded</a>
                                                         (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
-                                                         gboolean expanded);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> expanded);
 extern              GtkTargetEntry <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-target-entry" title="cam_unit_control_widget_target_entry">cam_unit_control_widget_target_entry</a>;
 void                <a class="link" href="CamUnitControlWidget.html#cam-unit-control-widget-detach" title="cam_unit_control_widget_detach ()">cam_unit_control_widget_detach</a>      (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self);
 #define             <a class="link" href="CamUnitControlWidget.html#CAM-UNIT-CONTROL-WIDGET-DND-ID:CAPS" title="CAM_UNIT_CONTROL_WIDGET_DND_ID">CAM_UNIT_CONTROL_WIDGET_DND_ID</a>
@@ -63,13 +65,27 @@ void                <a class="link" href="CamUnitControlWidget.html#cam-unit-con
 <div class="refsect1" lang="en">
 <a name="CamUnitControlWidget.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkEventBox
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkEventBox.html"
+>GtkEventBox</a>
                                        +----CamUnitControlWidget
 </pre>
 </div>
@@ -77,7 +93,9 @@ void                <a class="link" href="CamUnitControlWidget.html#cam-unit-con
 <a name="CamUnitControlWidget.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 CamUnitControlWidget implements
- GtkBuildable and  AtkImplementorIface.</p>
+ <a
+href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a> and  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="CamUnitControlWidget.signals"></a><h2>Signals</h2>
@@ -104,7 +122,7 @@ CamUnitControlWidget implements
 <div class="refsect2" lang="en">
 <a name="cam-unit-control-widget-new"></a><h3>cam_unit_control_widget_new ()</h3>
 <pre class="programlisting"><a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a>* cam_unit_control_widget_new       (<a
-href="../libcam/CamUnit.html"
+href="../camunits/CamUnit.html"
 >CamUnit</a> *unit);</pre>
 <p>
 
@@ -132,7 +150,7 @@ href="../libcam/CamUnit.html"
 <a name="cam-unit-control-widget-set-unit"></a><h3>cam_unit_control_widget_set_unit ()</h3>
 <pre class="programlisting">int                 cam_unit_control_widget_set_unit    (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
                                                          <a
-href="../libcam/CamUnit.html"
+href="../camunits/CamUnit.html"
 >CamUnit</a> *unit);</pre>
 <p>
 
@@ -165,7 +183,9 @@ href="../libcam/CamUnit.html"
 <a name="cam-unit-control-widget-set-expanded"></a><h3>cam_unit_control_widget_set_expanded ()</h3>
 <pre class="programlisting">void                cam_unit_control_widget_set_expanded
                                                         (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *self,
-                                                         gboolean expanded);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> expanded);</pre>
 <p>
 
 </p>
@@ -229,7 +249,9 @@ href="../libcam/CamUnit.html"
 <div class="refsect2" lang="en">
 <a name="CamUnitControlWidget-close-button-clicked"></a><h3>The <code class="literal">"close-button-clicked"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="CamUnitControlWidget.html" title="CamUnitControlWidget">CamUnitControlWidget</a> *camunitcontrolwidget,
-                                                        gpointer              user_data)                 : Run First / Action</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>              user_data)                 : Run First / Action</pre>
 <p>
 
 </p>
