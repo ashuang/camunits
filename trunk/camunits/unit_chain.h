@@ -71,6 +71,8 @@ GType cam_unit_chain_get_type (void);
 
 /**
  * Constructor.  create a new chain with a new unit manager
+ *
+ * Returns: a newly allocated CamUnitChain
  */
 CamUnitChain * cam_unit_chain_new (void);
 
@@ -80,6 +82,8 @@ CamUnitChain * cam_unit_chain_new (void);
  *
  * Constructor.  create a new chain with an existing manager.  on return,
  * the reference count on %manager is incremeneted.
+ *
+ * Returns: a newly allocated CamUnitChain
  */
 CamUnitChain * cam_unit_chain_new_with_manager (CamUnitManager *manager);
 
@@ -92,6 +96,7 @@ CamUnitManager * cam_unit_chain_get_manager (CamUnitChain *self);
 
 /**
  * cam_unit_chain_get_length:
+ * @self: the CamUnitChain
  *
  * Returns: the number of units in the chain
  */
@@ -99,6 +104,7 @@ int cam_unit_chain_get_length (const CamUnitChain *self);
 
 /**
  * cam_unit_chain_has_unit:
+ * @self: the CamUnitChain
  *
  * Returns: 1 if the unit is in the chain, 0 if not
  */
@@ -106,6 +112,7 @@ int cam_unit_chain_has_unit (const CamUnitChain *self, const CamUnit *unit);
 
 /**
  * cam_unit_chain_insert_unit:
+ * @self: the CamUnitChain
  * @unit: the CamUnit to insert
  * @position: the position within the chain to place the unit.
  *
@@ -122,6 +129,7 @@ int cam_unit_chain_insert_unit (CamUnitChain *self, CamUnit *unit,
 
 /**
  * cam_unit_chain_insert_unit_tail:
+ * @self: the CamUnitChain
  * @unit: the CamUnit to insert
  *
  * Convenience method.  Inserts a unit into the chain as the last unit.
@@ -133,6 +141,7 @@ int cam_unit_chain_insert_unit_tail (CamUnitChain *self, CamUnit *unit);
 
 /**
  * cam_unit_chain_add_unit_by_id:
+ * @self: the CamUnitChain
  * @unit_id: ID of the new unit to instantiate and add.
  *
  * Convenience method.  Searches for a unit description with specified ID, 
@@ -145,6 +154,7 @@ CamUnit * cam_unit_chain_add_unit_by_id (CamUnitChain *self,
 
 /**
  * cam_unit_chain_remove_unit:
+ * @self: the CamUnitChain
  * @unit: the CamUnit to remove
  *
  * removes a unit from the chain and decrements the unit's refcount.  Note that
@@ -158,6 +168,7 @@ int cam_unit_chain_remove_unit (CamUnitChain *self, CamUnit *unit);
 
 /**
  * cam_unit_chain_remove_all_units:
+ * @self: the CamUnitChain
  *
  * removes all units from the chain.  This is done automatically when the chain
  * is finalized, so only use this if you need to purge the units in the chain
@@ -167,6 +178,7 @@ void cam_unit_chain_remove_all_units (CamUnitChain *self);
 
 /**
  * cam_unit_chain_get_last_unit:
+ * @self: the CamUnitChain
  *
  * Returns a pointer to the last unit in the chain.  Does not modify the
  * reference count of the unit.
@@ -177,6 +189,7 @@ CamUnit * cam_unit_chain_get_last_unit (const CamUnitChain *self);
 
 /**
  * cam_unit_chain_find_unit_by_id:
+ * @self: the CamUnitChain
  * @unit_id: search query
  *
  * Searches for a unit in the chain with the specified id, and returns the
@@ -189,6 +202,7 @@ CamUnit * cam_unit_chain_find_unit_by_id (const CamUnitChain *self,
 
 /**
  * cam_unit_chain_get_units:
+ * @self: the CamUnitChain
  *
  * Returns: a newly allocated list of all the units in the chain.  This list
  * must be released with g_list_free
@@ -197,6 +211,8 @@ GList * cam_unit_chain_get_units (const CamUnitChain *self);
 
 /**
  * cam_unit_chain_get_unit_index:
+ * @self: the CamUnitChain
+ * @unit: the unit to look for
  *
  * Returns: the index of the specified unit within the chain, or -1 if the unit
  * does not belong to the chain.
@@ -205,6 +221,7 @@ int cam_unit_chain_get_unit_index (CamUnitChain *self, const CamUnit *unit);
 
 /**
  * cam_unit_chain_reorder_unit:
+ * @self: the CamUnitChain
  * @unit: the target CamUnit
  * @new_index: the new position within the chain for the CamUnit.
  *
@@ -218,6 +235,7 @@ int cam_unit_chain_reorder_unit (CamUnitChain *self, CamUnit *unit,
 
 /**
  * cam_unit_chain_all_units_stream_init:
+ * @self: the CamUnitChain
  *
  * Calls cam_unit_stream_init on all non-streaming units in the chain.
  *
@@ -228,6 +246,7 @@ CamUnit * cam_unit_chain_all_units_stream_init (CamUnitChain *self);
 
 /**
  * cam_unit_chain_all_units_stream_shutdown:
+ * @self: the CamUnitChain
  *
  * Calls cam_unit_stream_shutdown on all streaming units in the chain.
  *

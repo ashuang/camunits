@@ -286,7 +286,7 @@
 
     </sect1>
     <sect1 id="subclassing-example-filter">
-        <title>Example Filter</title>
+        <title>Example Plugin</title>
         <para>
             This example demonstrates how to create an image processing unit 
             that takes images as input, transforms each input image in some way,
@@ -296,134 +296,105 @@
             rectangle drawn.  We will call our unit "Filter Example"
         </para>
         <para>
-            <xref linkend="filter_example.h"/> and <xref
-                linkend="filter_example.c"/> contain the fully implemented
+            Filter Example will be built as a Camunits plugin.  This means that
+            when the compiled result is placed in a directory in the Camunits
+            plugin path, any Camunits application will have access to the new unit.
+        </para>
+        <para>
+            <xref linkend="filter_plugin.c"/> contains the fully implemented
             unit.  This example is also distributed with Camunits.  A step
             by step explanation of the example follows.
         </para>
-<example id="filter_example.h">
-    <title><filename>filter_example.h</filename></title>
+<example id="filter_plugin.c">
+    <title><filename>filter_plugin.c</filename></title>
 <programlisting>
 <![CDATA[
-#ifndef __my_filter_example_h__
-#define __my_filter_example_h__
+#include <camunits/plugin.h>
 
-#include <glib-object.h>
+// This file demonstrates how to create a simple CamUnit plugin.  When
+// implementing a custom MyUnit, replace "MyFilterPlugin", "MY_FILTER_PLUGIN",
+// and "my_filter_plugin" with your own names.  
 
-#include <camunits/unit.h>
+typedef struct _MyFilterPlugin MyFilterPlugin;
+typedef struct _MyFilterPluginClass MyFilterPluginClass;
 
-G_BEGIN_DECLS
+// This macro is a type-safe alternative to "(MyFilterPlugin*)obj"
+// If obj is not a pointer to MyFilterPlugin, then a warning message
+// is printed to stderr, and the macro returns NULL.  It's reasonable to delete
+// this macro if you don't need it.
+#define MY_FILTER_PLUGIN(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        my_filter_plugin_get_type(), MyFilterPlugin))
 
-// This file demonstrates how to create a simple CamUnit subclass.  When
-// implementing a custom MyUnit, replace "FilterExample", "FILTER_EXAMPLE",
-// and "filter_example" with your own names.  You'll also want to pick a
-// different namespace (i.e. prefix) from "My"
-
-typedef struct _MyFilterExample MyFilterExample;
-typedef struct _MyFilterExampleClass MyFilterExampleClass;
-
-// boilerplate.
-#define MY_TYPE_FILTER_EXAMPLE  my_filter_example_get_type()
-#define MY_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        MY_TYPE_FILTER_EXAMPLE, MyFilterExample))
-#define MY_FILTER_EXAMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass ))
-#define IS_MY_FILTER_EXAMPLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            MY_TYPE_FILTER_EXAMPLE ))
-#define IS_MY_FILTER_EXAMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), MY_TYPE_FILTER_EXAMPLE))
-#define MY_FILTER_EXAMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass))
-
-// object definition struct.  member variables go in here
-struct _MyFilterExample {
+// Class definition struct.  member variables go in here
+struct _MyFilterPlugin {
     // the first member must always be the superclass struct
     CamUnit parent;
 
     // add one member variable
-    CamUnitControl *patch_intensity_control;
+    CamUnitControl *enable_ctl;
 };
 
 // class definition.  This is pretty much a vtable, and you will rarely need to
 // change it
-struct _MyFilterExampleClass {
+struct _MyFilterPluginClass {
     CamUnitClass parent_class;
 };
 
-GType my_filter_example_get_type (void);
+GType my_filter_plugin_get_type (void);
 
-/** 
- * Constructor.
- * 
- * Don't call this function manually.  Instead, use the unit driver
- */
-MyFilterExample * my_filter_example_new();
-
-CamUnitDriver * my_filter_example_driver_new (void);
-
-G_END_DECLS
-
-#endif
-]]>
-</programlisting>
-</example>
-<example id="filter_example.c">
-    <title><filename>filter_example.c</filename></title>
-<programlisting>
-<![CDATA[
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <camunits/cam.h>
-
-#include "filter_example.h"
-
-/* Boilerplate */
-G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
-
-CamUnitDriver *
-my_filter_example_driver_new()
+MyFilterPlugin * my_filter_plugin_new()
 {
-    return cam_unit_driver_new_stock ("filter", "example",
-            "Example", 0, (CamUnitConstructor)my_filter_example_new);
+    return MY_FILTER_PLUGIN(g_object_new(my_filter_plugin_get_type(), NULL));
 }
 
-// ============== MyFilterExample ===============
-static void my_filter_example_finalize (GObject *obj);
+// magic macro.
+CAM_PLUGIN_TYPE (MyFilterPlugin, my_filter_plugin, CAM_TYPE_UNIT);
+
+// These next two functions are required as entry points for the
+// Camunits plug-in API.
+void cam_plugin_initialize (GTypeModule * module)
+{
+    // this function is defined by the magic macro above, and registers
+    // the plugin with the GObject type system.
+    my_filter_plugin_register_type (module);
+}
+
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("example", "plugin",
+            "Example Filter Plugin", 0, 
+            (CamUnitConstructor)my_filter_plugin_new, module);
+}
+
+// ============== MyFilterPlugin ===============
+static void _finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
-// Class initializer
+// Class initializer.  This function sets up the class vtable, and is most
+// commonly used for overriding superclass methods.
 static void
-my_filter_example_class_init (MyFilterExampleClass *klass)
+my_filter_plugin_class_init (MyFilterPluginClass *klass)
 {
     // override the destructor
-    G_OBJECT_CLASS (klass)->finalize = my_filter_example_finalize;
+    G_OBJECT_CLASS (klass)->finalize = _finalize;
 
     // override the "on_input_frame_ready" method
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
 }
 
-// First part of the constructor
-MyFilterExample * 
-my_filter_example_new()
-{
-    return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
-}
-
-// Initializer.  This is the second part of the constructor.
+// Initializer.  This is essentially a constructor.
 static void
-my_filter_example_init (MyFilterExample *self)
+my_filter_plugin_init (MyFilterPlugin *self)
 {
     // Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
 
     // create a control
-    self->patch_intensity_control = cam_unit_add_control_int (super, 
-            "patch-intensity", "Patch Intensity", 0, 255, 1, 127, 1);
+    self->enable_ctl = cam_unit_add_control_boolean (super, 
+            "enable", "Swap Red/Green Channels", 1, 1);
 
     // request notification when the input of the unit changes
     g_signal_connect (G_OBJECT(self), "input-format-changed",
@@ -432,12 +403,13 @@ my_filter_example_init (MyFilterExample *self)
 
 // destructor.
 static void
-my_filter_example_finalize (GObject *obj)
+_finalize (GObject *obj)
 {
     // If we allocated memory on the heap/freestore, we'd release it here
 
-    // invoke the superclass destructor
-    G_OBJECT_CLASS (my_filter_example_parent_class)->finalize(obj);
+    // invoke the superclass destructor.  my_filter_plugin_parent_class is 
+    // defined by the magic macro
+    G_OBJECT_CLASS (my_filter_plugin_parent_class)->finalize(obj);
 }
 
 // this method is called whenever the input unit produces a frame
@@ -445,28 +417,27 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    MyFilterExample *self = MY_FILTER_EXAMPLE(super);
+    MyFilterPlugin *self = MY_FILTER_PLUGIN(super);
 
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
+    if(!cam_unit_control_get_boolean(self->enable_ctl)) {
+        cam_unit_produce_frame(super, inbuf, infmt);
+        return;
+    }
 
-    cam_pixel_copy_8u_generic (inbuf->data, infmt->row_stride,
-            outbuf->data, super->fmt->row_stride,
-            0, 0, 0, 0, infmt->width, infmt->height, 
-            cam_pixel_format_bpp (infmt->pixelformat));
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc(outfmt->max_data_size);
 
-    // draw a little rectangle
-    int x0 = super->fmt->width / 4;
-    int x1 = x0 * 3;
-    int rw = x1 - x0;
-    int y0 = super->fmt->height / 4;
-    int y1 = y0 * 3;
-
-    int val = cam_unit_control_get_int (self->patch_intensity_control);
-
-    int i;
-    for (i=y0; i<y1; i++) {
-        memset (outbuf->data + i*super->fmt->row_stride + x0*3, val, rw*3);
+    // swap the red and green channels
+    int row;
+    int col;
+    for(row=0; row<infmt->height; row++) {
+        uint8_t *src_row = inbuf->data + infmt->row_stride*row;
+        uint8_t *dst_row = outbuf->data + outfmt->row_stride*row;
+        for(col=0; col<infmt->width; col++) {
+            dst_row[col*3+0] = src_row[col*3+1];
+            dst_row[col*3+1] = src_row[col*3+0];
+            dst_row[col*3+2] = src_row[col*3+2];
+        }
     }
 
     // copy the timestamp and metadata dictionary
@@ -478,7 +449,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     g_object_unref (outbuf);
 }
 
-// this is the signal handler attached in "my_filter_example_init", and is
+// this is the signal handler attached in "my_filter_plugin_init", and is
 // called when the format of the input data changes.
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
@@ -542,90 +513,58 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             </para>
         </sect2>
         <sect2 id="subclassing-example-hfile">
-            <title>Filter Example <filename>.h</filename> file</title>
+            <title>Explanation of <filename>filter_plugin.c</filename></title>
+
+<programlisting>
+<![CDATA[
+#include <camunits/plugin.h>
+
+// This file demonstrates how to create a simple CamUnit plugin.  When
+// implementing a custom MyUnit, replace "MyFilterPlugin", "MY_FILTER_PLUGIN",
+// and "my_filter_plugin" with your own names.  
+
+typedef struct _MyFilterPlugin MyFilterPlugin;
+typedef struct _MyFilterPluginClass MyFilterPluginClass;
+
+// This macro is a type-safe alternative to "(MyFilterPlugin*)obj"
+// If obj is not a pointer to MyFilterPlugin, then a warning message
+// is printed to stderr, and the macro returns NULL.  It's reasonable to delete
+// this macro if you don't need it.
+#define MY_FILTER_PLUGIN(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
+        my_filter_plugin_get_type(), MyFilterPlugin))
+]]>
+</programlisting>
 
             <para>
-                Now we'll do a line by line explanation of the header file.
-            
-<programlisting>
-<![CDATA[
-#ifndef __my_filter_example_h__
-#define __my_filter_example_h__
-
-#include <glib-object.h>
-#include <camunits/unit.h>
-
-G_BEGIN_DECLS
-]]>
-</programlisting>
-            
-                This is all required boilerplate, most of which should be
-                straightforward to a C programmer.
-                <literal>G_BEGIN_DECLS</literal> is a macro that provides C++
-                compatibility<footnote><para>This expands to '<literal>extern
-                            "C" {</literal>' in C++, to prevent C++ from
-                        mangling declared function names</para></footnote>.
-                The end of the file will also have a corresponding
-                <literal>G_END_DECLS</literal>.
+                The first part should be pretty straightforward.  Every Camunits plugin
+                must include the <filename>&lt;camunits/plugin.h&gt;</filename> header file.
+                Next, we forward-declare two structs and declare a macro for
+                doing type-safe casting.  The structs are explained
+                below.
 
 <programlisting>
 <![CDATA[
-typedef struct _MyFilterExample MyFilterExample;
-typedef struct _MyFilterExampleClass MyFilterExampleClass;
-]]>
-</programlisting>
-
-                Here, we forward-declare two structs.
-                <classname>MyFilterExample</classname> will be the class
-                definition struct, which is what most C++ programmers
-                think of when they're defining the contents of a class in a
-                header file.
-                <classname>MyFilterExampleClass</classname> will be the class
-                vtable<footnote><para><ulink
-                            url="http://en.wikipedia.org/wiki/Virtual_table">http://en.wikipedia.org/wiki/Virtual_table</ulink></para></footnote>.
-                
-<programlisting>
-<![CDATA[
-// boilerplate.
-#define MY_TYPE_FILTER_EXAMPLE  my_filter_example_get_type()
-#define MY_FILTER_EXAMPLE(obj)  (G_TYPE_CHECK_INSTANCE_CAST( (obj), \
-        MY_TYPE_FILTER_EXAMPLE, MyFilterExample))
-#define MY_FILTER_EXAMPLE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass ))
-#define IS_MY_FILTER_EXAMPLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-            MY_TYPE_FILTER_EXAMPLE ))
-#define IS_MY_FILTER_EXAMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE( \
-            (klass), MY_TYPE_FILTER_EXAMPLE))
-#define MY_FILTER_EXAMPLE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
-            MY_TYPE_FILTER_EXAMPLE, MyFilterExampleClass))
-]]>
-</programlisting>
-
-                This constitutes the nastiest part of our boilerplate.  This
-                is all GObject macro magic that will eventually make it easier
-                to do runtime type checking.  For now, just do a search and
-                replace, swapping out the namespace and class names
-                accordingly.
-
-<programlisting>
-<![CDATA[
-struct _MyFilterExample {
+// Class definition struct.  member variables go in here
+struct _MyFilterPlugin {
     // the first member must always be the superclass struct
     CamUnit parent;
 
     // add one member variable
-    CamUnitControl *patch_intensity_control;
+    CamUnitControl *enable_ctl;
 };
 
-struct _MyFilterExampleClass {
+// class definition.  This is pretty much a vtable, and you will rarely need to
+// change it
+struct _MyFilterPluginClass {
     CamUnitClass parent_class;
 };
+
 ]]>
 </programlisting>
 
                 These two struct definitions correspond to the class
                 definition and vtable, mentioned above.  The first struct,
-                <literal>struct _MyFilterExample</literal>, is what most C++
+                <literal>struct _MyFilterPlugin</literal>, is what most C++
                 programmers would think of in a class definition.  The first
                 member of this struct <emphasis>must</emphasis> be
                 "<literal>CamUnit parent;</literal>".  After that, feel free to
@@ -633,125 +572,52 @@ struct _MyFilterExampleClass {
             </para>
             <para>
                 The next struct, <literal>struct
-                _MyFilterExampleClass</literal>, primarily defines the virtual
-                methods for the class.  Unless your class will itself be a
-                superclass and provide virtual methods not defined in Camunits,
-                just rename the struct and leave it alone.
+                _MyFilterPluginClass</literal>, primarily defines the virtual
+                methods for the class.  This is often referred to as the class
+                vtable<footnote><para><ulink
+                            url="http://en.wikipedia.org/wiki/Virtual_table">http://en.wikipedia.org/wiki/Virtual_table</ulink></para></footnote>.
+                Unless your class will itself be a superclass and provide
+                virtual methods not defined in Camunits, just rename the struct
+                and leave it alone.
 
 <programlisting>
 <![CDATA[
-GType my_filter_example_get_type (void);
+GType my_filter_plugin_get_type (void);
 
-MyFilterExample * my_filter_example_new();
-
-CamUnitDriver * my_filter_example_driver_new (void);
-
-G_END_DECLS
-
-#endif
-]]>
-</programlisting>
-
-                The last part of header file consists of method definitions.
-                Every GObject type always has a type retrieval method, named
-                <literal>xx_yy_zz_get_type</literal>.  In this case, it's
-                named <literal>my_filter_example_get_type</literal>.  Rename
-                that accordingly.
-            </para>
-            <para>
-                Next, our example unit defines two constructors.  One is the
-                constructor for the actual unit, the second is the constructor
-                for the unit driver.  Finally, we close the header with the
-                GLib macro <function>G_END_DECLS</function> for C++
-                portability, and close the original
-                <literal>#ifdef</literal> at the top of the file.
-            </para>
-        </sect2>
-        <sect2 id="subclassing-example-cfile">
-            <title>Filter Example <filename>.c</filename> file</title>
-
-            <para>
-                Now we'll do a line by line explanation of the
-                <filename>.c</filename> file.
-            </para>
-
-            <para>
-<programlisting>
-<![CDATA[
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <camunits/cam.h>
-
-#include "filter_example.h"
-
-/* Boilerplate */
-G_DEFINE_TYPE (MyFilterExample, my_filter_example, CAM_TYPE_UNIT);
-]]>
-</programlisting>
-
-                The <filename>.c</filename> file starts off with some
-                straightforward <literal>#include</literal> statements.  After
-                this is an admittedly cryptic macro invocation of
-                <function>G_DEFINE_TYPE</function>, which generates much
-                of the boilerplate needed to add a new type to the GObject
-                type system.  Exactly what it expands to is not important, but
-                there are a few bits worth noting.  First, the macro
-                forward-declares two functions that we must define later on:  
-<programlisting>
-<![CDATA[
-    static void my_filter_example_init (MyFilterExample *self);
-    static void my_filter_example_class_init (MyFilterExampleClass *klass);
-]]>
-</programlisting>
-                The function <function>my_filter_example_init</function> is
-                the instance initializer, and is analagous, but not identical
-                to a C++ constructor.  The major difference is that it never
-                takes any parameters.
-                <function>my_filter_example_class_init</function> is the class
-                initializer, which is typically not explicitly seen in other
-                object oriented programming languages.  Both of these will be
-                explained in a more detail further on.  For an even more
-                thorough explanation, see the GObject documentation and
-                tutorial<footnote><para><ulink
-                            url="http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html">http://library.gnome.org/devel/gobject/2.12/howto-gobject-construction.html</ulink></para></footnote>.
-                In addition to forward-declaring these two macros,
-                <function>G_DEFINE_TYPE</function> also defines a static
-                global variable that we will use later:
-<programlisting>
-<![CDATA[
-    static void * my_filter_example_parent_class = NULL;
-]]>
-</programlisting>
-
-                This variable is a pointer to the parent class of the newly
-                defined type that will be populated automatically by the
-                GObject type system.  It will be used to override
-                virtual methods of the parent class, and also to directly
-                invoke parent class methods that we have overriden.
-            </para>
-            <para>
-                Finally, the <function>G_DEFINE_TYPE</function> macro defines
-                the function <function>my_filter_example_get_type</function>,
-                which was declared in <filename>filter_example.h</filename>.
-                This function is primarily used by the GObject type system for
-                runtime type checking and registration.  Lots of stuff for a
-                single macro invocation, right?  It's natural for many
-                programmers to shudder at all of the hidden complexity, but
-                that really is the bulk of it.  Moving on to the rest of the
-                file, we have:
-
-<programlisting>
-<![CDATA[
-
-CamUnitDriver *
-my_filter_example_driver_new()
+MyFilterPlugin * my_filter_plugin_new()
 {
-    return cam_unit_driver_new_stock ("filter", "example",
-            "Example", 0, (CamUnitConstructor)my_filter_example_new);
+    return MY_FILTER_PLUGIN(g_object_new(my_filter_plugin_get_type(), NULL));
 }
 
+// magic macro.
+CAM_PLUGIN_TYPE (MyFilterPlugin, my_filter_plugin, CAM_TYPE_UNIT);
+
+// These next two functions are required as entry points for the
+// Camunits plug-in API.
+void cam_plugin_initialize (GTypeModule * module)
+{
+    // this function is defined by the magic macro above, and registers
+    // the plugin with the GObject type system.
+    my_filter_plugin_register_type (module);
+}
+]]>
+</programlisting>
+                In this block of code, we have a number of functions and macros that
+                are required by the GObject type system and Camunits plugin system, 
+                but can be safely renamed according to the naming conventions
+                we defined earlier, and then ignored.  If you 're really curious 
+                how they work, feel free to send us an e-mail, look through the source code, 
+                or browse the GObject documentation.  Otherwise, just rename them
+                and move on.
+                
+<programlisting>
+<![CDATA[
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("example", "plugin",
+            "Example Filter Plugin", 0, 
+            (CamUnitConstructor)my_filter_plugin_new, module);
+}
 ]]>
 </programlisting>
 
@@ -760,9 +626,9 @@ my_filter_example_driver_new()
                 typically offer exactly one unit.  To reduce complexity,
                 Camunits provides a default constructor for creating one of
                 these "stock" drivers.  The result of invoking
-                <function>cam_unit_driver_new_stock</function> with these
+                <function>cam_unit_driver_new_stock_full</function> with these
                 parameters is a driver that always has one unit available with
-                unit id "filter.example", a human-readable name of "Example",
+                unit id "example.plugin", a display name of "Example Filter Plugin",
                 and that has no special flags.  Lastly, the constructor for
                 the stock unit is passed to the stock driver.  This will be
                 used by the stock driver when it is requested to create
@@ -770,8 +636,8 @@ my_filter_example_driver_new()
 
 <programlisting>
 <![CDATA[
-// ============== MyFilterExample ===============
-static void my_filter_example_finalize (GObject *obj);
+// ============== MyFilterPlugin ===============
+static void my_filter_plugin_finalize (GObject *obj);
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_input_format_changed (CamUnit *super, 
@@ -779,10 +645,10 @@ static void on_input_format_changed (CamUnit *super,
 
 // Class initializer
 static void
-my_filter_example_class_init (MyFilterExampleClass *klass)
+my_filter_plugin_class_init (MyFilterPluginClass *klass)
 {
     // override the destructor
-    G_OBJECT_CLASS (klass)->finalize = my_filter_example_finalize;
+    G_OBJECT_CLASS (klass)->finalize = my_filter_plugin_finalize;
 
     // override the "on_input_frame_ready" method
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
@@ -810,24 +676,16 @@ my_filter_example_class_init (MyFilterExampleClass *klass)
 
 <programlisting>
 <![CDATA[
-
-// First part of the constructor
-MyFilterExample * 
-my_filter_example_new()
-{
-    return MY_FILTER_EXAMPLE (g_object_new(MY_TYPE_FILTER_EXAMPLE, NULL));
-}
-
-// Initializer.  This is the second part of the constructor.
+// Initializer.  This is essentially a constructor.
 static void
-my_filter_example_init (MyFilterExample *self)
+my_filter_plugin_init (MyFilterPlugin *self)
 {
     // Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
 
     // create a control
-    self->patch_intensity_control = cam_unit_add_control_int (super, 
-            "patch-intensity", "Patch Intensity", 0, 255, 1, 127, 1);
+    self->enable_ctl = cam_unit_add_control_boolean (super, 
+            "enable", "Swap Red/Green Channels", 1, 1);
 
     // request notification when the input of the unit changes
     g_signal_connect (G_OBJECT(self), "input-format-changed",
@@ -836,37 +694,15 @@ my_filter_example_init (MyFilterExample *self)
 ]]>
 </programlisting>
 
-                Here, we define the constructor of our new class.  Unlike most
-                object-oriented programming languages, the constructor in
-                GObject is split up into multiple methods.  At the core is the
-                instance initializer
-                <function>my_filter_example_init</function>, which is required
-                to initialize an instance to a reasonable default state
-                without using any constructor arguments.  This initializer is
-                not publicly exposed, and is never invoked directly by
-                programs.  It is instead invoked as a result of the external
-                constructor, <function>my_filter_example_new</function>
-                calling <function>g_object_new</function>.  
-            </para>
-            <para>
-                The external constructor is allowed to accept arguments.  The
-                idea is that it will first create an instance of the class
-                that has been initialized to valid defaults via the instance
-                initializer.  Next, it can adjust the instance according to
-                the arguments passed in.  In our example, the external
-                constructor does not accept any arguments, and so it simply
-                returns the result of the instance initializer.  In general,
-                subclasses of <classname>CamUnit</classname> will not have
-                constructors that take arguments, so this so this paragraph is
-                mostly pedagogical.
+                Here, we define the constructor of our new class.  It's not 
+                exactly like a real constructor because it doesn't accept any arguments,
+                but it's purpose is essentially the same.
             </para>
             <para>
                 In terms of actual work accomplished in our constructor, our
-                example does two things.  First, it creates a single integer
-                control with id "patch-intensity" and human readable name "Patch
-                Intensity".  The control value is allowed to range from 0 to
-                255 with default increments of 1.  Its initial value is 127,
-                and it is enabled by default.
+                example does two things.  First, it creates a single boolean
+                control that we will use to allow the user to toggle whether or not 
+                this filter is active.
             </para>
             <para>
                 Second, our constructor connects to a signal emitted by our
@@ -880,12 +716,13 @@ my_filter_example_init (MyFilterExample *self)
 
 // destructor.
 static void
-my_filter_example_finalize (GObject *obj)
+my_filter_plugin_finalize (GObject *obj)
 {
     // If we allocated memory on the heap/freestore, we'd release it here
 
-    // invoke the superclass destructor
-    G_OBJECT_CLASS (my_filter_example_parent_class)->finalize(obj);
+    // invoke the superclass destructor.  my_filter_plugin_parent_class is 
+    // defined by the magic macro
+    G_OBJECT_CLASS (my_filter_plugin_parent_class)->finalize(obj);
 }
 ]]>
 </programlisting>
@@ -905,8 +742,12 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    MyFilterExample *self = MY_FILTER_EXAMPLE(super);
+    MyFilterPlugin *self = MY_FILTER_EXAMPLE(super);
 
+    if(!cam_unit_control_get_boolean(self->enable_ctl)) {
+        cam_unit_produce_frame(super, inbuf, infmt);
+        return;
+    }
 ]]>
 </programlisting>
 
@@ -920,15 +761,29 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
                 pointer to a unit format struct describing how the image data
                 is formatted.
 
+                </para>
+                <para>
+                The first thing our unit does here is to check the status of the
+                control we defined earlier.  This provides a way for the user to 
+                interact with the unit, setting parameters, controlling behavior, etc.
+
 <programlisting>
 <![CDATA[
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc(outfmt->max_data_size);
 
-    cam_pixel_copy_8u_generic (inbuf->data, infmt->row_stride,
-            outbuf->data, super->fmt->row_stride,
-            0, 0, 0, 0, infmt->width, infmt->height, 
-            cam_pixel_format_bpp (infmt->pixelformat));
+    // swap the red and green channels
+    int row;
+    int col;
+    for(row=0; row<infmt->height; row++) {
+        uint8_t *src_row = inbuf->data + infmt->row_stride*row;
+        uint8_t *dst_row = outbuf->data + outfmt->row_stride*row;
+        for(col=0; col<infmt->width; col++) {
+            dst_row[col*3+0] = src_row[col*3+1];
+            dst_row[col*3+1] = src_row[col*3+0];
+            dst_row[col*3+2] = src_row[col*3+2];
+        }
+    }
 ]]>
 </programlisting>
                 Worth noting is that the input framebuffer is
@@ -938,27 +793,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
                 variable <varname>fmt</varname> stores the output format that
                 our unit has been initialized to, so we can use that to
                 construct our output framebuffer accordingly.  Next, our
-                example makes a bitwise copy of the input image into our
-                output buffer.
+                example makes a copy of the input image into our
+                output buffer, while swapping the red and the green channels.
                 
-
-<programlisting>
-<![CDATA[
-    // draw a little rectangle
-    int x0 = super->fmt->width / 4;
-    int x1 = x0 * 3;
-    int rw = x1 - x0;
-    int y0 = super->fmt->height / 4;
-    int y1 = y0 * 3;
-
-    int val = cam_unit_control_get_int (self->patch_intensity_control);
-
-    int i;
-    for (i=y0; i<y1; i++) {
-        memset (outbuf->data + i*super->fmt->row_stride + x0*3, val, rw*3);
-    }
-]]>
-</programlisting>
                 These are the actual guts of our unit -- drawing a rectangle
                 into the image.  We have a trivial example demonstrating how
                 to retrieve the value of a control, and then using that value
@@ -993,7 +830,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 <programlisting>
 <![CDATA[
 
-// this is the signal handler attached in "my_filter_example_init", and is
+// this is the signal handler attached in "my_filter_plugin_init", and is
 // called when the format of the input data changes.
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
@@ -1037,41 +874,40 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             <para>
                 So far we have demonstrated how to create the filter example,
                 but not how to actually use it in a Camunits application.  This
-                process is actually pretty simple, and the only change we must
-                make to an existing Camunits application is to register the
-                new driver with the unit manager used by the application.
+                process is actually pretty simple.  First, we must compile the filter as a 
+                shared library.  The exact command for doing so varies by platform, but on GNU/Linux, 
+                this can be done by invoking <command>gcc</command> with the
+                "-shared" option.  Since it's being built to a shared library,
+                we must also use the "-fPIC" flag to have gcc generate position
+                independent code.
+                <screen>
+                $ gcc -c filter_plugin.c -fPIC `pkg-config --cflags camunits glib-2.0`
+                $ gcc -shared -o filter_plugin.so filter_plugin.o
+                </screen>
+               
+                Once the plugin is compiled as a shared library, place it in a directory 
+                that's in the Camunits plugin search path.  The default plugin
+                search path is usually
+                <filename>/usr/local/lib/camunits</filename> or
+                <filename>/usr/lib/camunits</filename>.
             </para>
-            <para>
-                If we create a new <classname>CamUnitChain</classname> using
-                the default constructor, then the chain creates its own
-                internal unit manager.  To register the new filter with the
-                unit manager, you can use the method
-                <methodname>cam_unit_manager_add_driver</methodname>:
-<programlisting>
-<![CDATA[
-#include "filter_example.h"
-.
-.
-.
-    CamUnitChain *chain = cam_unit_chain_new ();
-    cam_unit_manager_add_driver (chain->manager, 
-            my_filter_example_driver_new ());
-]]>
-</programlisting>
+            <para>  
+                If you don't want to place your plugin there or are not able to do
+                so, you can also modify the Camunits plugin search path by
+                setting the <literal>CAMUNITS_PLUGIN_PATH</literal> environment
+                variable.  In <literal>bash</literal>, this can be done with
+                the following commands:
 
-                After this, the chain is able to create instances of the unit
-                (via the unit manager) by invoking
-                <methodname>cam_unit_chain_add_unit_by_id</methodname> and
-                passing it the ID of our new unit -- "filter.example".
-                
-<programlisting>
-<![CDATA[
-    CamUnit *filter_example = cam_unit_chain_add_unit_by_id ("filter.example");
-]]>
-</programlisting>
+                <screen>
+                $ mkdir my-plugins
+                $ mv filter_plugin.so my-plugins
+                $ export CAMUNITS_PLUGIN_PATH my-plugins
+                </screen>
 
-                Full source code for both this example and a program that uses
-                it is included in the Camunits source code.
+                After this, the unit is now accessible by your Camunits applications.  To test it out,
+                try starting <command>camview</command> and see if the unit is available.
+
+                Full source code for this example is included in the Camunits source code.
                 
             </para>
         </sect2>

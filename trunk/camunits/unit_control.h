@@ -265,31 +265,37 @@ void cam_unit_control_modify_enum (CamUnitControl * self,
 
 /**
  * cam_unit_control_try_set_val:
+ * @val: A #GValue encapsulating the new value
  * Returns: 0 on success, -1 on failure
  */
 int cam_unit_control_try_set_val (CamUnitControl *self, const GValue *val);
 /**
  * cam_unit_control_try_set_val:
+ * @val: the new value
  * Returns: 0 on success, -1 on failure
  */
 int cam_unit_control_try_set_int (CamUnitControl *self, int val);
 /**
  * cam_unit_control_try_set_val:
+ * @val: the new value
  * Returns: 0 on success, -1 on failure
  */
 int cam_unit_control_try_set_float (CamUnitControl *self, float val);
 /**
  * cam_unit_control_try_set_val:
+ * @val: the new value
  * Returns: 0 on success, -1 on failure
  */
 int cam_unit_control_try_set_enum (CamUnitControl *self, int index);
 /**
  * cam_unit_control_try_set_val:
+ * @val: the new value
  * Returns: 0 on success, -1 on failure
  */
 int cam_unit_control_try_set_boolean (CamUnitControl *self, int val);
 /**
  * cam_unit_control_try_set_val:
+ * @val: the new value
  * Returns: 0 on success, -1 on failure
  */
 int cam_unit_control_try_set_string (CamUnitControl *self, const char *val);

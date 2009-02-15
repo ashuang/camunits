@@ -11,6 +11,10 @@
 extern "C" {
 #endif
 
+/**
+ * SECTION:log
+ * @short_description: Class for reading and writing Camunits log files.
+ */
 typedef struct _CamLog CamLog;
 
 typedef struct _CamLogFrameFormat {

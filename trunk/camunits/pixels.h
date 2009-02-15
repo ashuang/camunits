@@ -64,7 +64,7 @@ GType cam_pixel_format_get_type (void) G_GNUC_CONST;
 /**
  * cam_pixel_format_nickname:
  *
- * Returns a short, descriptive string that indicates the meaning of
+ * Returns: a short, descriptive string that indicates the meaning of
  * CamPixelFormat @p, useful for debugging and UI elements.
  */
 const char * cam_pixel_format_nickname (CamPixelFormat p);
@@ -72,7 +72,7 @@ const char * cam_pixel_format_nickname (CamPixelFormat p);
 /**
  * cam_pixel_format_bpp:
  *
- * Returns the number of bits per pixel of a given CamPixelFormat.  Note that
+ * Returns: the number of bits per pixel of a given CamPixelFormat.  Note that
  * if the format has multiple color components per pixel, the returned
  * value is the total bits per pixel, not per component.
  */
