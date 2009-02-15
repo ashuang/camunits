@@ -1,3 +1,12 @@
+camunits 0.1.2 - Feb 15, 2009
+=============================
+* add plugin example
+* add jpeg decompress to grayscale
+* add --plugin-path command line option to camview and camlog
+* modify convert:fast_debayer to handle data that's not already 16-byte aligned
+* convert CamInputV4L to plugin.
+* disable V4L plugin by default.  V4L2 is still enabled by default.
+
 camunits 0.1.1 - Dec 17, 2008
 =============================
 
