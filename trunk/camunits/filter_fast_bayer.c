@@ -14,6 +14,13 @@
 
 #define err(args...) fprintf(stderr, args)
 
+#ifdef __APPLE__
+#define MALLOC_ALIGNED(s) malloc(s)
+#else
+#include <malloc.h>
+#define MALLOC_ALIGNED(s) memalign(16,s)
+#endif
+
 CamUnitDriver *
 cam_fast_bayer_filter_driver_new()
 {
@@ -56,6 +63,8 @@ cam_fast_bayer_filter_init( CamFastBayerFilter *self )
     for (i = 0; i < 4; i++) {
         self->planes[i] = NULL;
     }
+
+    self->aligned_buffer = NULL;
 
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
@@ -129,6 +138,9 @@ cam_fast_bayer_filter_stream_shutdown (CamUnit * super)
         self->planes[i] = NULL;
     }
 
+    free(self->aligned_buffer);
+    self->aligned_buffer = NULL;
+
     return 0;
 }
 
@@ -169,13 +181,23 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         cam_framebuffer_new_alloc (super->fmt->max_data_size);
 
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    const uint8_t *in_data = inbuf->data;
+
+    // if the input buffer is not 16-byte aligned, then make an aligned copy.
+    if(!CAM_IS_ALIGNED16(inbuf->data)) {
+        if(! self->aligned_buffer) {
+            self->aligned_buffer = MALLOC_ALIGNED(infmt->max_data_size);
+        }
+        memcpy(self->aligned_buffer, inbuf->data, inbuf->bytesused);
+        in_data = self->aligned_buffer;
+    }
 
     if (outfmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         uint8_t * plane = self->planes[0] + 2*self->plane_stride + 16;
         int i;
         for (i = 0; i < outfmt->height; i++) {
             uint8_t * drow = plane + i*self->plane_stride;
-            uint8_t * srow = inbuf->data + i*infmt->row_stride;
+            const uint8_t * srow = in_data + i*infmt->row_stride;
             memcpy (drow, srow, infmt->width);
             //memset (drow, 128, infmt->width);
         }
@@ -200,7 +222,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         int p_height = outfmt->height / 2;
 
         cam_pixel_split_bayer_planes_8u (planes, self->plane_stride,
-                inbuf->data, infmt->row_stride, p_width, p_height);
+                in_data, infmt->row_stride, p_width, p_height);
         int i;
         for (i = 0; i < 4; i++)
             cam_pixel_replicate_border_8u (planes[i], self->plane_stride,
