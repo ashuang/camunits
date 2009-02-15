@@ -42,8 +42,7 @@ libcamunits_la_SOURCES = \
 	output_logger.c \
 	output_logger.h \
 	cpuid.h \
-	dbg.h \
-	pwc-ioctl.h
+	dbg.h
 
 libcamunits_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS)
 
@@ -68,8 +67,8 @@ libcamunits_la_SOURCES += cpuid_generic.c
 endif
 
 if LINUX
-libcamunits_la_SOURCES += input_v4l.c input_v4l.h input_v4l2.c input_v4l2.h
-AM_CFLAGS += -DUSE_V4L -DUSE_V4L2
+libcamunits_la_SOURCES += input_v4l2.c input_v4l2.h
+AM_CFLAGS += -DUSE_V4L2
 endif
 
 

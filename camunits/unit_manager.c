@@ -21,10 +21,6 @@
 #include "input_v4l2.h"
 #endif
 
-#ifdef USE_V4L
-#include "input_v4l.h"
-#endif
-
 #include "dbg.h"
 
 #define err(args...) fprintf (stderr, args)
@@ -560,11 +556,6 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     cam_unit_manager_add_driver (self, v4l2_driver);
 #endif
 
-#ifdef USE_V4L
-    CamUnitDriver *v4l_driver = cam_v4l_driver_new ();
-    cam_unit_manager_add_driver (self, v4l_driver);
-#endif
-
     // Debayer
     cam_unit_manager_add_driver (self, cam_fast_bayer_filter_driver_new ()); 
 
@@ -578,10 +569,8 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
     cam_unit_manager_add_driver (self, cam_filter_gl_driver_new ()); 
 
     // jpeg
-    cam_unit_manager_add_driver (self, 
-            cam_convert_jpeg_compress_driver_new ());
-    cam_unit_manager_add_driver (self, 
-            cam_convert_jpeg_decompress_driver_new ());
+    cam_unit_manager_add_driver(self, cam_convert_jpeg_compress_driver_new());
+    cam_unit_manager_add_driver(self, cam_convert_jpeg_decompress_driver_new());
 
     // logger
     cam_unit_manager_add_driver (self, cam_logger_unit_driver_new ());

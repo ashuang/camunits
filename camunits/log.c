@@ -95,41 +95,49 @@ typedef enum {
 //       uint32_t value_len;
 //       data_len * uint8_t value;
 
-static inline void
+static inline int
 log_put_uint8 (uint8_t val, FILE * f)
 {
-    fwrite (&val, 1, 1, f);
+    return fwrite (&val, 1, 1, f);
 };
 
-static inline void
+static inline int
 log_put_uint16 (uint16_t val, FILE * f)
 {
     uint16_t fval = htons (val);
-    fwrite (&fval, 2, 1, f);
+    return fwrite (&fval, 2, 1, f);
 };
 
-static inline void
+static inline int
 log_put_uint32 (uint32_t val, FILE * f)
 {
     uint32_t fval = htonl (val);
-    fwrite (&fval, 4, 1, f);
+    return fwrite (&fval, 4, 1, f);
 }
 
-static inline void
+static inline int
 log_put_uint64 (uint64_t val, FILE * f)
 {
     uint8_t b[8] = { val >> 56, val >> 48, val >> 40, val >> 32,
         val >> 24, val >> 16, val >> 8, val,
     };
-    fwrite (b, 1, 8, f);
+    return fwrite (b, 1, 8, f);
 }
 
-static inline void
+static inline int
 log_put_field (uint16_t type, uint32_t length, FILE * f)
 {
-    log_put_uint16 (LOG_MARKER, f);
-    log_put_uint16 (type, f);
-    log_put_uint32 (length, f);
+    int status;
+    status = log_put_uint16 (LOG_MARKER, f);
+    if(status <= 0) 
+        return status;
+    status = log_put_uint16 (type, f);
+    if(status <= 0)
+        return status;
+    status = log_put_uint32 (length, f);
+    if(status <= 0)
+        return status;
+    return 8;
 };
 
 static inline int
@@ -525,13 +533,15 @@ process_frame (CamLog * self)
                 if (log_get_uint16 (&key_len, f) != 0)
                     return -1;
                 char key[key_len + 1];
-                fread (key, 1, key_len, f);
+                if(fread (key, 1, key_len, f) != key_len)
+                    return -1;
                 key[key_len] = '\0';
                 fseeko (f, 1, SEEK_CUR);
                 if (log_get_uint32 (&value_len, f) != 0)
                     return -1;
                 uint8_t value[value_len];
-                fread (value, 1, value_len, f);
+                if(fread (value, 1, value_len, f) != value_len)
+                    return -1;
                 b += 2 + key_len + 1 + 4 + value_len;
                 cam_framebuffer_metadata_set (self->curr_frame, key,
                         value, value_len);
@@ -631,13 +641,15 @@ cam_log_write_frame (CamLog * self, CamLogFrameFormat * format,
         for (GList * iter = list; iter; iter = iter->next) {
             uint16_t key_len = strlen (iter->data);
             log_put_uint16 (key_len, self->fp);
-            fwrite (iter->data, 1, key_len, self->fp);
+            if(fwrite (iter->data, 1, key_len, self->fp) != key_len)
+                return -1;
             log_put_uint8 (0, self->fp);
             int value_len;
             uint8_t * value = cam_framebuffer_metadata_get (frame,
                     iter->data, &value_len);
             log_put_uint32 (value_len, self->fp);
-            fwrite (value, 1, value_len, self->fp);
+            if(fwrite (value, 1, value_len, self->fp) != value_len)
+                return -1;
         }
         g_list_free (list);
     }

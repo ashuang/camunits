@@ -10,13 +10,70 @@
 #include <linux/videodev.h>
 #include <errno.h>
 
-#include "input_v4l.h"
+#include <camunits/dbg.h>
+#include <camunits/pixels.h>
+#include <camunits/plugin.h>
+#include <camunits/unit.h>
+#include <camunits/unit_driver.h>
+
 #include "pwc-ioctl.h"
-#include "dbg.h"
 
 #define err(args...) fprintf(stderr, args)
 
 #define V4L_BASE   "/dev/video"
+
+typedef struct {
+    CamUnitDriver parent;
+} CamV4LDriver;
+
+typedef struct {
+    CamUnitDriverClass parent_class;
+} CamV4LDriverClass;
+
+typedef struct {
+    CamUnit parent;
+
+    CamUnitControl *brightness_ctl;
+    CamUnitControl *hue_ctl;
+    CamUnitControl *color_ctl;
+    CamUnitControl *contrast_ctl;
+    CamUnitControl *whiteness_ctl;
+    GList *tuner_ctls;
+    int fd;
+    
+    int is_pwc;
+    CamUnitControl *pwc_wb_mode_ctl;
+    CamUnitControl *pwc_wb_manual_red_ctl;
+    CamUnitControl *pwc_wb_manual_blue_ctl;
+} CamV4L;
+
+typedef struct {
+    CamUnitClass parent_class;
+} CamV4LClass;
+
+GType cam_v4l_driver_get_type (void);
+GType cam_v4l_get_type (void);
+
+static CamV4L * cam_v4l_new (int videonum);
+
+//G_DEFINE_TYPE (CamV4LDriver, cam_v4l_driver, CAM_TYPE_UNIT_DRIVER);
+CAM_PLUGIN_TYPE (CamV4LDriver, cam_v4l_driver, CAM_TYPE_UNIT_DRIVER);
+CAM_PLUGIN_TYPE (CamV4L, cam_v4l, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize (GTypeModule * module);
+void cam_plugin_initialize (GTypeModule * module)
+{
+    cam_v4l_driver_register_type (module);
+    cam_v4l_register_type (module);
+}
+
+CamUnitDriver * cam_plugin_create (GTypeModule * module);
+CamUnitDriver * cam_plugin_create (GTypeModule * module)
+{
+    return CAM_UNIT_DRIVER (g_object_new (cam_v4l_driver_get_type(), NULL));
+}
 
 static inline int64_t _timestamp_now()
 {
@@ -102,8 +159,6 @@ static CamUnit * driver_create_unit (CamUnitDriver * super,
         const CamUnitDescription * udesc);
 static int driver_start (CamUnitDriver * super);
 
-G_DEFINE_TYPE (CamV4LDriver, cam_v4l_driver, CAM_TYPE_UNIT_DRIVER);
-
 static void
 cam_v4l_driver_init (CamV4LDriver * self)
 {
@@ -118,12 +173,6 @@ cam_v4l_driver_class_init (CamV4LDriverClass * klass)
     dbg (DBG_DRIVER, "v4l driver class initializer\n");
     klass->parent_class.create_unit = driver_create_unit;
     klass->parent_class.start = driver_start;
-}
-
-CamUnitDriver *
-cam_v4l_driver_new ()
-{
-    return CAM_UNIT_DRIVER (g_object_new (CAM_V4L_DRIVER_TYPE, NULL));
 }
 
 static int
@@ -167,8 +216,6 @@ driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
                 "v4l-driver-index"));
     return CAM_UNIT (cam_v4l_new (ndx));
 }
-
-G_DEFINE_TYPE (CamV4L, cam_v4l, CAM_TYPE_UNIT);
 
 static void
 cam_v4l_init (CamV4L * self)
@@ -217,7 +264,7 @@ v4l_finalize (GObject * obj)
     dbg (DBG_INPUT, "v4l finalize\n");
     CamUnit * super = CAM_UNIT (obj);
 
-    CamV4L * self = CAM_V4L (super);
+    CamV4L * self = (CamV4L*) (super);
     if (self->fd >= 0) {
         close (self->fd);
         self->fd = -1;
@@ -229,7 +276,7 @@ v4l_finalize (GObject * obj)
 CamV4L *
 cam_v4l_new (int videonum)
 {
-    CamV4L * self = CAM_V4L (g_object_new (CAM_TYPE_V4L, NULL));
+    CamV4L * self = (CamV4L*) (g_object_new (cam_v4l_get_type(), NULL));
     CamUnit *super = CAM_UNIT (self);
     int status;
 
@@ -386,7 +433,7 @@ check_for_pwc (CamV4L *self)
 static int
 v4l_stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamV4L * self = CAM_V4L (super);
+    CamV4L * self = (CamV4L*) (super);
     dbg (DBG_INPUT, "Initializing v4l stream (pxlfmt 0x%x %dx%d)\n",
             format->pixelformat, format->width, format->height);
 
@@ -424,7 +471,7 @@ v4l_stream_init (CamUnit * super, const CamUnitFormat * format)
 static gboolean
 v4l_try_produce_frame (CamUnit * super)
 {
-    CamV4L * self = CAM_V4L (super);
+    CamV4L * self = (CamV4L*)super;
     CamFrameBuffer *buf = cam_framebuffer_new_alloc (super->fmt->max_data_size);
 
     int status = read (self->fd, buf->data, buf->length);
@@ -445,14 +492,15 @@ v4l_try_produce_frame (CamUnit * super)
 static int
 v4l_get_fileno (CamUnit *super)
 {
-    return CAM_V4L (super)->fd;
+    CamV4L *self = (CamV4L*)super;
+    return self->fd;
 }
 
 static gboolean 
 v4l_try_set_control(CamUnit *super,
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual)
 {
-    CamV4L * self = CAM_V4L (super);
+    CamV4L * self = (CamV4L*) (super);
 
     // pwc (i.e. Logitech quickcam 4000 and older) controls
     if (self->is_pwc) {

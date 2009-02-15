@@ -1,5 +1,4 @@
 #include <camunits/cam.h>
-#include <camunits/input_v4l.h>
 #include <camunits/input_v4l2.h>
 #include <camunits/input_example.h>
 #include <camunits/input_log.h>
@@ -20,8 +19,6 @@ cam_unit_control_get_type
 cam_unit_description_get_type
 cam_framebuffer_get_type
 
-cam_v4l_get_type
-cam_v4l_driver_get_type
 cam_v4l2_get_type
 cam_v4l2_driver_get_type
 cam_input_example_driver_get_type
