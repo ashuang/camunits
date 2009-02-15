@@ -39,6 +39,8 @@ struct _CamFastBayerFilter {
     CamUnit parent;
     CamUnitControl *bayer_tile_ctl;
 
+    uint8_t * aligned_buffer;
+
     uint8_t * planes[4];
     int plane_stride;
 };
