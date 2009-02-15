@@ -1,2 +1,251 @@
-2008-01-19  Albert Huang <ashuang@alum.mit.edu>
-	* started repository
+2009-02-12  ashuang
+
+	* [r323] configure.in, cvd/demo_libcvd_fast.cpp,
+	  framewave/jpeg-plugins/Makefile.am,
+	  framewave/jpeg-plugins/unit_jpeg_compress.c,
+	  framewave/jpeg-plugins/unit_jpeg_compress.h,
+	  framewave/jpeg-plugins/unit_jpeg_decompress.c,
+	  framewave/jpeg-plugins/unit_jpeg_decompress.h,
+	  framewave/plugins/pyr_down_gauss.c, framewave/plugins/resize.c,
+	  ipp/jpeg-plugins/Makefile.am,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_compress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_compress.h,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.h,
+	  ipp/plugins/filter_fixed_gauss.c, ipp/plugins/pyr_down_gauss.c,
+	  ipp/plugins/resize.c, klt-stb/demo_klt_stb.c, m4,
+	  opencv/demo_canny.c, opencv/demo_good_features_to_track.c,
+	  opencv/undistort.c, util/convert_to_gray.c, util/image_files.c,
+	  util/snapshot.c, util/throttle.c: purge GObject macros
+
+2009-01-20  ashuang
+
+	* [r321] cvd/demo_libcvd_fast.cpp, klt-stb/demo_klt_stb.c:
+	  namespace adjustments
+	* [r320] Makefile.am, configure.in, fh-segment: remove fh-segment
+	  (GPL)
+
+2009-01-19  ashuang
+
+	* [r318] lcm/README, lcm/lcmtypes/camlcm_image_announce_t.lcm,
+	  lcm/lcmtypes/camlcm_image_legacy_sync_t.lcm,
+	  lcm/lcmtypes/camlcm_image_legacy_t.lcm,
+	  lcm/lcmtypes/camlcm_image_t.lcm: fix some comments
+
+2009-01-18  ashuang
+
+	* [r317] Makefile.am, configure.in, ptgrey: remove bumblebee2
+	  renderer
+	* [r316] util/Makefile.am: makefile bugfix
+
+2009-01-16  ashuang
+
+	* [r310] framewave/jpeg-plugins/unit_jpeg_decompress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.c, util/Makefile.am,
+	  util/convert_to_gray.c: add convert.to_gray unit allow
+	  ipp/framewave jpeg decompress to decompress straight to grayscale
+
+2009-01-06  ashuang
+
+	* [r307] util/image_files.c, util/throttle.c: bugfixes, reduce
+	  warnings
+	* [r306] cvd/Makefile.am: add -msse -msse2 to cvd flags
+
+2008-12-22  ashuang
+
+	* [r304] opencv/demo_canny.c, opencv/demo_good_features_to_track.c:
+	  libcam -> camunits bugfix
+
+2008-12-18  ashuang
+
+	* [r303] opencv/Makefile.am, opencv/demo_canny.c,
+	  opencv/demo_good_features_to_track.c: camunits-extra: add
+	  demo_good_features_to_track and demo_canny remove libcam-opencv
+	  (replaced with camunits-extra/opencv)
+
+2008-12-17  ashuang
+
+	* [r295] util/image_files.c: unit control widget text entry button
+	  set sensitive with control enable/disable
+
+2008-12-14  ashuang
+
+	* [r294] configure.in: libcvd test cvd/image.h instead of
+	  cvd/fast_corner.h
+
+2008-11-14  ashuang
+
+	* [r281] Makefile.am, configure.in, opencv, opencv/Makefile.am,
+	  opencv/undistort.c: add opencv undistort plugin
+
+2008-11-11  ashuang
+
+	* [r277] fh-segment/Makefile.am, klt-stb/Makefile.am: more makefile
+	  bugfixes!
+	* [r276] util/Makefile.am: more makefile bugfixes
+	* [r275] klt-stb/klt/Makefile.am: bugfix
+	* [r274] lcm/lcmtypes/Makefile.am: start camunits-extra debian
+	  package camunits-extra lcm makefile bugfix
+	* [r261] ., configure.in, cvd/Makefile.am,
+	  cvd/demo_libcvd_fast.cpp, fh-segment/Makefile.am,
+	  fh-segment/demo_fh_segment.cpp,
+	  framewave/jpeg-plugins/Makefile.am,
+	  framewave/jpeg-plugins/unit_jpeg_compress.c,
+	  framewave/jpeg-plugins/unit_jpeg_compress.h,
+	  framewave/jpeg-plugins/unit_jpeg_decompress.c,
+	  framewave/jpeg-plugins/unit_jpeg_decompress.h,
+	  framewave/plugins/Makefile.am,
+	  framewave/plugins/pyr_down_gauss.c, framewave/plugins/resize.c,
+	  ipp/jpeg-plugins/Makefile.am,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_compress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_compress.h,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.h,
+	  ipp/plugins/Makefile.am, ipp/plugins/filter_fixed_gauss.c,
+	  ipp/plugins/pyr_down_gauss.c, ipp/plugins/resize.c,
+	  klt-stb/Makefile.am, klt-stb/demo_klt_stb.c,
+	  lcm/plugins/Makefile.am, lcm/plugins/lcm_input.c,
+	  lcm/plugins/lcm_input.h, lcm/plugins/lcm_input_legacy.c,
+	  lcm/plugins/lcm_input_legacy.h, lcm/plugins/lcm_input_log_sync.c,
+	  lcm/plugins/lcm_input_log_sync.h, lcm/plugins/lcm_publish.c,
+	  lcm/plugins/lcm_publish.h, lcm/plugins/lcm_sync_publish.c,
+	  lcm/plugins/lcm_sync_publish.h, m4/camunits.m4, m4/libcam.m4,
+	  progs/Makefile.am, progs/camlog2jpeg.1, progs/camlog2jpeg.c,
+	  ptgrey, ptgrey/Makefile.am, ptgrey/bumblebee2_gl.c,
+	  util/Makefile.am, util/image_files.c, util/snapshot.c,
+	  util/throttle.c: libcam-extra -> camunits-extra update
+	  documentation libcam -> camunits
+	* [r257] svnsync barfed at revision 256. Here is 256:266 from
+	  libcam
+	  
+	  ------------------------------------------------------------------------
+	  r266 | ashuang | 2008-11-10 18:50:44 -0500 (Mon, 10 Nov 2008) | 2
+	  lines
+	  
+	  some news
+	  
+	  ------------------------------------------------------------------------
+	  r265 | ashuang | 2008-10-18 15:23:03 -0400 (Sat, 18 Oct 2008) | 2
+	  lines
+	  
+	  gl_texture support for CAM_PIXEL_FORMAT_BE_GRAY16
+	  
+	  ------------------------------------------------------------------------
+	  r264 | ashuang | 2008-10-18 14:12:55 -0400 (Sat, 18 Oct 2008) | 3
+	  lines
+	  
+	  shoring up 16-bpp grayscale support. This commit breaks a
+	  rarely-used part of the API.
+	  
+	  ------------------------------------------------------------------------
+	  r263 | ashuang | 2008-10-10 16:03:51 -0400 (Fri, 10 Oct 2008) | 2
+	  lines
+	  
+	  move bumblebee2 plugin into libcam-extra
+	  
+	  ------------------------------------------------------------------------
+	  r262 | ashuang | 2008-10-10 15:31:06 -0400 (Fri, 10 Oct 2008) | 2
+	  lines
+	  
+	  debian: architecture any instead of i386/amd64
+	  
+	  ------------------------------------------------------------------------
+	  r261 | ashuang | 2008-10-10 15:30:34 -0400 (Fri, 10 Oct 2008) | 6
+	  lines
+	  
+	  input_dc1394: include format7 mode in output format string
+	  filter_gl: allow gray16 unit_manager: on failure to open plugin
+	  dir, warn in dbg instead of stderr unit_chain: store output
+	  format name in saved XML. unit_control_widget: slightly smarter
+	  about format changing
+	  
+	  ------------------------------------------------------------------------
+	  r260 | ashuang | 2008-10-10 15:19:24 -0400 (Fri, 10 Oct 2008) | 2
+	  lines
+	  
+	  add libcam-bumblebee2
+	  
+	  ------------------------------------------------------------------------
+	  r259 | ashuang | 2008-10-09 17:19:46 -0400 (Thu, 09 Oct 2008) | 1
+	  line
+	  
+	  documentation fixes
+	  ------------------------------------------------------------------------
+	  r258 | ashuang | 2008-10-09 17:18:55 -0400 (Thu, 09 Oct 2008) | 2
+	  lines
+	  
+	  fortify input_dc1394
+	  
+	  ------------------------------------------------------------------------
+	  r257 | ashuang | 2008-09-30 16:47:06 -0400 (Tue, 30 Sep 2008) | 2
+	  lines
+	  
+	  add snapshot plugin
+	* [r256] add camlog2jpeg to libcam-extra
+
+2008-09-20  ashuang
+
+	* [r255] bugfixes
+
+2008-07-17  ashuang
+
+	* [r251] don't compile IPP or Framewave if they're not available
+
+2008-07-16  ashuang
+
+	* [r249] update lcm plugins for new LCM api build-from-svn no
+	  longer requires version number as commandline argument
+
+2008-07-08  ashuang
+
+	* [r244] add image file writer
+	* [r243] minor text change
+	* [r242] throttle unit implement repeat last frame control
+
+2008-07-04  ashuang
+
+	* [r241] add throttle unit
+
+2008-07-01  ashuang
+
+	* [r237] warn when units produce framebuffers with zero bytesused
+	  and timestamp fields
+
+2008-06-28  ashuang
+
+	* [r235] fix accidental API change. add lcm input legacy.
+
+2008-06-13  ashuang
+
+	* [r233] add README files add FAST feature detector demo
+
+2008-06-12  ashuang
+
+	* [r232] add fixed gaussian smoothing filter
+
+2008-06-11  ashuang
+
+	* [r231] add "Efficient Graph-Based Segmentation" from Felzenszwalb
+	  and Huttenlocher
+
+2008-06-09  ashuang
+
+	* [r230] color by tracked feature age
+
+2008-06-05  ashuang
+
+	* [r229] minor fixes
+
+2008-06-04  ashuang
+
+	* [r228] params
+	* [r227] add stan birchfield KLT tracker demo
+	* [r226] merge libcam-framewave into libcam-extra
+
+2008-05-30  ashuang
+
+	* [r223] merge libcam-ipp into libcam-extra
+	* [r222] namespace renaming input log sync bugfixes
+	* [r221] start libcam-extra remove libcam-lcm (merged into
+	  libcam-extra)
+

@@ -1,1 +1,41 @@
-no news
+camunits-extra 0.1.2 - Feb 15, 2009
+===================================
+First release of camunits-extra
+
+Plugins:
+  * Intel IPP
+    ** JPEG Decompress
+    ** JPEG Compress
+    ** Resize
+    ** Pyramid Downsample Gaussian
+    ** Gaussian Fixed Filter
+
+  * AMD Framewave
+    ** JPEG Decompress
+    ** JPEG Compress
+    ** Resize
+
+  * OpenCV
+    ** Canny Edge demo
+    ** GoodFeaturesToTrack demo
+    ** Undistort
+
+  * Utilities
+    ** image throttling
+    ** snapshot
+    ** convert to grayscale
+    ** dump images as files
+
+  * LibCVD
+    ** FAST features demo
+
+  * KLT (Birchfield)
+    ** KLT feature tracker demo
+
+  * Lightweight Communications and Marshalling (LCM)
+    ** image publish
+    ** image receive
+    ** synchronize Camunits log file input with LCM
+
+Programs
+  * camlog2jpeg -- dump all images in a log file as JPEG files
