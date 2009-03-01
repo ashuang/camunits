@@ -150,7 +150,9 @@ GList *cam_unit_manager_get_drivers(CamUnitManager *self);
  * cam_unit_manager_find_unit_description:
  * @unit_id: a string of the form "driver:id".
  *
- * Searches all known drivers for a unit description matching unit_id.
+ * Searches all known drivers for a unit description matching unit_id.  The
+ * reference count of the returned #CamUnitDescription, if any, is not
+ * modified.
  *
  * Returns: a matching #CamUnitDescription, or NULL if not found
  */

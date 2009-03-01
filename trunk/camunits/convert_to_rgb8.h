@@ -7,6 +7,7 @@
 
 #include "unit.h"
 #include "unit_driver.h"
+#include "unit_manager.h"
 
 G_BEGIN_DECLS
 
@@ -47,7 +48,9 @@ typedef struct _CamConvertToRgb8Class CamConvertToRgb8Class;
 struct _CamConvertToRgb8 {
     CamUnit parent;
 
+    /*< private >*/
     CamUnit *worker;
+    CamUnitManager *manager;
 };
 
 struct _CamConvertToRgb8Class {
