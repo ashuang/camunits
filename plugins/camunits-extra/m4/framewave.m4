@@ -52,6 +52,7 @@ fi
 
 if test "x$no_framewave" = x ; then
    AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE_FRAMEWAVE],[1],[Framewave available])
    ifelse([$2], , :, [$2])     
 else
    if test -f conf.framewavetest ; then

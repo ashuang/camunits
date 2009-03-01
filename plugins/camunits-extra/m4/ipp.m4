@@ -100,6 +100,7 @@ else
     AC_SUBST(IPP_JPEG_STATIC_LIBS)
     AC_SUBST(IPP_JPEG_LIBS)
     AC_SUBST(IPP_LIBS)
+    AC_DEFINE([HAVE_IPP],[1],[IPP available])
     ifelse([$2], , :, [$2])
 fi
 
