@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 
     // search for plugins in non-standard directories
     if(extra_plugin_path) {
-        CamUnitManager *manager = cam_unit_chain_get_manager(chain);
+        CamUnitManager *manager = cam_unit_manager_get_and_ref();
         char **path_dirs = g_strsplit(extra_plugin_path, ":", 0);
         for (int i=0; path_dirs[i]; i++) {
             cam_unit_manager_add_plugin_dir (manager, path_dirs[i]);
@@ -178,6 +178,7 @@ int main(int argc, char **argv)
         g_strfreev (path_dirs);
         free(extra_plugin_path);
         extra_plugin_path = NULL;
+        g_object_unref(manager);
     }
 
     // XXX hack... don't remember why this is there anymore...

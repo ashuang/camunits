@@ -77,24 +77,6 @@ GType cam_unit_chain_get_type (void);
 CamUnitChain * cam_unit_chain_new (void);
 
 /**
- * cam_unit_chain_new_with_manager:
- * @manager: an existing CamUnitManager to use with the new CamUnitChain.
- *
- * Constructor.  create a new chain with an existing manager.  on return,
- * the reference count on %manager is incremeneted.
- *
- * Returns: a newly allocated CamUnitChain
- */
-CamUnitChain * cam_unit_chain_new_with_manager (CamUnitManager *manager);
-
-/**
- * cam_unit_chain_get_manager:
- *
- * Returns: the unit manager associated with the chain
- */
-CamUnitManager * cam_unit_chain_get_manager (CamUnitChain *self);
-
-/**
  * cam_unit_chain_get_length:
  * @self: the CamUnitChain
  *

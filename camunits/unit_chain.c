@@ -172,27 +172,8 @@ cam_unit_chain_new (void)
 {
     CamUnitChain *self = 
         CAM_UNIT_CHAIN (g_object_new (CAM_TYPE_UNIT_CHAIN, NULL));
-    self->manager = cam_unit_manager_new (TRUE);
+    self->manager = cam_unit_manager_get_and_ref();
     return self;
-}
-
-CamUnitChain *
-cam_unit_chain_new_with_manager (CamUnitManager *manager)
-{
-    CamUnitChain *self = 
-        CAM_UNIT_CHAIN (g_object_new (CAM_TYPE_UNIT_CHAIN, NULL));
-    if (manager) {
-        self->manager = manager;
-        dbgl (DBG_REF, "ref manager\n");
-        g_object_ref (manager);
-    }
-    return self;
-}
-
-CamUnitManager *
-cam_unit_chain_get_manager (CamUnitChain *self)
-{
-    return self->manager;
 }
 
 int
