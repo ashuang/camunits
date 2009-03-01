@@ -86,7 +86,8 @@ camunitsinclude_HEADERS = \
 	plugin.h \
 	pixels.h \
 	log.h \
-	gl_texture.h
+	gl_texture.h \
+	dbg.h
 
 
 pkgconfigdir = $(libdir)/pkgconfig
