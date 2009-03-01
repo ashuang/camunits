@@ -177,7 +177,9 @@ swap_thread (void * arg)
             fprintf (stderr, "Error: glXWaitVideoSyncSGI failed %d\n", v);
             break;
         }
-        write (priv->pipe[1], "+", 1);
+        if(1 != write (priv->pipe[1], "+", 1)) {
+            perror("pipe write");
+        }
         usleep (10);
         odd_even = !odd_even;
     }
@@ -325,7 +327,10 @@ cam_gl_drawing_area_realize (GtkWidget * widget)
         return;
     }
 
-    pipe (priv->pipe);
+    if(0 != pipe (priv->pipe)) {
+        perror("error creating internal pipe\n");
+        return;
+    }
     fcntl (priv->pipe[0], F_SETFL, O_NONBLOCK);
 
     if (pthread_create (&priv->thread, NULL, swap_thread, priv) != 0) {

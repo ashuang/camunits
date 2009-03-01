@@ -16,31 +16,26 @@ extern "C" {
  * @short_description: Factory-like class that manages a collection of 
  * #CamUnitDriver objects.
  *
- * CamUnitManager is a factory-like class that provide a (hopefully) convenient
+ * CamUnitManager is a factory-like class that provide a 
  * way to list and instantiate all available units.  A single #CamUnitDriver is
  * responsible only for describing and instantiating units of a specific type,
  * whereas a CamUnitManager attempts to aggregate all of the information
  * provided by all known #CamUnitDriver objects into a single object.
  *
  * Before becoming available for use, a #CamUnitDriver must first be
- * registered with a CamUnitManager.  There are three ways this can happen.
+ * registered with a CamUnitManager.  There are two recommended ways for this
+ * tohappen.
  * First, Camunits provides a set of "core" drivers that are always loaded
  * when
  * a CamUnitManager is created.  Second, a CamUnitManager searches the plugin
  * directories (typically /usr/lib/camunits/ and the colon-separated list of
  * directories in the "CAMUNITS_PLUGIN_PATH" environment variable) for
- * dynamically loadable plugins.  Finally, it is possible to subclass
- * #CamUnitDriver and register drivers at runtime via 
- * cam_unit_manager_add_driver().
+ * dynamically loadable plugins.  
  *
  * In a simple Camunits application, there is no need to work directly with
  * the
  * CamUnitManager.  Instead, a simple Camunits application may use a
- * #CamUnitChain object, which itself contains a CamUnitManager.  Reasons for
- * using a CamUnitManager directly could be sharing a manager across multiple
- * chains, implementing new #CamUnit and #CamUnitDriver subclasses, or
- * completely foregoing the #CamUnitChain for a non-standard arrangement of
- * #CamUnitChain objects.
+ * #CamUnitChain object, which itself uses a CamUnitManager.
  */
 typedef struct _CamUnitManager CamUnitManager;
 typedef struct _CamUnitManagerClass CamUnitManagerClass;
@@ -85,17 +80,21 @@ GType cam_unit_manager_get_type (void);
 // ========= Unit Manager functions ==========
 
 /**
- * cam_unit_manager_new:
+ * cam_unit_manager_get_and_ref:
  * @start_drivers: TRUE if the unit manager should automatically call
  *                 #cam_unit_driver_start on unit drivers as they are added to
  *                 the unit manager.  If in doubt, set this to TRUE.
  *
- * Constructor.  Instantiates a new unit manager with a core set of unit
- * drivers already registered.   
+ * Singleton accessor.  Retrieves a pointer to the singleton instance of the
+ * CamUnitManager, creating it and starting the drivers if necessary.  The
+ * reference count on the instance is incremented on return.  If the reference
+ * count ever reaches zero (decremented by g_object_unref), then the instance
+ * is destroyed, but can be re-instantiated by another call to this function.
  *
- * Returns: a newly allocated CamUnitManager
+ * Returns: a pointer to the singleton CamUnitManager, and increments the
+ * reference count on it.
  */
-CamUnitManager * cam_unit_manager_new (gboolean start_drivers);
+CamUnitManager * cam_unit_manager_get_and_ref (void);
 
 /**
  * cam_unit_manager_add_driver:

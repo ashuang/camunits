@@ -50,6 +50,8 @@ struct _CamUnitManagerSource {
     CamUnitManager *manager;
 };
 
+static CamUnitManager * _singleton = NULL;
+
 static gboolean _source_prepare (GSource *source, gint *timeout);
 static gboolean _source_check (GSource *source);
 static gboolean _source_dispatch (GSource *source, 
@@ -189,7 +191,7 @@ cam_unit_manager_finalize (GObject *obj)
     G_OBJECT_CLASS (cam_unit_manager_parent_class)->finalize (obj);
 }
 
-CamUnitManager *
+static CamUnitManager *
 cam_unit_manager_new (gboolean start_drivers)
 {
     CamUnitManager *self = 
@@ -201,6 +203,19 @@ cam_unit_manager_new (gboolean start_drivers)
     }
 
     return self;
+}
+
+CamUnitManager * 
+cam_unit_manager_get_and_ref (void)
+{
+    // XXX this is not thread safe
+    if(_singleton) {
+        g_object_ref(G_OBJECT(_singleton));
+        return _singleton;
+    }
+    dbg (DBG_MANAGER, "Instantiating singleton CamUnitManager\n");
+    _singleton = cam_unit_manager_new(TRUE);
+    return _singleton;
 }
 
 static void

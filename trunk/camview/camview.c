@@ -325,7 +325,7 @@ state_setup (state_t *self)
 
     // search for plugins in non-standard directories
     if(self->extra_plugin_path) {
-        CamUnitManager *manager = cam_unit_chain_get_manager(self->chain);
+        CamUnitManager *manager = cam_unit_manager_get_and_ref();
         char **path_dirs = g_strsplit(self->extra_plugin_path, ":", 0);
         for (int i=0; path_dirs[i]; i++) {
             cam_unit_manager_add_plugin_dir (manager, path_dirs[i]);
@@ -333,6 +333,7 @@ state_setup (state_t *self)
         g_strfreev (path_dirs);
         free(self->extra_plugin_path);
         self->extra_plugin_path = NULL;
+        g_object_unref(manager);
     }
 
     // setup the GUI

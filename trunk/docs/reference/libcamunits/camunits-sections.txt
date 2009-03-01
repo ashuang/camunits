@@ -178,8 +178,6 @@ CamUnitChainSource
 <TITLE>CamUnitChain</TITLE>
 CamUnitChain
 cam_unit_chain_new
-cam_unit_chain_new_with_manager
-cam_unit_chain_get_manager
 cam_unit_chain_get_length
 cam_unit_chain_has_unit
 cam_unit_chain_insert_unit
@@ -291,7 +289,7 @@ CamFastBayerFilterClass
 <FILE>unit_manager</FILE>
 <TITLE>CamUnitManager</TITLE>
 CamUnitManager
-cam_unit_manager_new
+cam_unit_manager_get_and_ref
 cam_unit_manager_add_driver
 cam_unit_manager_remove_driver
 cam_unit_manager_start_drivers
