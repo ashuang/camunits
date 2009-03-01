@@ -4,6 +4,7 @@
 typedef struct {
     CamUnit parent;
     CamUnit *worker;
+    CamUnitManager *manager;
 } CamConvertToGray;
 
 typedef struct {
@@ -60,6 +61,7 @@ cam_convert_to_gray_init (CamConvertToGray *self)
 {
     cam_unit_set_preferred_format (CAM_UNIT (self), CAM_PIXEL_FORMAT_RGB, 0, 0);
     self->worker = NULL;
+    self->manager = cam_unit_manager_get_and_ref();
     g_signal_connect (G_OBJECT(self), "input-format-changed",
             G_CALLBACK(on_input_format_changed), NULL);
 }
@@ -79,6 +81,7 @@ _finalize (GObject * obj)
                 on_worker_frame_ready, self);
         g_object_unref (self->worker);
     }
+    g_object_unref(self->manager);
 
     G_OBJECT_CLASS (cam_convert_to_gray_parent_class)->finalize (obj);
 }
@@ -163,7 +166,26 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 self->worker = CAM_UNIT (cam_color_conversion_filter_new());
                 break;
             case CAM_PIXEL_FORMAT_MJPEG:
-                self->worker = CAM_UNIT (cam_convert_jpeg_decompress_new ());
+                // use the Intel IPP library for JPEG decompression if it
+                // is available
+                if(cam_unit_manager_find_unit_description(self->manager, 
+                            "ipp.jpeg_decompress")) {
+                    self->worker = cam_unit_manager_create_unit_by_id(
+                            self->manager, "ipp.jpeg_decompress");
+                }
+
+                // if not, then try the Framewave library.
+                if(!self->worker && 
+                        cam_unit_manager_find_unit_description(self->manager, 
+                            "framewave.jpeg_decompress")) {
+                    self->worker = cam_unit_manager_create_unit_by_id(
+                            self->manager, "framewave.jpeg_decompress");
+                }
+
+                // Lastly, fall back to libjpeg
+                if(!self->worker) {
+                    self->worker = CAM_UNIT(cam_convert_jpeg_decompress_new());
+                }
                 break;
             case CAM_PIXEL_FORMAT_BAYER_BGGR:
             case CAM_PIXEL_FORMAT_BAYER_RGGB:
