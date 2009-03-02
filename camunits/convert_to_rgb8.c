@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "convert_colorspace.h"
-#include "convert_jpeg_decompress.h"
 #include "filter_fast_bayer.h"
 #include "convert_to_rgb8.h"
 
@@ -176,8 +175,15 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 }
 
                 // Lastly, fall back to libjpeg
+                if(!self->worker &&
+                        cam_unit_manager_find_unit_description(self->manager,
+                            "convert.jpeg_decompress")) {
+                    self->worker = cam_unit_manager_create_unit_by_id(
+                            self->manager, "convert.jpeg_decompress");
+                }
+
                 if(!self->worker) {
-                    self->worker = CAM_UNIT(cam_convert_jpeg_decompress_new());
+                    return;
                 }
                 break;
             case CAM_PIXEL_FORMAT_BAYER_BGGR:

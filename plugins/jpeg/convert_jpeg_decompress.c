@@ -5,24 +5,50 @@
 #include <jerror.h>
 #include <setjmp.h>
 
-#include "convert_jpeg_decompress.h"
-#include "pixels.h"
-
-#include "plugin.h"
+#include "camunits/plugin.h"
+#include "camunits/dbg.h"
 
 #define err(args...) fprintf(stderr, args)
 
-static int _jpeg_decompress (const uint8_t * src, int src_size,
-        uint8_t * dest, int width, int height, int stride, J_COLOR_SPACE out_space);
-static void _jpeg_std_huff_tables (j_decompress_ptr cinfo);
+typedef struct _CamConvertJpegDecompress {
+    CamUnit parent;
+    
+    /*< private >*/
+    CamFrameBuffer * outbuf;
+} CamConvertJpegDecompress;
 
-CamUnitDriver *
-cam_convert_jpeg_decompress_driver_new()
+typedef struct _CamConvertJpegDecompressClass {
+    CamUnitClass parent_class;
+} CamConvertJpegDecompressClass;
+
+GType cam_convert_jpeg_decompress_get_type (void);
+
+static CamConvertJpegDecompress * cam_convert_jpeg_decompress_new (void);
+
+GType cam_convert_jpeg_decompress_get_type (void);
+CAM_PLUGIN_TYPE(CamConvertJpegDecompress, cam_convert_jpeg_decompress, 
+        CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
-    return cam_unit_driver_new_stock ("convert", "jpeg_decompress",
-            "JPEG Decompress", 0,
-            (CamUnitConstructor)cam_convert_jpeg_decompress_new);
+    cam_convert_jpeg_decompress_register_type(module);
 }
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("convert", "jpeg_decompress",
+            "JPEG Decompress", 0,
+            (CamUnitConstructor)cam_convert_jpeg_decompress_new, module);
+}
+
+static int _jpeg_decompress (const uint8_t * src, int src_size,
+        uint8_t * dest, int width, int height, int stride, 
+        J_COLOR_SPACE out_space);
+static void _jpeg_std_huff_tables (j_decompress_ptr cinfo);
 
 // ============== CamConvertJpegDecompress ===============
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
@@ -31,9 +57,6 @@ static void on_input_format_changed (CamUnit *super,
         const CamUnitFormat *infmt);
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
-
-G_DEFINE_TYPE (CamConvertJpegDecompress, cam_convert_jpeg_decompress, 
-        CAM_TYPE_UNIT);
 
 static void
 cam_convert_jpeg_decompress_init (CamConvertJpegDecompress *self)
@@ -52,17 +75,17 @@ cam_convert_jpeg_decompress_class_init (CamConvertJpegDecompressClass *klass)
     klass->parent_class.stream_shutdown = _stream_shutdown;
 }
 
-CamConvertJpegDecompress * 
+static CamConvertJpegDecompress * 
 cam_convert_jpeg_decompress_new()
 {
-    return CAM_CONVERT_JPEG_DECOMPRESS(
-            g_object_new(CAM_TYPE_CONVERT_JPEG_DECOMPRESS, NULL));
+    return (CamConvertJpegDecompress*)(
+            g_object_new(cam_convert_jpeg_decompress_get_type(), NULL));
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamConvertJpegDecompress *self = CAM_CONVERT_JPEG_DECOMPRESS (super);
+    CamConvertJpegDecompress *self = (CamConvertJpegDecompress*) (super);
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
 }
@@ -70,8 +93,9 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    g_object_unref (CAM_CONVERT_JPEG_DECOMPRESS (super)->outbuf);
-    CAM_CONVERT_JPEG_DECOMPRESS (super)->outbuf = NULL;
+    CamConvertJpegDecompress *self = (CamConvertJpegDecompress*) super;
+    g_object_unref (self->outbuf);
+    self->outbuf = NULL;
     return 0;
 }
 
@@ -79,7 +103,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
-    CamConvertJpegDecompress *self = CAM_CONVERT_JPEG_DECOMPRESS (super);
+    CamConvertJpegDecompress *self = (CamConvertJpegDecompress*) (super);
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     J_COLOR_SPACE out_space;

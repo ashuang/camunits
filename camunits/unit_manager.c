@@ -13,13 +13,7 @@
 #include "filter_fast_bayer.h"
 #include "convert_colorspace.h"
 #include "convert_to_rgb8.h"
-#include "convert_jpeg_compress.h"
-#include "convert_jpeg_decompress.h"
 #include "output_logger.h"
-
-#ifdef USE_V4L2
-#include "input_v4l2.h"
-#endif
 
 #include "dbg.h"
 
@@ -566,11 +560,6 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
         CAM_UNIT_DRIVER (cam_input_log_driver_new ());
     cam_unit_manager_add_driver (self, input_log_driver);
 
-#ifdef USE_V4L2
-    CamUnitDriver *v4l2_driver = cam_v4l2_driver_new ();
-    cam_unit_manager_add_driver (self, v4l2_driver);
-#endif
-
     // Debayer
     cam_unit_manager_add_driver (self, cam_fast_bayer_filter_driver_new ()); 
 
@@ -582,10 +571,6 @@ cam_unit_manager_register_core_drivers (CamUnitManager *self)
 
     // opengl renderer
     cam_unit_manager_add_driver (self, cam_filter_gl_driver_new ()); 
-
-    // jpeg
-    cam_unit_manager_add_driver(self, cam_convert_jpeg_compress_driver_new());
-    cam_unit_manager_add_driver(self, cam_convert_jpeg_decompress_driver_new());
 
     // logger
     cam_unit_manager_add_driver (self, cam_logger_unit_driver_new ());

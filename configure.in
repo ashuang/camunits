@@ -39,6 +39,7 @@ if test x$target_cpu = xi386 -o x$target_cpu = xi486 -o x$target_cpu = xi586 -o 
 fi
 AM_CONDITIONAL(INTEL, [test x$have_intel = xyes])
 
+dnl compile the V4L 1 plugin?
 AC_ARG_WITH(v4l1-plugin,
             [AS_HELP_STRING([--with-v4l1-plugin],
              [Compile V4L1 plugin])],
@@ -47,6 +48,14 @@ if test x$with_v4l1_plugin = xyes -a x$arch != xlinux; then
     AC_MSG_ERROR([Video 4 Linux 1 plugin requires Linux])
 fi
 AM_CONDITIONAL([WITH_V4L1_PLUGIN], [test x$with_v4l1_plugin = xyes])
+
+dnl compile the V4L 2 plugin?
+AC_ARG_WITH(v4l2-plugin,
+            [AS_HELP_STRING([--with-v4l2-plugin],
+             [Compile V4L2 plugin if available])],
+            [], [with_v4l2_plugin=yes])
+AM_CONDITIONAL([WITH_V4L2_PLUGIN], 
+               [test x$with_v4l2_plugin = xyes -a x$arch = xlinux])
 
 dnl ---------------------------------------------------------------------------
 dnl When making a release:
@@ -144,6 +153,8 @@ AC_OUTPUT([
   plugins/Makefile
   plugins/dc1394/Makefile
   plugins/v4l/Makefile
+  plugins/v4l2/Makefile
+  plugins/jpeg/Makefile
   examples/Makefile
   examples/basic/Makefile
   examples/filter_example/Makefile

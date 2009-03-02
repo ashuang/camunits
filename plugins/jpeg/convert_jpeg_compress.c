@@ -5,11 +5,44 @@
 #include <jerror.h>
 #include <setjmp.h>
 
-#include "convert_jpeg_compress.h"
-#include "pixels.h"
-#include "dbg.h"
+#include "camunits/plugin.h"
+#include "camunits/dbg.h"
 
 #define err(args...) fprintf(stderr, args)
+
+typedef struct _CamConvertJpegCompress {
+    CamUnit parent;
+    
+    /*< private >*/
+    CamUnitControl * quality_control;
+    CamFrameBuffer * outbuf;
+} CamConvertJpegCompress;
+
+typedef struct _CamConvertJpegCompressClass {
+    CamUnitClass parent_class;
+} CamConvertJpegCompressClass;
+
+static CamConvertJpegCompress * cam_convert_jpeg_compress_new (void);
+
+GType cam_convert_jpeg_compress_get_type (void);
+CAM_PLUGIN_TYPE(CamConvertJpegCompress, cam_convert_jpeg_compress, 
+        CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
+{
+    cam_convert_jpeg_compress_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("convert", "jpeg_compress",
+            "JPEG Compress", 0,
+            (CamUnitConstructor)cam_convert_jpeg_compress_new, module);
+}
 
 static int _jpeg_compress_8u_gray (const uint8_t * src, int width, int height, 
         int stride, uint8_t * dest, int * destsize, int quality);
@@ -18,14 +51,6 @@ static int _jpeg_compress_8u_rgb (const uint8_t * src, int width, int height,
 static int _jpeg_compress_8u_bgra (const uint8_t * src, int width, int height, 
         int stride, uint8_t * dest, int * destsize, int quality);
 
-CamUnitDriver *
-cam_convert_jpeg_compress_driver_new()
-{
-    return cam_unit_driver_new_stock ("convert", "jpeg_compress",
-            "JPEG Compress", 0,
-            (CamUnitConstructor)cam_convert_jpeg_compress_new);
-}
-
 // ============== CamConvertJpegCompress ===============
 static void on_input_frame_ready (CamUnit * super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
@@ -33,9 +58,6 @@ static void on_input_format_changed (CamUnit *super,
         const CamUnitFormat *infmt);
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
-
-G_DEFINE_TYPE (CamConvertJpegCompress, cam_convert_jpeg_compress, 
-        CAM_TYPE_UNIT);
 
 static void
 cam_convert_jpeg_compress_init (CamConvertJpegCompress *self)
@@ -61,14 +83,14 @@ cam_convert_jpeg_compress_class_init (CamConvertJpegCompressClass *klass)
 CamConvertJpegCompress * 
 cam_convert_jpeg_compress_new()
 {
-    return CAM_CONVERT_JPEG_COMPRESS(
-            g_object_new(CAM_TYPE_CONVERT_JPEG_COMPRESS, NULL));
+    return (CamConvertJpegCompress*)(
+            g_object_new(cam_convert_jpeg_compress_get_type(), NULL));
 }
 
 static int 
 _stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamConvertJpegCompress *self = CAM_CONVERT_JPEG_COMPRESS (super);
+    CamConvertJpegCompress *self = (CamConvertJpegCompress*) super;
     self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
     return 0;
 }
@@ -76,8 +98,9 @@ _stream_init (CamUnit * super, const CamUnitFormat * format)
 static int 
 _stream_shutdown (CamUnit * super)
 {
-    g_object_unref (CAM_CONVERT_JPEG_COMPRESS (super)->outbuf);
-    CAM_CONVERT_JPEG_COMPRESS (super)->outbuf = NULL;
+    CamConvertJpegCompress *self = (CamConvertJpegCompress*) super;
+    g_object_unref (self->outbuf);
+    self->outbuf = NULL;
     return 0;
 }
 
@@ -86,7 +109,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
     dbg(DBG_FILTER, "[%s] iterate\n", cam_unit_get_name(super));
-    CamConvertJpegCompress * self = CAM_CONVERT_JPEG_COMPRESS (super);
+    CamConvertJpegCompress * self = (CamConvertJpegCompress*)super;
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     int width = infmt->width;

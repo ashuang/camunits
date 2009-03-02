@@ -11,8 +11,10 @@
 #include <linux/videodev2.h>
 #include <errno.h>
 
-#include "input_v4l2.h"
-#include "dbg.h"
+#include <glib-object.h>
+
+#include "camunits/plugin.h"
+#include "camunits/dbg.h"
 
 #define err(args...) fprintf(stderr, args)
 
@@ -20,13 +22,62 @@
 
 #define NUM_BUFFERS 5
 
+typedef struct _CamV4L2Driver {
+    CamUnitDriver parent;
+} CamV4L2Driver;
+
+typedef struct _CamV4L2DriverClass {
+    CamUnitDriverClass parent_class;
+} CamV4L2DriverClass;
+
+typedef struct _CamV4L2 {
+    CamUnit parent;
+
+    /*< public >*/
+
+    /*< private >*/
+    int fd;
+    int num_buffers;
+    uint8_t ** buffers;
+    int buffer_length;
+    int buffers_outstanding;
+
+    CamUnitControl *standard_ctl;
+//    CamUnitControl *stream_ctl;
+} CamV4L2;
+
+typedef struct _CamV4L2Class {
+    CamUnitClass parent_class;
+} CamV4L2Class;
+
+GType cam_v4l2_driver_get_type (void);
+GType cam_v4l2_get_type (void);
+
+CAM_PLUGIN_TYPE(CamV4L2Driver, cam_v4l2_driver, CAM_TYPE_UNIT_DRIVER);
+CAM_PLUGIN_TYPE(CamV4L2, cam_v4l2, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
+{
+    cam_v4l2_driver_register_type(module);
+    cam_v4l2_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return CAM_UNIT_DRIVER(g_object_new(cam_v4l2_driver_get_type(), NULL));
+}
+
+static CamV4L2 * cam_v4l2_new (const char *path);
+
 static CamUnit * driver_create_unit (CamUnitDriver * super,
         const CamUnitDescription * udesc);
 static void driver_finalize (GObject * obj);
 static int driver_start (CamUnitDriver * super);
 static int driver_stop (CamUnitDriver * super);
-
-G_DEFINE_TYPE (CamV4L2Driver, cam_v4l2_driver, CAM_TYPE_UNIT_DRIVER);
 
 static void
 fourcc_to_str(uint32_t fcc, char *result)
@@ -64,12 +115,6 @@ driver_finalize (GObject * obj)
 //    CamV4L2Driver * self = CAM_V4L2_DRIVER (obj);
 
     G_OBJECT_CLASS (cam_v4l2_driver_parent_class)->finalize (obj);
-}
-
-CamUnitDriver *
-cam_v4l2_driver_new ()
-{
-    return CAM_UNIT_DRIVER (g_object_new (CAM_V4L2_DRIVER_TYPE, NULL));
 }
 
 static int
@@ -166,20 +211,9 @@ driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
     return CAM_UNIT (cam_v4l2_new (path));
 }
 
-G_DEFINE_TYPE (CamV4L2, cam_v4l2, CAM_TYPE_UNIT);
-
-#define CAM_V4L2_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
-            CAM_TYPE_V4L2, CamV4L2Private))
-typedef struct _CamV4L2Private CamV4L2Private;
-
-struct _CamV4L2Private {
-    int foo;
-};
-
 static void
 cam_v4l2_init (CamV4L2 * self)
 {
-//    CamV4L2Private * priv = CAM_V4L2_GET_PRIVATE (self);
     dbg (DBG_INPUT, "v4l2 constructor\n");
 
     self->fd = -1;
@@ -210,8 +244,6 @@ cam_v4l2_class_init (CamV4L2Class * klass)
     klass->parent_class.try_produce_frame = v4l2_try_produce_frame;
     klass->parent_class.get_fileno = v4l2_get_fileno;
     klass->parent_class.try_set_control = v4l2_try_set_control;
-
-    g_type_class_add_private (gobject_class, sizeof (CamV4L2Private));
 }
 
 static void
@@ -224,7 +256,7 @@ v4l2_finalize (GObject * obj)
         dbg (DBG_INPUT, "forcibly shutting down v4l2 unit\n");
         v4l2_stream_shutdown (super);
     }
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
     if (self->fd >= 0) {
         close (self->fd);
         self->fd = -1;
@@ -386,7 +418,7 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
 CamV4L2 *
 cam_v4l2_new (const char *path)
 {
-    CamV4L2 * self = CAM_V4L2 (g_object_new (CAM_TYPE_V4L2, NULL));
+    CamV4L2 * self = (CamV4L2*) (g_object_new (cam_v4l2_get_type(), NULL));
 
     self->fd = open (path, O_RDWR | O_NONBLOCK, 0);
     if (self->fd < 0) goto fail;
@@ -490,7 +522,7 @@ _unmap_buffers (CamV4L2 *self)
 static int
 v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
 {
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
     dbg (DBG_INPUT, "Initializing v4l2 stream (pxlfmt %s %dx%d)\n",
             cam_pixel_format_nickname (format->pixelformat), 
             format->width, format->height);
@@ -610,7 +642,7 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
 static int
 v4l2_stream_shutdown (CamUnit * super)
 {
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
 
     int type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if (-1 == ioctl (self->fd, VIDIOC_STREAMOFF, &type)) {
@@ -662,7 +694,7 @@ v4l2_stream_shutdown (CamUnit * super)
 static gboolean
 v4l2_try_produce_frame (CamUnit * super)
 {
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
 
     /* If all buffers are already dequeued, V4L2 will keep waking us up
      * because it puts an error condition on its file descriptor.  Thus,
@@ -706,7 +738,7 @@ v4l2_try_produce_frame (CamUnit * super)
 static int
 v4l2_get_fileno (CamUnit *super)
 {
-    return CAM_V4L2 (super)->fd;
+    return ((CamV4L2*) super)->fd;
 }
 
 #define MAX_INPUTS 32
@@ -725,7 +757,7 @@ enum {
 static int
 update_video_standards (CamUnit * super, int modify)
 {
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
 
     v4l2_std_id stdid = 0;
     ioctl (self->fd, VIDIOC_G_STD, &stdid);
@@ -804,7 +836,7 @@ add_user_controls (CamV4L2 *self)
 static int
 add_all_controls (CamUnit * super)
 {
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
     int cur_val;
 
     struct v4l2_input input;
@@ -870,7 +902,7 @@ add_all_controls (CamUnit * super)
 static gboolean
 v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual) {
-    CamV4L2 * self = CAM_V4L2 (super);
+    CamV4L2 * self = (CamV4L2*) (super);
 
     if (!strcmp (ctl->id, "input")) {
         int val = g_value_get_int (proposed);

@@ -35,16 +35,12 @@ libcamunits_la_SOURCES = \
 	convert_to_rgb8.h \
 	filter_fast_bayer.c \
 	filter_fast_bayer.h \
-	convert_jpeg_compress.c \
-	convert_jpeg_compress.h \
-	convert_jpeg_decompress.c \
-	convert_jpeg_decompress.h \
 	output_logger.c \
 	output_logger.h \
 	cpuid.h \
 	dbg.h
 
-libcamunits_la_LIBADD = $(GLIB_LIBS) $(JPEG_LIBS) $(GL_LIBS)
+libcamunits_la_LIBADD = $(GLIB_LIBS) $(GL_LIBS)
 
 if INTEL
 libcamunits_la_SOURCES += cpuid.c
@@ -66,12 +62,6 @@ else
 libcamunits_la_SOURCES += cpuid_generic.c
 endif
 
-if LINUX
-libcamunits_la_SOURCES += input_v4l2.c input_v4l2.h
-AM_CFLAGS += -DUSE_V4L2
-endif
-
-
 camunitsincludedir = $(includedir)/camunits
 camunitsinclude_HEADERS = \
 	cam.h \
@@ -88,7 +78,6 @@ camunitsinclude_HEADERS = \
 	log.h \
 	gl_texture.h \
 	dbg.h
-
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = camunits.pc
