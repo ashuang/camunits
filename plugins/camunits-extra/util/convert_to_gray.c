@@ -11,7 +11,7 @@ typedef struct {
     CamUnitClass parent_class;
 } CamConvertToGrayClass;
 
-CamConvertToGray * cam_convert_to_gray_new(void);
+static CamConvertToGray * cam_convert_to_gray_new(void);
 
 GType cam_convert_to_gray_get_type (void);
 CAM_PLUGIN_TYPE (CamConvertToGray, cam_convert_to_gray, CAM_TYPE_UNIT);
@@ -32,7 +32,6 @@ CamUnitDriver * cam_plugin_create (GTypeModule * module)
 
 // ============== CamConvertToGray ===============
 extern CamUnit * cam_color_conversion_filter_new(void);
-extern CamUnit * cam_convert_jpeg_decompress_new (void);
 extern CamUnit * cam_fast_bayer_filter_new (void);
 
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
@@ -66,7 +65,7 @@ cam_convert_to_gray_init (CamConvertToGray *self)
             G_CALLBACK(on_input_format_changed), NULL);
 }
 
-CamConvertToGray * 
+static CamConvertToGray * 
 cam_convert_to_gray_new()
 {
     return (CamConvertToGray*)(g_object_new(cam_convert_to_gray_get_type(), NULL));
@@ -183,8 +182,11 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 }
 
                 // Lastly, fall back to libjpeg
-                if(!self->worker) {
-                    self->worker = CAM_UNIT(cam_convert_jpeg_decompress_new());
+                if(!self->worker &&
+                        cam_unit_manager_find_unit_description(self->manager, 
+                            "convert.jpeg_decompress")) {
+                    self->worker = cam_unit_manager_create_unit_by_id(
+                            self->manager, "convert.jpeg_decompress");
                 }
                 break;
             case CAM_PIXEL_FORMAT_BAYER_BGGR:
@@ -196,6 +198,9 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             default:
                 return;
         }
+
+        if(!self->worker)
+            return;
 
         g_object_ref_sink (self->worker);
 
