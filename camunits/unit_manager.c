@@ -7,14 +7,6 @@
 #include "unit_manager.h"
 #include "plugin.h"
 
-#include "input_example.h"
-#include "input_log.h"
-#include "filter_gl.h"
-#include "filter_fast_bayer.h"
-#include "convert_colorspace.h"
-#include "convert_to_rgb8.h"
-#include "output_logger.h"
-
 #include "dbg.h"
 
 #define err(args...) fprintf (stderr, args)
@@ -551,30 +543,6 @@ cam_unit_manager_update (CamUnitManager *self)
 static void
 cam_unit_manager_register_core_drivers (CamUnitManager *self)
 {
-    // register core CamUnit drivers
-    CamUnitDriver *input_example_driver = 
-        CAM_UNIT_DRIVER (cam_input_example_driver_new ());
-    cam_unit_manager_add_driver (self, input_example_driver);
-
-    CamUnitDriver *input_log_driver = 
-        CAM_UNIT_DRIVER (cam_input_log_driver_new ());
-    cam_unit_manager_add_driver (self, input_log_driver);
-
-    // Debayer
-    cam_unit_manager_add_driver (self, cam_fast_bayer_filter_driver_new ()); 
-
-    CamUnitDriver *cconv_filter = cam_color_conversion_filter_driver_new ();
-    cam_unit_manager_add_driver (self, cconv_filter);
-
-    // convert "anything" to-rgb
-    cam_unit_manager_add_driver (self, cam_convert_to_rgb8_driver_new ());
-
-    // opengl renderer
-    cam_unit_manager_add_driver (self, cam_filter_gl_driver_new ()); 
-
-    // logger
-    cam_unit_manager_add_driver (self, cam_logger_unit_driver_new ());
-
     // scan for plugins
     char **path_dirs = g_strsplit (CAMUNITS_PLUGIN_PATH, 
             PLUGIN_PATH_SEPARATOR, 0);

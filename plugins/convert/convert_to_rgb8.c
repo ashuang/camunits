@@ -1,17 +1,43 @@
 #include <stdio.h>
 
-#include "convert_colorspace.h"
-#include "filter_fast_bayer.h"
-#include "convert_to_rgb8.h"
+#include <camunits/plugin.h>
+#include <camunits/dbg.h>
 
 #define err(args...) fprintf(stderr, args)
 
-CamUnitDriver *
-cam_convert_to_rgb8_driver_new()
+typedef struct _CamConvertToRgb8 {
+    CamUnit parent;
+
+    /*< private >*/
+    CamUnit *worker;
+    CamUnitManager *manager;
+} CamConvertToRgb8;
+
+typedef struct _CamConvertToRgb8Class {
+    CamUnitClass parent_class;
+} CamConvertToRgb8Class;
+
+GType cam_convert_to_rgb8_get_type (void);
+
+static CamConvertToRgb8 * cam_convert_to_rgb8_new(void);
+
+CAM_PLUGIN_TYPE(CamConvertToRgb8, cam_convert_to_rgb8, 
+        CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
-    return cam_unit_driver_new_stock ("convert", "to_rgb8",
+    cam_convert_to_rgb8_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("convert", "to_rgb8",
             "Convert to 8-bit RGB", 0,
-            (CamUnitConstructor)cam_convert_to_rgb8_new);
+            (CamUnitConstructor)cam_convert_to_rgb8_new, module);
 }
 
 // ============== CamConvertToRgb8 ===============
@@ -25,8 +51,6 @@ static void on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt, void *user_data);
-
-G_DEFINE_TYPE (CamConvertToRgb8, cam_convert_to_rgb8, CAM_TYPE_UNIT);
 
 static void
 cam_convert_to_rgb8_class_init( CamConvertToRgb8Class *klass )
@@ -51,13 +75,13 @@ cam_convert_to_rgb8_init (CamConvertToRgb8 *self)
 CamConvertToRgb8 * 
 cam_convert_to_rgb8_new()
 {
-    return CAM_CONVERT_TO_RGB8(g_object_new(CAM_TYPE_CONVERT_TO_RGB8, NULL));
+    return (CamConvertToRgb8*)(g_object_new(cam_convert_to_rgb8_get_type(), NULL));
 }
 
 static void
 _finalize (GObject * obj)
 {
-    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (obj);
+    CamConvertToRgb8 *self = (CamConvertToRgb8*)obj;
     if (self->worker) {
         g_signal_handlers_disconnect_by_func (self->worker, 
                 on_worker_frame_ready, self);
@@ -71,7 +95,7 @@ _finalize (GObject * obj)
 static int
 _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 {
-    CamConvertToRgb8 * self = CAM_CONVERT_TO_RGB8 (super);
+    CamConvertToRgb8 * self = (CamConvertToRgb8*)super;
     if (super->input_unit && super->input_unit->fmt &&
             super->input_unit->fmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         return 0;
@@ -90,7 +114,7 @@ _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 static int
 _stream_shutdown (CamUnit * super)
 {
-    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
+    CamConvertToRgb8 *self = (CamConvertToRgb8*)super;
     if (self->worker) {
         return cam_unit_stream_shutdown (self->worker);
     } else {
@@ -130,9 +154,22 @@ on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf,
 }
 
 static void
+_maybe_set_worker(CamConvertToRgb8 *self, const char *unit_id)
+{
+    if(!self->worker && 
+        cam_unit_manager_find_unit_description(self->manager, unit_id)) {
+        self->worker = 
+            cam_unit_manager_create_unit_by_id(self->manager, unit_id);
+        if(self->worker) {
+            dbg(DBG_DRIVER, "using worker unit [%s]\n", unit_id);
+        }
+    }
+}
+
+static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamConvertToRgb8 *self = CAM_CONVERT_TO_RGB8 (super);
+    CamConvertToRgb8 *self = (CamConvertToRgb8*)super;
     gboolean was_streaming = super->is_streaming;
     cam_unit_stream_shutdown (super);
 
@@ -155,47 +192,32 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             case CAM_PIXEL_FORMAT_YUYV:
             case CAM_PIXEL_FORMAT_BGRA:
             case CAM_PIXEL_FORMAT_BGR:
-                self->worker = CAM_UNIT (cam_color_conversion_filter_new());
+                _maybe_set_worker(self, "convert.colorspace");
                 break;
             case CAM_PIXEL_FORMAT_MJPEG:
                 // use the Intel IPP library for JPEG decompression if it
                 // is available
-                if(cam_unit_manager_find_unit_description(self->manager, 
-                            "ipp.jpeg_decompress")) {
-                    self->worker = cam_unit_manager_create_unit_by_id(
-                            self->manager, "ipp.jpeg_decompress");
-                }
+                _maybe_set_worker(self, "ipp.jpeg_decompress");
 
                 // if not, then try the Framewave library.
-                if(!self->worker && 
-                        cam_unit_manager_find_unit_description(self->manager, 
-                            "framewave.jpeg_decompress")) {
-                    self->worker = cam_unit_manager_create_unit_by_id(
-                            self->manager, "framewave.jpeg_decompress");
-                }
+                _maybe_set_worker(self, "framewave.jpeg_decompress");
 
                 // Lastly, fall back to libjpeg
-                if(!self->worker &&
-                        cam_unit_manager_find_unit_description(self->manager,
-                            "convert.jpeg_decompress")) {
-                    self->worker = cam_unit_manager_create_unit_by_id(
-                            self->manager, "convert.jpeg_decompress");
-                }
-
-                if(!self->worker) {
-                    return;
-                }
+                _maybe_set_worker(self, "convert.jpeg_decompress");
                 break;
             case CAM_PIXEL_FORMAT_BAYER_BGGR:
             case CAM_PIXEL_FORMAT_BAYER_RGGB:
             case CAM_PIXEL_FORMAT_BAYER_GBRG:
             case CAM_PIXEL_FORMAT_BAYER_GRBG:
-                self->worker = CAM_UNIT (cam_fast_bayer_filter_new ());
+                _maybe_set_worker(self, "convert.fast_debayer");
                 break;
             default:
                 return;
         }
 
+        if(!self->worker) {
+            return;
+        }
         g_object_ref_sink (self->worker);
 
         g_signal_connect (G_OBJECT (self->worker), "frame-ready",
@@ -212,7 +234,8 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 
                         wfmt);
 
-            } else if (CAM_IS_FAST_BAYER_FILTER (self->worker) &&
+            } else if (! strcmp(cam_unit_get_id(self->worker), 
+                        "convert.fast_debayer") &&
                     wfmt->pixelformat == CAM_PIXEL_FORMAT_BGRA) {
                 // hack.  fast debayer filter only produces BGRA, so just do an
                 // internal conversion to RGB later on

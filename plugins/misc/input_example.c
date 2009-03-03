@@ -4,13 +4,62 @@
 #include <sys/time.h>
 #include <assert.h>
 
-#include "input_example.h"
-#include "dbg.h"
+#include <camunits/plugin.h>
+#include <camunits/dbg.h>
 
-#define err(args...) fprintf(stderr, args)
+typedef struct _CamInputExampleDriver {
+    CamUnitDriver parent;
+} CamInputExampleDriver;
 
-#define FPS_CTL_NAME_ID 0
-#define FPS_CTL_NAME "FPS"
+typedef struct _CamInputExampleDriverClass {
+    CamUnitDriverClass parent_class;
+} CamInputExampleDriverClass;
+
+typedef struct _CamInputExample {
+    CamUnit parent;
+
+    CamUnitControl *enum_ctl;
+    CamUnitControl *bool_ctl;
+    CamUnitControl *int1_ctl;
+    CamUnitControl *int2_ctl;
+
+    int64_t next_frame_time;
+
+    int x;
+    int y;
+    int dx;
+    int dy;
+
+    int fps;
+} CamInputExample;
+
+typedef struct _CamInputExampleClass {
+    CamUnitClass parent_class;
+} CamInputExampleClass;
+
+static CamUnitDriver * cam_input_example_driver_new(void);
+static CamInputExample * cam_input_example_new(void);
+
+GType cam_input_example_get_type (void);
+GType cam_input_example_driver_get_type (void);
+
+CAM_PLUGIN_TYPE(CamInputExampleDriver, cam_input_example_driver, CAM_TYPE_UNIT_DRIVER);
+CAM_PLUGIN_TYPE(CamInputExample, cam_input_example, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
+{
+    cam_input_example_driver_register_type(module);
+    cam_input_example_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_input_example_driver_new();
+}
 
 static int64_t _timestamp_now()
 {
@@ -27,9 +76,6 @@ static CamUnit * cam_input_example_driver_create_unit(CamUnitDriver *super,
         const CamUnitDescription * udesc);
 static void cam_input_example_driver_finalize (GObject *obj);
 static int cam_input_example_driver_start (CamUnitDriver *self);
-
-G_DEFINE_TYPE (CamInputExampleDriver, cam_input_example_driver, \
-        CAM_TYPE_UNIT_DRIVER);
 
 static void
 cam_input_example_driver_init (CamInputExampleDriver *self)
@@ -66,11 +112,11 @@ cam_input_example_driver_finalize (GObject *obj)
     G_OBJECT_CLASS (cam_input_example_driver_parent_class)->finalize(obj);
 }
 
-CamInputExampleDriver *
+static CamUnitDriver *
 cam_input_example_driver_new()
 {
-    return CAM_INPUT_EXAMPLE_DRIVER(
-            g_object_new(CAM_INPUT_EXAMPLE_DRIVER_TYPE, NULL));
+    return CAM_UNIT_DRIVER(
+            g_object_new(cam_input_example_driver_get_type(), NULL));
 }
 
 static int 
@@ -100,8 +146,6 @@ static gboolean cam_input_example_try_produce_frame (CamUnit * super);
 static int64_t cam_input_example_get_next_event_time (CamUnit *super);
 static gboolean cam_example_try_set_control(CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual);
-
-G_DEFINE_TYPE (CamInputExample, cam_input_example, CAM_TYPE_UNIT);
 
 static void
 cam_input_example_class_init (CamInputExampleClass *klass)
@@ -156,17 +200,17 @@ cam_input_example_finalize (GObject *obj)
     G_OBJECT_CLASS (cam_input_example_parent_class)->finalize(obj);
 }
 
-CamInputExample * 
+static CamInputExample * 
 cam_input_example_new()
 {
-    return CAM_INPUT_EXAMPLE (g_object_new (CAM_INPUT_EXAMPLE_TYPE, NULL));
+    return (CamInputExample*) (g_object_new (cam_input_example_get_type(), NULL));
 }
 
 static int
 cam_input_example_stream_init (CamUnit *super, const CamUnitFormat *fmt)
 {
     dbg(DBG_INPUT, "example stream init\n");
-    CamInputExample *self = CAM_INPUT_EXAMPLE (super);
+    CamInputExample *self = (CamInputExample*)super;
     self->next_frame_time = _timestamp_now();
     
     return 0;
@@ -192,7 +236,7 @@ static gboolean
 cam_input_example_try_produce_frame (CamUnit *super)
 {
     dbg(DBG_INPUT, "iterate\n");
-    CamInputExample *self = CAM_INPUT_EXAMPLE (super);
+    CamInputExample *self = (CamInputExample*)super;
 
     int64_t now = _timestamp_now ();
     if (now < self->next_frame_time) return FALSE;
@@ -248,14 +292,15 @@ cam_input_example_try_produce_frame (CamUnit *super)
 static int64_t
 cam_input_example_get_next_event_time (CamUnit *super)
 {
-    return CAM_INPUT_EXAMPLE (super)->next_frame_time;
+    CamInputExample *self = (CamInputExample*)super;
+    return self->next_frame_time;
 }
 
 static gboolean
 cam_example_try_set_control(CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual)
 {
-    CamInputExample *self = CAM_INPUT_EXAMPLE (super);
+    CamInputExample *self = (CamInputExample*)super;
     if (ctl == self->enum_ctl) {
         self->fps = fps_numer_options[ g_value_get_int(proposed) ];
         self->next_frame_time = _timestamp_now();

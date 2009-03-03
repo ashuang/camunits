@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "camunits/plugin.h"
+#include "camunits/dbg.h"
+
 #ifdef __APPLE__
 #define MALLOC_ALIGNED(s) malloc(s)
 #else
@@ -9,24 +12,49 @@
 #define MALLOC_ALIGNED(s) memalign(16,s)
 #endif
 
-#include "filter_fast_bayer.h"
-#include "dbg.h"
+#ifdef __APPLE__
+#define MALLOC_ALIGNED(s) malloc(s)
+#else
+#include <malloc.h>
+#define MALLOC_ALIGNED(s) memalign(16,s)
+#endif
 
 #define err(args...) fprintf(stderr, args)
 
-#ifdef __APPLE__
-#define MALLOC_ALIGNED(s) malloc(s)
-#else
-#include <malloc.h>
-#define MALLOC_ALIGNED(s) memalign(16,s)
-#endif
 
-CamUnitDriver *
-cam_fast_bayer_filter_driver_new()
+typedef struct _CamFastBayerFilter {
+    CamUnit parent;
+    CamUnitControl *bayer_tile_ctl;
+
+    uint8_t * aligned_buffer;
+
+    uint8_t * planes[4];
+    int plane_stride;
+} CamFastBayerFilter;
+
+typedef struct _CamFastBayerFilterClass {
+    CamUnitClass parent_class;
+} CamFastBayerFilterClass;
+
+static CamFastBayerFilter * cam_fast_bayer_filter_new (void);
+
+GType cam_fast_bayer_filter_get_type (void);
+CAM_PLUGIN_TYPE(CamFastBayerFilter, cam_fast_bayer_filter, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
-    return cam_unit_driver_new_stock( "convert", "fast_debayer",
+    cam_fast_bayer_filter_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ( "convert", "fast_debayer",
             "Fast Debayer", 0,
-            (CamUnitConstructor)cam_fast_bayer_filter_new );
+            (CamUnitConstructor)cam_fast_bayer_filter_new, module);
 }
 
 // ============== CamFastBayerFilter ===============
@@ -37,9 +65,6 @@ static int cam_fast_bayer_filter_stream_init (CamUnit * super,
 static int cam_fast_bayer_filter_stream_shutdown (CamUnit * super);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
-
-G_DEFINE_TYPE (CamFastBayerFilter, cam_fast_bayer_filter, 
-        CAM_TYPE_UNIT);
 
 static void
 cam_fast_bayer_filter_init( CamFastBayerFilter *self )
@@ -82,7 +107,7 @@ cam_fast_bayer_filter_class_init( CamFastBayerFilterClass *klass )
 static int
 cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 {
-    CamFastBayerFilter * self = CAM_FAST_BAYER_FILTER (super);
+    CamFastBayerFilter * self = (CamFastBayerFilter*)super;
 
     switch (super->input_unit->fmt->pixelformat) {
         case CAM_PIXEL_FORMAT_BAYER_GBRG:
@@ -130,7 +155,7 @@ cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 static int
 cam_fast_bayer_filter_stream_shutdown (CamUnit * super)
 {
-    CamFastBayerFilter * self = CAM_FAST_BAYER_FILTER (super);
+    CamFastBayerFilter * self = (CamFastBayerFilter*) super;
 
     int i;
     for (i = 0; i < 4; i++) {
@@ -147,8 +172,8 @@ cam_fast_bayer_filter_stream_shutdown (CamUnit * super)
 CamFastBayerFilter * 
 cam_fast_bayer_filter_new()
 {
-    return CAM_FAST_BAYER_FILTER(
-            g_object_new(CAM_TYPE_FAST_BAYER_FILTER, NULL));
+    return (CamFastBayerFilter*)
+            g_object_new(cam_fast_bayer_filter_get_type(), NULL);
 }
 
 static CamPixelFormat
@@ -174,7 +199,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
-    CamFastBayerFilter * self = CAM_FAST_BAYER_FILTER (super);
+    CamFastBayerFilter * self = (CamFastBayerFilter*) super;
     dbg(DBG_FILTER, "[%s] iterate\n", cam_unit_get_name(super));
 
     CamFrameBuffer *outbuf = 

@@ -6,24 +6,26 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "unit.h"
-#include "unit_driver.h"
-#include "pixels.h"
-#include "log.h"
-#include "input_log.h"
-#include "dbg.h"
+#include <camunits/log.h>
+#include <camunits/plugin.h>
+#include <camunits/dbg.h>
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
 
-struct _CamInputLogDriver {
+enum {
+    CAM_INPUT_LOG_ADVANCE_MODE_SOFT = 0,
+    CAM_INPUT_LOG_ADVANCE_MODE_HARD
+};
+
+typedef struct _CamInputLogDriver {
     CamUnitDriver parent;
-};
+} CamInputLogDriver;
 
-struct _CamInputLogDriverClass {
+typedef struct _CamInputLogDriverClass {
     CamUnitDriverClass parent_class;
-};
+} CamInputLogDriverClass;
 
-struct _CamInputLog {
+typedef struct _CamInputLog {
     CamUnit parent;
 
     CamLog *camlog;
@@ -42,11 +44,35 @@ struct _CamInputLog {
     CamUnitControl *loop_ctl;
     CamUnitControl *loop_start_ctl;
     CamUnitControl *loop_end_ctl;
-};
+} CamInputLog;
 
-struct _CamInputLogClass {
+typedef struct _CamInputLogClass {
     CamUnitClass parent_class;
-};
+} CamInputLogClass;
+
+GType cam_input_log_driver_get_type (void);
+GType cam_input_log_get_type (void);
+
+static CamUnitDriver * cam_input_log_driver_new (void);
+static CamInputLog * cam_input_log_new (const char *fname);
+
+CAM_PLUGIN_TYPE(CamInputLogDriver, cam_input_log_driver, CAM_TYPE_UNIT_DRIVER);
+CAM_PLUGIN_TYPE(CamInputLog, cam_input_log, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
+{
+    cam_input_log_driver_register_type(module);
+    cam_input_log_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_input_log_driver_new();
+}
 
 // ============== CamInputLogDriver ===============
 
@@ -54,8 +80,6 @@ static CamUnit * driver_create_unit (CamUnitDriver *super,
         const CamUnitDescription * udesc);
 
 static int _log_set_file (CamInputLog *self, const char *fname);
-
-G_DEFINE_TYPE (CamInputLogDriver, cam_input_log_driver, CAM_TYPE_UNIT_DRIVER);
 
 static void
 cam_input_log_driver_init (CamInputLogDriver *self)
@@ -75,11 +99,11 @@ cam_input_log_driver_class_init (CamInputLogDriverClass *klass)
     klass->parent_class.create_unit = driver_create_unit;
 }
 
-CamInputLogDriver *
+CamUnitDriver *
 cam_input_log_driver_new ()
 {
     return 
-        CAM_INPUT_LOG_DRIVER (g_object_new (CAM_INPUT_LOG_DRIVER_TYPE, NULL));
+        CAM_UNIT_DRIVER (g_object_new (cam_input_log_driver_get_type(), NULL));
 }
 
 static CamUnit * 
@@ -105,8 +129,6 @@ static gboolean log_try_produce_frame (CamUnit * super);
 static int64_t log_get_next_event_time (CamUnit *super);
 static gboolean log_try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual);
-
-G_DEFINE_TYPE (CamInputLog, cam_input_log, CAM_TYPE_UNIT);
 
 static void
 cam_input_log_init (CamInputLog *self)
@@ -174,7 +196,7 @@ static void
 log_finalize (GObject *obj)
 {
     dbg (DBG_INPUT, "log finalize\n");
-    CamInputLog *self = CAM_INPUT_LOG (obj);
+    CamInputLog *self = (CamInputLog*)obj;
 
     if (self->camlog) { cam_log_destroy (self->camlog); }
     G_OBJECT_CLASS (cam_input_log_parent_class)->finalize (obj);
@@ -183,7 +205,7 @@ log_finalize (GObject *obj)
 CamInputLog * 
 cam_input_log_new (const char *fname)
 {
-    CamInputLog *self = CAM_INPUT_LOG (g_object_new (CAM_INPUT_LOG_TYPE, NULL));
+    CamInputLog *self = (CamInputLog*) (g_object_new (cam_input_log_get_type(), NULL));
 
     if (fname && strlen (fname)) {
         if (0 == _log_set_file (self, fname)) {
@@ -251,7 +273,7 @@ static int
 log_stream_init (CamUnit *super, const CamUnitFormat *fmt)
 {
     dbg (DBG_INPUT, "log stream init\n");
-    CamInputLog *self = CAM_INPUT_LOG (super);
+    CamInputLog *self = (CamInputLog*)super;
 
     self->next_frame_time = _timestamp_now ();
     return 0;
@@ -260,7 +282,7 @@ log_stream_init (CamUnit *super, const CamUnitFormat *fmt)
 static gboolean 
 log_try_produce_frame (CamUnit *super)
 {
-    CamInputLog *self = CAM_INPUT_LOG (super);
+    CamInputLog *self = (CamInputLog*)super;
     int64_t now = _timestamp_now ();
     if (now < self->next_frame_time) return FALSE;
 
@@ -365,14 +387,15 @@ log_try_produce_frame (CamUnit *super)
 static int64_t
 log_get_next_event_time (CamUnit *super)
 {
-    return CAM_INPUT_LOG (super)->next_frame_time;
+    CamInputLog *self = (CamInputLog*)super;
+    return self->next_frame_time;
 }
 
 static gboolean
 log_try_set_control (CamUnit *super, const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual)
 {
-    CamInputLog *self = CAM_INPUT_LOG (super);
+    CamInputLog *self = (CamInputLog*)super;
     if (ctl == self->pause_ctl) {
         g_value_copy (proposed, actual);
         int paused = g_value_get_boolean (proposed);

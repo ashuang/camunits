@@ -2,17 +2,46 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "convert_colorspace.h"
-#include "dbg.h"
+#include "camunits/plugin.h"
+#include "camunits/dbg.h"
 
 #define err(args...) fprintf(stderr, args)
 
-CamUnitDriver *
-cam_color_conversion_filter_driver_new()
+typedef struct _CamColorConversionFilter CamColorConversionFilter;
+
+struct _CamColorConversionFilter {
+    CamUnit parent;
+
+    int (*cc_func)(CamColorConversionFilter *self, 
+        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf,
+        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf);
+    GList *conversions;
+};
+
+typedef struct _CamColorConversionFilterClass {
+    CamUnitClass parent_class;
+} CamColorConversionFilterClass;
+
+static CamColorConversionFilter * cam_color_conversion_filter_new(void);
+
+GType cam_color_conversion_filter_get_type (void);
+CAM_PLUGIN_TYPE(CamColorConversionFilter, cam_color_conversion_filter, 
+        CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
-    return cam_unit_driver_new_stock( "convert", "colorspace",
+    cam_color_conversion_filter_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full( "convert", "colorspace",
             "Colorspace Conversion", 0,
-            (CamUnitConstructor)cam_color_conversion_filter_new );
+            (CamUnitConstructor)cam_color_conversion_filter_new, module);
 }
 
 // ============== CamColorConversionFilter ===============
@@ -73,9 +102,6 @@ gray_8u_to_32f (CamColorConversionFilter *self,
             outfmt->row_stride,
             outfmt->width, outfmt->height, inbuf->data, infmt->row_stride);
 }
-
-G_DEFINE_TYPE (CamColorConversionFilter, cam_color_conversion_filter, 
-        CAM_TYPE_UNIT);
 
 typedef struct _conv_info_t {
     CamPixelFormat inpfmt;
@@ -144,15 +170,15 @@ cam_color_conversion_filter_class_init( CamColorConversionFilterClass *klass )
 CamColorConversionFilter * 
 cam_color_conversion_filter_new()
 {
-    return CAM_COLOR_CONVERSION_FILTER(
-            g_object_new(CAM_TYPE_COLOR_CONVERSION_FILTER, NULL));
+    return (CamColorConversionFilter*)(
+            g_object_new(cam_color_conversion_filter_get_type(), NULL));
 }
 
 static void
 cam_color_conversion_filter_finalize (GObject * obj)
 {
     dbg (DBG_INPUT, "color conversion finalize\n");
-    CamColorConversionFilter *self = CAM_COLOR_CONVERSION_FILTER (obj);
+    CamColorConversionFilter *self = (CamColorConversionFilter*)obj;
     for (GList *citer=self->conversions; citer; citer=citer->next) {
         free (citer->data);
     }
@@ -167,7 +193,7 @@ static int
 cam_color_conversion_filter_stream_init (CamUnit * super, 
         const CamUnitFormat * outfmt)
 {
-    CamColorConversionFilter * self = CAM_COLOR_CONVERSION_FILTER (super);
+    CamColorConversionFilter * self = (CamColorConversionFilter*)super;
     dbg (DBG_INPUT, "Initializing color conversion filter\n");
 
     const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
@@ -188,7 +214,7 @@ static void
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamColorConversionFilter * self = CAM_COLOR_CONVERSION_FILTER (super);
+    CamColorConversionFilter * self = (CamColorConversionFilter*)super;
     dbg(DBG_FILTER, "[%s] iterate\n", cam_unit_get_name(super));
 
     if (!self->cc_func) return;
@@ -212,7 +238,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamColorConversionFilter *self = CAM_COLOR_CONVERSION_FILTER (super);
+    CamColorConversionFilter *self = (CamColorConversionFilter*)super;
     cam_unit_remove_all_output_formats (super);
     if (!infmt) return;
 
