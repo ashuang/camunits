@@ -12,7 +12,7 @@
     <title>Description</title>
 
     <para>
-    <literal>input.example</literal> serves as an always-present input unit
+    <literal>input.example</literal> provides an always-present input unit
     that can be used for debugging when no other units are available.
     Additionally, it serves as an example of how to create a simple unit driver
     and unit with basic controls. 

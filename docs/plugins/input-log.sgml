@@ -12,7 +12,9 @@
     <title>Description</title>
 
     <para>
-    TODO
+    <literal>input.log</literal> provides units that can read images from a
+    Camunits log file.  Various features of the log playback can be controlled,
+    such as the playback speed, frame skipping, and looping.
     </para>
 
     <refsect3>

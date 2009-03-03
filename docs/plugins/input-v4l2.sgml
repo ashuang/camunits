@@ -12,9 +12,15 @@
     <title>Description</title>
 
     <para>
-    <literal>input.v4l2</literal> provides access to Video 4 Linux 2 devices in
-    GNU/Linux systems.
+    <literal>input.v4l2</literal> provides access to Video 4 Linux 2 devices.
     </para>
+
+    <refsect3>
+    <title>Requirements</title>
+    <itemizedlist>
+    <listitem>GNU/Linux</listitem>
+    </itemizedlist>
+    </refsect3>
 
     <refsect3>
     <title>Input Formats</title>
@@ -23,16 +29,37 @@
 
     <refsect3>
     <title>Output Formats</title>
-    <para>TODO</para>
+    <para>The exact list of output formats supported by a unit varies with each
+    camera.
+    </para>
+
     </refsect3>
 </refsect1>
 
 <refsect1>
     <title>Controls</title>
 
-    <simpara>
-    TODO
-    </simpara>
+    <para>The <literal>input.v4l2</literal> plugin exposes most of the
+    controls for a V4L2 device.  The exact number, name, and type of
+    each control depends on the device, as different V4L2 devices (and drivers)
+    expose different controls.
+    </para>
+
+    <para>The full list and description of V4L2 controls can be found in the
+    V4L2 API reference.  As of March, 2009, this document is located at
+    <ulink url="http://v4l2spec.bytesex.org/spec/">http://v4l2spec.bytesex.org/spec/</ulink>.
+    </para>
+
+    <para>As an example, here are the controls exposed by the Logitech QuickCam Ultra Vision:
+
+    <mediaobject>
+    <imageobject>
+    <imagedata fileref="input-v4l2-widget.png" format="PNG"/>
+    </imageobject>
+    </mediaobject>
+
+    </para>
+
 </refsect1>
 
 </refentry>

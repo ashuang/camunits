@@ -17,6 +17,7 @@
     <literal>input.v4l</literal> provides access to Video 4 Linux 1 devices.
     </para>
 
+    <!--
     <refsect3>
     <title>Input Formats</title>
     <para>None.  This is an input unit.</para>
@@ -26,14 +27,17 @@
     <title>Output Formats</title>
     <para>TODO</para>
     </refsect3>
+    -->
 </refsect1>
 
 <refsect1>
     <title>Controls</title>
 
-    <simpara>
-    TODO
-    </simpara>
+    <para>The full list and description of V4L controls can be found in the
+    V4L API reference.  As of March, 2009, this document can be found at
+    <ulink url="http://linux.bytesex.org/v4l2/API.html">http://linux.bytesex.org/v4l2/API.html</ulink>.
+    </para>
+
 </refsect1>
 
 </refentry>

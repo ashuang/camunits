@@ -13,7 +13,7 @@
 
     <para>
     <literal>convert.jpeg_decompress</literal> decompresses JPEG images to
-    either RGB or 8-bit grayscale.  It usees libjpeg.
+    either RGB or 8-bit grayscale.  It uses libjpeg.
     </para>
 
     <refsect3>
