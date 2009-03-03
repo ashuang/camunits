@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>Camunits Plugins</title>
+    <authorgroup>
+    <author>
+        <firstname>Albert</firstname>
+        <surname>Huang</surname>
+    </author>
+    <author>
+        <firstname>David</firstname>
+        <surname>Moore</surname>
+    </author>
+    </authorgroup>
+
+    <copyright>
+    <year>2009</year>
+    <holder>Albert Huang, David Moore</holder>
+    </copyright>
+
+  </bookinfo>
+
+  <part>
+      <title>Core Plugins</title>
+      <chapter>
+          <title>Input</title>
+          <xi:include href="input-example.sgml"/>
+          <xi:include href="input-log.sgml"/>
+          <xi:include href="input-dc1394.sgml"/>
+          <xi:include href="input-v4l2.sgml"/>
+          <xi:include href="input-v4l.sgml"/>
+      </chapter>
+
+      <chapter>
+          <title>Convert</title>
+          <xi:include href="convert-colorspace.sgml"/>
+          <xi:include href="convert-jpeg-decompress.sgml"/>
+          <xi:include href="convert-jpeg-compress.sgml"/>
+          <xi:include href="convert-fast-debayer.sgml"/>
+          <xi:include href="convert-to-rgb8.sgml"/>
+      </chapter>
+      <chapter>
+          <title>Other</title>
+          <xi:include href="output-logger.sgml"/>
+          <xi:include href="filter-gl.sgml"/>
+      </chapter>
+  </part>
+
+  <part>
+      <title>Extra Plugins</title>
+      <chapter>
+          <title>TODO</title>
+      </chapter>
+  </part>
+</book>

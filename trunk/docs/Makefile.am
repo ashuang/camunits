@@ -1,1 +1,1 @@
-SUBDIRS = reference tutorial
+SUBDIRS = reference tutorial plugins

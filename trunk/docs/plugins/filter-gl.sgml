@@ -1,0 +1,38 @@
+<refentry id="filter-gl" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>filter.gl</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>OpenGL renderer</refname>
+    <refpurpose>Renders images as OpenGL textures</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>filter.gl</literal> renders images as OpenGL textures.  It does
+    not modify images.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>TODO</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>The input format is passed through.</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    This plugin does not have any controls.
+    </simpara>
+</refsect1>
+
+</refentry>

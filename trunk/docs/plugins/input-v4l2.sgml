@@ -1,0 +1,38 @@
+<refentry id="input-v4l2" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>input.v4l2</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Video 4 Linux 2</refname>
+    <refpurpose>Video 4 Linux 2</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>input.v4l2</literal> provides access to Video 4 Linux 2 devices in
+    GNU/Linux systems.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>None.  This is an input unit.</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>TODO</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    TODO
+    </simpara>
+</refsect1>
+
+</refentry>

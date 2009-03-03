@@ -1,0 +1,38 @@
+<refentry id="input-dc1394" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>input.dc1394</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>DC1394</refname>
+    <refpurpose>IEEE 1394 Digital Camera</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>input.dc1394</literal> is a plugin that uses the libdc1394 API to
+    provide access to IIDC-compliant digital cameras.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>None.  This is an input unit.</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>TODO</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    TODO
+    </simpara>
+</refsect1>
+
+</refentry>

@@ -1,0 +1,38 @@
+<refentry id="convert-to-rgb8" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>convert.to_rgb8</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Convert to 8-bit RGB</refname>
+    <refpurpose>Convert almost anything to RGB</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>convert-to-rgb8</literal> tries to convert its input to a 24-bit
+    RGB image (8-bits per channel).
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>TODO</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>RGB, same size as the input image.</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    None
+    </simpara>
+</refsect1>
+
+</refentry>
