@@ -165,6 +165,8 @@ AC_OUTPUT([
   docs/reference/libcamunits/Makefile
   docs/reference/libcamunits-gtk/Makefile
   docs/tutorial/Makefile
+  docs/plugins/Makefile
+  docs/plugins/build/Makefile
 ])
 
 if test "x$DC1394_LIBS" = x; then

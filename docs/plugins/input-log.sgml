@@ -1,0 +1,140 @@
+<refentry id="input-log" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>input.log</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Log Input Unit</refname>
+    <refpurpose>Read images from a Camunits log file</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    TODO
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>None.  This is an input unit.</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>The output format is determined by the log file</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+<mediaobject>
+    <imageobject>
+        <imagedata fileref="input-log-widget.png" format="PNG"/>
+    </imageobject>
+</mediaobject>
+
+    <refsect2 id="input-log-filename">
+    <title>Filename</title>
+    <simpara>
+    Which log file to read from.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>filename</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>string</simpara></listitem></varlistentry>
+    </variablelist>
+
+    </refsect2>
+
+    <refsect2 id="input-log-frame">
+    <title>Frame</title>
+    <simpara>
+    The next frame number to read.  This is zero-indexed, and automatically
+    advances.  It is also controllable.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>frame</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>int</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-log-pause">
+    <title>Pause</title>
+    <simpara>
+    Pauses playback if set.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>pause</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-log-mode">
+    <title>Mode</title>
+    <simpara>
+    There are two auto-advance modes, and behave differently only if the
+    image processing chain handles images more slowly than they are produced by
+    the log input unit.  In the first mode (0), the log input unit will delay
+    playback of the next frame, and never skips frames.  In the second mode
+    (1), the log input unit will skip frames to maintain a "realtime" playback
+    effect.  
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>mode</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>enumeration</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-log-speed">
+    <title>Playback Speed</title>
+    <simpara>
+    Scales the rate at which frames are produced, relative to the rate at which
+    they were logged.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>speed</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>float</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-log-loop">
+    <title>Loop</title>
+    <simpara>
+    If set, then log playback will constantly loop, playing back a specified
+    region of the log file.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>loop</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-log-loop-start-frame">
+    <title>Loop Start Frame</title>
+    <simpara>
+    Controls the frame at which looping starts.  Only applicable if
+    <literal>loop</literal> is set.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>loop-start-frame</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>int</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+
+    <refsect2 id="input-log-loop-end-frame">
+    <title>Loop End Frame</title>
+    <simpara>
+    Controls the frame at which looping ends.  Only applicable if
+    <literal>loop</literal> is set.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>loop-end-frame</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>int</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+</refsect1>
+
+</refentry>

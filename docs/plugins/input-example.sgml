@@ -1,0 +1,93 @@
+<refentry id="input-example" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>input.example</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Example Input Unit</refname>
+    <refpurpose>Always-available debugging unit</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>input.example</literal> serves as an always-present input unit
+    that can be used for debugging when no other units are available.
+    Additionally, it serves as an example of how to create a simple unit driver
+    and unit with basic controls. 
+    </para>
+
+    <para>
+    This unit generates a constantly changing test pattern.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>None.  This is an input unit.</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>640x480 RGB</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+<mediaobject>
+    <imageobject>
+        <imagedata fileref="input-example-widget.png" format="PNG"/>
+    </imageobject>
+</mediaobject>
+
+    <refsect2 id="input-example-menu">
+    <title>menu</title>
+    <simpara>
+    Example enumerated control.  Controls the frame rate of images produced by this unit.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>menu</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>enum</simpara></listitem></varlistentry>
+    </variablelist>
+
+    </refsect2>
+
+    <refsect2 id="input-example-bool">
+    <title>bool</title>
+    <simpara>
+    Example boolean control.  Controls the color of the test pattern.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-example-int-1">
+    <title>int 1</title>
+    <simpara>
+    Example integer control.  Controls the size of the test pattern.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>int1</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>integer</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>range</parameter>:</term><listitem><simpara>0 - 100</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="input-example-int-2">
+    <title>int2</title>
+    <simpara>
+    Example integer control.  Controls the brightness of the test pattern.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>int2</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>integer</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>range</parameter>:</term><listitem><simpara>0 - 255</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+</refsect1>
+
+</refentry>

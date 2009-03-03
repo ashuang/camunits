@@ -1,0 +1,39 @@
+<refentry id="convert-colorspace" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>convert.colorspace</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Colorspace Conversion</refname>
+    <refpurpose>General purpose colorspace conversion</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>convert.colorspace</literal> provides a suite of colorspace
+    conversion routines to convert images from one format to another.  Only
+    uncompressesd formats are supported.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>TODO</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>TODO</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    None.
+    </simpara>
+</refsect1>
+
+</refentry>

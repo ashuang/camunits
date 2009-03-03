@@ -1,0 +1,38 @@
+<refentry id="convert-jpeg-decompress" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>convert.jpeg_decompress</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>JPEG Decompress</refname>
+    <refpurpose>Decompress JPEG images</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>convert.jpeg_decompress</literal> decompresses JPEG images to
+    either RGB or 8-bit grayscale.  It usees libjpeg.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>JPEG</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>24bpp RGB, or 8bpp Gray</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    None.
+    </simpara>
+</refsect1>
+
+</refentry>

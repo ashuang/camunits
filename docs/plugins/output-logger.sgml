@@ -1,0 +1,44 @@
+<refentry id="output-logger" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>output.logger</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Logger</refname>
+    <refpurpose>Write images to a Camunits log file</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>output.logger</literal> writes images and metadata to a Camunits
+    log file.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>All input formats are accepted.</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>The input format is passed through.</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+<mediaobject>
+    <imageobject>
+        <imagedata fileref="output-logger-widget.png" format="PNG"/>
+    </imageobject>
+</mediaobject>
+
+    <simpara>
+    TODO
+    </simpara>
+</refsect1>
+
+</refentry>

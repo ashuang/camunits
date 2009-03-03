@@ -1,0 +1,38 @@
+<refentry id="convert-jpeg-compress" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>convert.jpeg_compress</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>JPEG Compress</refname>
+    <refpurpose>Compress JPEG images</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>convert.jpeg_compress</literal> performs JPEG compression on its
+    input, using libjpeg.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>24bpp RGB, 8bpp Gray, 32bpp RGBA</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>JPEG</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    TODO.
+    </simpara>
+</refsect1>
+
+</refentry>

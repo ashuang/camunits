@@ -5,6 +5,10 @@
 
 #include <glib-object.h>
 
+/**
+ * SECTION:pixels
+ * @short_description: Pixel format definitions and colorspace conversion routines.
+ */
 #define cam_pf_fourcc(a,b,c,d)\
    (((uint32_t)(a))     | \
     ((uint32_t)(b)<<8)  | \

@@ -1,0 +1,42 @@
+<refentry id="convert-fast-debayer" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>convert.fast_debayer</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Fast De-bayer</refname>
+    <refpurpose>SSE2/SSE3 optimized Bayer demosaic filter</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>convert.fast_debayer</literal> is a Bayer demosaic filter that
+    is optimized with SSE2 and SSE3 instructions, so it should be pretty fast.
+    </para>
+
+    <para>
+    TODO
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>8bpp Gray, 8bpp BGGR, 8bpp RGGB, 8bpp BGRG, TODO </para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>8bpp Gray, 24bpp RGB</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    TODO
+    </simpara>
+</refsect1>
+
+</refentry>
