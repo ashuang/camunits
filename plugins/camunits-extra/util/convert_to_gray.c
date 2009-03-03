@@ -1,5 +1,7 @@
 #include <stdio.h>
+
 #include <camunits/plugin.h>
+#include <camunits/dbg.h>
 
 typedef struct {
     CamUnit parent;
@@ -31,9 +33,6 @@ CamUnitDriver * cam_plugin_create (GTypeModule * module)
 }
 
 // ============== CamConvertToGray ===============
-extern CamUnit * cam_color_conversion_filter_new(void);
-extern CamUnit * cam_fast_bayer_filter_new (void);
-
 static int _stream_init (CamUnit * super, const CamUnitFormat * format);
 static int _stream_shutdown (CamUnit * super);
 static void _finalize (GObject * obj);
@@ -137,6 +136,19 @@ on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf,
 }
 
 static void
+_maybe_set_worker(CamConvertToGray *self, const char *unit_id)
+{
+    if(!self->worker && 
+        cam_unit_manager_find_unit_description(self->manager, unit_id)) {
+        self->worker = 
+            cam_unit_manager_create_unit_by_id(self->manager, unit_id);
+        if(self->worker) {
+            dbg(DBG_DRIVER, "using worker unit [%s]\n", unit_id);
+        }
+    }
+}
+
+static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
     CamConvertToGray *self = (CamConvertToGray*) (super);
@@ -162,38 +174,24 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             case CAM_PIXEL_FORMAT_BGRA:
             case CAM_PIXEL_FORMAT_BGR:
             case CAM_PIXEL_FORMAT_RGB:
-                self->worker = CAM_UNIT (cam_color_conversion_filter_new());
+                _maybe_set_worker(self, "convert.colorspace");
                 break;
             case CAM_PIXEL_FORMAT_MJPEG:
                 // use the Intel IPP library for JPEG decompression if it
                 // is available
-                if(cam_unit_manager_find_unit_description(self->manager, 
-                            "ipp.jpeg_decompress")) {
-                    self->worker = cam_unit_manager_create_unit_by_id(
-                            self->manager, "ipp.jpeg_decompress");
-                }
+                _maybe_set_worker(self, "ipp.jpeg_decompress");
 
                 // if not, then try the Framewave library.
-                if(!self->worker && 
-                        cam_unit_manager_find_unit_description(self->manager, 
-                            "framewave.jpeg_decompress")) {
-                    self->worker = cam_unit_manager_create_unit_by_id(
-                            self->manager, "framewave.jpeg_decompress");
-                }
+                _maybe_set_worker(self, "framewave.jpeg_decompress");
 
                 // Lastly, fall back to libjpeg
-                if(!self->worker &&
-                        cam_unit_manager_find_unit_description(self->manager, 
-                            "convert.jpeg_decompress")) {
-                    self->worker = cam_unit_manager_create_unit_by_id(
-                            self->manager, "convert.jpeg_decompress");
-                }
+                _maybe_set_worker(self, "convert.jpeg_decompress");
                 break;
             case CAM_PIXEL_FORMAT_BAYER_BGGR:
             case CAM_PIXEL_FORMAT_BAYER_RGGB:
             case CAM_PIXEL_FORMAT_BAYER_GBRG:
             case CAM_PIXEL_FORMAT_BAYER_GRBG:
-                self->worker = CAM_UNIT (cam_fast_bayer_filter_new ());
+                _maybe_set_worker(self, "convert.fast_debayer");
                 break;
             default:
                 return;
