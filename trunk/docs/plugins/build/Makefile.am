@@ -53,6 +53,8 @@ IGNORE_HFILES=
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES=../input-example-widget.png \
 			../input-log-widget.png \
+			../input-dc1394-widget.png \
+			../input-v4l2-widget.png \
 			../output-logger-widget.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).

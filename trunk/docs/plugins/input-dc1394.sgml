@@ -1,6 +1,6 @@
 <refentry id="input-dc1394" revision="17 Jan 2008">
 <refmeta>
-    <refentrytitle><code>input.dc1394</code></refentrytitle>
+    <refentrytitle><literal>input.dc1394</literal></refentrytitle>
 </refmeta>
 
 <refnamediv>
@@ -12,9 +12,16 @@
     <title>Description</title>
 
     <para>
-    <literal>input.dc1394</literal> is a plugin that uses the libdc1394 API to
+    <literal>input.dc1394</literal> is a plugin that uses the <ulink url="http://sourceforge.net/projects/libdc1394">libdc1394</ulink> API to
     provide access to IIDC-compliant digital cameras.
     </para>
+
+    <refsect3>
+    <title>Requirements</title>
+    <itemizedlist>
+    <listitem>libdc1394 >= 2.0</listitem>
+    </itemizedlist>
+    </refsect3>
 
     <refsect3>
     <title>Input Formats</title>
@@ -23,16 +30,51 @@
 
     <refsect3>
     <title>Output Formats</title>
-    <para>TODO</para>
+    <para>The exact list of output formats supported by a unit varies with each
+    camera.  In general, the pixel formats will be among the following:
+    </para>
+
+    <itemizedlist>
+    <listitem><literal>GRAY</literal></listitem>
+    <listitem><literal>BAYER_RGGB</literal></listitem>
+    <listitem><literal>BAYER_GBRG</literal></listitem>
+    <listitem><literal>BAYER_GRBG</literal></listitem>
+    <listitem><literal>BAYER_BGGR</literal></listitem>
+    <listitem><literal>IYU1</literal></listitem>
+    <listitem><literal>UYVY</literal></listitem>
+    <listitem><literal>IYU2</literal></listitem>
+    <listitem><literal>RGB</literal></listitem>
+    <listitem><literal>BE_GRAY16</literal></listitem>
+    <listitem><literal>BE_RGB16</literal></listitem>
+    <listitem><literal>BE_SIGNED_GRAY16</literal></listitem>
+    <listitem><literal>BE_SIGNED_RGB16</literal></listitem>
+    <listitem><literal>BE_GRAY16</literal></listitem>
+    </itemizedlist>
     </refsect3>
 </refsect1>
 
 <refsect1>
     <title>Controls</title>
+    <para>The <literal>input.dc1394</literal> plugin exposes most of the
+    control registers for a DC1394 camera.  The exact number, name, and type of
+    each control depends on the camera, as different DC1394 cameras expose different
+    controls.
+    </para>
+    <para>The full list and description of DC1394 control registers can be found in the
+    IIDC specifications.  A copy of those specifications can be found at:
+    <ulink url="http://damien.douxchamps.net/ieee1394/libdc1394/iidc/">http://damien.douxchamps.net/ieee1394/libdc1394/iidc/</ulink>
+    </para>
 
-    <simpara>
-    TODO
-    </simpara>
+    <para>As an example, here are the controls exposed by the Point Grey Firefly MV:
+
+    <mediaobject>
+    <imageobject>
+    <imagedata fileref="input-dc1394-widget.png" format="PNG"/>
+    </imageobject>
+    </mediaobject>
+
+    </para>
+
 </refsect1>
 
 </refentry>
