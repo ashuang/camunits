@@ -6,14 +6,15 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "output_logger.h"
-#include "dbg.h"
+#include <camunits/plugin.h>
+#include <camunits/dbg.h>
+#include <camunits/log.h>
 
 #define err(args...) fprintf (stderr, args)
 
 #define MAX_UNWRITTEN_FRAMES 100
 
-struct _CamLoggerUnit {
+typedef struct _CamLoggerUnit {
     CamUnit parent;
     CamUnitControl *record_ctl;
     CamUnitControl *desired_filename_ctl;
@@ -28,18 +29,31 @@ struct _CamLoggerUnit {
 
     // as long as the writer thread is active, it "owns" these members
     CamLog *camlog;
-};
+} CamLoggerUnit;
 
-struct _CamLoggerUnitClass {
+typedef struct _CamLoggerUnitClass {
     CamUnitClass parent_class;
-};
+} CamLoggerUnitClass;
 
-CamUnitDriver *
-cam_logger_unit_driver_new (void)
+static CamLoggerUnit * cam_logger_unit_new(void);
+
+GType cam_logger_unit_get_type (void);
+CAM_PLUGIN_TYPE(CamLoggerUnit, cam_logger_unit, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
-    return cam_unit_driver_new_stock ("output", "logger",
+    cam_logger_unit_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("output", "logger",
             "Logger", 0,
-            (CamUnitConstructor)cam_logger_unit_new);
+            (CamUnitConstructor)cam_logger_unit_new, module);
 }
 
 static int WRITER_THREAD_QUIT_REQUEST = 0;
@@ -54,8 +68,6 @@ static void on_input_format_changed (CamUnit *super,
 static void on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt);
 static void * writer_thread (void *user_data);
-
-G_DEFINE_TYPE (CamLoggerUnit, cam_logger_unit, CAM_TYPE_UNIT);
 
 static void
 cam_logger_unit_init (CamLoggerUnit *self)
@@ -101,7 +113,7 @@ static void
 log_finalize (GObject *obj)
 {
     dbg (DBG_FILTER, "LoggerUnit: finalize\n");
-    CamLoggerUnit *self = CAM_LOGGER_UNIT (obj);
+    CamLoggerUnit *self = (CamLoggerUnit*)obj;
     if (self->writer_thread) {
         g_async_queue_push (self->msg_q, &WRITER_THREAD_QUIT_REQUEST);
         g_thread_join (self->writer_thread);
@@ -120,10 +132,10 @@ log_finalize (GObject *obj)
     G_OBJECT_CLASS (cam_logger_unit_parent_class)->finalize (obj);
 }
 
-CamLoggerUnit * 
+static CamLoggerUnit * 
 cam_logger_unit_new ()
 {
-    return CAM_LOGGER_UNIT (g_object_new (CAM_TYPE_LOGGER_UNIT, NULL));
+    return (CamLoggerUnit*) (g_object_new (cam_logger_unit_get_type(), NULL));
 }
 
 static void
@@ -144,7 +156,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
     dbg (DBG_FILTER, "[%s] iterate\n", cam_unit_get_name (super));
-    CamLoggerUnit *self = CAM_LOGGER_UNIT (super);
+    CamLoggerUnit *self = (CamLoggerUnit*)super;
 
     int recording = cam_unit_control_get_boolean (self->record_ctl);
 
@@ -255,7 +267,7 @@ static gboolean
 try_set_control (CamUnit *super, 
         const CamUnitControl *ctl, const GValue *proposed, GValue *actual)
 {
-    CamLoggerUnit *self = CAM_LOGGER_UNIT (super);
+    CamLoggerUnit *self = (CamLoggerUnit*)super;
 
     if (ctl == self->record_ctl) {
         int recording = g_value_get_boolean (proposed);
@@ -280,7 +292,7 @@ static void *
 writer_thread (void *user_data)
 {
     dbg (DBG_FILTER, "LoggerUnit: writer thread started\n");
-    CamLoggerUnit *self = CAM_LOGGER_UNIT (user_data);
+    CamLoggerUnit *self = (CamLoggerUnit*)user_data;
 
     while (1) {
         void *msg = g_async_queue_pop (self->msg_q);

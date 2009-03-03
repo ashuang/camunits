@@ -154,7 +154,8 @@ AC_OUTPUT([
   plugins/dc1394/Makefile
   plugins/v4l/Makefile
   plugins/v4l2/Makefile
-  plugins/jpeg/Makefile
+  plugins/convert/Makefile
+  plugins/misc/Makefile
   examples/Makefile
   examples/basic/Makefile
   examples/filter_example/Makefile

@@ -1,17 +1,41 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 
-#include "filter_gl.h"
-#include "dbg.h"
+#include <camunits/plugin.h>
+#include <camunits/dbg.h>
+#include <camunits/gl_texture.h>
 
-G_DEFINE_TYPE (CamFilterGL, cam_filter_gl, CAM_TYPE_UNIT);
+typedef struct _CamFilterGL {
+    CamUnit parent;
 
-CamUnitDriver *
-cam_filter_gl_driver_new()
+    CamGLTexture * gl_texture;
+    int gl_initialized;
+    int texture_valid;
+} CamFilterGL;
+
+typedef struct _CamFilterGLClass {
+    CamUnitClass parent_class;
+} CamFilterGLClass;
+
+static CamFilterGL * cam_filter_gl_new (void);
+
+GType cam_filter_gl_get_type (void);
+CAM_PLUGIN_TYPE(CamFilterGL, cam_filter_gl, CAM_TYPE_UNIT);
+
+/* These next two functions are required as entry points for the
+ * plug-in API. */
+void cam_plugin_initialize(GTypeModule * module);
+void cam_plugin_initialize(GTypeModule * module)
 {
-    return cam_unit_driver_new_stock ("output", "opengl",
+    cam_filter_gl_register_type(module);
+}
+
+CamUnitDriver * cam_plugin_create(GTypeModule * module);
+CamUnitDriver * cam_plugin_create(GTypeModule * module)
+{
+    return cam_unit_driver_new_stock_full ("output", "opengl",
             "OpenGL", CAM_UNIT_RENDERS_GL,
-            (CamUnitConstructor)cam_filter_gl_new);
+            (CamUnitConstructor)cam_filter_gl_new, module);
 }
 
 // ============== CamFilterGL ===============
@@ -52,14 +76,14 @@ cam_filter_gl_init (CamFilterGL *self)
 CamFilterGL * 
 cam_filter_gl_new()
 {
-    return CAM_FILTER_GL(g_object_new(CAM_TYPE_FILTER_GL, NULL));
+    return (CamFilterGL*)(g_object_new(cam_filter_gl_get_type(), NULL));
 }
 
 static void 
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf, 
         const CamUnitFormat *infmt)
 {
-    CamFilterGL *self = CAM_FILTER_GL(super);
+    CamFilterGL *self = (CamFilterGL*)super;
     dbg(DBG_OUTPUT, "[%s] iterate\n", cam_unit_get_name(super));
 
     if (! self->gl_initialized) {
@@ -78,7 +102,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 static 
 int cam_filter_gl_draw_gl_init (CamUnit *super)
 {
-    CamFilterGL *self = CAM_FILTER_GL(super);
+    CamFilterGL *self = (CamFilterGL*)super;
     if (! super->input_unit) {
         dbg(DBG_OUTPUT, "FilterGL cannot init drawing - no input unit\n");
         return -1;
@@ -110,7 +134,7 @@ int cam_filter_gl_draw_gl_init (CamUnit *super)
 static 
 int cam_filter_gl_draw_gl (CamUnit *super)
 {
-    CamFilterGL *self = CAM_FILTER_GL(super);
+    CamFilterGL *self = (CamFilterGL*)super;
     if (! super->fmt) return -1;
     if (! self->gl_texture) return -1;
     glMatrixMode (GL_PROJECTION);
@@ -134,7 +158,7 @@ int cam_filter_gl_draw_gl (CamUnit *super)
 static 
 int cam_filter_gl_draw_gl_shutdown (CamUnit *super)
 {
-    CamFilterGL *self = CAM_FILTER_GL(super);
+    CamFilterGL *self = (CamFilterGL*)super;
     if (self->gl_texture) {
         cam_gl_texture_free (self->gl_texture);
         self->gl_texture = NULL;
@@ -146,7 +170,7 @@ int cam_filter_gl_draw_gl_shutdown (CamUnit *super)
 static void 
 on_status_changed(CamUnit *super, int old_status, gpointer nil)
 {
-    CamFilterGL *self = CAM_FILTER_GL(super);
+    CamFilterGL *self = (CamFilterGL*)super;
     if (self->gl_initialized) {
         cam_filter_gl_draw_gl_shutdown(super);
     }
@@ -155,7 +179,7 @@ on_status_changed(CamUnit *super, int old_status, gpointer nil)
 static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
-    CamFilterGL *self = CAM_FILTER_GL(super);
+    CamFilterGL *self = (CamFilterGL*)super;
     cam_unit_remove_all_output_formats (super);
     self->texture_valid = 0;
 

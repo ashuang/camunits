@@ -22,21 +22,7 @@ libcamunits_la_SOURCES = \
 	pixels.c \
 	log.c \
 	log.h \
-	input_example.c \
-	input_example.h \
-	input_log.c \
-	input_log.h \
-	filter_gl.c \
-	filter_gl.h \
 	gl_texture.c \
-	convert_colorspace.c \
-	convert_colorspace.h \
-	convert_to_rgb8.c \
-	convert_to_rgb8.h \
-	filter_fast_bayer.c \
-	filter_fast_bayer.h \
-	output_logger.c \
-	output_logger.h \
 	cpuid.h \
 	dbg.h
 

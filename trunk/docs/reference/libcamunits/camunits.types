@@ -1,14 +1,4 @@
 #include <camunits/cam.h>
-#include <camunits/input_v4l2.h>
-#include <camunits/input_example.h>
-#include <camunits/input_log.h>
-#include <camunits/filter_gl.h>
-#include <camunits/convert_colorspace.h>
-#include <camunits/convert_to_rgb8.h>
-#include <camunits/filter_fast_bayer.h>
-#include <camunits/convert_jpeg_compress.h>
-#include <camunits/convert_jpeg_decompress.h>
-#include <camunits/output_logger.h>
 
 cam_unit_get_type
 cam_unit_driver_get_type
@@ -18,18 +8,3 @@ cam_unit_manager_get_type
 cam_unit_control_get_type
 cam_unit_description_get_type
 cam_framebuffer_get_type
-
-cam_v4l2_get_type
-cam_v4l2_driver_get_type
-cam_input_example_driver_get_type
-cam_input_example_get_type
-cam_input_log_driver_get_type
-cam_input_log_get_type
-
-cam_filter_gl_get_type
-cam_color_conversion_filter_get_type
-cam_convert_to_rgb8_get_type
-cam_fast_bayer_filter_get_type
-cam_convert_jpeg_compress_get_type
-cam_convert_jpeg_decompress_get_type
-cam_logger_unit_get_type
