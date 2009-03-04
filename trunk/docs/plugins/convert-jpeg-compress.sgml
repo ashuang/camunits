@@ -18,7 +18,11 @@
 
     <refsect3>
     <title>Input Formats</title>
-    <para>24bpp RGB, 8bpp Gray, 32bpp RGBA</para>
+    <simplelist>
+    <member>Gray 8bpp</member>
+    <member>RGB 24bpp</member>
+    <member>RGBA 32bpp</member>
+    </simplelist>
     </refsect3>
 
     <refsect3>
@@ -30,9 +34,18 @@
 <refsect1>
     <title>Controls</title>
 
+    <refsect2 id="convert-jpeg-quality">
+    <title>Quality</title>
     <simpara>
-    TODO.
+    JPEG Quality setting.  Lower values correspond to higher compression ratios, smaller images, and quality loss.
     </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>quality</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>integer</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>range</parameter>:</term><listitem><simpara>0 - 100</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
 </refsect1>
 
 </refentry>
