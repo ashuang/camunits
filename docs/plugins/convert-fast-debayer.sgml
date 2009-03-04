@@ -17,26 +17,56 @@
     </para>
 
     <para>
-    TODO
+    Do _NOT_ try to use this filter if your architecture doesn't support
+    SSE2/SSE3. 
     </para>
 
     <refsect3>
     <title>Input Formats</title>
-    <para>8bpp Gray, 8bpp BGGR, 8bpp RGGB, 8bpp BGRG, TODO </para>
+    <simplelist>
+    <member>Bayer RGGB</member>
+    <member>Bayer BGGR</member>
+    <member>Bayer GBRG</member>
+    <member>Bayer GRBG</member>
+    <member>Gray 8bpp</member>
+    </simplelist>
     </refsect3>
 
     <refsect3>
     <title>Output Formats</title>
-    <para>8bpp Gray, 24bpp RGB</para>
+    <simplelist>
+    <member>BGRA 32pp</member>
+    <member>Gray 8bpp</member>
+    </simplelist>
     </refsect3>
 </refsect1>
 
 <refsect1>
     <title>Controls</title>
 
+    <refsect2 id="input-example-menu">
+    <title>Tiling</title>
     <simpara>
-    TODO
+    Sets the Bayer tiling pattern used by the demosaic filter.  This is
+    automatically set if the input format is a Bayer format.  If the input
+    format is Gray 8pp, then this control must be manually set.
     </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>tiling</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>enum</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>values</parameter>:</term><listitem>
+    <simplelist>
+    <member>0 = GBRG</member>
+    <member>1 = GRBG</member>
+    <member>2 = BGGR</member>
+    <member>3 = RGGB</member>
+    </simplelist>
+    </listitem>
+    </varlistentry>
+    </variablelist>
+
+    </refsect2>
+
 </refsect1>
 
 </refentry>

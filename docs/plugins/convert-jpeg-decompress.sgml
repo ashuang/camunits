@@ -23,7 +23,10 @@
 
     <refsect3>
     <title>Output Formats</title>
-    <para>24bpp RGB, or 8bpp Gray</para>
+    <simplelist>
+    <member>RGB 24bpp</member>
+    <member>Gray 8bpp</member>
+    </simplelist>
     </refsect3>
 </refsect1>
 
