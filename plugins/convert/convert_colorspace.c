@@ -78,7 +78,7 @@ DECL_STANDARD_CONV (yuv420p_to_rgb, cam_pixel_convert_8u_yuv420p_to_8u_rgb)
 DECL_STANDARD_CONV (yuv420p_to_rgba, cam_pixel_convert_8u_yuv420p_to_8u_rgba)
 DECL_STANDARD_CONV (yuv420p_to_bgr, cam_pixel_convert_8u_yuv420p_to_8u_bgr)
 DECL_STANDARD_CONV (yuv420p_to_bgra, cam_pixel_convert_8u_yuv420p_to_8u_bgra)
-DECL_STANDARD_CONV (yuv420p_to_gray, cam_pixel_convert_8u_yuv420p_to_8u_bgra)
+DECL_STANDARD_CONV (yuv420p_to_gray, cam_pixel_convert_8u_yuv420p_to_8u_gray)
 
 DECL_STANDARD_CONV (yuyv_to_bgra, cam_pixel_convert_8u_yuyv_to_8u_bgra)
 DECL_STANDARD_CONV (yuyv_to_gray, cam_pixel_convert_8u_yuyv_to_8u_gray)
