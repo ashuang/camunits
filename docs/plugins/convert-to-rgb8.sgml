@@ -13,25 +13,73 @@
 
     <para>
     <literal>convert-to-rgb8</literal> tries to convert its input to a 24-bit
-    RGB image (8-bits per channel).
+    RGB image (8-bits per channel).  This unit is actually a wrapper around other conversion units, and 
+    invokes them as necessary.  The primary purpose of this unit is to allow a
+    user to convert an image to RGB if it can be done so using Camunits, without requiring the user to
+    know exactly which unit has the needed conversion routines.
+    </para>
+    <para>
+    If the input to this unit is already RGB 24bpp, then it is simply passed through.
     </para>
 
-    <refsect3>
-    <title>Input Formats</title>
-    <para>TODO</para>
-    </refsect3>
+<table id="table:convert-to-rgb-table">
+    <title>Supported Inputs</title>
 
-    <refsect3>
-    <title>Output Formats</title>
-    <para>RGB, same size as the input image.</para>
-    </refsect3>
+    <tgroup cols="2">
+    <thead>
+    <row>
+    <entry>Input Formats</entry>
+    <entry>Notes</entry>
+    </row>
+    </thead>
+        <tbody>
+            <row>
+                <entry><simplelist>
+                <member>BGR 24bpp</member>
+                <member>BGRA 32bpp</member>
+                <member>Gray 8bpp</member>
+                <member>YUYV</member>
+                </simplelist></entry>
+                <entry><simpara>Uses <literal>convert.colorspace</literal> internally.
+                </simpara></entry>
+            </row>
+            <row>
+                <entry><simpara>JPEG</simpara></entry>
+                <entry><para>In order of preference, tries to use one of the following units:
+                <simplelist>
+                <member><literal>ipp.jpeg_decompress</literal></member>
+                <member><literal>framewave.jpeg_decompress</literal></member>
+                <member><literal>convert.jpeg_decompress</literal></member>
+                </simplelist>
+                </para>
+                <simpara>
+                <literal>ipp.jpeg_decompress</literal> requires the non-free Intel IPP library.
+                <literal>framewave.jpeg_decompress</literal> requires the
+                Framewave library.  Both IPP and Framewave plugins are
+                distributed with camunits-extra.
+                </simpara></entry>
+            </row>
+            <row>
+                <entry><simplelist>
+                <member>Bayer BGGR</member>
+                <member>Bayer RGGB</member>
+                <member>Bayer GBRG</member>
+                <member>Bayer GRBG</member>
+                </simplelist></entry>
+                <entry><simpara>Uses <literal>convert.fast_debayer</literal> internally.
+                </simpara></entry>
+            </row>
+        </tbody>
+    </tgroup>
+</table>
+
 </refsect1>
 
 <refsect1>
     <title>Controls</title>
 
     <simpara>
-    None
+    None.
     </simpara>
 </refsect1>
 

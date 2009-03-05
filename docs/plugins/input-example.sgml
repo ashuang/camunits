@@ -29,7 +29,7 @@
 
     <refsect3>
     <title>Output Formats</title>
-    <para>640x480 RGB</para>
+    <para>640x480 RGB 24bpp</para>
     </refsect3>
 </refsect1>
 
