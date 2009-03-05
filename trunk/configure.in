@@ -155,7 +155,7 @@ AC_OUTPUT([
   plugins/v4l/Makefile
   plugins/v4l2/Makefile
   plugins/convert/Makefile
-  plugins/misc/Makefile
+  plugins/other/Makefile
   examples/Makefile
   examples/basic/Makefile
   examples/filter_example/Makefile
