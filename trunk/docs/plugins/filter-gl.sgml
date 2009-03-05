@@ -18,7 +18,23 @@
 
     <refsect3>
     <title>Input Formats</title>
-    <para>TODO</para>
+    <para>The following input formats can be rendered by this unit:
+
+    <simplelist>
+    <member>BGR 24bpp</member>
+    <member>RGB 24bpp</member>
+    <member>RGBA 32bpp</member>
+    <member>BGRA 32bpp</member>
+    <member>Bayer RGGB</member>
+    <member>Bayer BGGR</member>
+    <member>Bayer GBRG</member>
+    <member>Bayer GRBG</member>
+    <member>Gray 8bpp</member>
+    <member>Big-Endian Gray 16bpp</member>
+    <member>Little-Endian Gray 16bpp</member>
+    <member>Native-Endian Float 32bpp</member>
+    </simplelist>
+    </para>
     </refsect3>
 
     <refsect3>

@@ -36,9 +36,48 @@
     </imageobject>
 </mediaobject>
 
+    <refsect2 id="output-logger-desired-filename">
+    <title>Filename</title>
     <simpara>
-    TODO
+    Controls the desired filename of the output file.
     </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>desired-filename</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>string</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="output-logger-auto-suffix-enable">
+    <title>Enable Filename Auto Suffix</title>
+    <simpara>
+    If this is enabled, then the logger unit will never overwrite existing
+    files.  Instead, it will automatically append a suffix to the desired
+    filename such that a new file is always created.  If this is not enabled, then
+    Camunits will overwrite existing logfiles, and will use the string specified in the
+    filename control directly for the output file.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>auto-suffix-enable</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="output-logger-record">
+    <title>Record</title>
+    <simpara>
+    Controls whether or not the logger unit is actually logging frames to disk.
+    The logger unit starts writing to the beginning of a file each time this
+    control is enabled.  Specifically, if auto-suffix-enable is set, then each
+    time this control is set to True, then a new log file is created.  If
+    auto-suffix-enable is not set, then each time this control is enabled, the
+    log file is truncated and started over.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>record</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
 </refsect1>
 
 </refentry>

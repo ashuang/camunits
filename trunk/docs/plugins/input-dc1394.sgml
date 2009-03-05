@@ -12,7 +12,8 @@
     <title>Description</title>
 
     <para>
-    <literal>input.dc1394</literal> is a plugin that uses the <ulink url="http://sourceforge.net/projects/libdc1394">libdc1394</ulink> API to
+    <literal>input.dc1394</literal> is a plugin that uses 
+    <ulink url="http://sourceforge.net/projects/libdc1394">libdc1394</ulink> to
     provide access to IIDC-compliant digital cameras.
     </para>
 
@@ -35,20 +36,19 @@
     </para>
 
     <itemizedlist>
-    <listitem><literal>GRAY</literal></listitem>
-    <listitem><literal>BAYER_RGGB</literal></listitem>
-    <listitem><literal>BAYER_GBRG</literal></listitem>
-    <listitem><literal>BAYER_GRBG</literal></listitem>
-    <listitem><literal>BAYER_BGGR</literal></listitem>
+    <listitem><literal>Gray 8bpp</literal></listitem>
+    <listitem><literal>Bayer RGGB</literal></listitem>
+    <listitem><literal>Bayer GBRG</literal></listitem>
+    <listitem><literal>Bayer GRBG</literal></listitem>
+    <listitem><literal>Bayer BGGR</literal></listitem>
     <listitem><literal>IYU1</literal></listitem>
     <listitem><literal>UYVY</literal></listitem>
     <listitem><literal>IYU2</literal></listitem>
-    <listitem><literal>RGB</literal></listitem>
-    <listitem><literal>BE_GRAY16</literal></listitem>
-    <listitem><literal>BE_RGB16</literal></listitem>
-    <listitem><literal>BE_SIGNED_GRAY16</literal></listitem>
-    <listitem><literal>BE_SIGNED_RGB16</literal></listitem>
-    <listitem><literal>BE_GRAY16</literal></listitem>
+    <listitem><literal>RGB 24bpp</literal></listitem>
+    <listitem><literal>Big-Endian Gray 16bpp</literal></listitem>
+    <listitem><literal>Big-Endian RGB 48bpp</literal></listitem>
+    <listitem><literal>Big-Endian signed Gray 16bpp</literal></listitem>
+    <listitem><literal>Big-Endian signed RGB 48bpp</literal></listitem>
     </itemizedlist>
     </refsect3>
 </refsect1>

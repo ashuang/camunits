@@ -16,6 +16,13 @@
     is optimized with SSE2 and SSE3 instructions, so it should be pretty fast.
     </para>
 
+    <para>The method used is described by H.S. Malvar et al<footnote><simpara>
+    H.S. Malvar, L. He, and R. Cutler. "High-quality linear interpolation
+    for demosaicing of Bayer-patterned color images".  In Proc. IEEE
+    ICASSP 2004.  May 2004.  pp. 485-8.
+    </simpara></footnote>.
+    </para>
+
     <para>
     Do _NOT_ try to use this filter if your architecture doesn't support
     SSE2/SSE3. 
