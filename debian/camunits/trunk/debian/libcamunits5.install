@@ -1,1 +1,11 @@
 debian/tmp/usr/lib/libcamunits.so.*
+debian/tmp/usr/lib/camunits/convert_colorspace.so
+debian/tmp/usr/lib/camunits/convert_jpeg_compress.so
+debian/tmp/usr/lib/camunits/convert_jpeg_decompress.so
+debian/tmp/usr/lib/camunits/convert_to_rgb8.so
+debian/tmp/usr/lib/camunits/filter_fast_bayer.so
+debian/tmp/usr/lib/camunits/filter_gl.so
+debian/tmp/usr/lib/camunits/input_example.so
+debian/tmp/usr/lib/camunits/input_log.so
+debian/tmp/usr/lib/camunits/input_v4l2.so
+debian/tmp/usr/lib/camunits/output_logger.so

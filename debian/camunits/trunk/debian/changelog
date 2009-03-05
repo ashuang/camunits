@@ -1,3 +1,9 @@
+camunits (0.1.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Albert Huang <albert@csail.mit.edu>  Wed, 04 Mar 2009 20:30:27 -0500
+
 camunits (0.1.1-1) unstable; urgency=low
 
   * New upstream release
