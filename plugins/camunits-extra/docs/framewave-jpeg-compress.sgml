@@ -1,0 +1,63 @@
+<refentry id="framewave-jpeg-compress" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>framewave.jpeg_compress</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Framewave JPEG Compress</refname>
+    <refpurpose>Compress JPEG images with AMD Framewave</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>framewave.jpeg_compress</literal> performs JPEG compression on its
+    input, using the Framewave 
+    library<footnote><ulink
+    url="http://framewave.sourceforge.net">http://framewave.sourceforge.net</ulink></footnote>.
+    This library is vectorized with SIMD optimizations, and should be faster
+    than the standard <literal>convert.jpeg_compress</literal> on machines with
+    the SSE instruction set.
+    </para>
+
+    <refsect3>
+    <title>Requirements</title>
+    <itemizedlist>
+    <listitem>Framewave</listitem>
+    </itemizedlist>
+    </refsect3>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <simplelist>
+    <member>Gray 8bpp</member>
+    <member>RGB 24bpp</member>
+    <member>RGBA 32bpp</member>
+    </simplelist>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>JPEG</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <refsect2 id="framewave-jpeg-quality">
+    <title>Quality</title>
+    <simpara>
+    JPEG Quality setting.  Lower values correspond to higher compression ratios, smaller images, and quality loss.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>quality</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>integer</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>range</parameter>:</term><listitem><simpara>0 - 100</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+</refsect1>
+
+</refentry>

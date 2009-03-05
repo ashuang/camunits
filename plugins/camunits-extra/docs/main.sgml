@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>Camunits Extra Plugins</title>
+
+  </bookinfo>
+
+  <chapter>
+      <title>Framewave</title>
+
+      <xi:include href="framewave-jpeg-decompress.sgml"/>
+      <xi:include href="framewave-jpeg-compress.sgml"/>
+      <xi:include href="framewave-resize.sgml"/>
+  </chapter>
+
+  <chapter>
+      <title>Intel IPP</title>
+
+      <xi:include href="ipp-jpeg-decompress.sgml"/>
+      <xi:include href="ipp-jpeg-compress.sgml"/>
+      <xi:include href="ipp-resize.sgml"/>
+  </chapter>
+
+</book>

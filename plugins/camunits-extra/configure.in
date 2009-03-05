@@ -66,6 +66,8 @@ AM_GNU_GETTEXT_VERSION(0.14.3)
 
 AM_ICONV()
 
+GTK_DOC_CHECK([1.4])
+
 dnl ---------------------------------------------------------------------------
 dnl Warnings
 dnl ---------------------------------------------------------------------------
@@ -93,6 +95,8 @@ AC_OUTPUT([
   opencv/Makefile
   util/Makefile
   progs/Makefile
+  docs/Makefile
+  docs/build/Makefile
   po/Makefile.in
 ])
 

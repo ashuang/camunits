@@ -1,0 +1,76 @@
+<refentry id="framewave-resize" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>framewave.resize</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>Framewave Resize</refname>
+    <refpurpose>Resize with Framewave</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>framewave.resize</literal> resizes images using Framewave.
+    </para>
+
+    <refsect3>
+    <title>Input Formats</title>
+    <simplelist>
+    <member>Gray 8bpp</member>
+    <member>RGB 24bpp</member>
+    <member>BGR 24bpp</member>
+    <member>BGRA 32bpp</member>
+    </simplelist>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <para>Same as input.</para>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <refsect2 id="framewave-resize-lock-aspect">
+    <title>Lock Aspect</title>
+    <simpara>
+    If set, then the aspect ratio of the resized image is locked to match the
+    original image aspect ratio.  Specifically, when either the width or the
+    height control is adjusted, the other one is automatically adjusted as well 
+    if lock-aspect is enabled.  The aspect ratio is only locked when
+    either the width or the height is adjusted.  Setting this control alone
+    does not immediately change the output.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>lock-aspect</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>boolean</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="framewave-resize-width">
+    <title>Width</title>
+    <simpara>
+    Controls the width of the output image.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>width</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>int</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+
+    <refsect2 id="framewave-resize-width">
+    <title>Height</title>
+    <simpara>
+    Controls the height of the output image.
+    </simpara>
+    <variablelist role="params">
+    <varlistentry><term><parameter>id</parameter>:</term><listitem><simpara>height</simpara></listitem></varlistentry>
+    <varlistentry><term><parameter>type</parameter>:</term><listitem><simpara>int</simpara></listitem></varlistentry>
+    </variablelist>
+    </refsect2>
+</refsect1>
+
+</refentry>

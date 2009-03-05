@@ -1,0 +1,45 @@
+<refentry id="ipp-jpeg-decompress" revision="17 Jan 2008">
+<refmeta>
+    <refentrytitle><code>ipp.jpeg_decompress</code></refentrytitle>
+</refmeta>
+
+<refnamediv>
+    <refname>IPP JPEG Decompress</refname>
+    <refpurpose>Decompress JPEG images with IPP</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+    <para>
+    <literal>ipp.jpeg_decompress</literal> decompresses JPEG images to
+    either RGB 24bpp or Gray 8bpp, using Intel IPP.
+    This library is vectorized with SIMD optimizations, and should be faster
+    than the standard <literal>convert.jpeg_decompress</literal> on machines
+    with the SSE instruction set.
+    </para>
+
+
+    <refsect3>
+    <title>Input Formats</title>
+    <para>JPEG</para>
+    </refsect3>
+
+    <refsect3>
+    <title>Output Formats</title>
+    <simplelist>
+    <member>RGB 24bpp</member>
+    <member>Gray 8bpp</member>
+    </simplelist>
+    </refsect3>
+</refsect1>
+
+<refsect1>
+    <title>Controls</title>
+
+    <simpara>
+    None.
+    </simpara>
+</refsect1>
+
+</refentry>
