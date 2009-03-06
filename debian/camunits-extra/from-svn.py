@@ -70,15 +70,20 @@ if os.path.exists(orig_tarball) and dont_use_cache:
 
 if not os.path.exists(orig_tarball):
     print os.listdir("../")
+    do_or_die("gtkdocize --copy")
     do_or_die("autoreconf -i")
-    do_or_die("./configure")
+    do_or_die("./configure --enable-gtk-doc")
     do_or_die("make")
     do_or_die("make distcheck")
-
-    shutil.copyfile("%s/%s-%s.tar.gz" % (export_dir, package_name, 
+    os.chdir ("..")
+    orig_tarball = "../tarballs/%s_%s.svn%d.orig.tar.gz" % \
+            (package_name, release_version, svn_revision) 
+    if os.path.exists (orig_tarball):
+        os.unlink (orig_tarball)
+    shutil.copyfile ("%s/%s-%s.tar.gz" % (export_dir, package_name, 
         release_version), orig_tarball)
-
-os.chdir("..")
+else:
+    os.chdir ("..")
 
 print("Updating debian/changelog")
 do_or_die("dch --newversion %s.svn%d-1 \"New subversion build\"" % \
