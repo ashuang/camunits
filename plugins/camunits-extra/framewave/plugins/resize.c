@@ -100,8 +100,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         return;
     }
 
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
+    int buf_sz = outfmt->height * outfmt->row_stride;
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc(buf_sz);
 
     FwiSize srcSize = { infmt->width, infmt->height };
     FwiRect srcRoi = { 0, 0, infmt->width, infmt->height };
@@ -156,10 +156,9 @@ update_output_format (CamfwResize *self, int width, int height,
 
     int bpp = cam_pixel_format_bpp (infmt->pixelformat);
     int stride = width * bpp / 8;
-    int max_data_size = height * stride;
 
     cam_unit_add_output_format_full (CAM_UNIT (self), infmt->pixelformat,
-            NULL, width, height, stride, max_data_size);
+            NULL, width, height, stride);
 }
 
 static void

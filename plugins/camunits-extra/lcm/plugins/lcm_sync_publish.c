@@ -91,7 +91,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     if (! infmt) return;
     cam_unit_add_output_format_full (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
-            infmt->row_stride, infmt->max_data_size);
+            infmt->row_stride);
 }
 
 static void 

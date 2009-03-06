@@ -160,7 +160,7 @@ on_input_frame_ready(CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
     CamcvUndistort *self = (CamcvUndistort*)(super);
-
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
     if(!cam_unit_control_get_boolean(self->enabled_ctl)) {
         cam_unit_produce_frame(super, inbuf, infmt);
         return;
@@ -181,8 +181,8 @@ on_input_frame_ready(CamUnit *super, const CamFrameBuffer *inbuf,
 //    cvUndistort2(src_cv, self->dst_cv, &intrinsic_matrix, &distortion_matrix);
 
     self->outbuf->timestamp = inbuf->timestamp;
-    self->outbuf->bytesused = super->fmt->max_data_size;
-    cam_unit_produce_frame(super, self->outbuf, super->fmt);
+    self->outbuf->bytesused = outfmt->height * outfmt->row_stride;
+    cam_unit_produce_frame(super, self->outbuf, outfmt);
 
     cvReleaseImage(&src_cv);
 }
@@ -204,14 +204,13 @@ on_input_format_changed(CamUnit *super, const CamUnitFormat *infmt)
     uint8_t * dst_data = NULL;
     int out_stride;
     cvGetRawData(self->dst_cv, &dst_data, &out_stride, NULL);
-    int max_data_size = infmt->height * out_stride;
-    self->outbuf = cam_framebuffer_new(dst_data, max_data_size);
-    self->outbuf->bytesused = max_data_size;
+    int buf_sz = infmt->height * out_stride;
+    self->outbuf = cam_framebuffer_new(dst_data, buf_sz);
+    self->outbuf->bytesused = buf_sz;
 
     cam_unit_add_output_format_full(CAM_UNIT(self), 
             infmt->pixelformat,
-            NULL, infmt->width, infmt->height, out_stride, 
-            max_data_size);
+            NULL, infmt->width, infmt->height, out_stride);
 }
 
 static void

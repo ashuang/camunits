@@ -101,10 +101,9 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     int height = infmt->height / 2;
     int bpp = cam_pixel_format_bpp (infmt->pixelformat);
     int stride = width * bpp / 8;
-    int max_data_size = height * stride;
 
     cam_unit_add_output_format_full (CAM_UNIT (self), infmt->pixelformat,
-            NULL, width, height, stride, max_data_size);
+            NULL, width, height, stride);
 
     // allocate working buffer
     int bufsize = 0;
@@ -116,7 +115,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     if (self->outbuf) {
         g_object_unref (self->outbuf);
     }
-    self->outbuf = cam_framebuffer_new_alloc (max_data_size);
+    self->outbuf = cam_framebuffer_new_alloc (height * stride);
 }
 
 static void 
@@ -152,7 +151,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     // copy the bytesused, timestamp, source_uid, etc. fields.
     cam_framebuffer_copy_metadata (self->outbuf, inbuf);
-    self->outbuf->bytesused = outfmt->max_data_size;
+    self->outbuf->bytesused = outfmt->height * outfmt->row_stride;
 
     cam_unit_produce_frame (super, self->outbuf, outfmt);
     return;

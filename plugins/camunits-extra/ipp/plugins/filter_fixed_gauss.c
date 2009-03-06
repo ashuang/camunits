@@ -88,11 +88,11 @@ camipp_filter_fixed_gauss_new()
 }
 
 static int 
-_stream_init (CamUnit * super, const CamUnitFormat * format)
+_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 {
     CamippFilterFixedGauss *self = (CamippFilterFixedGauss*) (super);
     assert (!self->outbuf);
-    self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
+    self->outbuf = cam_framebuffer_new_alloc (fmt->height * fmt->row_stride);
     return 0;
 }
 
@@ -162,6 +162,5 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
     cam_unit_add_output_format_full (CAM_UNIT (self), 
             infmt->pixelformat,
-            NULL, infmt->width, infmt->height, infmt->row_stride, 
-            infmt->max_data_size);
+            NULL, infmt->width, infmt->height, infmt->row_stride);
 }

@@ -1,10 +1,14 @@
 INCLUDES = $(GLIB_CFLAGS) $(CAMUNITS_CFLAGS) $(OPENCV_CFLAGS)
 
+if HAVE_OPENCV
+
 camunitsplugin_LTLIBRARIES = \
 		   opencv_undistort.la \
 		   opencv_demo_good_features_to_track.la \
 		   opencv_demo_canny.la \
 		   opencv_demo_object_detection.la
+
+endif
 
 # undistort
 opencv_undistort_la_SOURCES = undistort.c 

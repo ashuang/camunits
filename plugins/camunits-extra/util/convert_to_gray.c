@@ -166,7 +166,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         cam_unit_add_output_format_full (super, infmt->pixelformat,
                 infmt->name, infmt->width, infmt->height, 
-                infmt->row_stride, infmt->max_data_size);
+                infmt->row_stride);
     } else {
         switch (infmt->pixelformat) {
             case CAM_PIXEL_FORMAT_I420:
@@ -212,7 +212,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             if (wfmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
                 CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
                         wfmt->pixelformat, wfmt->name, wfmt->width, 
-                        wfmt->height, wfmt->row_stride, wfmt->max_data_size);
+                        wfmt->height, wfmt->row_stride);
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_gray:wfmt", 
                         wfmt);
             }

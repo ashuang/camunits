@@ -179,10 +179,16 @@ cam_input_log_sync_init (CamInputLogSync *self)
 
     self->sync_mutex = g_mutex_new ();
 
-    pipe (self->notify_pipe);
+    if(0 != pipe (self->notify_pipe)) {
+        perror("pipe");
+        return;
+    }
     fcntl (self->notify_pipe[1], F_SETFL, O_NONBLOCK);
 
-    pipe (self->frame_ready_pipe);
+    if(0 != pipe (self->frame_ready_pipe)) {
+        perror("pipe");
+        return;
+    }
     fcntl (self->frame_ready_pipe[1], F_SETFL, O_NONBLOCK);
 
     self->subscription = camlcm_image_sync_t_subscribe (self->lcm, 
@@ -285,15 +291,8 @@ _log_set_file (CamInputLogSync *self, const char *fname)
     }
     g_object_unref (fbuf);
 
-
-    int max_data_size;
-    if (cam_pixel_format_stride_meaningful (format.pixelformat))
-        max_data_size = format.height * format.stride;
-    else
-        max_data_size = format.width * format.height * 4;
-
     cam_unit_add_output_format_full (super, format.pixelformat, NULL, 
-            format.width, format.height, format.stride, max_data_size);
+            format.width, format.height, format.stride);
 
     self->nframes = cam_log_count_frames (self->camlog);
     cam_unit_control_modify_int (self->frame_ctl, 0, self->nframes-1, 1, 1);
