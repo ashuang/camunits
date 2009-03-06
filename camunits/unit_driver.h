@@ -77,12 +77,6 @@ typedef struct _CamUnitDriver CamUnitDriver;
  */
 struct _CamUnitDescription {
     GInitiallyUnowned parent;
-    /*< public >*/
-    CamUnitDriver * driver;
-    char * name;
-    char * unit_id;
-    uint32_t flags;
-    /*< private >*/
 };
 
 struct _CamUnitDescriptionClass {
@@ -101,6 +95,34 @@ GType cam_unit_description_get_type (void);
 CamUnitDescription *
 cam_unit_description_new (CamUnitDriver *driver, const char *name, 
         const char *unit_id, uint32_t flags);
+
+/**
+ * cam_unit_description_get_driver:
+ *
+ * Returns: the driver that can produce the described unit.
+ */
+CamUnitDriver * cam_unit_description_get_driver(const CamUnitDescription *udesc);
+
+/**
+ * cam_unit_description_get_name:
+ *
+ * Returns: the name of the unit.
+ */
+const char * cam_unit_description_get_name(const CamUnitDescription *udesc);
+
+/**
+ * cam_unit_description_get_unit_id:
+ *
+ * Returns: the id of the described unit.
+ */
+const char * cam_unit_description_get_unit_id(const CamUnitDescription *udesc);
+
+/**
+ * cam_unit_description_get_flags:
+ *
+ * Returns: the flags associated with the described unit.
+ */
+uint32_t cam_unit_description_get_flags(const CamUnitDescription *udesc);
 
 // ================ CamUnitDriver ===============
 

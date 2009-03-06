@@ -210,7 +210,7 @@ static CamUnit *
 driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
 {
     dbg (DBG_DRIVER, "v4l driver creating new unit\n");
-    g_assert (udesc->driver == super);
+    g_assert (cam_unit_description_get_driver(udesc) == super);
 
     int ndx = GPOINTER_TO_INT (g_object_get_data (G_OBJECT(udesc), 
                 "v4l-driver-index"));
@@ -468,7 +468,9 @@ static gboolean
 v4l_try_produce_frame (CamUnit * super)
 {
     CamV4L * self = (CamV4L*)super;
-    CamFrameBuffer *buf = cam_framebuffer_new_alloc (super->fmt->max_data_size);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    int buf_sz = outfmt->height * outfmt->row_stride;
+    CamFrameBuffer *buf = cam_framebuffer_new_alloc (buf_sz);
 
     int status = read (self->fd, buf->data, buf->length);
     if (status <= 0) {

@@ -202,7 +202,7 @@ static CamUnit *
 driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
 {
     dbg (DBG_DRIVER, "v4l2 driver creating new unit\n");
-    g_assert (udesc->driver == super);
+    g_assert (cam_unit_description_get_driver(udesc) == super);
 
     int ndx = GPOINTER_TO_INT (g_object_get_data (G_OBJECT(udesc), 
                 "v4l2-driver-index"));

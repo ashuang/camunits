@@ -3,6 +3,10 @@
 <TITLE>CamUnitDescription</TITLE>
 CamUnitDescription
 cam_unit_description_new
+cam_unit_description_get_driver
+cam_unit_description_get_unit_id
+cam_unit_description_get_name
+cam_unit_description_get_flags
 <TITLE>CamUnitDriver</TITLE>
 CamUnitDriver
 CamUnitConstructor
