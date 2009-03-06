@@ -30,11 +30,33 @@ struct _PrivateData {
     GHashTable * running_drivers;
 };
 
-
+typedef struct _CamUnitManagerSource CamUnitManagerSource;
 struct _CamUnitManagerSource {
     GSource gsource;
     CamUnitManager *manager;
 };
+
+struct _CamUnitManager {
+    GObject parent;
+
+    /*< public >*/
+
+    /*< private >*/
+    GList *drivers;
+
+    int desired_driver_status;
+
+    // stuff for asynchronous update
+    GSourceFuncs source_funcs;
+    CamUnitManagerSource * event_source;
+    CamUnitDriver *driver_to_update;
+    int event_source_attached_glib;
+};
+
+struct _CamUnitManagerClass {
+    GObjectClass parent_class;
+};
+
 
 static CamUnitManager * _singleton = NULL;
 

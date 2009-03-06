@@ -37,34 +37,6 @@ typedef struct _CamUnitChainClass CamUnitChainClass;
 #define CAM_UNIT_CHAIN_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), \
             CAM_TYPE_UNIT_CHAIN, CamUnitChainClass))
 
-typedef struct _CamUnitChainSource CamUnitChainSource;
-
-struct _CamUnitChain {
-    GObject parent;
-
-    CamUnitManager *manager;
-
-    /*< private >*/
-    GSourceFuncs source_funcs;
-    CamUnitChainSource * event_source;
-
-    GList *units;
-
-    /*
-     * link within units that points to the next unit in the chain ready to 
-     * generate frames.
-     */
-    GList *pending_unit_link;
-
-    gboolean streaming_desired;
-};
-
-struct _CamUnitChainClass {
-    GObjectClass parent_class;
-
-    /*< private >*/
-};
-
 GType cam_unit_chain_get_type (void);
 
 // ========= Unit Chain public methods ==========
