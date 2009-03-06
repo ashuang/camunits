@@ -1,5 +1,5 @@
 AC_PREREQ(2.50)
-AC_INIT(lcm/plugins/lcm_publish.h)
+AC_INIT(lcm/plugins/lcm_publish.c)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(camunits-extra, 0.1.2)

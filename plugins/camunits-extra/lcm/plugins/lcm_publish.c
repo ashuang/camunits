@@ -62,7 +62,7 @@ CamUnitDriver * cam_plugin_create (GTypeModule * module);
 CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("lcm", "image_publish",
-            "Image Publish", 0, (CamUnitConstructor)camlcm_publish_new,
+            "LCM Image Publish", 0, (CamUnitConstructor)camlcm_publish_new,
             module);
 }
 
