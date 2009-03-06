@@ -196,13 +196,14 @@ driver_create_unit (CamUnitDriver * super, const CamUnitDescription * udesc)
 
     dbg (DBG_DRIVER, "dc1394 driver creating new unit\n");
 
-    g_assert (udesc->driver == super);
+    g_assert (cam_unit_description_get_driver(udesc) == super);
 
     int idx = GPOINTER_TO_INT (g_object_get_data (G_OBJECT(udesc), 
                 "dc1394-driver-index"));
 
     if (idx >= self->list->num) {
-        fprintf (stderr, "Error: invalid unit id %s\n", udesc->unit_id);
+        fprintf (stderr, "Error: invalid unit id %s\n", 
+                cam_unit_description_get_unit_id(udesc));
         return NULL;
     }
 

@@ -120,7 +120,8 @@ on_unit_description_activated (CamUnitManagerWidget *mw,
         CamUnitDescription *udesc, void *user_data)
 {
     state_t *self = user_data;
-    cam_unit_chain_add_unit_by_id (self->chain, udesc->unit_id);
+    cam_unit_chain_add_unit_by_id (self->chain, 
+            cam_unit_description_get_unit_id(udesc));
 }
 
 static void

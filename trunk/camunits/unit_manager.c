@@ -230,7 +230,8 @@ static void
 on_unit_description_added (CamUnitDriver *driver, CamUnitDescription *udesc,
         CamUnitManager *self)
 {
-    dbg (DBG_MANAGER, "new unit description [%s] detected\n", udesc->unit_id);
+    dbg (DBG_MANAGER, "new unit description [%s] detected\n", 
+            cam_unit_description_get_unit_id(udesc));
 
     // only care about new unit descriptions so that we can propagate the
     // signal
@@ -244,7 +245,7 @@ on_unit_description_removed (CamUnitDriver *driver, CamUnitDescription *udesc,
         CamUnitManager *self)
 {
     dbg (DBG_MANAGER, "detected removed unit description [%s]\n", 
-            udesc->unit_id);
+            cam_unit_description_get_unit_id(udesc));
     g_signal_emit (G_OBJECT (self),
             cam_unit_manager_signals[UNIT_DESCRIPTION_REMOVED_SIGNAL],
             0, udesc);
@@ -429,7 +430,8 @@ cam_unit_manager_create_unit_by_id (CamUnitManager *self,
     const CamUnitDescription *udesc = 
         cam_unit_manager_find_unit_description (self, unit_id);
     if (! udesc) return NULL;
-    return cam_unit_driver_create_unit (udesc->driver, udesc);
+    CamUnitDriver *driver = cam_unit_description_get_driver(udesc);
+    return cam_unit_driver_create_unit (driver, udesc);
 }
 
 void 

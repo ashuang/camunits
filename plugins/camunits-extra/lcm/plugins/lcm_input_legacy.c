@@ -85,10 +85,8 @@ driver_create_unit (CamUnitDriver *super,
 {
     dbg ("LCM legacy input driver creating new Log unit\n");
 
-    if (udesc->driver != super)
-        return NULL;
-
-    char **words = g_strsplit (udesc->unit_id, ":", 2);
+    const char *unit_id = cam_unit_description_get_unit_id(udesc);
+    char **words = g_strsplit (unit_id, ":", 2);
     CamInputLegacy *result = cam_input_legacy_new (words[1]);
     g_strfreev (words);
 

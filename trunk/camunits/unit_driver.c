@@ -21,8 +21,18 @@ struct _CamUnitDriverPriv {
     char *stock_unit_name;
     GTypeModule * stock_module;
 };
-
 #define CAM_UNIT_DRIVER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_DRIVER, CamUnitDriverPriv))
+
+typedef struct _CamUnitDescriptionPriv CamUnitDescriptionPriv;
+struct _CamUnitDescriptionPriv {
+    /*< public >*/
+    CamUnitDriver * driver;
+    char * name;
+    char * unit_id;
+    uint32_t flags;
+    /*< private >*/
+};
+#define CAM_UNIT_DESCRIPTION_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_DESCRIPTION, CamUnitDescriptionPriv))
 
 // ================= CamUnitDescription ==================
 
@@ -36,10 +46,11 @@ G_DEFINE_TYPE (CamUnitDescription, cam_unit_description,
 static void
 cam_unit_description_init (CamUnitDescription *self)
 {
-    self->driver = NULL;
-    self->name = NULL;
-    self->unit_id = NULL;
-    self->flags = 0;
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(self);
+    priv->driver = NULL;
+    priv->name = NULL;
+    priv->unit_id = NULL;
+    priv->flags = 0;
 }
 
 static void
@@ -47,21 +58,24 @@ cam_unit_description_class_init (CamUnitDescriptionClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     gobject_class->finalize = cam_unit_description_finalize;
+    g_type_class_add_private (gobject_class, sizeof (CamUnitDescriptionPriv));
 }
 
 CamUnitDescription *
 cam_unit_description_new (CamUnitDriver *driver, const char *name, 
         const char *id, uint32_t flags)
 {
-    CamUnitDescription *self = g_object_new (CAM_TYPE_UNIT_DESCRIPTION, NULL);
-    CamUnitDriverPriv *priv = CAM_UNIT_DRIVER_GET_PRIVATE(driver);
-    self->driver = driver;
-    self->name = strdup (name);
-    self->unit_id = g_strdup_printf ("%s%s%s%s%s",
-            priv->package,
-            strlen(priv->package) ? "." : "",
+    CamUnitDescription *self = CAM_UNIT_DESCRIPTION(
+        g_object_new (CAM_TYPE_UNIT_DESCRIPTION, NULL));
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(self);
+    priv->driver = driver;
+    priv->name = strdup (name);
+    const char *package = cam_unit_driver_get_package(driver);
+    priv->unit_id = g_strdup_printf ("%s%s%s%s%s",
+            package,
+            strlen(package) ? "." : "",
             priv->name, id ? ":" : "", id ? id : "");
-    self->flags = flags;
+    priv->flags = flags;
     return self;
 }
 
@@ -69,12 +83,56 @@ static void
 cam_unit_description_finalize (GObject *obj)
 {
     CamUnitDescription *self = CAM_UNIT_DESCRIPTION (obj);
-    dbg (DBG_DRIVER, "finalize unit description [%s]\n", self->unit_id);
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(self);
+    dbg (DBG_DRIVER, "finalize unit description [%s]\n", priv->unit_id);
 
-    if (self->name) free (self->name);
-    if (self->unit_id) g_free (self->unit_id);
+    free(priv->name);
+    free(priv->unit_id);
 
     G_OBJECT_CLASS (cam_unit_description_parent_class)->finalize (obj);
+}
+
+CamUnitDriver * 
+cam_unit_description_get_driver(const CamUnitDescription *udesc)
+{
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(udesc);
+    return priv->driver;
+}
+
+/**
+ * cam_unit_description_get_name:
+ *
+ * Returns: the name of the unit.
+ */
+const char * 
+cam_unit_description_get_name(const CamUnitDescription *udesc)
+{
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(udesc);
+    return priv->name;
+}
+
+/**
+ * cam_unit_description_get_unit_id:
+ *
+ * Returns: the id of the described unit.
+ */
+const char * 
+cam_unit_description_get_unit_id(const CamUnitDescription *udesc)
+{
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(udesc);
+    return priv->unit_id;
+}
+
+/**
+ * cam_unit_description_get_flags:
+ *
+ * Returns: the flags associated with the described unit.
+ */
+uint32_t 
+cam_unit_description_get_flags(const CamUnitDescription *udesc)
+{
+    CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(udesc);
+    return priv->flags;
 }
 
 // ================= CamUnitDriver ===================
@@ -176,7 +234,8 @@ cam_unit_driver_finalize (GObject *obj)
     GList *uditer;
     for (uditer=ucopy; uditer; uditer=uditer->next) {
         CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION (uditer->data);
-        cam_unit_driver_remove_unit_description (self, udesc->unit_id);
+        const char *unit_id = cam_unit_description_get_unit_id(udesc);
+        cam_unit_driver_remove_unit_description (self, unit_id);
     }
     g_list_free (ucopy);
 
@@ -254,9 +313,12 @@ cam_unit_driver_create_unit (CamUnitDriver *self,
     if (!unit)
         return NULL;
 
-    cam_unit_set_id (unit, udesc->unit_id);
-    cam_unit_set_name (unit, udesc->name);
-    unit->flags = udesc->flags;
+    const char *unit_id = cam_unit_description_get_unit_id(udesc);
+    const char *name = cam_unit_description_get_name(udesc);
+    int flags = cam_unit_description_get_flags(udesc);
+    cam_unit_set_id (unit, unit_id);
+    cam_unit_set_name (unit, name);
+    unit->flags = flags;
 
     return unit;
 }
@@ -270,7 +332,8 @@ cam_unit_driver_find_unit_description (CamUnitDriver *self, const char *id)
     GList *uditer;
     for (uditer=priv->udescs; uditer; uditer=uditer->next) {
         CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION (uditer->data);
-        if (!strcmp (udesc->unit_id, id))
+        const char *unit_id = cam_unit_description_get_unit_id(udesc);
+        if (!strcmp (unit_id, id))
             return udesc;
     }
     return NULL;
@@ -345,20 +408,21 @@ cam_unit_driver_add_unit_description (CamUnitDriver *self,
     CamUnitDescription *udesc = cam_unit_description_new (self,
             name, id, flags);
     g_object_ref_sink (udesc);
+    const char *unit_id = cam_unit_description_get_unit_id(udesc);
 
     // check for dupes
     for (GList *uditer=priv->udescs; uditer; uditer=uditer->next) {
         CamUnitDescription *cand = CAM_UNIT_DESCRIPTION (uditer->data);
-        if (! strcmp (cand->unit_id, udesc->unit_id)) {
+        const char *cand_id = cam_unit_description_get_unit_id(cand);
+        if (! strcmp (cand_id, unit_id)) {
             err ("CamUnitDriver:  detected duplicate unit description for\n"
-                "                [%s]\n", udesc->unit_id);
+                "                [%s]\n", unit_id);
             g_object_unref (udesc);
             return NULL;
         }
     }
 
-    dbg (DBG_DRIVER, "adding new description for unit [%s]\n",
-            udesc->unit_id);
+    dbg (DBG_DRIVER, "adding new description for unit [%s]\n", unit_id);
     priv->udescs = g_list_append (priv->udescs, udesc);
     g_signal_emit (G_OBJECT (self),
             cam_unit_driver_signals[UNIT_DESCRIPTION_ADDED_SIGNAL],
@@ -374,7 +438,8 @@ cam_unit_driver_remove_unit_description (CamUnitDriver *self,
     CamUnitDriverPriv * priv = CAM_UNIT_DRIVER_GET_PRIVATE (self);
     for (GList *uditer=priv->udescs; uditer; uditer=uditer->next) {
         CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION (uditer->data);
-        if (! strcmp (udesc->unit_id, unit_id)) {
+        const char *cand_id = cam_unit_description_get_unit_id(udesc);
+        if (! strcmp (cand_id, unit_id)) {
             dbg (DBG_DRIVER, "removing [%s] (%p)\n", unit_id, udesc);
             priv->udescs = g_list_delete_link (priv->udescs, uditer);
             g_signal_emit (G_OBJECT (self), 

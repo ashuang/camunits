@@ -112,10 +112,10 @@ driver_create_unit (CamUnitDriver *super,
 {
     dbg (DBG_DRIVER, "log driver creating new Log unit\n");
 
-    if (udesc->driver != super)
-        return NULL;
+    g_assert (cam_unit_description_get_driver(udesc) == super);
+    const char *unit_id = cam_unit_description_get_unit_id(udesc);
 
-    char **words = g_strsplit (udesc->unit_id, ":", 2);
+    char **words = g_strsplit (unit_id, ":", 2);
     CamInputLog *result = cam_input_log_new (words[1]);
     g_strfreev (words);
 

@@ -22,7 +22,9 @@ print_usage_and_inputs (const char *progname)
     GList *udlist = cam_unit_manager_list_package (manager, "input", TRUE);
     for (GList *uditer=udlist; uditer; uditer=uditer->next) {
         CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION(uditer->data);
-        printf("  %s  (%s)\n", udesc->unit_id, udesc->name);
+        printf("  %s  (%s)\n", 
+                cam_unit_description_get_unit_id(udesc),
+                cam_unit_description_get_name(udesc));
     }
     g_list_free(udlist);
 }

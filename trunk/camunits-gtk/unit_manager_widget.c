@@ -238,7 +238,8 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
     GtkTreeIter iter, parent_iter;
 
     int found_parent = 0;
-    const char *package = cam_unit_driver_get_package(desc->driver);
+    CamUnitDriver *driver = cam_unit_description_get_driver(desc);
+    const char *package = cam_unit_driver_get_package(driver);
     if (strlen(package)) {
         char **levels = g_strsplit (package, ".", 0);
         for (int i = 0; levels[i]; i++)
@@ -253,10 +254,11 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
     } else {
         gtk_tree_store_append (self->tree_store, &iter, NULL);
     }
+    int udesc_flags = cam_unit_description_get_flags(desc);
     gtk_tree_store_set (self->tree_store, &iter,
-            COL_TEXT, desc->name,
+            COL_TEXT, cam_unit_description_get_name(desc),
             COL_DESC_PTR, desc,
-            COL_IS_RENDERABLE, desc->flags & CAM_UNIT_RENDERS_GL,
+            COL_IS_RENDERABLE, udesc_flags & CAM_UNIT_RENDERS_GL,
             COL_IS_DRAGGABLE, TRUE,
             -1);
     GtkTreePath * path =
@@ -387,7 +389,8 @@ drag_begin (GtkWidget * widget, GdkDragContext * context)
             COL_DESC_PTR, &desc, -1);
     if (!desc) return;
 
-    CamUnit * unit = cam_unit_driver_create_unit (desc->driver, desc);
+    CamUnitDriver *driver = cam_unit_description_get_driver(desc);
+    CamUnit * unit = cam_unit_driver_create_unit (driver, desc);
     if (!unit)
         return;
 

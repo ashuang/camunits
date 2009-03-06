@@ -64,6 +64,10 @@ on_cursor_changed (GtkTreeView * tree_view, void * user)
     CamUnitDescriptionWidget * self = user;
     CamUnitDescription * desc =
         cam_unit_manager_widget_get_selected_description (self->manager);
+
+    const char *unit_id = cam_unit_description_get_unit_id(desc);
+    const char *name = cam_unit_description_get_name(desc);
+
     GtkTextBuffer * buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self));
     gtk_text_buffer_set_text (buffer, "", -1);
     if (!desc)
@@ -73,12 +77,12 @@ on_cursor_changed (GtkTreeView * tree_view, void * user)
     gtk_text_buffer_get_iter_at_offset (buffer, &iter, -1);
     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "Name: ", -1,
             "bold", NULL);
-    gtk_text_buffer_insert (buffer, &iter, desc->name, -1);
+    gtk_text_buffer_insert (buffer, &iter, name, -1);
     gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "Unit ID: ", -1,
             "bold", NULL);
-    gtk_text_buffer_insert (buffer, &iter, desc->unit_id, -1);
+    gtk_text_buffer_insert (buffer, &iter, unit_id, -1);
     //gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 }
 
