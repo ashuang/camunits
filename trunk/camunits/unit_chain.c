@@ -12,9 +12,36 @@
 
 #define err(args...) fprintf (stderr, args)
 
+typedef struct _CamUnitChainSource CamUnitChainSource;
 struct _CamUnitChainSource {
     GSource gsource;
     CamUnitChain *chain;
+};
+
+struct _CamUnitChain {
+    GObject parent;
+
+    CamUnitManager *manager;
+
+    /*< private >*/
+    GSourceFuncs source_funcs;
+    CamUnitChainSource * event_source;
+
+    GList *units;
+
+    /*
+     * link within units that points to the next unit in the chain ready to 
+     * generate frames.
+     */
+    GList *pending_unit_link;
+
+    gboolean streaming_desired;
+};
+
+struct _CamUnitChainClass {
+    GObjectClass parent_class;
+
+    /*< private >*/
 };
 
 enum {
