@@ -181,9 +181,6 @@ int main(int argc, char **argv)
         g_object_unref(manager);
     }
 
-    // XXX hack... don't remember why this is there anymore...
-    sleep (1);
-
     if (!input_id && !chain_fname) {
         usage(); 
         print_inputs(chain->manager);
