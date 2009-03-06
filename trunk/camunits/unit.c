@@ -709,7 +709,7 @@ cam_unit_get_control_string (CamUnit *self, const char *id,
 CamUnitFormat *
 cam_unit_add_output_format_full (CamUnit *self, CamPixelFormat pfmt, 
         const char *name, 
-        int width, int height, int row_stride, int max_data_size)
+        int width, int height, int row_stride)
 {
     if (! name) {
         char buf[128];
@@ -723,7 +723,7 @@ cam_unit_add_output_format_full (CamUnit *self, CamPixelFormat pfmt,
         return NULL;
     }
     CamUnitFormat *new_format = cam_unit_format_new (pfmt, name, 
-            width, height, row_stride, max_data_size);
+            width, height, row_stride);
     self->output_formats = g_list_append (self->output_formats, new_format);
 
     dbg(DBG_UNIT, "[%s] adding output format [%s] %p\n", self->unit_id, name,

@@ -304,18 +304,14 @@ cam_v4l_new (int videonum)
 
     if (pfmt != CAM_PIXEL_FORMAT_INVALID) {
         int npixels = vcap.minwidth * vcap.minheight;
-        int max_data_size = npixels * cam_pixel_format_bpp(pfmt);
         cam_unit_add_output_format_full (CAM_UNIT (self), pfmt, 
-                NULL, vcap.minwidth, vcap.minheight, vcap.minwidth, 
-                max_data_size);
+                NULL, vcap.minwidth, vcap.minheight, vcap.minwidth);
 
         if (vcap.minwidth != vcap.maxwidth || 
             vcap.minheight != vcap.maxheight) {
             npixels = vcap.maxwidth * vcap.maxheight;
-            max_data_size = npixels * cam_pixel_format_bpp(pfmt);
             cam_unit_add_output_format_full (CAM_UNIT (self), pfmt, 
-                    NULL, vcap.maxwidth, vcap.maxheight, vcap.maxwidth,
-                    max_data_size);
+                    NULL, vcap.maxwidth, vcap.maxheight, vcap.maxwidth);
         }
     }
 

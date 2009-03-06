@@ -219,10 +219,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     if (!self->cc_func) return;
 
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
-
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    int out_buf_size = outfmt->height * outfmt->row_stride;
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc (out_buf_size);
 
     int status = self->cc_func (self, infmt, inbuf, outfmt, outbuf);
 
@@ -247,11 +246,10 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
         if (ci->inpfmt == infmt->pixelformat) {
             int stride = infmt->width * cam_pixel_format_bpp(ci->outpfmt) / 8;
-            int max_data_size = stride * infmt->height;
 
             cam_unit_add_output_format_full (super, ci->outpfmt,
                     NULL, infmt->width, infmt->height, 
-                    stride, max_data_size);
+                    stride);
         }
     }
 }

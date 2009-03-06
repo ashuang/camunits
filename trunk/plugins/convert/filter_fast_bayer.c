@@ -201,17 +201,18 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 {
     CamFastBayerFilter * self = (CamFastBayerFilter*) super;
     dbg(DBG_FILTER, "[%s] iterate\n", cam_unit_get_name(super));
-
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
-
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+
+    int out_buf_size = outfmt->height * outfmt->row_stride;
+    int in_buf_size = infmt->height * infmt->row_stride;
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc (out_buf_size);
+
     const uint8_t *in_data = inbuf->data;
 
     // if the input buffer is not 16-byte aligned, then make an aligned copy.
     if(!CAM_IS_ALIGNED16(inbuf->data)) {
         if(! self->aligned_buffer) {
-            self->aligned_buffer = MALLOC_ALIGNED(infmt->max_data_size);
+            self->aligned_buffer = MALLOC_ALIGNED(in_buf_size);
         }
         memcpy(self->aligned_buffer, inbuf->data, inbuf->bytesused);
         in_data = self->aligned_buffer;
@@ -290,10 +291,9 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
         /* Stride must be 128-byte aligned */
         stride = (stride + 0x7f)&(~0x7f);
-        int max_data_size = infmt->height * stride;
 
         cam_unit_add_output_format_full (super, out_pixelformat,
                 NULL, infmt->width, infmt->height, 
-                stride, max_data_size);
+                stride);
     }
 }

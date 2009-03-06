@@ -184,7 +184,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         cam_unit_add_output_format_full (super, infmt->pixelformat,
                 infmt->name, infmt->width, infmt->height, 
-                infmt->row_stride, infmt->max_data_size);
+                infmt->row_stride);
     } else {
         switch (infmt->pixelformat) {
             case CAM_PIXEL_FORMAT_I420:
@@ -230,7 +230,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             if (wfmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
                 CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
                         wfmt->pixelformat, wfmt->name, wfmt->width, 
-                        wfmt->height, wfmt->row_stride, wfmt->max_data_size);
+                        wfmt->height, wfmt->row_stride);
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 
                         wfmt);
 
@@ -241,7 +241,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                 // internal conversion to RGB later on
                 CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
                         CAM_PIXEL_FORMAT_RGB, wfmt->name, wfmt->width, 
-                        wfmt->height, wfmt->width*3, wfmt->max_data_size);
+                        wfmt->height, wfmt->width*3);
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 
                         wfmt);
             }

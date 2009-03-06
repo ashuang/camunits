@@ -512,8 +512,7 @@ CamUnitControl* cam_unit_add_control_string (CamUnit *self, const char *id,
  */
 CamUnitFormat * cam_unit_add_output_format_full (CamUnit *self, 
         CamPixelFormat pfmt, const char *name, 
-        int width, int height, int row_stride,
-        int max_data_size);
+        int width, int height, int row_stride);
 
 /**
  * cam_unit_remove_output_format:

@@ -188,7 +188,7 @@ cam_input_example_init (CamInputExample *self)
     self->dy = 10;
 
     cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB, 
-            "640x480 RGB", 640, 480, 640*3, 640*480*3);
+            "640x480 RGB", 640, 480, 640*3);
 }
 
 static void
@@ -244,9 +244,10 @@ cam_input_example_try_produce_frame (CamUnit *super)
     int64_t frame_delay_usec = 1000000. / self->fps;
     self->next_frame_time += frame_delay_usec;
 
-    CamFrameBuffer *outbuf = 
-        cam_framebuffer_new_alloc (super->fmt->max_data_size);
-    memset (outbuf->data, 0, super->fmt->max_data_size);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    int buf_sz = outfmt->height * outfmt->row_stride;
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc (buf_sz);
+    memset (outbuf->data, 0, buf_sz);
     
     self->x += self->dx;
     int w = cam_unit_control_get_int (self->int1_ctl);

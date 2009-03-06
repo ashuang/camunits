@@ -148,7 +148,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     // match the output format of the input unit
     cam_unit_add_output_format_full (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
-            infmt->row_stride, infmt->max_data_size);
+            infmt->row_stride);
 }
 
 static void 
@@ -172,8 +172,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         }
         else {
             CamUnitFormat *fmt_copy = cam_unit_format_new (infmt->pixelformat,
-                    infmt->name, infmt->width, infmt->height, infmt->row_stride,
-                    infmt->max_data_size);
+                    infmt->name, infmt->width, infmt->height, 
+                    infmt->row_stride);
             CamFrameBuffer *buf_copy = 
                 cam_framebuffer_new_alloc (inbuf->bytesused);
             memcpy (buf_copy->data, inbuf->data, inbuf->bytesused);

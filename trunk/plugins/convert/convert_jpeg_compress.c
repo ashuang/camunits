@@ -88,10 +88,10 @@ cam_convert_jpeg_compress_new()
 }
 
 static int 
-_stream_init (CamUnit * super, const CamUnitFormat * format)
+_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 {
     CamConvertJpegCompress *self = (CamConvertJpegCompress*) super;
-    self->outbuf = cam_framebuffer_new_alloc (format->max_data_size);
+    self->outbuf = cam_framebuffer_new_alloc(fmt->width * fmt->height * 4);
     return 0;
 }
 
@@ -144,10 +144,8 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
            infmt->pixelformat == CAM_PIXEL_FORMAT_RGB ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_BGRA)) return;
 
-    int max_data_size = infmt->width * 3 * infmt->height;
     cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_MJPEG,
-            NULL, infmt->width, infmt->height,
-            0, max_data_size);
+            NULL, infmt->width, infmt->height, 0);
 }
 
 static void
