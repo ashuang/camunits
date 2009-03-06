@@ -14,8 +14,9 @@ typedef struct _state_t {
 } state_t;
 
 static void
-print_usage_and_inputs (const char *progname, CamUnitManager *manager)
+print_usage_and_inputs (const char *progname)
 {
+    CamUnitManager *manager = cam_unit_manager_get_and_ref();
     fprintf (stderr, "usage: %s <input_id>\n\n", progname);
     fprintf (stderr, "Available inputs:\n\n"); 
     GList *udlist = cam_unit_manager_list_package (manager, "input", TRUE);
@@ -70,7 +71,7 @@ int main(int argc, char **argv)
 
     // abort if no input unit was specified
     if (argc < 2) {
-        print_usage_and_inputs (argv[0], chain->manager);
+        print_usage_and_inputs (argv[0]);
         goto failed;
     }
     const char *input_id = argv[1];
@@ -79,7 +80,7 @@ int main(int argc, char **argv)
     if (! cam_unit_chain_add_unit_by_id (chain, input_id)) {
         fprintf (stderr, "Oh no!  Couldn't create input unit [%s].\n\n", 
                 input_id);
-        print_usage_and_inputs (argv[0], chain->manager);
+        print_usage_and_inputs (argv[0]);
         goto failed;
     }
 

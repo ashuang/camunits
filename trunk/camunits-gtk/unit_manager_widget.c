@@ -238,8 +238,9 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
     GtkTreeIter iter, parent_iter;
 
     int found_parent = 0;
-    if (desc->driver->package) {
-        char **levels = g_strsplit (desc->driver->package, ".", 0);
+    const char *package = cam_unit_driver_get_package(desc->driver);
+    if (strlen(package)) {
+        char **levels = g_strsplit (package, ".", 0);
         for (int i = 0; levels[i]; i++)
             levels[i][0] = toupper (levels[i][0]);
         found_parent = find_or_make_parent_iter (self, levels, 0,
