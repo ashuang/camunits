@@ -12,10 +12,7 @@
 
 #include <lcm/lcm.h>
 
-#include "camlcm_image_announce_t.h"
 #include "camlcm_image_t.h"
-
-#include "lcm_publish.h"
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
 //#define dbg(...) fprintf (stderr, __VA_ARGS__)

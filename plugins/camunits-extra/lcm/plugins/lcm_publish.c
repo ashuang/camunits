@@ -9,8 +9,6 @@
 
 #include "camlcm_image_t.h"
 
-#include "lcm_publish.h"
-
 #define err(args...) fprintf(stderr, args)
 
 #define DEFAULT_DATA_RATE_UPDATE_INTERVAL_USEC 1000000
