@@ -122,16 +122,6 @@ typedef struct _CamUnitDriverClass CamUnitDriverClass;
 
 struct _CamUnitDriver {
     GInitiallyUnowned parent;
-    char *package;
-    char *name;
-
-    /*< private >*/
-    GList *udescs;
-
-    CamUnitConstructor stock_constructor;
-    uint32_t stock_flags;
-    char *stock_unit_name;
-    GTypeModule * stock_module;
 };
 
 struct _CamUnitDriverClass {
@@ -211,9 +201,17 @@ void cam_unit_driver_stop (CamUnitDriver * self);
 /**
  * cam_unit_driver_get_package:
  *
- * Returns: the package of the unit driver.
+ * Returns: the package of the unit driver.  The result is always a valid
+ * string.
  */
 const char * cam_unit_driver_get_package (const CamUnitDriver *self);
+
+/**
+ * cam_unit_driver_get_name:
+ *
+ * Returns: the name of the unit driver.
+ */
+const char * cam_unit_driver_get_name (const CamUnitDriver *self);
 
 /**
  * cam_unit_driver_find_unit_description:
@@ -290,13 +288,12 @@ int cam_unit_driver_remove_unit_description (CamUnitDriver *self,
 
 /**
  * cam_unit_driver_set_name:
- * @package:  The name of the package.  Can be NULL.
- * @name:     The name of the driver.  Must not be NULL.
  *
- * Protected method.  Sets the package and name of the driver.
+ * Protected method.  Sets the package and name of the driver.  Subclasses
+ * should call this once on instantiation only.
  */
 void cam_unit_driver_set_name (CamUnitDriver *self, const char *package,
-        const char * name);
+        const char *name);
 
 #ifdef __cplusplus
 }

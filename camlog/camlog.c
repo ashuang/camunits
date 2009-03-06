@@ -49,8 +49,9 @@ on_frame_ready (CamUnitChain *chain, CamUnit *unit, const CamFrameBuffer *buf,
 }
 
 static void
-print_inputs (CamUnitManager *manager)
+print_inputs ()
 {
+    CamUnitManager *manager = cam_unit_manager_get_and_ref();
     fprintf(stderr, "Units available in package input:\n\n"); 
     GList *udlist = cam_unit_manager_list_package (manager, "input", TRUE);
     for (GList *uditer=udlist; uditer; uditer=uditer->next) {
@@ -58,6 +59,7 @@ print_inputs (CamUnitManager *manager)
         printf("  %s  (%s)\n", udesc->unit_id, udesc->name);
     }
     g_list_free(udlist);
+    g_object_unref(manager);
 }
 
 static void
@@ -183,7 +185,7 @@ int main(int argc, char **argv)
 
     if (!input_id && !chain_fname) {
         usage(); 
-        print_inputs(chain->manager);
+        print_inputs();
         goto done;
     } else if(input_id && chain_fname) {
         fprintf(stderr, "Only one of -c and -i can be specified\n");
@@ -201,7 +203,7 @@ int main(int argc, char **argv)
         if (! input) {
             fprintf(stderr, "CRAP!  Couldn't create input unit [%s].\n\n", 
                     input_id);
-            print_inputs(chain->manager);
+            print_inputs();
             goto done;
         }
 

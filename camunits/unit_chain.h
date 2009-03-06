@@ -42,7 +42,7 @@ GType cam_unit_chain_get_type (void);
 // ========= Unit Chain public methods ==========
 
 /**
- * Constructor.  create a new chain with a new unit manager
+ * Constructor.  create a new chain
  *
  * Returns: a newly allocated CamUnitChain
  */
