@@ -15,6 +15,7 @@
 
 typedef struct _state_t {
     CamUnitChain *chain;
+    CamUnitManager *manager;
 
     CamUnitChainWidget *chain_widget;
     CamUnitManagerWidget *manager_widget;
@@ -270,7 +271,7 @@ setup_gtk (state_t *self)
 
 
     // manager widget
-    self->manager_widget = cam_unit_manager_widget_new (self->chain->manager);
+    self->manager_widget = cam_unit_manager_widget_new (self->manager);
     GtkWidget *sw1 = gtk_scrolled_window_new (NULL, NULL);
     gtk_container_add (GTK_CONTAINER (sw1), GTK_WIDGET (self->manager_widget));
     //gtk_paned_pack1 (GTK_PANED (hpane1), sw, FALSE, TRUE);
@@ -321,19 +322,18 @@ static int
 state_setup (state_t *self)
 {
     // create the image processing chain
-    self->chain = cam_unit_chain_new ();
+    self->chain = cam_unit_chain_new();
+    self->manager = cam_unit_manager_get_and_ref();
 
     // search for plugins in non-standard directories
     if(self->extra_plugin_path) {
-        CamUnitManager *manager = cam_unit_manager_get_and_ref();
         char **path_dirs = g_strsplit(self->extra_plugin_path, ":", 0);
         for (int i=0; path_dirs[i]; i++) {
-            cam_unit_manager_add_plugin_dir (manager, path_dirs[i]);
+            cam_unit_manager_add_plugin_dir (self->manager, path_dirs[i]);
         }
         g_strfreev (path_dirs);
         free(self->extra_plugin_path);
         self->extra_plugin_path = NULL;
-        g_object_unref(manager);
     }
 
     // setup the GUI
@@ -364,6 +364,7 @@ state_cleanup (state_t *self)
 {
     // halt and destroy chain
     cam_unit_chain_all_units_stream_shutdown (self->chain);
+    g_object_unref (self->manager);
     g_object_unref (self->chain);
     free (self->xml_fname);
     return 0;
