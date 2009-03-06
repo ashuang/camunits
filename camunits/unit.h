@@ -26,13 +26,15 @@
  *
  * Input units are always the first unit in a chain, and do not consume images
  * as input.  Instead, an input unit generates images to be consumed by other
- * units.  Examples of input units are #CamDC1394 and #CamInputLog
+ * units.  Examples of input units are <literal>input.dc1394</literal> and 
+ * <literal>input.log</literal> (see the Camunits Core Plugins documentation).
  *
  * Filter units form the backbone of an image processing chain, and may
  * transform an image in some way.  Examples of filter units that modify 
- * images are #CamColorConversionFilter and #CamFastBayerFilter.  Other filter
+ * images are <literal>convert.colorspace</literal> and
+ * <literal>convert.fast_debayer</literal>.  Other filter
  * units may simply pass the image through while doing something else (e.g.
- * #CamFilterGL)
+ * <literal>output.opengl</literal>)
  *
  * A CamUnit object is either streaming or not.  A streaming unit has been
  * bound to an output format and is expected to be generating images of that
@@ -169,8 +171,10 @@ GType cam_unit_get_type(void);
  * NULL.
  *
  * Sets the input of a CamUnit.  This method only makes sense for filter units
- * (e.g. #CamColorConversionFilter, #CamFilterGL), and is meaningless for input
- * units (e.g. #CamInputLog).  When using a CamUnit as part of a #CamUnitChain,
+ * (e.g. <literal>convert.colorspace</literal>,
+ * <literal>output.opengl</literal>), and is meaningless for input
+ * units (e.g. <literal>input.log</literal>).  When using a CamUnit as part of
+ * a #CamUnitChain,
  * the chain should take care of invoking this method when appropriate.
  *
  * The CamUnit (on which this method is being invoked, not the input unit) must
