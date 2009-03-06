@@ -114,7 +114,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     }
 
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
-    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc(outfmt->max_data_size);
+    int buf_sz = outfmt->height * outfmt->row_stride;
+    CamFrameBuffer *outbuf = cam_framebuffer_new_alloc(buf_sz);
 
     // swap the red and green channels
     int row;
@@ -154,5 +155,5 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
     cam_unit_add_output_format_full (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
-            infmt->row_stride, infmt->max_data_size);
+            infmt->row_stride);
 }

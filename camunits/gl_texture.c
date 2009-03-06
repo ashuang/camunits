@@ -27,11 +27,11 @@ struct _CamGLTexture {
 
     GLuint pbo;
     int use_pbo;
-    int max_data_size;
+    int buf_size;
 };
     
 CamGLTexture *
-cam_gl_texture_new (int width, int height, int max_data_size)
+cam_gl_texture_new (int width, int height, int buf_size)
 {
     CamGLTexture * t;
 
@@ -94,9 +94,10 @@ cam_gl_texture_new (int width, int height, int max_data_size)
 
     if (t->use_pbo) {
         glGenBuffersARB (1, &t->pbo);
-        t->max_data_size = max_data_size;
+        t->buf_size = buf_size;
         glBindBufferARB (GL_PIXEL_UNPACK_BUFFER_ARB, t->pbo);
-        glBufferDataARB (GL_PIXEL_UNPACK_BUFFER_ARB, t->max_data_size, NULL, 
+        glBufferDataARB (GL_PIXEL_UNPACK_BUFFER_ARB, 
+                t->buf_size, NULL, 
                 GL_STREAM_DRAW);
         glBindBufferARB (GL_PIXEL_UNPACK_BUFFER_ARB, 0);
     }
@@ -207,9 +208,10 @@ int
 cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
         const void * data)
 {
-    if (t->use_pbo && (stride * t->height) > t->max_data_size) {
+    if (t->use_pbo && (stride * t->height) > t->buf_size) {
         fprintf (stderr, "Error: gl_texture buffer (%d bytes) too small for "
-                "texture (%d bytes)\n", t->max_data_size, stride * t->height);
+                "texture (%d bytes)\n", t->buf_size, 
+                stride * t->height);
         return -1;
     }
     if (!data && !t->use_pbo) {

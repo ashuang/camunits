@@ -57,8 +57,6 @@ typedef struct _CamUnitFormatClass CamUnitFormatClass;
  *        compressed formats or planar data).
  * @width: the width, in pixels, of the frame
  * @height: the height, in pixels, of the frame.
- * @max_data_size: the maximum size of an image for this format, in bytes.
- *                 Used mostly for internal buffer allocation
  */
 struct _CamUnitFormat {
     GObject parent;
@@ -69,7 +67,6 @@ struct _CamUnitFormat {
     int row_stride;
     int width;
     int height;
-    int max_data_size;
 
     /*< protected >*/
 
@@ -91,14 +88,11 @@ GType cam_unit_format_get_type (void);
  * @height: image height, in pixels
  * @row_stride: number of bytes separating rows.  Should be 0 when the term row
  *              stride is not meaningful for the specified pixel format.
- * @max_data_size: the maximum number of bytes that an image of this format is
- *                 expected to be.  This is typically used for internal buffer
- *                 allocation.
  *
  * Returns: a newly created #CamUnitFormat
  */
 CamUnitFormat *cam_unit_format_new (CamPixelFormat pfmt, const char *name, 
-        int width, int height, int row_stride, int max_data_size);
+        int width, int height, int row_stride);
 
 /**
  * cam_unit_format_equals:

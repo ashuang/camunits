@@ -17,7 +17,7 @@ extern "C" {
 typedef struct _CamGLTexture CamGLTexture;
 
 CamGLTexture *
-cam_gl_texture_new (int width, int height, int max_data_size);
+cam_gl_texture_new (int width, int height, int buf_size);
 
 void
 cam_gl_texture_free (CamGLTexture * t);

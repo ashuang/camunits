@@ -298,7 +298,8 @@ add_v4l2_format (CamV4L2 * self, uint32_t width, uint32_t height,
 
     CamUnitFormat *new_fmt = cam_unit_add_output_format_full (CAM_UNIT (self),
             cam_pixelformat, NULL, fmt->fmt.pix.width, fmt->fmt.pix.height,
-            fmt->fmt.pix.bytesperline, fmt->fmt.pix.sizeimage);
+            fmt->fmt.pix.bytesperline);
+            //, fmt->fmt.pix.sizeimage);
 
     g_object_set_data (G_OBJECT (new_fmt), "input_v4l2:v4l2_format", fmt);
     return 0;

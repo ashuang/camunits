@@ -232,14 +232,8 @@ _log_set_file (CamInputLog *self, const char *fname)
         goto fail;
     }
 
-    int max_data_size;
-    if (cam_pixel_format_stride_meaningful (format.pixelformat))
-        max_data_size = format.height * format.stride;
-    else
-        max_data_size = format.width * format.height * 4;
-
     cam_unit_add_output_format_full (super, format.pixelformat, NULL, 
-            format.width, format.height, format.stride, max_data_size);
+            format.width, format.height, format.stride);
 
     self->nframes = cam_log_count_frames (self->camlog);
     int maxframe = self->nframes - 1;

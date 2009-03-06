@@ -19,7 +19,6 @@ cam_unit_format_init (CamUnitFormat *self)
     self->width = 0;
     self->height = 0;
     self->row_stride = 0;
-    self->max_data_size = 0;
 }
 
 static void
@@ -41,8 +40,7 @@ cam_unit_format_finalize (GObject *obj)
 
 CamUnitFormat *
 cam_unit_format_new (CamPixelFormat pfmt, const char *name, 
-        int width, int height, int row_stride, 
-        int max_data_size)
+        int width, int height, int row_stride)
 {
     CamUnitFormat *self = CAM_UNIT_FORMAT(
             g_object_new(CAM_TYPE_UNIT_FORMAT, NULL));
@@ -52,7 +50,6 @@ cam_unit_format_new (CamPixelFormat pfmt, const char *name,
     self->width = width;
     self->height = height;
     self->row_stride = row_stride;
-    self->max_data_size = max_data_size;
 
     return self;
 }
@@ -64,6 +61,5 @@ cam_unit_format_equals(const CamUnitFormat *self, const CamUnitFormat *a)
             (!strcmp (self->name, a->name)) &&
             self->width == a->width &&
             self->height == a->height &&
-            self->row_stride == a->row_stride &&
-            self->max_data_size == a->max_data_size);
+            self->row_stride == a->row_stride);
 }
