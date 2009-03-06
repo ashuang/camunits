@@ -133,7 +133,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     // copy the timestamp and metadata dictionary
     cam_framebuffer_copy_metadata (outbuf, inbuf);
 
-    outbuf->bytesused = super->fmt->row_stride * super->fmt->height;
+    outbuf->bytesused = buf_sz;
 
     cam_unit_produce_frame (super, outbuf, super->fmt);
     g_object_unref (outbuf);

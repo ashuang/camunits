@@ -21,12 +21,11 @@
  * usages may include identifying the image source (e.g. the UID of a firewire
  * camera), the exposure settings for the image, etc.
  *
- * When logging images with #CamLoggerUnit (unit id "output.logger"), the
+ * When logging images with <literal>output.logger</literal>, the
  * metadata dictionary is also logged to disk.  Additionally, when replaying
- * logs with #CamInputLog (unit id typically "input.log:/path/to/file"), the
- * metadata dictionary will be repopulated from the log file.  Thus, the
- * metadata dictionary can be used to store metadata that persists in a log
- * file.
+ * logs with <literal>input.log</literal>, the metadata dictionary will be
+ * repopulated from the log file.  Thus, the metadata dictionary can be used to
+ * store metadata that persists in a log file.
  */
 
 #ifdef __cplusplus

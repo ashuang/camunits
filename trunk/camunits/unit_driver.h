@@ -37,11 +37,11 @@ extern "C" {
  * required to instantiate a #CamUnit may differ depending on the physical
  * device.  Pure software units such as color conversion filters do not have to
  * worry about this, and will typically use a "stock" CamUnitDriver -- see
- * #cam_unit_driver_new_stock ().
+ * cam_unit_driver_new_stock().
  *
  * Unless you are writing a new input unit, or doing something other than
  * implementing a standard image processing filter, you should not have to deal
- * with this class very much, and #cam_unit_driver_new_stock should be
+ * with this class very much, and cam_unit_driver_new_stock() should be
  * sufficient.  The #CamUnitManager maintains a list of drivers to provide a
  * global view of what's available across all drivers, and the #CamUnitChain
  * should usually be used as a proxy to instantiate new #CamUnit objects.
