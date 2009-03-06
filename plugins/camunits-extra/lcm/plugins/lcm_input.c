@@ -18,8 +18,8 @@
 #include "lcm_publish.h"
 
 #define err(...) fprintf (stderr, __VA_ARGS__)
-//#define dbg(...) fprintf (stderr, args)
-//#define dbgi(...) fprintf (stderr, args)
+//#define dbg(...) fprintf (stderr, __VA_ARGS__)
+//#define dbgi(...) fprintf (stderr, __VA_ARGS__)
 #define dbg(...)
 #define dbgi(...)
 
@@ -65,7 +65,8 @@ CamUnitDriver * cam_plugin_create (GTypeModule * module);
 CamUnitDriver * cam_plugin_create (GTypeModule * module)
 {
     return cam_unit_driver_new_stock_full ("lcm", "input",
-            "LCM Input", 0, (CamUnitConstructor)camlcm_input_new, module);
+            "LCM Input", CAM_UNIT_EVENT_METHOD_FD, 
+            (CamUnitConstructor)camlcm_input_new, module);
 }
 
 // ============ LCM thread ========
@@ -74,6 +75,8 @@ static void
 on_image (const lcm_recv_buf_t *rbuf, const char *channel, 
         const camlcm_image_t *image, void *user_data)
 {
+    dbgi("image received\n");
+
     // this method is always invoked from the LCM thread.
     CamlcmInput *self = (CamlcmInput*) user_data;
     g_mutex_lock (self->mutex);
@@ -84,6 +87,7 @@ on_image (const lcm_recv_buf_t *rbuf, const char *channel,
     self->received_image = camlcm_image_t_copy(image);
 
     if (! self->unhandled_frame) {
+        dbgi("notify\n");
         // only write to the pipe if there isn't already data in it
         int wstatus = write (self->write_fd, " ", 1);
         if (1 != wstatus) perror ("input_lcm notify write");
@@ -100,10 +104,16 @@ lcm_thread (void *user_data)
     g_mutex_lock(self->mutex);
     char *lcm_url = strdup(self->lcm_url);
     char *channel = strdup(self->channel);
+    g_mutex_unlock(self->mutex);
 
     camlcm_image_t_subscription_t *subscription = NULL;
     lcm_t *lcm = lcm_create(lcm_url);
+    if(strlen(channel)) {
+        subscription = camlcm_image_t_subscribe (lcm,
+                channel, on_image, self);
+    }
 
+    dbgi("start loop\n");
     while (1) {
         // check to see if the LCM url has changed
         g_mutex_lock(self->mutex);
@@ -152,6 +162,7 @@ lcm_thread (void *user_data)
             0
         };
 
+        dbg("poll start\n");
         int status = poll (&pfd, 1, 300);
 
         if (self->thread_exit_requested) break;
@@ -199,6 +210,7 @@ camlcm_input_init (CamlcmInput *self)
     self->source_q = NULL;
     self->lcm_thread = NULL;
     self->mutex = NULL;
+    self->unhandled_frame = 0;
 
     self->channel = strdup("CAMLCM_IMAGE");
     self->channel_ctl = cam_unit_add_control_string (super, "channel",
@@ -229,7 +241,7 @@ camlcm_input_init (CamlcmInput *self)
 
     // set a dummy output format
     cam_unit_add_output_format_full (CAM_UNIT(self), CAM_PIXEL_FORMAT_GRAY, 
-            "Dummy output format", 1, 1, 1);
+            "1x1 Gray 8bpp dummy format", 1, 1, 1);
 
     return;
 
