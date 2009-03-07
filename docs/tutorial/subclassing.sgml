@@ -446,7 +446,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     outbuf->bytesused = buf_sz;
 
-    cam_unit_produce_frame (super, outbuf, super->fmt);
+    cam_unit_produce_frame (super, outbuf, outfmt);
     g_object_unref (outbuf);
 }
 
@@ -811,7 +811,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     outbuf->bytesused = buf_sz;
 
-    cam_unit_produce_frame (super, outbuf, super->fmt);
+    cam_unit_produce_frame (super, outbuf, outfmt);
     g_object_unref (outbuf);
 }
 ]]>
