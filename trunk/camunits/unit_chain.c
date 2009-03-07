@@ -726,9 +726,10 @@ cam_unit_chain_snapshot (const CamUnitChain *self)
             CamUnitControl *ctl = CAM_UNIT_CONTROL (citer->data);
 
             g_string_append_printf (result, "        <control id=\"%s\">", 
-                    ctl->id);
+                    cam_unit_control_get_id(ctl));
 
-            switch (ctl->type) {
+            CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
+            switch (ctl_type) {
                 case CAM_UNIT_CONTROL_TYPE_INT:
                     g_string_append_printf (result, "%d", 
                             cam_unit_control_get_int (ctl));
@@ -755,7 +756,7 @@ cam_unit_chain_snapshot (const CamUnitChain *self)
                     break;
                 default:
                     g_warning ("%s: Ignoring unrecognized control type %d\n",
-                            __FUNCTION__, ctl->type);
+                            __FUNCTION__, ctl_type);
                     break;
             }
             g_string_append (result, "</control>\n");
@@ -950,14 +951,15 @@ _text (GMarkupParseContext *ctx, const char *text, gsize text_len,
     buf[text_len] = 0;
     char *e = NULL;
     if (cpc->ctl) {
-        switch (cpc->ctl->type) {
+        const char *ctl_id = cam_unit_control_get_id(cpc->ctl);
+        switch (cam_unit_control_get_control_type(cpc->ctl)) {
             case CAM_UNIT_CONTROL_TYPE_INT:
                 {
                     long int val = strtol (buf, &e, 10);
                     if (e == buf) {
                         *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                                 "invalid value [%s] for control [%s]", 
-                                buf, cpc->ctl->id);
+                                buf, ctl_id);
                     }
                     cam_unit_control_try_set_int (cpc->ctl, val);
                 }
@@ -968,7 +970,7 @@ _text (GMarkupParseContext *ctx, const char *text, gsize text_len,
                     if (e == buf) {
                         *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                                 "invalid value [%s] for control [%s]", 
-                                buf, cpc->ctl->id);
+                                buf, ctl_id);
                     }
                     cam_unit_control_try_set_boolean (cpc->ctl, val);
                 }
@@ -979,7 +981,7 @@ _text (GMarkupParseContext *ctx, const char *text, gsize text_len,
                     if (e == buf) {
                         *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                                 "invalid value [%s] for control [%s]", 
-                                buf, cpc->ctl->id);
+                                buf, ctl_id);
                     }
                     cam_unit_control_try_set_enum (cpc->ctl, val);
                 }
@@ -993,7 +995,7 @@ _text (GMarkupParseContext *ctx, const char *text, gsize text_len,
                     if (e == buf) {
                         *error = g_error_new (CAM_ERROR_DOMAIN, 0, 
                                 "invalid value [%s] for control [%s]", 
-                                buf, cpc->ctl->id);
+                                buf, ctl_id);
                     }
                     cam_unit_control_try_set_float (cpc->ctl, val);
                 }

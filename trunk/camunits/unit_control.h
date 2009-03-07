@@ -326,6 +326,12 @@ void cam_unit_control_set_enabled (CamUnitControl *self, int enabled);
 
 int cam_unit_control_get_enabled (const CamUnitControl *self);
 
+const char * cam_unit_control_get_name (const CamUnitControl *self);
+
+const char * cam_unit_control_get_id (const CamUnitControl *self);
+
+CamUnitControlType cam_unit_control_get_control_type (const CamUnitControl *self);
+
 /**
  * cam_unit_control_set_ui_hints:
  * @flags: a logical OR of #CamUnitControlUIHint values
@@ -343,7 +349,7 @@ void cam_unit_control_set_ui_hints (CamUnitControl *self, int flags);
  */
 int cam_unit_control_get_ui_hints (const CamUnitControl *self);
 
-const char * cam_unit_control_get_type_str (CamUnitControl * ctl);
+const char * cam_unit_control_get_control_type_str (CamUnitControl * ctl);
 
 #ifdef __cplusplus
 }

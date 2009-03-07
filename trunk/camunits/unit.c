@@ -60,8 +60,8 @@ cam_unit_init (CamUnit *self)
 
     // create a hash table for the controls that automatically frees the 
     // memory used by a value when the value is removed
-    self->controls = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, 
-           (GDestroyNotify) g_object_unref);
+    self->controls = g_hash_table_new_full (g_str_hash, g_str_equal, 
+            free, (GDestroyNotify) g_object_unref);
     // also keep a strictly ordered linked list around.  This is mostly so that
     // when list_controls is called, the result is a list with controls listed
     // in the order that they were added.
@@ -593,16 +593,18 @@ try_add_control (CamUnit *self, CamUnitControl *new_ctl)
         dbg (DBG_UNIT, "failed to create new control\n");
         return NULL;
     }
-    CamUnitControl *oldctl = cam_unit_find_control (self, new_ctl->name);
+    const char *new_ctl_id = cam_unit_control_get_id(new_ctl);
+    CamUnitControl *oldctl = cam_unit_find_control (self, new_ctl_id);
     if (oldctl) {
         err("WARNING:  Refusing to replace existing control [%s]\n"
             "          with new control [%s]\n",
-            oldctl->name, new_ctl->name);
+            cam_unit_control_get_name(oldctl),
+            cam_unit_control_get_name(new_ctl));
         g_object_unref (new_ctl);
         return NULL;
     }
     self->controls_list = g_list_append (self->controls_list, new_ctl);
-    g_hash_table_insert (self->controls, new_ctl->id, new_ctl);
+    g_hash_table_insert (self->controls, strdup(new_ctl_id), new_ctl);
 
     cam_unit_control_set_callback (new_ctl, control_callback, self);
     g_signal_connect (G_OBJECT(new_ctl), "value-changed",
