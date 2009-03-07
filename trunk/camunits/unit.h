@@ -76,34 +76,6 @@ typedef struct _CamUnitClass CamUnitClass;
 
 struct _CamUnit {
     GInitiallyUnowned parent;
-
-    /*< public >*/
-    char * unit_id;
-
-    /*< protected >*/
-    CamUnit * input_unit;
-    char * name;
-    uint32_t flags;
-    
-    // the actual output format used.  borrowed pointer that points to a format
-    // contained within the output_formats list.  NULL if the unit is not READY
-    const CamUnitFormat *fmt;
-
-    /*< private >*/
-
-    // do not modify this directly.
-    gboolean is_streaming;
-
-    GHashTable *controls;
-    GList *controls_list;
-
-    GList *output_formats;
-
-    // If the unit is initialized with a NULL format, then
-    // image formats matching these requests are preferred
-    CamPixelFormat requested_pixelformat;
-    int requested_width;
-    int requested_height;
 };
 
 /**
@@ -192,6 +164,7 @@ int cam_unit_set_input (CamUnit * self, CamUnit * input);
 CamUnit * cam_unit_get_input (CamUnit *self);
 
 gboolean cam_unit_is_streaming (const CamUnit * self);
+
 uint32_t cam_unit_get_flags (const CamUnit *self);
 
 /**
@@ -452,21 +425,6 @@ int cam_unit_draw_gl (CamUnit *self);
 int cam_unit_draw_gl_shutdown (CamUnit * self);
 
 // ========= CamUnit protected methods ========
-
-/**
- * cam_unit_set_name:
- *
- * protected method.  Should only be called by subclasses of CamUnit.  Sets the
- * name of the unit.
- */
-void cam_unit_set_name (CamUnit *self, const char *name);
-
-/**
- * cam_unit_set_id:
- *
- * protected method.  Do not call directly.
- */
-void cam_unit_set_id (CamUnit *self, const char *unit_id);
 
 /**
  * cam_unit_add_control_enum:

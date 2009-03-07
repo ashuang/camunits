@@ -306,6 +306,8 @@ cam_unit_driver_get_name (const CamUnitDriver *self)
 }
 
 void cam_unit_set_flags (CamUnit *self, uint32_t flags);
+void cam_unit_set_name (CamUnit *self, const char *name);
+void cam_unit_set_id (CamUnit *self, const char *unit_id);
 
 CamUnit *
 cam_unit_driver_create_unit (CamUnitDriver *self, 

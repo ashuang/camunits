@@ -76,8 +76,6 @@ cam_unit_get_control_string
 cam_unit_draw_gl_init
 cam_unit_draw_gl
 cam_unit_draw_gl_shutdown
-cam_unit_set_name
-cam_unit_set_id
 cam_unit_add_control_enum
 cam_unit_add_control_int
 cam_unit_add_control_float
