@@ -230,12 +230,13 @@ static int
 _gl_draw_gl (CamUnit *super)
 {
     CamkltKLT *self = (CamkltKLT*) (super);
-    if (!super->fmt) return 0;
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    if (!outfmt) return 0;
     if (!self->fl) return 0;
 
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho (0, super->fmt->width, super->fmt->height, 0, -1, 1);
+    glOrtho (0, outfmt->width, outfmt->height, 0, -1, 1);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
 

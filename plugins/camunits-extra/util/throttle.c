@@ -201,7 +201,8 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
 {
     CamutilThrottle *self = (CamutilThrottle*) (super);
     if (ctl == self->repeat_last_frame_ctl && self->prev_buf) {
-        cam_unit_produce_frame (super, self->prev_buf, super->fmt);
+        cam_unit_produce_frame (super, self->prev_buf, 
+                cam_unit_get_output_format(super));
     }
     g_value_copy (proposed, actual);
     return TRUE;

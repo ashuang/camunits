@@ -110,6 +110,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
 {
     CamippFilterFixedGauss *self = (CamippFilterFixedGauss*) (super);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
 
     int filter_size = cam_unit_control_get_enum (self->size_ctl);
 
@@ -126,17 +127,17 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     switch (infmt->pixelformat) {
         case CAM_PIXEL_FORMAT_GRAY:
             ippiFilterGauss_8u_C1R (inbuf->data, infmt->row_stride,
-                    self->outbuf->data, super->fmt->row_stride, sz, mask_size);
+                    self->outbuf->data, outfmt->row_stride, sz, mask_size);
             break;
         case CAM_PIXEL_FORMAT_RGB:
         case CAM_PIXEL_FORMAT_BGR:
             ippiFilterGauss_8u_C3R (inbuf->data, infmt->row_stride,
-                    self->outbuf->data, super->fmt->row_stride, sz, mask_size);
+                    self->outbuf->data, outfmt->row_stride, sz, mask_size);
             break;
         case CAM_PIXEL_FORMAT_BGRA:
         case CAM_PIXEL_FORMAT_RGBA:
             ippiFilterGauss_8u_C4R (inbuf->data, infmt->row_stride,
-                    self->outbuf->data, super->fmt->row_stride, sz, mask_size);
+                    self->outbuf->data, outfmt->row_stride, sz, mask_size);
             break;
         default:
             // TODO
@@ -144,9 +145,9 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     }
 
     cam_framebuffer_copy_metadata(self->outbuf, inbuf);
-    self->outbuf->bytesused = super->fmt->row_stride * super->fmt->height;
+    self->outbuf->bytesused = outfmt->row_stride * outfmt->height;
 
-    cam_unit_produce_frame (super, self->outbuf, super->fmt);
+    cam_unit_produce_frame (super, self->outbuf, outfmt);
 }
 
 static void

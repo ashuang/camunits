@@ -108,8 +108,9 @@ static int
 cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
 {
     CamFastBayerFilter * self = (CamFastBayerFilter*)super;
-
-    switch (super->input_unit->fmt->pixelformat) {
+    CamUnit * input = cam_unit_get_input(super);
+    const CamUnitFormat * infmt = cam_unit_get_output_format(input);
+    switch (infmt->pixelformat) {
         case CAM_PIXEL_FORMAT_BAYER_GBRG:
             cam_unit_control_force_set_enum (self->bayer_tile_ctl, 0);
             break;
@@ -260,7 +261,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     }
 
     cam_framebuffer_copy_metadata(outbuf, inbuf);
-    outbuf->bytesused = super->fmt->height * super->fmt->row_stride;
+    outbuf->bytesused = out_buf_size;
 
     cam_unit_produce_frame (super, outbuf, outfmt);
     g_object_unref (outbuf);

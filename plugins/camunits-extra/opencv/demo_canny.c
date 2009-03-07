@@ -160,10 +160,12 @@ static int
 _gl_draw_gl_init (CamUnit *super)
 {
     CamcvCanny *self = (CamcvCanny*) (super);
-    if (! super->input_unit) 
+    CamUnit * input = cam_unit_get_input(super);
+    if (! input) 
         return -1;
-    const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
-    if (! super->fmt) 
+    const CamUnitFormat *infmt = cam_unit_get_output_format(input);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    if (! outfmt) 
         return -1;
 
     if (self->gl_initialized) 
@@ -183,11 +185,12 @@ static int
 _gl_draw_gl (CamUnit *super)
 {
     CamcvCanny *self = (CamcvCanny*) (super);
-    if (! super->fmt) return -1;
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    if (! outfmt) return -1;
     if (! self->gl_texture) return -1;
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho (0, super->fmt->width, super->fmt->height, 0, -1, 1);
+    glOrtho (0, outfmt->width, outfmt->height, 0, -1, 1);
     glMatrixMode (GL_MODELVIEW);
     if (self->texture_valid) {
         cam_gl_texture_draw (self->gl_texture);

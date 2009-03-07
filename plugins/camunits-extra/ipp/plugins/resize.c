@@ -254,9 +254,9 @@ _try_set_control (CamUnit *super,
         cam_unit_control_force_set_int (self->height_ctl, new_height);
     }
 
-    if (super->input_unit) {
-        const CamUnitFormat *infmt = 
-            cam_unit_get_output_format (super->input_unit);
+    CamUnit *input = cam_unit_get_input(super);
+    if (input) {
+        const CamUnitFormat *infmt = cam_unit_get_output_format (input);
         if ((old_width != new_width || old_height != new_height) && infmt) {
             cam_unit_stream_shutdown (super);
 

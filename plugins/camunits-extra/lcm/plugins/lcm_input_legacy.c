@@ -123,10 +123,16 @@ cam_input_legacy_init (CamInputLegacy *self)
 
     self->sync_mutex = g_mutex_new ();
 
-    pipe (self->notify_pipe);
+    if(0 != pipe (self->notify_pipe)) {
+        perror("lcm_input_legacy - pipe");
+        return;
+    }
     fcntl (self->notify_pipe[1], F_SETFL, O_NONBLOCK);
 
-    pipe (self->frame_ready_pipe);
+    if(0 != pipe (self->frame_ready_pipe)) {
+        perror("lcm_input_legacy - pipe");
+        return;
+    }
     fcntl (self->frame_ready_pipe[1], F_SETFL, O_NONBLOCK);
 
     self->subscription = NULL;
@@ -223,7 +229,10 @@ _try_produce_frame (CamUnit *super)
     assert (self->sync_pending);
     if (self->sync_pending) {
         char c;
-        read (self->frame_ready_pipe[0], &c, 1);
+        if(1 != read (self->frame_ready_pipe[0], &c, 1)) {
+            perror(__FILE__ " - read:");
+            return FALSE;
+        }
         self->sync_pending = 0;
     }
 
@@ -237,10 +246,11 @@ _try_produce_frame (CamUnit *super)
 
     // if the format of the image received is not the current format of the
     // unit, then shutdown and restart the unit.
-    if (msg->width != super->fmt->width ||
-        msg->height != super->fmt->height ||
-        msg->stride != super->fmt->row_stride ||
-        msg->pixelformat != super->fmt->pixelformat) {
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    if (msg->width != outfmt->width ||
+        msg->height != outfmt->height ||
+        msg->stride != outfmt->row_stride ||
+        msg->pixelformat != outfmt->pixelformat) {
 
         cam_unit_stream_shutdown (super);
         cam_unit_remove_all_output_formats (super);
@@ -255,7 +265,7 @@ _try_produce_frame (CamUnit *super)
     const char *chan = cam_unit_control_get_string (self->channel_ctl);
     cam_framebuffer_metadata_set (buf, "lcm-channel", 
             (const uint8_t*)chan, strlen(chan) + 1);
-    cam_unit_produce_frame (super, buf, super->fmt);
+    cam_unit_produce_frame (super, buf, outfmt);
     g_object_unref (buf);
 
     camlcm_image_legacy_t_destroy (msg);
@@ -313,7 +323,9 @@ _notify_frame_ready (CamInputLegacy *self, const camlcm_image_legacy_t *msg)
     self->new_image = camlcm_image_legacy_t_copy (msg);
     if (!self->sync_pending) {
         char c = ' ';
-        write (self->frame_ready_pipe[1], &c, 1);
+        if(1 != write (self->frame_ready_pipe[1], &c, 1)) {
+            perror(__FILE__ " - write");
+        }
         self->sync_pending = 1;
     }
     g_mutex_unlock (self->sync_mutex);

@@ -88,8 +88,10 @@ static int
 _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 {
     CamConvertToGray * self = (CamConvertToGray*) (super);
-    if (super->input_unit && super->input_unit->fmt &&
-        super->input_unit->fmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
+    CamUnit *input = cam_unit_get_input(super);
+    g_assert(input);
+    const CamUnitFormat *infmt = cam_unit_get_output_format(input);
+    if (infmt && infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         return 0;
     }
     if (self->worker) {
@@ -152,7 +154,7 @@ static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
     CamConvertToGray *self = (CamConvertToGray*) (super);
-    gboolean was_streaming = super->is_streaming;
+    gboolean was_streaming = cam_unit_is_streaming(super);
     cam_unit_stream_shutdown (super);
 
     if (self->worker) {
@@ -204,7 +206,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
         g_signal_connect (G_OBJECT (self->worker), "frame-ready",
                 G_CALLBACK (on_worker_frame_ready), self);
-        cam_unit_set_input (self->worker, super->input_unit);
+        cam_unit_set_input (self->worker, cam_unit_get_input(super));
 
         GList * worker_formats = cam_unit_get_output_formats (self->worker);
         for (GList *witer=worker_formats; witer; witer=witer->next) {

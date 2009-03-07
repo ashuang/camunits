@@ -157,8 +157,8 @@ _take_snapshot (CamutilSnapshot * self)
     memset(fname, 0, sizeof(fname));
 
     const char *suffix = "";
-    
-    switch (super->fmt->pixelformat) {
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    switch (outfmt->pixelformat) {
         case CAM_PIXEL_FORMAT_GRAY:
         case CAM_PIXEL_FORMAT_BAYER_GBRG:
         case CAM_PIXEL_FORMAT_BAYER_RGGB:
@@ -197,12 +197,12 @@ _take_snapshot (CamutilSnapshot * self)
     }
     if(!strcmp(suffix, "pgm")) {
         _pgm_write(fp, self->prev_buf->data, 
-                super->fmt->width, super->fmt->height,
-                super->fmt->row_stride);
+                outfmt->width, outfmt->height,
+                outfmt->row_stride);
     } else if (!strcmp(suffix, "ppm")) {
         _ppm_write(fp, self->prev_buf->data, 
-                super->fmt->width, super->fmt->height,
-                super->fmt->row_stride);
+                outfmt->width, outfmt->height,
+                outfmt->row_stride);
     } else if (!strcmp(suffix, "jpg")) {
         int status = fwrite(self->prev_buf->data, self->prev_buf->bytesused, 1, fp);
         if(1 != status) {

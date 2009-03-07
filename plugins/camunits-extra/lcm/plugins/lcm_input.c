@@ -368,7 +368,7 @@ camlcm_input_try_produce_frame (CamUnit *super)
 
     g_mutex_unlock (self->mutex);
 
-    cam_unit_produce_frame (super, outbuf, super->fmt);
+    cam_unit_produce_frame (super, outbuf, cam_unit_get_output_format(super));
     g_object_unref (outbuf);
 
     return TRUE;

@@ -196,7 +196,8 @@ cam_color_conversion_filter_stream_init (CamUnit * super,
     CamColorConversionFilter * self = (CamColorConversionFilter*)super;
     dbg (DBG_INPUT, "Initializing color conversion filter\n");
 
-    const CamUnitFormat *infmt = cam_unit_get_output_format(super->input_unit);
+    CamUnit *input = cam_unit_get_input(super);
+    const CamUnitFormat *infmt = cam_unit_get_output_format(input);
     for (GList *citer=self->conversions; citer; citer=citer->next) {
         conv_info_t *ci = (conv_info_t*) citer->data;
         if (ci->inpfmt  == infmt->pixelformat &&
@@ -227,7 +228,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     if (0 == status) {
         cam_framebuffer_copy_metadata(outbuf, inbuf);
-        outbuf->bytesused = super->fmt->height * super->fmt->row_stride;
+        outbuf->bytesused = out_buf_size;
         cam_unit_produce_frame (super, outbuf, outfmt);
     }
 

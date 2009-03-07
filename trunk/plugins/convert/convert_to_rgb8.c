@@ -96,8 +96,10 @@ static int
 _stream_init (CamUnit * super, const CamUnitFormat * outfmt)
 {
     CamConvertToRgb8 * self = (CamConvertToRgb8*)super;
-    if (super->input_unit && super->input_unit->fmt &&
-            super->input_unit->fmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
+    CamUnit *input = cam_unit_get_input(super);
+    const CamUnitFormat *infmt = 
+        input ? cam_unit_get_output_format(input) : NULL;
+    if (input && infmt && infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
         return 0;
     }
     if (self->worker) {
@@ -139,15 +141,16 @@ on_worker_frame_ready (CamUnit *worker, const CamFrameBuffer *inbuf,
         cam_unit_produce_frame (super, inbuf, infmt);
         return;
     } else if (infmt->pixelformat == CAM_PIXEL_FORMAT_BGRA) {
-        CamFrameBuffer *outbuf = 
-            cam_framebuffer_new_alloc (infmt->width*infmt->height*3);
+        int buf_sz = infmt->width*infmt->height*3;
+        CamFrameBuffer *outbuf = cam_framebuffer_new_alloc (buf_sz);
+        const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
         cam_pixel_convert_8u_bgra_to_8u_rgb(outbuf->data, 
-                super->fmt->row_stride, infmt->width, infmt->height,
+                outfmt->row_stride, infmt->width, infmt->height,
                 inbuf->data, infmt->row_stride);
 
         cam_framebuffer_copy_metadata (outbuf, inbuf);
-        outbuf->bytesused = super->fmt->height * super->fmt->row_stride;
-        cam_unit_produce_frame (super, outbuf, super->fmt);
+        outbuf->bytesused = buf_sz;
+        cam_unit_produce_frame (super, outbuf, outfmt);
         g_object_unref (outbuf);
         return;
     }
@@ -170,7 +173,7 @@ static void
 on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 {
     CamConvertToRgb8 *self = (CamConvertToRgb8*)super;
-    gboolean was_streaming = super->is_streaming;
+    gboolean was_streaming = cam_unit_is_streaming(super);
     cam_unit_stream_shutdown (super);
 
     if (self->worker) {
@@ -222,7 +225,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
         g_signal_connect (G_OBJECT (self->worker), "frame-ready",
                 G_CALLBACK (on_worker_frame_ready), self);
-        cam_unit_set_input (self->worker, super->input_unit);
+        cam_unit_set_input (self->worker, cam_unit_get_input(super));
 
         GList * worker_formats = cam_unit_get_output_formats (self->worker);
         for (GList *witer=worker_formats; witer; witer=witer->next) {

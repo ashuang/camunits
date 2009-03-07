@@ -418,7 +418,8 @@ cam_unit_chain_widget_find_unit_by_id (const CamUnitChainWidget * self,
             continue;
 
         CamUnitControlWidget * widget = iter->data;
-        if (!strcmp (widget->unit->unit_id, unit_id))
+        const char *wuid = cam_unit_get_id(widget->unit);
+        if (!strcmp (wuid, unit_id))
             return widget;
     }
     return NULL;

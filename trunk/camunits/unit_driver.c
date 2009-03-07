@@ -305,6 +305,8 @@ cam_unit_driver_get_name (const CamUnitDriver *self)
     return priv->name;
 }
 
+void cam_unit_set_flags (CamUnit *self, uint32_t flags);
+
 CamUnit *
 cam_unit_driver_create_unit (CamUnitDriver *self, 
         const CamUnitDescription * udesc)
@@ -316,10 +318,10 @@ cam_unit_driver_create_unit (CamUnitDriver *self,
 
     const char *unit_id = cam_unit_description_get_unit_id(udesc);
     const char *name = cam_unit_description_get_name(udesc);
-    int flags = cam_unit_description_get_flags(udesc);
+    uint32_t flags = cam_unit_description_get_flags(udesc);
     cam_unit_set_id (unit, unit_id);
     cam_unit_set_name (unit, name);
-    unit->flags = flags;
+    cam_unit_set_flags(unit, flags);
 
     return unit;
 }

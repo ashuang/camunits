@@ -235,6 +235,13 @@ cam_unit_get_name (const CamUnit *self) { return self->name; }
 const char *
 cam_unit_get_id (const CamUnit *self) { return self->unit_id; }
 
+void cam_unit_set_flags (CamUnit *self, uint32_t flags);
+void 
+cam_unit_set_flags (CamUnit *self, uint32_t flags)
+{
+    self->flags = flags;
+}
+
 uint32_t
 cam_unit_get_flags (const CamUnit *self) { return self->flags; }
 
