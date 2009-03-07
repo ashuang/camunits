@@ -70,11 +70,12 @@ cam_unit_description_new (CamUnitDriver *driver, const char *name,
     CamUnitDescriptionPriv *priv = CAM_UNIT_DESCRIPTION_GET_PRIVATE(self);
     priv->driver = driver;
     priv->name = strdup (name);
+    const char *driver_name = cam_unit_driver_get_name(driver);
     const char *package = cam_unit_driver_get_package(driver);
     priv->unit_id = g_strdup_printf ("%s%s%s%s%s",
             package,
             strlen(package) ? "." : "",
-            priv->name, id ? ":" : "", id ? id : "");
+            driver_name, id ? ":" : "", id ? id : "");
     priv->flags = flags;
     return self;
 }
