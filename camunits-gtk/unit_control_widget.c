@@ -233,7 +233,8 @@ on_slider_changed(GtkRange *range, CamUnitControlWidget *self)
                 "ControlWidgetInfo");
     CamUnitControl *ctl = ci->ctl;
 
-    if (ctl->type == CAM_UNIT_CONTROL_TYPE_INT) {
+    CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
+    if (ctl_type == CAM_UNIT_CONTROL_TYPE_INT) {
         int newval = (int) gtk_range_get_value (range);
         int oldval = cam_unit_control_get_int(ctl);
 
@@ -249,7 +250,7 @@ on_slider_changed(GtkRange *range, CamUnitControlWidget *self)
             set_slider_label (self, ci);
         }
     }
-    else if (ctl->type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
+    else if (ctl_type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
         float newval = gtk_range_get_value (range);
         float oldval = cam_unit_control_get_float(ctl);
 
@@ -270,31 +271,33 @@ on_slider_changed(GtkRange *range, CamUnitControlWidget *self)
 static void
 control_set_sensitive (ControlWidgetInfo * ci)
 {
-    switch(ci->ctl->type) {
+    CamUnitControlType ctl_type = cam_unit_control_get_control_type(ci->ctl);
+    int enabled = cam_unit_control_get_enabled(ci->ctl);
+    switch(ctl_type) {
         case CAM_UNIT_CONTROL_TYPE_INT:
         case CAM_UNIT_CONTROL_TYPE_BOOLEAN:
         case CAM_UNIT_CONTROL_TYPE_FLOAT:
         case CAM_UNIT_CONTROL_TYPE_ENUM:
-            gtk_widget_set_sensitive(ci->widget, ci->ctl->enabled);
+            gtk_widget_set_sensitive(ci->widget, enabled);
             if (ci->label)
-                gtk_widget_set_sensitive(ci->label, ci->ctl->enabled);
+                gtk_widget_set_sensitive(ci->label, enabled);
             if (ci->labelval)
-                gtk_widget_set_sensitive(ci->labelval, ci->ctl->enabled);
+                gtk_widget_set_sensitive(ci->labelval, enabled);
             break;
         case CAM_UNIT_CONTROL_TYPE_STRING:
-            gtk_widget_set_sensitive(ci->widget, ci->ctl->enabled);
+            gtk_widget_set_sensitive(ci->widget, enabled);
 
             if (cam_unit_control_get_ui_hints(ci->ctl) & 
                     CAM_UNIT_CONTROL_FILENAME) {
                 gtk_widget_set_sensitive(ci->file_chooser_bt,
-                        ci->ctl->enabled);
+                        enabled);
             } else if(ci->button) {
-                gtk_widget_set_sensitive(ci->button, ci->ctl->enabled);
+                gtk_widget_set_sensitive(ci->button, enabled);
             }
             break;
         default:
             err("UnitControlWidget:  unrecognized control type %d\n",
-                    ci->ctl->type);
+                    ctl_type);
             break;
     }
 }
@@ -304,8 +307,9 @@ set_tooltip (CamUnitControlWidget * self, GtkWidget * widget,
         CamUnitControl * ctl)
 {
     char str[256];
-    snprintf (str, sizeof (str), "ID: %s\nType: %s", ctl->id,
-            cam_unit_control_get_type_str (ctl));
+    snprintf (str, sizeof (str), "ID: %s\nType: %s", 
+            cam_unit_control_get_id(ctl),
+            cam_unit_control_get_control_type_str (ctl));
     gtk_tooltips_set_tip (self->tooltips, widget, str, str);
 }
 
@@ -315,7 +319,7 @@ add_slider (CamUnitControlWidget * self,
         int use_int, CamUnitControl * ctl)
 {
     // label
-    char *tmp = g_strjoin("", ctl->name, ":", NULL);
+    char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
@@ -381,7 +385,8 @@ on_spin_button_changed(GtkSpinButton *spinb, CamUnitControlWidget *self)
                 "ControlWidgetInfo");
     CamUnitControl *ctl = ci->ctl;
 
-    if (ctl->type == CAM_UNIT_CONTROL_TYPE_INT) {
+    CamUnitControlType ctl_type = cam_unit_control_get_control_type(ci->ctl);
+    if (ctl_type == CAM_UNIT_CONTROL_TYPE_INT) {
         int newval = (int) gtk_spin_button_get_value (spinb);
         int oldval = cam_unit_control_get_int(ctl);
 
@@ -396,7 +401,7 @@ on_spin_button_changed(GtkSpinButton *spinb, CamUnitControlWidget *self)
             gtk_spin_button_set_value (spinb, oldval);
         }
     }
-    else if (ctl->type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
+    else if (ctl_type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
         float newval = gtk_spin_button_get_value (spinb);
         float oldval = cam_unit_control_get_float(ctl);
 
@@ -419,7 +424,7 @@ add_spinbutton (CamUnitControlWidget * self,
         int use_int, CamUnitControl * ctl)
 {
     // label
-    char *tmp = g_strjoin("", ctl->name, ":", NULL);
+    char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
@@ -439,7 +444,8 @@ add_spinbutton (CamUnitControlWidget * self,
     gtk_widget_show (spinb);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spinb), initial_value);
 
-    if (ctl->type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
+    CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
+    if (ctl_type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
         gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spinb), 6);
     } else {
         gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spinb), 0);
@@ -468,31 +474,35 @@ static void
 add_float_control (CamUnitControlWidget * self, CamUnitControl * ctl)
 {
     int ui_hints = cam_unit_control_get_ui_hints (ctl);
+    float min_float = cam_unit_control_get_min_float(ctl);
+    float max_float = cam_unit_control_get_max_float(ctl);
+    float step_float = cam_unit_control_get_step_float(ctl);
+    float val = cam_unit_control_get_float(ctl);
     if (ui_hints & CAM_UNIT_CONTROL_SPINBUTTON) {
-        add_spinbutton (self, ctl->min_float, ctl->max_float, ctl->step_float,
-                cam_unit_control_get_float (ctl), 1, ctl);
+        add_spinbutton (self, min_float, max_float, step_float, val, 1, ctl);
     } else {
-        add_slider (self, ctl->min_float, ctl->max_float,
-                ctl->step_float, cam_unit_control_get_float (ctl),
-                0, ctl);
+        add_slider (self, min_float, max_float, step_float, val, 0, ctl);
     }
 }
 
 static void
 add_integer_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
-    if(ctl->step_int == 0) {
+    int min_int = cam_unit_control_get_min_int(ctl);
+    int max_int = cam_unit_control_get_max_int(ctl);
+    int step_int = cam_unit_control_get_step_int(ctl);
+    int val = cam_unit_control_get_int(ctl);
+    const char *name = cam_unit_control_get_name(ctl);
+    if(step_int == 0) {
         err("UnitControlWidget: refusing to add a widget for integer\n"
-            "                   control [%s] with step 0\n", ctl->name);
+            "                   control [%s] with step 0\n", name);
         return;
     }
     int ui_hints = cam_unit_control_get_ui_hints(ctl);
     if (ui_hints & CAM_UNIT_CONTROL_SPINBUTTON) {
-        add_spinbutton (self, ctl->min_int, ctl->max_int, ctl->step_int,
-                cam_unit_control_get_int (ctl), 1, ctl);
+        add_spinbutton (self, min_int, max_int, step_int, val, 1, ctl);
     } else {
-        add_slider (self, ctl->min_int, ctl->max_int, ctl->step_int,
-                cam_unit_control_get_int (ctl), 1, ctl);
+        add_slider (self, min_int, max_int, step_int, val, 1, ctl);
     }
 }
 
@@ -580,12 +590,13 @@ add_boolean_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
     int ui_hints = cam_unit_control_get_ui_hints(ctl);
     GtkWidget *widget = NULL;
+    const char *name = cam_unit_control_get_name(ctl);
     if (ui_hints & CAM_UNIT_CONTROL_ONE_SHOT)
-        widget = gtk_button_new_with_label (ctl->name);
+        widget = gtk_button_new_with_label (name);
     else if (ui_hints & CAM_UNIT_CONTROL_TOGGLE_BUTTON)
-        widget = gtk_toggle_button_new_with_label (ctl->name);
+        widget = gtk_toggle_button_new_with_label (name);
     else
-        widget = gtk_check_button_new_with_label (ctl->name);
+        widget = gtk_check_button_new_with_label (name);
 
     set_tooltip (self, widget, ctl);
     add_boolean_ctl_helper(self, ctl, widget);
@@ -619,10 +630,8 @@ on_menu_changed (GtkComboBox * combo, CamUnitControlWidget *self)
 static void
 add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
-    int j;
-
     // label
-    char *tmp = g_strjoin("", ctl->name, ":", NULL);
+    char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
@@ -633,7 +642,7 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 
     GtkListStore * store = gtk_list_store_new (2, G_TYPE_STRING,
             G_TYPE_BOOLEAN);
-    for (j = 0; j <= ctl->max_int; j++) {
+    for (int j = 0; ctl->enum_entries[j]; j++) {
         GtkTreeIter iter;
         gtk_list_store_append (store, &iter);
         gtk_list_store_set (store, &iter,
@@ -658,7 +667,7 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 
 #if 0
     GtkWidget *mb = gtk_combo_box_new_text ();
-    for (j = 0; j <= ctl->max_int; j++) {
+    for (j = 0; j <= cam_unit_control_get_max_int(ctl); j++) {
         gtk_combo_box_append_text (GTK_COMBO_BOX (mb), ctl->enum_entries[j]);
     }
 #endif
@@ -732,7 +741,7 @@ static void
 add_string_control_filename(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
     // label
-    char *tmp = g_strjoin("", ctl->name, ":", NULL);
+    char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
@@ -827,7 +836,7 @@ static void
 add_string_control_entry(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
     // label
-    char *tmp = g_strjoin("", ctl->name, ":", NULL);
+    char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
@@ -899,7 +908,8 @@ on_control_value_changed(CamUnit *unit, CamUnitControl *ctl,
         GValue val = { 0, };
         cam_unit_control_get_val(ctl, &val);
 
-        switch(ctl->type) {
+        CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
+        switch(ctl_type) {
             case CAM_UNIT_CONTROL_TYPE_INT:
                 if (GTK_IS_SPIN_BUTTON (ci->widget)) {
 //                    printf("set value %d\n", g_value_get_int(&val));
@@ -941,7 +951,7 @@ on_control_value_changed(CamUnit *unit, CamUnitControl *ctl,
                 break;
             default:
                 err("UnitControlWidget:  unrecognized control type %d\n",
-                        ctl->type);
+                        ctl_type);
                 break;
         }
         g_value_unset(&val);
@@ -954,13 +964,15 @@ on_control_parameters_changed(CamUnit *unit, CamUnitControl *ctl,
 {
     if(! self->unit) return;
 //    int enabled = cam_unit_control_get_enabled(ctl);
-//    printf("control enabled changed [%s] to %d\n", ctl->name, enabled);
+//    printf("control enabled changed [%s] to %d\n", 
+//                cam_unit_control_get_name(ctl), enabled);
 
     ControlWidgetInfo *ci = g_hash_table_lookup(self->ctl_info, ctl);
     if(ci) {
         control_set_sensitive (ci);
 
-        switch (ctl->type) {
+        CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
+        switch (ctl_type) {
             case CAM_UNIT_CONTROL_TYPE_INT:
                 {
                     int min = cam_unit_control_get_min_int (ctl);
@@ -1100,9 +1112,11 @@ cam_unit_control_widget_set_unit(
             CamUnitControl *ctl = (CamUnitControl*) citer->data;
 
             dbg(DBG_GUI, "adding widget for [%s] of [%s]\n", 
-                    ctl->name, cam_unit_get_id(self->unit));
+                    cam_unit_control_get_name(ctl), 
+                    cam_unit_get_id(self->unit));
 
-            switch(ctl->type) {
+            CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
+            switch(ctl_type) {
                 case CAM_UNIT_CONTROL_TYPE_INT:
                     add_integer_control(self, ctl);
                     break;
@@ -1120,7 +1134,7 @@ cam_unit_control_widget_set_unit(
                     break;
                 default:
                     err("UnitControlWidget:  unrecognized control type %d\n",
-                            ctl->type);
+                            ctl_type);
                     break;
             }
         }

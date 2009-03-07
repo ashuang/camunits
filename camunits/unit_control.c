@@ -142,11 +142,9 @@ cam_unit_control_new_enum (const char *id,
     // how many entries?
     int nentries;
     for (nentries = 0; entries[nentries]; nentries++);
-    self->max_int = nentries - 1;
-    self->min_int = 0;
-    self->enum_entries = (char**) malloc ((self->max_int+1)*sizeof (char*));
-    int i;
-    for (i=0; i<=self->max_int; i++) {
+
+    self->enum_entries = (char**) calloc (1, (nentries+1)*sizeof (char*));
+    for (int i=0; i<nentries; i++) {
         self->enum_entries[i] = strdup (entries[i]);
     }
     if (entries_enabled) {
@@ -634,6 +632,24 @@ cam_unit_control_get_enabled (const CamUnitControl *self)
     return self->enabled;
 }
 
+const char * 
+cam_unit_control_get_name (const CamUnitControl *self)
+{
+    return self->name;
+}
+
+const char * 
+cam_unit_control_get_id (const CamUnitControl *self)
+{
+    return self->id;
+}
+
+CamUnitControlType 
+cam_unit_control_get_control_type (const CamUnitControl *self)
+{
+    return self->type;
+}
+
 void 
 cam_unit_control_set_ui_hints (CamUnitControl *self, int flags)
 {
@@ -656,7 +672,7 @@ static char * type_str[] = {
 };
 
 const char *
-cam_unit_control_get_type_str (CamUnitControl * ctl)
+cam_unit_control_get_control_type_str (CamUnitControl * ctl)
 {
     return type_str[ctl->type];
 }
