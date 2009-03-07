@@ -103,14 +103,14 @@ static
 int cam_filter_gl_draw_gl_init (CamUnit *super)
 {
     CamFilterGL *self = (CamFilterGL*)super;
-    if (! super->input_unit) {
+    CamUnit *input = cam_unit_get_input(super);
+    if (! input) {
         dbg(DBG_OUTPUT, "FilterGL cannot init drawing - no input unit\n");
         return -1;
     }
-    const CamUnitFormat *infmt = 
-        cam_unit_get_output_format(super->input_unit);
-
-    if (! super->fmt) {
+    const CamUnitFormat *infmt = cam_unit_get_output_format(input);
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    if (! outfmt) {
         dbg(DBG_OUTPUT, "FilterGL cannot init drawing.  No format!\n");
         return -1;
     }
@@ -135,11 +135,12 @@ static
 int cam_filter_gl_draw_gl (CamUnit *super)
 {
     CamFilterGL *self = (CamFilterGL*)super;
-    if (! super->fmt) return -1;
+    const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+    if (! outfmt) return -1;
     if (! self->gl_texture) return -1;
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho (0, super->fmt->width, super->fmt->height, 0, -1, 1);
+    glOrtho (0, outfmt->width, outfmt->height, 0, -1, 1);
 
     if (self->texture_valid) {
         cam_gl_texture_draw (self->gl_texture);
@@ -147,9 +148,9 @@ int cam_filter_gl_draw_gl (CamUnit *super)
         glColor3f (0, 0, 0);
         glBegin (GL_QUADS);
         glVertex2f (0, 0);
-        glVertex2f (super->fmt->width, 0);
-        glVertex2f (super->fmt->width, super->fmt->height);
-        glVertex2f (0, super->fmt->height);
+        glVertex2f (outfmt->width, 0);
+        glVertex2f (outfmt->width, outfmt->height);
+        glVertex2f (0, outfmt->height);
         glEnd ();
     }
     return 0;

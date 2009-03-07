@@ -252,7 +252,7 @@ v4l2_finalize (GObject * obj)
     dbg (DBG_INPUT, "v4l2 finalize\n");
     CamUnit * super = CAM_UNIT (obj);
 
-    if (super->is_streaming) {
+    if (cam_unit_is_streaming(super)) {
         dbg (DBG_INPUT, "forcibly shutting down v4l2 unit\n");
         v4l2_stream_shutdown (super);
     }
@@ -261,10 +261,12 @@ v4l2_finalize (GObject * obj)
         close (self->fd);
         self->fd = -1;
     }
-    for (GList *fiter=super->output_formats; fiter; fiter=fiter->next) {
+    GList *output_formats = cam_unit_get_output_formats(super);
+    for (GList *fiter=output_formats; fiter; fiter=fiter->next) {
         CamUnitFormat *outfmt = CAM_UNIT_FORMAT (fiter->data);
         free (g_object_get_data (G_OBJECT (outfmt), "input_v4l2:v4l2_format"));
     }
+    g_list_free(output_formats);
 
     G_OBJECT_CLASS (cam_v4l2_parent_class)->finalize (obj);
 }
@@ -573,23 +575,6 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
         dbg (DBG_INPUT, "v4l2 mapped %p (%d bytes)\n",
                 self->buffers[i], buffer.length);
 
-#if 0
-        CamFrameBuffer * buf =
-            CAM_FRAMEBUFFER (g_queue_pop_head (super->empty_q));
-        buf->length = buffer.length;
-        buf->data = mmap (NULL, buffer.length,
-                PROT_READ | PROT_WRITE, MAP_SHARED,
-                self->fd, buffer.m.offset);
-        printf ("got %p %d %d\n", buf->data, buffer.index, buffer.length);
-        if (buf->data == MAP_FAILED) {
-            perror ("mmap");
-            g_queue_push_head (super->empty_q, buf);
-            break;
-        }
-        self->mapped_buffers = g_list_append (self->mapped_buffers, buf);
-        g_queue_push_tail (super->empty_q, buf);
-#endif
-
         if (-1 == ioctl (self->fd, VIDIOC_QBUF, &buffer)) {
             perror ("VIDIOC_QBUF");
             break;
@@ -654,30 +639,6 @@ v4l2_stream_shutdown (CamUnit * super)
 
     _unmap_buffers (self);
 
-#if 0
-    CamFrameBuffer *buf = NULL;
-    GList *tmpq = NULL;
-    while ((buf = CAM_FRAMEBUFFER (g_queue_pop_tail (super->empty_q))) != NULL)
-        tmpq = g_list_append (tmpq, buf);
-    while ((buf = CAM_FRAMEBUFFER (g_queue_pop_tail (super->outgoing_q))) != 
-            NULL)
-        tmpq = g_list_append (tmpq, buf);
-    for (GList *biter=tmpq; biter; biter=biter->next) {
-        buf = CAM_FRAMEBUFFER (biter->data);
-        GList *mlink = g_list_find (self->mapped_buffers, buf);
-        if (mlink) {
-            munmap (buf->data, buf->length);
-            g_queue_push_head (super->empty_q, buf);
-            self->mapped_buffers = 
-                g_list_delete_link (self->mapped_buffers, mlink);
-        } else {
-            err ("Error! v4l2 ended up with a non-mmaped FrameBuffer!\n");
-            assert (0);
-        }
-    }
-    assert (self->mapped_buffers == NULL);
-#endif
-
     // release requested buffers
     struct v4l2_requestbuffers reqbuf;
     memset (&reqbuf, 0, sizeof (reqbuf));
@@ -696,6 +657,7 @@ static gboolean
 v4l2_try_produce_frame (CamUnit * super)
 {
     CamV4L2 * self = (CamV4L2*) (super);
+    const CamUnitFormat * outfmt = cam_unit_get_output_format (super);
 
     /* If all buffers are already dequeued, V4L2 will keep waking us up
      * because it puts an error condition on its file descriptor.  Thus,
@@ -714,9 +676,8 @@ v4l2_try_produce_frame (CamUnit * super)
         fprintf (stderr, "Warning: DQBUF ioctl failed: %s\n", strerror (errno));
 
         /* Restart the stream from scratch */
-        const CamUnitFormat * fmt = cam_unit_get_output_format (super);
         v4l2_stream_shutdown (super);
-        v4l2_stream_init (super, fmt);
+        v4l2_stream_init (super, outfmt);
         return FALSE;
     }
 
@@ -726,7 +687,7 @@ v4l2_try_produce_frame (CamUnit * super)
     fbuf->timestamp = buf.timestamp.tv_sec * 1000000 + buf.timestamp.tv_usec;
 //    fbuf->bus_timestamp = buf.sequence;
     fbuf->bytesused = buf.bytesused;
-    cam_unit_produce_frame (super, fbuf, super->fmt);
+    cam_unit_produce_frame (super, fbuf, outfmt);
     g_object_unref (fbuf);
 
     // release v4l2 mmap buffer

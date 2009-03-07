@@ -482,7 +482,7 @@ v4l_try_produce_frame (CamUnit * super)
     buf->bytesused = status;
     buf->timestamp = _timestamp_now();
 
-    cam_unit_produce_frame (super, buf, super->fmt);
+    cam_unit_produce_frame (super, buf, outfmt);
     g_object_unref (buf);
     return TRUE;
 }

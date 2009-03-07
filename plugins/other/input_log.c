@@ -373,7 +373,7 @@ log_try_produce_frame (CamUnit *super)
     cam_unit_control_force_set_int (self->frame_ctl, frameinfo.frameno);
 
     self->readone = 0;
-    cam_unit_produce_frame (super, buf, super->fmt);
+    cam_unit_produce_frame (super, buf, cam_unit_get_output_format(super));
     g_object_unref (buf);
     return TRUE;
 }
@@ -416,7 +416,7 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         g_value_copy (proposed, actual);
         return TRUE;
     } else if (ctl == self->fname_ctl) {
-        if (super->is_streaming) {
+        if (cam_unit_is_streaming(super)) {
             cam_unit_stream_shutdown (super);
         }
         const char *fname = g_value_get_string (proposed);

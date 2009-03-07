@@ -280,7 +280,7 @@ dc1394_finalize (GObject * obj)
     CamUnit * super = CAM_UNIT (obj);
     CamDC1394 * self = CAM_DC1394 (super);
 
-    if (super->is_streaming) {
+    if (cam_unit_is_streaming(super)) {
         dbg (DBG_INPUT, "forcibly shutting down dc1394 unit\n");
         dc1394_stream_shutdown (super);
     }
@@ -517,7 +517,6 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
     }
 
 //  FIXME
-//    super->stride = bytes_per_frame / height;
 
     /* Using libdc1394 for iso streaming */
     if (dc1394_capture_setup (self->cam, self->num_buffers,
@@ -587,7 +586,7 @@ dc1394_try_produce_frame (CamUnit * super)
     CamDC1394 * self = CAM_DC1394 (super);
     dbg (DBG_INPUT, "DC1394 stream iterate\n");
 
-    if (! super->is_streaming) return FALSE;
+    if (! cam_unit_is_streaming(super)) return FALSE;
 
     dc1394video_frame_t * frame;
     if (dc1394_capture_dequeue (self->cam, DC1394_CAPTURE_POLICY_WAIT, &frame)
@@ -652,7 +651,7 @@ dc1394_try_produce_frame (CamUnit * super)
     cam_framebuffer_metadata_set (buf, "Source GUID", (uint8_t *) str,
             strlen (str));
 
-    cam_unit_produce_frame (super, buf, super->fmt);
+    cam_unit_produce_frame (super, buf, cam_unit_get_output_format(super));
 
     dc1394_capture_enqueue (self->cam, frame);
 
@@ -711,7 +710,7 @@ dc1394_get_fileno (CamUnit * super)
 {
     CamDC1394 * self = CAM_DC1394 (super);
 
-    if (super->is_streaming)
+    if (cam_unit_is_streaming(super))
         return self->fd;
     else
         return -1;

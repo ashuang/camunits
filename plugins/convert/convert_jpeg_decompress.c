@@ -6,7 +6,7 @@
 #include <setjmp.h>
 
 #include "camunits/plugin.h"
-#include "camunits/dbg.h"
+//#include "camunits/dbg.h"
 
 #define err(args...) fprintf(stderr, args)
 

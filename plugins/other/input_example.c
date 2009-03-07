@@ -251,9 +251,9 @@ cam_input_example_try_produce_frame (CamUnit *super)
     
     self->x += self->dx;
     int w = cam_unit_control_get_int (self->int1_ctl);
-    int excess = self->x + w - super->fmt->width + 1;
+    int excess = self->x + w - outfmt->width + 1;
     if (excess > 0) {
-        self->x = super->fmt->width - 1 - excess - w;
+        self->x = outfmt->width - 1 - excess - w;
         self->dx *= -1;
     } else if (self->x < 0) {
         self->x = - self->x;
@@ -261,9 +261,9 @@ cam_input_example_try_produce_frame (CamUnit *super)
     }
 
     self->y += self->dy;
-    excess = self->y + w - super->fmt->height + 1;
+    excess = self->y + w - outfmt->height + 1;
     if (excess > 0) {
-        self->y = super->fmt->height - 1 - excess - w;
+        self->y = outfmt->height - 1 - excess - w;
         self->dy *= -1;
     } else if (self->y < 0) {
         self->y = - self->y;
@@ -280,12 +280,12 @@ cam_input_example_try_produce_frame (CamUnit *super)
         rgb[0] = 0;
         rgb[1] = rgb[2] = cam_unit_control_get_int (self->int2_ctl);
     };
-    _draw_rectangle (outbuf, super->fmt, self->x, self->y, w, w, rgb);
+    _draw_rectangle (outbuf, outfmt, self->x, self->y, w, w, rgb);
 
-    outbuf->bytesused = super->fmt->height * super->fmt->row_stride;
+    outbuf->bytesused = buf_sz;
     outbuf->timestamp = now;
 
-    cam_unit_produce_frame (super, outbuf, super->fmt);
+    cam_unit_produce_frame (super, outbuf, outfmt);
     g_object_unref (outbuf);
     return TRUE;
 }
