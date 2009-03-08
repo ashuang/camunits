@@ -699,11 +699,11 @@ try_add_control (CamUnit *self, CamUnitControl *new_ctl)
 
 CamUnitControl*
 cam_unit_add_control_enum (CamUnit *self, const char *id, const char *name, 
-        int default_index, int enabled,
-        const char **menu_entries, const int * entries_enabled)
+        int default_value, int enabled,
+        const CamUnitControlEnumValue *entries)
 {
     CamUnitControl *ctl = cam_unit_control_new_enum (id, name, 
-            default_index, enabled, menu_entries, entries_enabled);
+            default_value, enabled, entries);
     return try_add_control (self, ctl);
 }
 CamUnitControl* 

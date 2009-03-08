@@ -368,8 +368,11 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
         case V4L2_CTRL_TYPE_MENU:
             {
                 int noptions = queryctrl->maximum - queryctrl->minimum + 1;
-                char **entries = (char**) calloc (noptions + 1, sizeof(char*));
-                int *entries_enabled = calloc (1, noptions * sizeof (int));
+                CamUnitControlEnumValue entries[noptions + 1];
+                memset(entries, 0, 
+                        (noptions+1)*sizeof(CamUnitControlEnumValue));
+//                char **entries = (char**) calloc (noptions + 1, sizeof(char*));
+//                int *entries_enabled = calloc (1, noptions * sizeof (int));
 
                 struct v4l2_querymenu querymenu;
                 memset (&querymenu, 0, sizeof (querymenu));
@@ -380,8 +383,9 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
                         querymenu.index <= queryctrl->maximum;
                         querymenu.index++) {
                     if (0 == ioctl (self->fd, VIDIOC_QUERYMENU, &querymenu)) {
-                        entries[i] = strdup ( (char*)querymenu.name);
-                        entries_enabled[i] = 1;
+                        entries[i].nickname = strdup ((char*)querymenu.name);
+                        entries[i].value = i;
+                        entries[i].enabled = 1;
                     } else {
                         perror ("VIDIOC_QUERYMENU");
                         break;
@@ -391,10 +395,10 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
                 newctl = cam_unit_add_control_enum (super,
                         ctl_id, (char*) queryctrl->name, 
                         queryctrl->default_value,
-                        enabled, (const char**) entries, entries_enabled);
-
-                free (entries_enabled);
-                g_strfreev (entries);
+                        enabled, entries);
+                for(i=0; i<noptions; i++) {
+                    free((char*)entries[i].nickname);
+                }
             }
             break;
         case V4L2_CTRL_TYPE_BUTTON:
@@ -726,13 +730,17 @@ update_video_standards (CamUnit * super, int modify)
 
     v4l2_std_id * stds = malloc (MAX_INPUTS * sizeof (v4l2_std_id));
     struct v4l2_standard std;
-    char * std_descs[MAX_INPUTS];
+    CamUnitControlEnumValue entries[MAX_INPUTS + 1];
+    memset(entries, 0, sizeof(entries));
+//    char * std_descs[MAX_INPUTS];
     int i = 0;
     int cur_val = 0;
     std.index = i;
     while (ioctl (self->fd, VIDIOC_ENUMSTD, &std) == 0 && i < MAX_STANDARDS) {
         stds[i] = std.id;
-        std_descs[i] = strdup ((char *) std.name);
+        entries[i].nickname = strdup ((char *) std.name);
+        entries[i].value = 1;
+        entries[i].enabled = 1;
         if (std.id & stdid)
             cur_val = i;
         std.index = ++i;
@@ -741,16 +749,12 @@ update_video_standards (CamUnit * super, int modify)
         cam_unit_control_set_enabled (self->standard_ctl, FALSE);
         return 0;
     }
-    std_descs[i] = NULL;
     g_object_set_data (G_OBJECT (self->standard_ctl), "v4l2-stds", stds);
     if (modify)
-        cam_unit_control_modify_enum (self->standard_ctl, 1, 
-                (const char **) std_descs, NULL);
-    int j;
-    for (j = 0; j < i; j++)
-        free (std_descs[j]);
-
-    cam_unit_control_force_set_int (self->standard_ctl, cur_val);
+        cam_unit_control_modify_enum (self->standard_ctl, cur_val, 1, entries);
+    for(int j=0; j<i; j++) {
+        free((char*)entries[j].nickname);
+    }
 
     return 0;
 }
@@ -802,27 +806,33 @@ add_all_controls (CamUnit * super)
     int cur_val;
 
     struct v4l2_input input;
-    char * input_descs[MAX_INPUTS];
-    memset (&input, 0, sizeof (struct v4l2_input));
+    CamUnitControlEnumValue input_entries[MAX_INPUTS + 1];
+    memset(input_entries, 0, sizeof(input_entries));
     int i = 0;
     input.index = i;
     while (ioctl (self->fd, VIDIOC_ENUMINPUT, &input) == 0 &&
             i < MAX_INPUTS) {
-        input_descs[i] = strdup ((char *)input.name);
+        input_entries[i].nickname = strdup ((char *)input.name);
+        input_entries[i].value = i;
+        input_entries[i].enabled = 1;
         input.index = ++i;
     }
     if (i > 0 && ioctl (self->fd, VIDIOC_G_INPUT, &cur_val) == 0) {
-        input_descs[i] = NULL;
         cam_unit_add_control_enum (super, "input", "Input", 
-                cur_val, 1, (const char **) input_descs, NULL);
+                cur_val, 1, input_entries);
     }
     int j;
-    for (j = 0; j < i; j++)
-        free (input_descs[j]);
+    for (j = 0; j < i; j++) {
+        free ((char*)input_entries[j].nickname);
+    }
 
-    const char * stds[] = { NULL };
+//    const char * stds[] = { NULL };
+    CamUnitControlEnumValue standard_entries[] = {
+        { 0, "NULL", 0 },
+        { 0, NULL, 0 }
+    };
     self->standard_ctl = cam_unit_add_control_enum (super, 
-            "standard", "Standard", 0, 0, stds, NULL);
+            "standard", "Standard", 0, 0, standard_entries);
     update_video_standards (super, 1);
 
 
@@ -865,8 +875,9 @@ static gboolean
 v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         const GValue *proposed, GValue *actual) {
     CamV4L2 * self = (CamV4L2*) (super);
+    const char *ctl_id = cam_unit_control_get_id(ctl);
 
-    if (!strcmp (ctl->id, "input")) {
+    if (!strcmp (ctl_id, "input")) {
         int val = g_value_get_int (proposed);
         if (ioctl (self->fd, VIDIOC_S_INPUT, &val) < 0) {
             fprintf (stderr, "VIDIOC_S_INPUT failed: %s\n", strerror (errno));
@@ -889,7 +900,7 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         g_value_set_int (actual, val);
         return TRUE;
     }
-    if (!strncmp (ctl->id, "tuner-", strlen ("tuner-"))) {
+    if (!strncmp (ctl_id, "tuner-", strlen ("tuner-"))) {
         int tuner_id = GPOINTER_TO_INT (
             g_object_get_data (G_OBJECT (ctl), "input_v4l2:tuner-id")) - 1;
         if (tuner_id >= 0) {
@@ -910,12 +921,13 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     }
 
     // user control
+    CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
     struct v4l2_control vctl;
     memset (&vctl, 0, sizeof (vctl));
 
     vctl.id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (ctl), 
                 "input_v4l2:queryctrl_id"));
-    switch (ctl->type) {
+    switch (ctl_type) {
         case CAM_UNIT_CONTROL_TYPE_INT:
         case CAM_UNIT_CONTROL_TYPE_ENUM:
             vctl.value = g_value_get_int (proposed);
@@ -929,7 +941,7 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     }
     if (-1 == ioctl (self->fd, VIDIOC_S_CTRL, &vctl)) {
         dbg (DBG_INPUT, "V4L2 couldn't set control [%s] - %s\n", 
-                ctl->name, strerror (errno));
+                cam_unit_control_get_name(ctl), strerror (errno));
         return FALSE;
     }
     
@@ -947,7 +959,7 @@ v4l2_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    switch (ctl->type) {
+    switch (ctl_type) {
         case CAM_UNIT_CONTROL_TYPE_INT:
         case CAM_UNIT_CONTROL_TYPE_ENUM:
             g_value_set_int (actual, vctl.value);

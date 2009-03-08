@@ -716,20 +716,6 @@ dc1394_get_fileno (CamUnit * super)
         return -1;
 }
 
-static const char * trigger_mode_desc[] = {
-    "Off",
-    "Start integration (Mode 0)",
-    "Bulb shutter (Mode 1)",
-    "Integrate to Nth (Mode 2)",
-    "Every Nth frame (Mode 3)",
-    "Mult. exposures (Mode 4)",
-    "Mult. bulb exposures (Mode 5)",
-    "Vendor-specific (Mode 14)",
-    "Vendor-specific (Mode 15)",
-    NULL
-};
-#define NUM_TRIGGER_MODES 9
-
 static const char * feature_ids[] = {
     "brightness",
     "exposure",
@@ -779,23 +765,6 @@ static const char * feature_desc[] = {
     "Capture Size",
     "Capture Qual.",
 };
-
-static const char * trigger_source_desc[] = {
-    "Trigger Source 0",
-    "Trigger Source 1",
-    "Trigger Source 2",
-    "Trigger Source 3",
-    "Software Trigger",
-    NULL
-};
-
-static const char * feature_state_desc[] = {
-    "Off",
-    "Auto",
-    "Manual",
-    NULL
-};
-#define NUM_FEATURE_STATES 3
 
 #define NUM_FLOAT_STEPS 100
 
@@ -853,24 +822,32 @@ add_all_camera_controls (CamUnit * super)
         }
 
         if (f->id == DC1394_FEATURE_TRIGGER) {
-            int entries_enabled[NUM_TRIGGER_MODES];
-            memset (entries_enabled, 0, NUM_TRIGGER_MODES * sizeof (int));
-            int j, cur_val = 0;
-            for (j = 0; j < f->trigger_modes.num; j++) {
-                entries_enabled[f->trigger_modes.modes[j] -
-                    DC1394_TRIGGER_MODE_0 + 1] = 1;
+            CamUnitControlEnumValue triggers[] = {
+                { 0, "Off", 0 },
+                { 1, "Start integration (Mode 0)", 0 },
+                { 2, "Bulb shutter (Mode 1)", 0 },
+                { 3, "Integrate to Nth (Mode 2)", 0 },
+                { 4, "Every Nth frame (Mode 3)", 0 },
+                { 5, "Mult. exposures (Mode 4)", 0 },
+                { 6, "Mult. bulb exposures (Mode 5)", 0 },
+                { 7, "Vendor-specific (Mode 14)", 0 },
+                { 8, "Vendor-specific (Mode 15)", 0 },
+                { 0, NULL, 0 },
+            };
+            int cur_val = 0;
+            for (int j = 0; j < f->trigger_modes.num; j++) {
+                int ind = f->trigger_modes.modes[j] - DC1394_TRIGGER_MODE_0 + 1;
+                triggers[ind].enabled = 1;
                 if (f->trigger_mode == f->trigger_modes.modes[j])
-                    cur_val = f->trigger_modes.modes[j] -
-                        DC1394_TRIGGER_MODE_0 + 1;
+                    cur_val = ind;
             }
             if (f->on_off_capable) {
-                entries_enabled[0] = 1;
+                triggers[0].enabled = 1;
                 if (f->is_on == DC1394_OFF)
                     cur_val = 0;
             }
             cam_unit_add_control_enum (super, "trigger", "Trigger", 
-                    cur_val, 1,
-                    trigger_mode_desc, entries_enabled);
+                    cur_val, 1, triggers);
 
             int aux_enabled = 0;
             if (cur_val > 0)
@@ -883,20 +860,27 @@ add_all_camera_controls (CamUnit * super)
                         f->trigger_polarity, aux_enabled);
 
             /* Add trigger source selection */
-            int sources_enabled[DC1394_TRIGGER_SOURCE_NUM];
-            memset (sources_enabled, 0, DC1394_TRIGGER_SOURCE_NUM * sizeof (int));
-            for (j = 0; j < f->trigger_sources.num; j++) {
+            CamUnitControlEnumValue trig_sources[] = {
+                { 0, "Trigger Source 0", 0 },
+                { 1, "Trigger Source 1", 0 },
+                { 2, "Trigger Source 2", 0 },
+                { 3, "Trigger Source 3", 0 },
+                { 4, "Software Trigger", 0 },
+                { 0, NULL, 0 },
+            };
+
+            for (int j = 0; j < f->trigger_sources.num; j++) {
                 int source = f->trigger_sources.sources[j];
-                sources_enabled[source - DC1394_TRIGGER_SOURCE_MIN] = 1;
+                int ind = source - DC1394_TRIGGER_SOURCE_MIN;
+                trig_sources[ind].enabled = 1;
                 if (f->trigger_source == source)
-                    cur_val = source - DC1394_TRIGGER_SOURCE_MIN;
+                    cur_val = ind;
             }
             cam_unit_add_control_enum (super, "trigger-source",
-                    "Source", cur_val, aux_enabled, trigger_source_desc,
-                    sources_enabled);
+                    "Source", cur_val, aux_enabled, trig_sources);
 
             /* Add one-shot software trigger */
-            if (sources_enabled[CAM_DC1394_TRIGGER_SOURCE_SOFTWARE]) {
+            if (trig_sources[CAM_DC1394_TRIGGER_SOURCE_SOFTWARE].enabled) {
                 CamUnitControl * ctl = cam_unit_add_control_boolean (super,
                         "trigger-now", "Trigger",
                         0, aux_enabled);
@@ -925,8 +909,11 @@ add_all_camera_controls (CamUnit * super)
         }
 
         if (!(!f->on_off_capable && !auto_capable && manual_capable)) {
-            int entries_enabled[] = {
-                f->on_off_capable, auto_capable, manual_capable
+            CamUnitControlEnumValue entries[] = {
+                { CAM_DC1394_MENU_OFF, "Off", f->on_off_capable }, 
+                { CAM_DC1394_MENU_AUTO, "Auto", auto_capable }, 
+                { CAM_DC1394_MENU_MANUAL, "Manual", manual_capable },
+                { 0, NULL, 0 }
             };
             int cur_val = CAM_DC1394_MENU_OFF;
             if (f->is_on && f->current_mode == DC1394_FEATURE_MODE_AUTO)
@@ -939,7 +926,7 @@ add_all_camera_controls (CamUnit * super)
             ctl = cam_unit_add_control_enum (super, 
                     ctl_id,
                     (char *) feature_desc[i], cur_val, 1,
-                    feature_state_desc, entries_enabled);
+                    entries);
             g_object_set_data (G_OBJECT (ctl), "dc1394-control-id",
                     GINT_TO_POINTER (f->id));
             free (ctl_id);
@@ -1015,7 +1002,8 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     dc1394feature_info_t f;
     int val = 0;
 
-    if (!strcmp (ctl->id, "packet-size")) {
+    const char *ctl_id = cam_unit_control_get_id(ctl);
+    if (!strcmp (ctl_id, "packet-size")) {
         g_value_copy (proposed, actual);
         return TRUE;
     }
@@ -1023,7 +1011,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     if (G_VALUE_TYPE (proposed) == G_TYPE_INT)
         val = g_value_get_int (proposed);
 
-    if (!strcmp (ctl->id, "trigger-polarity")) {
+    if (!strcmp (ctl_id, "trigger-polarity")) {
         dc1394_external_trigger_set_polarity (self->cam,
                 g_value_get_boolean (proposed));
         dc1394trigger_polarity_t newpol;
@@ -1032,7 +1020,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (!strcmp (ctl->id, "trigger-source")) {
+    if (!strcmp (ctl_id, "trigger-source")) {
         dc1394_external_trigger_set_source (self->cam,
                 val + DC1394_TRIGGER_SOURCE_MIN);
         dc1394trigger_source_t source;
@@ -1041,7 +1029,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (!strcmp (ctl->id, "trigger-now")) {
+    if (!strcmp (ctl_id, "trigger-now")) {
         dc1394_software_trigger_set_power (self->cam,
                 g_value_get_boolean (proposed));
         dc1394switch_t power;
@@ -1051,7 +1039,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
         return TRUE;
     }
 
-    if (!strcmp (ctl->id, "trigger")) {
+    if (!strcmp (ctl_id, "trigger")) {
         if (val == 0)
             dc1394_external_trigger_set_power (self->cam, DC1394_OFF);
         else {
@@ -1087,7 +1075,7 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
                 "dc1394-control-id"));
 
     char ctlid[64];
-    strncpy (ctlid, ctl->id, 64);
+    strncpy (ctlid, ctl_id, 64);
     char * suffix = strstr (ctlid, "-mode");
     if (suffix) {
         if (val == 0)
@@ -1122,8 +1110,9 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
         CamUnitControl * ctl2 = cam_unit_find_control (super, ctlid);
         if (!ctl2) return TRUE;
+        CamUnitControlType ctl2_type = cam_unit_control_get_control_type(ctl2);
 
-        if (ctl2->type == CAM_UNIT_CONTROL_TYPE_INT) {
+        if (ctl2_type == CAM_UNIT_CONTROL_TYPE_INT) {
             cam_unit_control_modify_int (ctl2, f.min, f.max, 1,
                     f.is_on && f.current_mode != DC1394_FEATURE_MODE_AUTO);
             cam_unit_control_force_set_int (ctl2, f.value);
@@ -1139,14 +1128,14 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
     if (f.id == DC1394_FEATURE_WHITE_BALANCE) {
         dc1394_feature_get (self->cam, &f);
-        if (strstr (ctl->id, "blue"))
+        if (strstr (ctl_id, "blue"))
             dc1394_feature_whitebalance_set_value (self->cam,
                     val, f.RV_value);
         else
             dc1394_feature_whitebalance_set_value (self->cam,
                     f.BU_value, val);
         dc1394_feature_get (self->cam, &f);
-        if (strstr (ctl->id, "blue"))
+        if (strstr (ctl_id, "blue"))
             g_value_set_int (actual, f.BU_value);
         else
             g_value_set_int (actual, f.RV_value);

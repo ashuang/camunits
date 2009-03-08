@@ -207,16 +207,20 @@ num_chars (int n)
     return i;
 }
 
+int cam_unit_control_get_float_display_width(CamUnitControl *self);
+int cam_unit_control_get_float_display_prec(CamUnitControl *self);
+
 static void
 set_slider_label(CamUnitControlWidget *self, ControlWidgetInfo *ci)
 {
     if (ci->labelval) {
         char str[20];
-        if (!ci->use_int)
-            sprintf (str, "%*.*f", ci->ctl->display_width,
-                    ci->ctl->display_prec,
+        if (!ci->use_int) {
+            sprintf (str, "%*.*f", 
+                    cam_unit_control_get_float_display_width(ci->ctl),
+                    cam_unit_control_get_float_display_prec(ci->ctl),
                     gtk_range_get_value (GTK_RANGE(ci->widget)));
-        else
+        } else
             sprintf (str, "%*d", ci->maxchars, 
                     (int) gtk_range_get_value (GTK_RANGE(ci->widget)));
         gtk_label_set_text (GTK_LABEL(ci->labelval), str);
@@ -602,6 +606,32 @@ add_boolean_control(CamUnitControlWidget *self, CamUnitControl *ctl)
     add_boolean_ctl_helper(self, ctl, widget);
 }
 
+enum {
+    ENUM_COLUMN_NICKNAME = 0,
+    ENUM_COLUMN_ENABLED,
+    ENUM_COLUMN_VALUE,
+};
+
+static gboolean
+_enum_val_to_iter(GtkComboBox *combo, int value, GtkTreeIter *result)
+{
+    GtkTreeModel *model = gtk_combo_box_get_model(combo);
+    if(!gtk_tree_model_get_iter_first(model, result))
+        return FALSE;
+
+    int row_val;
+    gtk_tree_model_get(model, result, ENUM_COLUMN_VALUE, &row_val, -1);
+    if(row_val == value)
+        return TRUE;
+
+    while(gtk_tree_model_iter_next(model, result)) {
+        gtk_tree_model_get(model, result, ENUM_COLUMN_VALUE, &row_val, -1);
+        if(row_val == value)
+            return TRUE;
+    }
+    return FALSE;
+}
+
 static void
 on_menu_changed (GtkComboBox * combo, CamUnitControlWidget *self)
 {
@@ -613,17 +643,27 @@ on_menu_changed (GtkComboBox * combo, CamUnitControlWidget *self)
     CamUnitControl *ctl = ci->ctl;
 
     int oldval = cam_unit_control_get_enum(ctl);
-    int newval = gtk_combo_box_get_active (combo);
+
+    GtkTreeIter iter;
+    if(! gtk_combo_box_get_active_iter(combo, &iter)) {
+        return;
+    }
+    int newval;
+    gtk_tree_model_get(gtk_combo_box_get_model(combo),
+            &iter, ENUM_COLUMN_VALUE, &newval, -1);
     
     if(oldval != newval) {
         cam_unit_control_try_set_enum(ctl, newval);
     }
 
     // was the control successfully set?
-    oldval = cam_unit_control_get_enum(ctl);
+    int actual_val = cam_unit_control_get_enum(ctl);
 
-    if(oldval != newval) {
-        gtk_combo_box_set_active(combo, oldval);
+    if(actual_val != newval) {
+        GtkTreeIter iter;
+        if(_enum_val_to_iter(combo, newval, &iter)) {
+            gtk_combo_box_set_active_iter(combo, &iter);
+        }
     }
 }
 
@@ -640,16 +680,30 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (label);
 
-    GtkListStore * store = gtk_list_store_new (2, G_TYPE_STRING,
-            G_TYPE_BOOLEAN);
-    for (int j = 0; ctl->enum_entries[j]; j++) {
+    int active_val = cam_unit_control_get_enum(ctl);
+
+    GtkListStore * store = gtk_list_store_new (3, 
+            G_TYPE_STRING,
+            G_TYPE_BOOLEAN,
+            G_TYPE_INT);
+    GList * entries = cam_unit_control_get_enum_entries(ctl);
+    GtkTreeIter active_iter;
+    gboolean found_active = FALSE;
+    for(GList *eiter=entries; eiter; eiter=eiter->next) {
+        const CamUnitControlEnumValue * entry = eiter->data;
         GtkTreeIter iter;
         gtk_list_store_append (store, &iter);
         gtk_list_store_set (store, &iter,
-                0, ctl->enum_entries[j],
-                1, ctl->enum_entries_enabled ? ctl->enum_entries_enabled[j] : 1,
+                ENUM_COLUMN_NICKNAME, entry->nickname,
+                ENUM_COLUMN_ENABLED, entry->enabled,
+                ENUM_COLUMN_VALUE, entry->value,
                 -1);
+        if(entry->value == active_val) {
+            active_iter = iter;
+            found_active = TRUE;
+        }
     }
+    g_list_free(entries);
 
     GtkWidget *eb = gtk_event_box_new ();
     GtkWidget *mb = gtk_combo_box_new_with_model (GTK_TREE_MODEL (store));
@@ -659,9 +713,9 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
     g_object_set (G_OBJECT (renderer), "ellipsize", PANGO_ELLIPSIZE_END, NULL);
     gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mb), renderer, TRUE);
     gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT (mb), renderer,
-            "text", 0);
+            "text", ENUM_COLUMN_NICKNAME);
     gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT (mb), renderer,
-            "sensitive", 1);
+            "sensitive", ENUM_COLUMN_ENABLED);
 
     g_object_unref (store);
 
@@ -678,8 +732,9 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
     gtk_widget_show (eb);
     gtk_widget_show (mb);
 
-    int val = cam_unit_control_get_enum(ctl);
-    gtk_combo_box_set_active (GTK_COMBO_BOX (mb), val);
+    if(found_active) {
+        gtk_combo_box_set_active_iter (GTK_COMBO_BOX(mb), &active_iter);
+    }
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) calloc(1, sizeof(ControlWidgetInfo));
@@ -942,8 +997,13 @@ on_control_value_changed(CamUnit *unit, CamUnitControl *ctl,
                             g_value_get_boolean(&val) ? TRUE : FALSE);
                 break;
             case CAM_UNIT_CONTROL_TYPE_ENUM:
-                gtk_combo_box_set_active(GTK_COMBO_BOX(ci->widget), 
-                        g_value_get_int(&val));
+                {
+                    GtkComboBox *combo = GTK_COMBO_BOX(ci->widget);
+                    int chosen = g_value_get_int(&val);
+                    GtkTreeIter iter;
+                    if(_enum_val_to_iter(combo, chosen, &iter))
+                        gtk_combo_box_set_active_iter(combo, &iter);
+                }
                 break;
             case CAM_UNIT_CONTROL_TYPE_STRING:
                 gtk_entry_set_text(GTK_ENTRY(ci->widget), 
@@ -1012,9 +1072,34 @@ on_control_parameters_changed(CamUnit *unit, CamUnitControl *ctl,
                 }
                 break;
             case CAM_UNIT_CONTROL_TYPE_ENUM:
-                err  ("%s:%d -- Modify enum not yet implemented\n",
-                        __FILE__, __LINE__);
-                // TODO
+                {
+                    GList * entries = cam_unit_control_get_enum_entries(ctl);
+                    int active_val = cam_unit_control_get_enum(ctl);
+                    GtkTreeIter active_iter;
+                    gboolean found_active = FALSE;
+                    GtkComboBox *combo = GTK_COMBO_BOX(ci->widget);
+                    GtkTreeModel *tree_model = gtk_combo_box_get_model(combo);
+                    GtkListStore *store = GTK_LIST_STORE(tree_model);
+                    gtk_list_store_clear(store);
+                    for(GList *eiter=entries; eiter; eiter=eiter->next) {
+                        const CamUnitControlEnumValue * entry = eiter->data;
+                        GtkTreeIter iter;
+                        gtk_list_store_append (store, &iter);
+                        gtk_list_store_set (store, &iter,
+                                ENUM_COLUMN_NICKNAME, entry->nickname,
+                                ENUM_COLUMN_ENABLED, entry->enabled,
+                                ENUM_COLUMN_VALUE, entry->value,
+                                -1);
+                        if(entry->value == active_val) {
+                            active_iter = iter;
+                            found_active = TRUE;
+                        }
+                    }
+                    g_list_free(entries);
+                    if(found_active) {
+                        gtk_combo_box_set_active_iter (combo, &active_iter);
+                    }
+                }
                 break;
             default:
                 break;

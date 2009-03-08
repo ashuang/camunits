@@ -66,6 +66,15 @@ static int cam_fast_bayer_filter_stream_shutdown (CamUnit * super);
 static void on_input_format_changed (CamUnit *super, 
         const CamUnitFormat *infmt);
 
+static int
+is_bayer_pixel_format(CamPixelFormat pfmt)
+{
+    return (pfmt == CAM_PIXEL_FORMAT_BAYER_GBRG ||
+            pfmt == CAM_PIXEL_FORMAT_BAYER_GRBG ||
+            pfmt == CAM_PIXEL_FORMAT_BAYER_BGGR ||
+            pfmt == CAM_PIXEL_FORMAT_BAYER_RGGB);
+}
+
 static void
 cam_fast_bayer_filter_init( CamFastBayerFilter *self )
 {
@@ -73,19 +82,18 @@ cam_fast_bayer_filter_init( CamFastBayerFilter *self )
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT( self );
 
-    const char * bayer_tiles[] = {
-        "GBRG",
-        "GRBG",
-        "BGGR",
-        "RGGB",
-        NULL,
+    CamUnitControlEnumValue tiling_entries[] = {
+        { CAM_PIXEL_FORMAT_BAYER_GBRG, "GBRG", 1 },
+        { CAM_PIXEL_FORMAT_BAYER_GRBG, "GRBG", 1 },
+        { CAM_PIXEL_FORMAT_BAYER_BGGR, "BGGR", 1 },
+        { CAM_PIXEL_FORMAT_BAYER_RGGB, "RGGB", 1 },
+        { 0, NULL, 0 }
     };
-    self->bayer_tile_ctl =
-        cam_unit_add_control_enum (super, "tiling", "Tiling", 
-                0, 1, bayer_tiles, NULL);
 
-    int i;
-    for (i = 0; i < 4; i++) {
+    self->bayer_tile_ctl = cam_unit_add_control_enum (super, "tiling", 
+            "Tiling", CAM_PIXEL_FORMAT_BAYER_GBRG, 1, tiling_entries);
+
+    for (int i = 0; i < 4; i++) {
         self->planes[i] = NULL;
     }
 
@@ -110,22 +118,12 @@ cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
     CamFastBayerFilter * self = (CamFastBayerFilter*)super;
     CamUnit * input = cam_unit_get_input(super);
     const CamUnitFormat * infmt = cam_unit_get_output_format(input);
-    switch (infmt->pixelformat) {
-        case CAM_PIXEL_FORMAT_BAYER_GBRG:
-            cam_unit_control_force_set_enum (self->bayer_tile_ctl, 0);
-            break;
-        case CAM_PIXEL_FORMAT_BAYER_GRBG:
-            cam_unit_control_force_set_enum (self->bayer_tile_ctl, 1);
-            break;
-        case CAM_PIXEL_FORMAT_BAYER_BGGR:
-            cam_unit_control_force_set_enum (self->bayer_tile_ctl, 2);
-            break;
-        case CAM_PIXEL_FORMAT_BAYER_RGGB:
-            cam_unit_control_force_set_enum (self->bayer_tile_ctl, 3);
-            break;
-        case CAM_PIXEL_FORMAT_GRAY:
-            break;
-        default:
+
+    if(is_bayer_pixel_format(infmt->pixelformat)) {
+        cam_unit_control_force_set_enum (self->bayer_tile_ctl, infmt->pixelformat);
+    } else if(infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
+        // nothing?
+    } else {
             return -1;
     }
 
@@ -177,25 +175,6 @@ cam_fast_bayer_filter_new()
             g_object_new(cam_fast_bayer_filter_get_type(), NULL);
 }
 
-static CamPixelFormat
-get_bayer_tile( CamFastBayerFilter *self )
-{
-    int tiling = cam_unit_control_get_enum( self->bayer_tile_ctl );
-    switch( tiling ) {
-        case 0:
-            return CAM_PIXEL_FORMAT_BAYER_GBRG;
-        case 1:
-            return CAM_PIXEL_FORMAT_BAYER_GRBG;
-        case 2:
-            return CAM_PIXEL_FORMAT_BAYER_BGGR;
-        case 3:
-            return CAM_PIXEL_FORMAT_BAYER_RGGB;
-        default:
-            fprintf (stderr, "Warning: invalid tiling selected\n");
-            return CAM_PIXEL_FORMAT_BAYER_BGGR;
-    }
-}
-
 static void 
 on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         const CamUnitFormat *infmt)
@@ -219,6 +198,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         in_data = self->aligned_buffer;
     }
 
+    int tiling = cam_unit_control_get_enum(self->bayer_tile_ctl);
+
     if (outfmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         uint8_t * plane = self->planes[0] + 2*self->plane_stride + 16;
         int i;
@@ -232,7 +213,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
                 outfmt->width, outfmt->height);
         cam_pixel_bayer_interpolate_to_8u_gray (plane, self->plane_stride,
                 outbuf->data, outfmt->row_stride, outfmt->width,
-                outfmt->height, get_bayer_tile (self));
+                outfmt->height, tiling);
 
         //uint8_t * d = outbuf->data + 8*outfmt->row_stride;
         //printf ("%d %d\n", d[0], d[1]);
@@ -257,7 +238,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
         cam_pixel_bayer_interpolate_to_8u_bgra (planes, self->plane_stride,
                 outbuf->data, outfmt->row_stride, outfmt->width, outfmt->height,
-                get_bayer_tile (self));
+                tiling);
     }
 
     cam_framebuffer_copy_metadata(outbuf, inbuf);
@@ -274,11 +255,9 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
 
     if (!infmt) return;
 
-    if (! (infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_RGGB ||
-           infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_BGGR ||
-           infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_GBRG ||
-           infmt->pixelformat == CAM_PIXEL_FORMAT_BAYER_GRBG ||
-           infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY)) return;
+    if (! is_bayer_pixel_format(infmt->pixelformat) &&
+          infmt->pixelformat != CAM_PIXEL_FORMAT_GRAY) 
+        return;
 
     CamPixelFormat outfmts[2] = {
         CAM_PIXEL_FORMAT_BGRA,

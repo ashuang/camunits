@@ -181,6 +181,8 @@ CamUnitManagerClass
 CamUnitControlType
 CamUnitControlUIHint
 CamUnitControlCallback
+<TITLE>CamUnitControlEnumValue</TITLE>
+CamUnitControlEnumValue
 <TITLE>CamUnitControl</TITLE>
 CamUnitControl
 cam_unit_control_new_enum
@@ -208,6 +210,7 @@ cam_unit_control_get_val
 cam_unit_control_get_int
 cam_unit_control_get_float
 cam_unit_control_get_enum
+cam_unit_control_get_enum_entries
 cam_unit_control_get_boolean
 cam_unit_control_get_string
 cam_unit_control_get_max_int

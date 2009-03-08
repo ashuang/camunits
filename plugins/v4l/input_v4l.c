@@ -399,19 +399,17 @@ check_for_pwc (CamV4L *self)
             if (ioctl (self->fd, VIDIOCPWCGAWB, &wb) == 0) {
                 dbg (DBG_INPUT, "adding white balance controls\n");
 
-                const char *wbmodes[] = { 
-                    "Indoor", 
-                    "Outdoor", 
-                    "Flourescent",
-                    "Manual", 
-                    "Auto", 
-                    NULL
+                CamUnitControlEnumValue wbmodes[] = { 
+                    { PWC_WB_INDOOR,  "Indoor", 1 },
+                    { PWC_WB_OUTDOOR, "Outdoor", 1 },
+                    { PWC_WB_FL,      "Flourescent",1 },
+                    { PWC_WB_MANUAL,  "Manual", 1 },
+                    { PWC_WB_AUTO,    "Auto", 1 },
+                    { 0, NULL, 1 },
                 };
-                int entries_enabled[] = { 1, 1, 1, 1, 1, 0 };
                 self->pwc_wb_mode_ctl = cam_unit_add_control_enum (super,
                         "white-balance-mode", 
-                        "White Balance", wb.mode,
-                        1, wbmodes, entries_enabled);
+                        "White Balance", wb.mode, 1, wbmodes);
                 int mwb = (wb.mode == PWC_WB_MANUAL);
                 int red  = (mwb) ? wb.manual_red  : wb.read_red;
                 int blue = (mwb) ? wb.manual_blue : wb.read_blue;

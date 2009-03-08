@@ -16,7 +16,7 @@ extern "C" {
  * cam_unit_get_control_* methods.
  *
  * The only time in which you use this class directly is when implementing a
- * subclass of #CamUnit.
+ * #CamUnit plugin.
  *
  * CamUnitControl represents a control value that can both change
  * asynchronously (e.g. the frame number of an advancing log playback unit) and
@@ -128,6 +128,24 @@ typedef struct _CamUnitControlClass CamUnitControlClass;
 typedef gboolean (*CamUnitControlCallback)(const CamUnitControl *ctl, 
         const GValue *proposed, GValue *actual, void *user_data);
 
+typedef struct _CamUnitControlEnumValue CamUnitControlEnumValue;
+
+/**
+ * CamUnitControlEnumValue:
+ *
+ * This struct is used to define and modify enumerated controls.
+ */
+struct _CamUnitControlEnumValue {
+    // The numerical value for an enum.  Must be unique within the control.
+    int value;
+
+    // A human-readable name, used for display purposes.
+    const char *nickname;
+    
+    // Determines if this entry can be selected by the user or not.
+    gboolean enabled;
+};
+
 /**
  * CamUnitControl:
  *
@@ -135,32 +153,6 @@ typedef gboolean (*CamUnitControlCallback)(const CamUnitControl *ctl,
  */
 struct _CamUnitControl {
     GObject parent;
-    CamUnitControlType type;
-    char * id;
-    char * name;
-
-	/*< private >*/
-    int enabled;
-
-    CamUnitControlCallback try_set_function;
-    void *user_data;
-
-    char **enum_entries;
-    int * enum_entries_enabled;
-    int max_int;
-    int min_int;
-    int step_int;
-
-    float max_float;
-    float min_float;
-    float step_float;
-    int display_width;
-    int display_prec;
-
-    int ui_hints;
-
-    GValue val;
-    GValue initial_val;
 };
 
 struct _CamUnitControlClass {
@@ -188,19 +180,16 @@ void cam_unit_control_set_callback (CamUnitControl *self,
  * cam_unit_control_new_enum:
  * @id: a numerical identifier for the control.
  * @name: a nickname / human-understandable-name for the control.
- * @initial_index: the initial value for the control.
+ * @initial_value: the initial value for the control.
  * @enabled: TRUE of the control should be initially enabled
- * @entries: a NULL-terminated array of strings specifying the different
- *           options to present to the user.
- * @entries_enabled: an array of integers indicating whether each entry
- *           in @entries should be enabled.  1 indicates enabled, and 0
- *           disabled.  Specify NULL to implicitly enable all entries.
+ * @entries: an array of #CamUnitControlEnumValue structs.  The last entry of
+ * the array serves as a sentinel, and must have nickname set to NULL
  *
  * Returns: a new enum control.
  */
-CamUnitControl * cam_unit_control_new_enum (const char *id, const char *name, 
-        int initial_index, int enabled, const char **entries,
-        const int * entries_enabled);
+CamUnitControl * cam_unit_control_new_enum (const char *id,
+        const char *name, int initial_value, int enabled,
+        const CamUnitControlEnumValue *entries);
 
 /**
  * cam_unit_control_new_int:
@@ -261,7 +250,8 @@ void cam_unit_control_modify_int (CamUnitControl * self,
 void cam_unit_control_modify_float (CamUnitControl * self,
         float min, float max, float step, int enabled);
 void cam_unit_control_modify_enum (CamUnitControl * self,
-        int enabled, const char ** entries, const int * entries_enabled);
+        int selected_value, int enabled, 
+        const CamUnitControlEnumValue *entries);
 
 /**
  * cam_unit_control_try_set_val:
@@ -313,6 +303,14 @@ float cam_unit_control_get_float (const CamUnitControl *self);
 int cam_unit_control_get_enum (const CamUnitControl *self);
 int cam_unit_control_get_boolean (const CamUnitControl *self);
 const char* cam_unit_control_get_string (const CamUnitControl *self);
+
+/**
+ * cam_unit_control_get_enum_entries:
+ *
+ * Returns: a GList of CamUnitControlEnumValue*.  Do not modify the entries.
+ * The list must be freed with g_list_free when no longer needed.
+ */
+GList * cam_unit_control_get_enum_entries(const CamUnitControl *self);
 
 int cam_unit_control_get_max_int (const CamUnitControl *self);
 int cam_unit_control_get_min_int (const CamUnitControl *self);

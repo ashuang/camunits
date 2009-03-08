@@ -326,7 +326,7 @@ gboolean cam_unit_set_control_float (CamUnit *self, const char *id, float val);
  * Returns: TRUE if the control was successfully set to the requested value,
  *          FALSE if not.
  */
-gboolean cam_unit_set_control_enum (CamUnit *self, const char *id, int index);
+gboolean cam_unit_set_control_enum (CamUnit *self, const char *id, int value);
 
 /**
  * cam_unit_set_control_boolean:
@@ -438,9 +438,10 @@ int cam_unit_draw_gl_shutdown (CamUnit * self);
  * Returns: a pointer to a newly created #CamUnitControl.  This can be safely
  * ignored.
  */
-CamUnitControl* cam_unit_add_control_enum (CamUnit *self, const char *id,
-        const char *name, int default_index, int enabled,
-        const char **entries, const int * entries_enabled);
+CamUnitControl* cam_unit_add_control_enum (CamUnit *self, const char *id, const
+        char *name, int default_value, int enabled,
+        const CamUnitControlEnumValue *entries);
+
 /**
  * cam_unit_add_control_int:
  *
