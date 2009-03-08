@@ -66,15 +66,14 @@ camipp_filter_fixed_gauss_init (CamippFilterFixedGauss *self)
     // constructor.  Initialize the unit with some reasonable defaults here.
     CamUnit *super = CAM_UNIT (self);
 
-    const char *size_options[] = { 
-        "3x3 (sigma = 0.85)", 
-        "5x5 (sigma = 1.0)", 
-        NULL 
+    CamUnitControlEnumValue size_options[] = { 
+        { FILTER_SIZE_3X3, "3x3 (sigma = 0.85)", 1 },
+        { FILTER_SIZE_5x5, "5x5 (sigma = 1.0)", 1 },
+        { 0, NULL, 0 },
     };
-    int size_options_enabled[] = { 1, 1, 0 };
 
     self->size_ctl = cam_unit_add_control_enum (super,
-            "size", "Size", 0, 1, size_options, size_options_enabled);
+            "size", "Size", FILTER_SIZE_3X3, 1, size_options);
     self->outbuf = NULL;
 
     g_signal_connect (G_OBJECT (self), "input-format-changed",

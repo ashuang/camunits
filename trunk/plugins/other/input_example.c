@@ -172,9 +172,15 @@ cam_input_example_init (CamInputExample *self)
     self->next_frame_time = 0;
     self->fps = fps_numer_options[0];
 
-    const char *menu_options[] = { "1", "5", "15", "30", NULL };
+    CamUnitControlEnumValue menu[] = {
+        { 0, "1", 1 },
+        { 1, "5", 1 },
+        { 2, "15", 1 },
+        { 3, "30", 1 },
+        { 0, NULL, 0}
+    };
     self->enum_ctl = cam_unit_add_control_enum (super, "enum", "menu",
-            0, 1, menu_options, NULL);
+            0, 1, menu);
     self->bool_ctl = cam_unit_add_control_boolean (super, "boolean", "bool", 
             0, 1);
     self->int1_ctl = cam_unit_add_control_int (super, "int1", "int 1", 

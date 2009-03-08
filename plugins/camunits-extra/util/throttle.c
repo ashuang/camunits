@@ -83,17 +83,16 @@ camutil_throttle_init (CamutilThrottle *self)
     cam_unit_control_set_ui_hints (self->repeat_last_frame_ctl, 
             CAM_UNIT_CONTROL_ONE_SHOT);
 
-    const char *throttle_mode_options[] = { 
-        "Do Not Throttle",
-        "Actual Time (Wall clock)", 
-        "Image Timestamps", 
-        NULL 
+    CamUnitControlEnumValue throttle_mode_options[] = { 
+        { THROTTLE_DISABLED   , "Do Not Throttle", 1 },
+        { THROTTLE_BY_REALTIME, "Actual Time (Wall clock)", 1 },
+        { THROTTLE_BY_REPORTED, "Image Timestamps", 1 },
+        { 0, NULL, 0 }
     };
-    int throttle_mode_enabled[] = { 1, 1, 1, 0 };
 
     self->throttle_mode_ctl = cam_unit_add_control_enum (super, 
-            "throttle-mode", "Throttle Mode", 0, 1, throttle_mode_options,
-            throttle_mode_enabled);
+            "throttle-mode", "Throttle Mode", THROTTLE_DISABLED, 1, 
+            throttle_mode_options);
 
     self->throttle_hz_ctl = cam_unit_add_control_float (super, 
             "throttle-rate", "Max Rate (Hz)", 0.001, 1000, 1, 100, 1);

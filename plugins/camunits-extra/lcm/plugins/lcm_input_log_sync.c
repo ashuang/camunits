@@ -22,22 +22,12 @@
 #define dbg(...)
 #define err(...) fprintf (stderr, __VA_ARGS__)
 
-//#define USE_ADV_MODE
-
 static void on_sync (const lcm_recv_buf_t *rbuf, const char *channel, 
         const camlcm_image_sync_t *msg, void *user_data);
 static void change_sync_channel (CamInputLogSync *self, const char *chan);
 static void * lcm_thread (void *user_data);
 static void on_legacy_sync (const lcm_recv_buf_t *rbuf, const char *channel, 
         const camlcm_image_legacy_sync_t *msg, void *user_data);
-
-#ifdef USE_ADV_MODE
-enum {
-    ADVANCE_MODE_SYNC,
-    ADVANCE_MODE_SOFT,
-    ADVANCE_MODE_HARD,
-};
-#endif
 
 // ============== CamInputLogSyncDriver ===============
 
@@ -135,34 +125,9 @@ cam_input_log_sync_init (CamInputLogSync *self)
     self->sync_channel_ctl = cam_unit_add_control_string (super, "channel",
             "Channel", CAMLCM_DEFAULT_SYNC_CHANNEL, 1);
 
-#ifdef USE_ADV_MODE
-    // advance mode
-    const char *adv_mode_options[] = { 
-        "Synchronize",
-        "Never skip frames", 
-        "Skip if too slow",
-        NULL 
-    };
-    int adv_mode_options_enabled[] = { 1, 1, 1, 0 };
-
-    self->adv_mode_ctl = cam_unit_add_control_enum (super,
-            "mode", "Mode", ADVANCE_MODE_SYNC, 1, 
-            adv_mode_options, adv_mode_options_enabled);
-
-    // advance speed
-    self->adv_speed_ctl = cam_unit_add_control_float (super,
-            "speed", "Playback Speed", 0.1, 20, 0.1, 1, 0);
-#endif
-
     // frame number
     self->frame_ctl = cam_unit_add_control_int (super,
             "frame", "Frame", 0, 1, 1, 0, 1);
-
-#ifdef USE_ADV_MODE
-    // pause
-    self->pause_ctl = cam_unit_add_control_boolean (super,
-            "pause", "Pause", 0, 1);
-#endif
 
     self->lcm = lcm_create (NULL);
     if (!self->lcm) {
@@ -395,44 +360,6 @@ log_try_set_control (CamUnit *super, const CamUnitControl *ctl,
         change_sync_channel (self, chan);
         return TRUE;
     }
-#ifdef USE_ADV_MODE
-    else if (ctl == self->pause_ctl) {
-        g_value_copy (proposed, actual);
-        int paused = g_value_get_boolean (proposed);
-
-        if (! paused) {
-            self->next_frame_time = _timestamp_now ();
-        } 
-        return TRUE;
-    } 
-    else if (ctl == self->frame_ctl) {
-        if (cam_unit_control_get_enum (self->adv_mode_ctl) == ADVANCE_MODE_SYNC)
-            return FALSE;
-        if (! self->camlog) return FALSE;
-
-        int next_frameno = g_value_get_int (proposed);
-
-        dbg ("seeking to frame %d\n", next_frameno);
-        if (cam_log_seek_to_frame (self->camlog, next_frameno) == 0) {
-            g_value_set_int (actual, next_frameno);
-            self->next_frame_time = _timestamp_now ();
-            self->readone = 1;
-        }
-        return TRUE;
-    } else if (ctl == self->adv_speed_ctl) {
-        g_value_copy (proposed, actual);
-        return TRUE;
-    }
-    else if (ctl == self->adv_mode_ctl) {
-        g_value_copy (proposed, actual);
-
-        cam_unit_control_set_enabled (self->adv_speed_ctl, 
-                ADVANCE_MODE_SYNC != g_value_get_int (proposed));
-//        cam_unit_control_set_enabled (self->sync_channel_ctl, !enable_frame_ctls);
-
-        return TRUE;
-    }
-#endif
     return FALSE;
 }
 

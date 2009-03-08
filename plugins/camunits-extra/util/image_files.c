@@ -12,18 +12,10 @@
 #define err(args...) fprintf(stderr, args)
 
 enum {
-    FILE_FORMAT_NONE,
+    FILE_FORMAT_NONE = 0,
     FILE_FORMAT_JPEG, 
     FILE_FORMAT_PPM, 
     FILE_FORMAT_PGM
-};
-
-static const char *_file_format_options[] = { 
-    "None",
-    "JPEG", 
-    "PPM", 
-    "PGM",
-    NULL 
 };
 
 static const char *_suffixes[] = {
@@ -89,11 +81,17 @@ camutil_file_writer_init (CamutilFileWriter *self)
     // defaults here.
     CamUnit *super = CAM_UNIT (self);
 
-    int format_enabled[] = { 1, 1, 1, 1, 0 };
+    CamUnitControlEnumValue file_format_options[] = {
+        { FILE_FORMAT_NONE, "None", 1 },
+        { FILE_FORMAT_JPEG, "JPEG", 1 },
+        { FILE_FORMAT_PPM, "PPM", 1 },
+        { FILE_FORMAT_PGM, "PGM", 1 },
+        { 0, NULL, 0 },
+    };
 
     self->file_format_ctl = cam_unit_add_control_enum (super,
-            "file-format", "File Format", 0, 0, _file_format_options,
-            format_enabled);
+            "file-format", "File Format", FILE_FORMAT_NONE, 0, 
+            file_format_options);
 
     self->file_prefix_ctl = cam_unit_add_control_string (super, "file-prefix",
             "File Prefix", "", 1);

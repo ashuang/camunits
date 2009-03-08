@@ -150,15 +150,14 @@ cam_input_log_init (CamInputLog *self)
     self->pause_ctl = cam_unit_add_control_boolean (super,
             "pause", "Pause", 0, 1);
 
-    const char *adv_mode_options[] = { 
-        "Never skip frames", 
-        "Skip if too slow", 
-        NULL 
+    CamUnitControlEnumValue adv_mode_entries[] = { 
+        { CAM_INPUT_LOG_ADVANCE_MODE_SOFT, "Never skip frames", 1 },
+        { CAM_INPUT_LOG_ADVANCE_MODE_HARD, "Skip if too slow", 1 },
+        { 0, NULL, 0 }
     };
-    int adv_mode_options_enabled[] = { 1, 1, 0 };
 
-    self->adv_mode_ctl = cam_unit_add_control_enum (super,
-            "mode", "Mode", 0, 1, adv_mode_options, adv_mode_options_enabled);
+    self->adv_mode_ctl = cam_unit_add_control_enum (super, "mode", "Mode", 
+            CAM_INPUT_LOG_ADVANCE_MODE_SOFT, 1, adv_mode_entries);
 
     self->adv_speed_ctl = cam_unit_add_control_float (super,
             "speed", "Playback Speed", 0.1, 20, 0.1, 1, 1);
