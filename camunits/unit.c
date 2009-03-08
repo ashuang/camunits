@@ -159,6 +159,8 @@ cam_unit_class_init (CamUnitClass *klass)
 
     klass->try_set_control = NULL;
 
+    g_type_class_add_private (gobject_class, sizeof (CamUnitPriv));
+
     // signals
 
     /**
