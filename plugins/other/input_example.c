@@ -187,7 +187,7 @@ cam_input_example_init (CamInputExample *self)
     self->dx = 10;
     self->dy = 10;
 
-    cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB, 
+    cam_unit_add_output_format (super, CAM_PIXEL_FORMAT_RGB, 
             "640x480 RGB", 640, 480, 640*3);
 }
 

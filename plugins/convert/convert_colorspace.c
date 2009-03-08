@@ -248,7 +248,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         if (ci->inpfmt == infmt->pixelformat) {
             int stride = infmt->width * cam_pixel_format_bpp(ci->outpfmt) / 8;
 
-            cam_unit_add_output_format_full (super, ci->outpfmt,
+            cam_unit_add_output_format (super, ci->outpfmt,
                     NULL, infmt->width, infmt->height, 
                     stride);
         }

@@ -434,6 +434,9 @@ int cam_unit_draw_gl_shutdown (CamUnit * self);
  * cam_unit_add_control_enum:
  *
  * protected method.
+ *
+ * Returns: a pointer to a newly created #CamUnitControl.  This can be safely
+ * ignored.
  */
 CamUnitControl* cam_unit_add_control_enum (CamUnit *self, const char *id,
         const char *name, int default_index, int enabled,
@@ -442,6 +445,9 @@ CamUnitControl* cam_unit_add_control_enum (CamUnit *self, const char *id,
  * cam_unit_add_control_int:
  *
  * protected method.
+ *
+ * Returns: a pointer to a newly created #CamUnitControl.  This can be safely
+ * ignored.
  */
 CamUnitControl* cam_unit_add_control_int (CamUnit *self, const char *id,
         const char *name, int min, int max, int step, int default_val,
@@ -451,6 +457,9 @@ CamUnitControl* cam_unit_add_control_int (CamUnit *self, const char *id,
  * cam_unit_add_control_float:
  *
  * protected method.
+ *
+ * Returns: a pointer to a newly created #CamUnitControl.  This can be safely
+ * ignored.
  */
 CamUnitControl*  cam_unit_add_control_float (CamUnit *self, const char *id,
         const char *name, float min, float max, float step, float default_val,
@@ -459,6 +468,9 @@ CamUnitControl*  cam_unit_add_control_float (CamUnit *self, const char *id,
  * cam_unit_add_control_boolean:
  *
  * protected method.
+ *
+ * Returns: a pointer to a newly created #CamUnitControl.  This can be safely
+ * ignored.
  */
 CamUnitControl* cam_unit_add_control_boolean (CamUnit *self, const char *id,
         const char *name, int default_val, int enabled);
@@ -466,17 +478,23 @@ CamUnitControl* cam_unit_add_control_boolean (CamUnit *self, const char *id,
  * cam_unit_add_control_string:
  *
  * protected method.
+ *
+ * Returns: a pointer to a newly created #CamUnitControl.  This can be safely
+ * ignored.
  */
 CamUnitControl* cam_unit_add_control_string (CamUnit *self, const char *id,
         const char *name, const char *default_val, int enabled);
 
 /**
- * cam_unit_add_output_format_full:
+ * cam_unit_add_output_format:
  *
  * Protected method.  Subclasses of CamUnit should invoke this to configure the
  * acceptable output formats.
+ *
+ * Returns: a pointer to a newly created #CamUnitFormat.  This can be safely
+ * ignored.
  */
-CamUnitFormat * cam_unit_add_output_format_full (CamUnit *self, 
+CamUnitFormat * cam_unit_add_output_format (CamUnit *self, 
         CamPixelFormat pfmt, const char *name, 
         int width, int height, int row_stride);
 

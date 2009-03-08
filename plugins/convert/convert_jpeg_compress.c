@@ -144,7 +144,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
            infmt->pixelformat == CAM_PIXEL_FORMAT_RGB ||
            infmt->pixelformat == CAM_PIXEL_FORMAT_BGRA)) return;
 
-    cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_MJPEG,
+    cam_unit_add_output_format (super, CAM_PIXEL_FORMAT_MJPEG,
             NULL, infmt->width, infmt->height, 0);
 }
 

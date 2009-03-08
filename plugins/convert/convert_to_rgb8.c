@@ -186,7 +186,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     cam_unit_remove_all_output_formats (super);
     if (!infmt) return;
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
-        cam_unit_add_output_format_full (super, infmt->pixelformat,
+        cam_unit_add_output_format (super, infmt->pixelformat,
                 infmt->name, infmt->width, infmt->height, 
                 infmt->row_stride);
     } else {
@@ -232,7 +232,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         for (GList *witer=worker_formats; witer; witer=witer->next) {
             CamUnitFormat *wfmt = CAM_UNIT_FORMAT (witer->data);
             if (wfmt->pixelformat == CAM_PIXEL_FORMAT_RGB) {
-                CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
+                CamUnitFormat *my_fmt = cam_unit_add_output_format (super,
                         wfmt->pixelformat, wfmt->name, wfmt->width, 
                         wfmt->height, wfmt->row_stride);
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 
@@ -243,7 +243,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
                     wfmt->pixelformat == CAM_PIXEL_FORMAT_BGRA) {
                 // hack.  fast debayer filter only produces BGRA, so just do an
                 // internal conversion to RGB later on
-                CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
+                CamUnitFormat *my_fmt = cam_unit_add_output_format (super,
                         CAM_PIXEL_FORMAT_RGB, wfmt->name, wfmt->width, 
                         wfmt->height, wfmt->width*3);
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_rgb8:wfmt", 

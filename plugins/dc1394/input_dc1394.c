@@ -390,7 +390,7 @@ cam_dc1394_new (dc1394camera_t * cam)
             int stride = mode->max_size_x * cam_pixel_format_bpp(pix) / 8;
 
             CamUnitFormat * fmt = 
-                cam_unit_add_output_format_full (CAM_UNIT (self), pix,
+                cam_unit_add_output_format (CAM_UNIT (self), pix,
                     name, mode->max_size_x, mode->max_size_y, 
                     stride);
 
@@ -422,7 +422,7 @@ cam_dc1394_new (dc1394camera_t * cam)
                 cam_pixel_format_nickname (pix));
 
         CamUnitFormat * fmt =
-            cam_unit_add_output_format_full (CAM_UNIT (self), pix, name,
+            cam_unit_add_output_format (CAM_UNIT (self), pix, name,
                     width, height, stride);
 
         g_object_set_data (G_OBJECT (fmt), "input_dc1394-mode",

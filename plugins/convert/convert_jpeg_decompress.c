@@ -132,12 +132,12 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     if (!infmt || infmt->pixelformat != CAM_PIXEL_FORMAT_MJPEG) return;
 
     int stride_rgb = infmt->width * 3;
-    cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_RGB,
+    cam_unit_add_output_format (super, CAM_PIXEL_FORMAT_RGB,
             NULL, infmt->width, infmt->height, 
             stride_rgb);
 
     int stride_gray = infmt->width;
-    cam_unit_add_output_format_full (super, CAM_PIXEL_FORMAT_GRAY,
+    cam_unit_add_output_format (super, CAM_PIXEL_FORMAT_GRAY,
             NULL, infmt->width, infmt->height, 
             stride_gray);
 }
