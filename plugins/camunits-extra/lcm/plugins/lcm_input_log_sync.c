@@ -289,7 +289,7 @@ _log_set_file (CamInputLogSync *self, const char *fname)
     }
     g_object_unref (fbuf);
 
-    cam_unit_add_output_format_full (super, format.pixelformat, NULL, 
+    cam_unit_add_output_format (super, format.pixelformat, NULL, 
             format.width, format.height, format.stride);
 
     self->nframes = cam_log_count_frames (self->camlog);

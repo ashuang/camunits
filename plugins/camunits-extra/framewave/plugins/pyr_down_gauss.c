@@ -103,7 +103,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     int stride = width * bpp / 8;
     int max_data_size = height * stride;
 
-    cam_unit_add_output_format_full (CAM_UNIT (self), infmt->pixelformat,
+    cam_unit_add_output_format (CAM_UNIT (self), infmt->pixelformat,
             NULL, width, height, stride, max_data_size);
 
     // allocate working buffer

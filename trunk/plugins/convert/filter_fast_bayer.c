@@ -293,7 +293,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         /* Stride must be 128-byte aligned */
         stride = (stride + 0x7f)&(~0x7f);
 
-        cam_unit_add_output_format_full (super, out_pixelformat,
+        cam_unit_add_output_format (super, out_pixelformat,
                 NULL, infmt->width, infmt->height, 
                 stride);
     }

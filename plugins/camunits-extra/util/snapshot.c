@@ -280,7 +280,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     }
 #endif
 
-    cam_unit_add_output_format_full (super, infmt->pixelformat,
+    cam_unit_add_output_format (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
             infmt->row_stride);
 }

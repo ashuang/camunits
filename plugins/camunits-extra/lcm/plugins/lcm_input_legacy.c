@@ -142,7 +142,7 @@ cam_input_legacy_init (CamInputLegacy *self)
     self->new_image = NULL;
 
     // add a dummy output format
-    cam_unit_add_output_format_full (CAM_UNIT (self), 
+    cam_unit_add_output_format (CAM_UNIT (self), 
             CAM_PIXEL_FORMAT_GRAY, NULL, 1, 1, 1);
 }
 
@@ -254,7 +254,7 @@ _try_produce_frame (CamUnit *super)
 
         cam_unit_stream_shutdown (super);
         cam_unit_remove_all_output_formats (super);
-        cam_unit_add_output_format_full (super, msg->pixelformat, NULL,
+        cam_unit_add_output_format (super, msg->pixelformat, NULL,
                 msg->width, msg->height, msg->stride);
         cam_unit_stream_init (super, NULL);
     }

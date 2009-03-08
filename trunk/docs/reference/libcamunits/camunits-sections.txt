@@ -81,7 +81,7 @@ cam_unit_add_control_int
 cam_unit_add_control_float
 cam_unit_add_control_boolean
 cam_unit_add_control_string
-cam_unit_add_output_format_full
+cam_unit_add_output_format
 cam_unit_remove_output_format
 cam_unit_remove_all_output_formats
 cam_unit_produce_frame

@@ -161,7 +161,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         infmt->pixelformat != CAM_PIXEL_FORMAT_GRAY &&
         infmt->pixelformat != CAM_PIXEL_FORMAT_BGRA) return;
 
-    cam_unit_add_output_format_full (CAM_UNIT (self), 
+    cam_unit_add_output_format (CAM_UNIT (self), 
             infmt->pixelformat,
             NULL, infmt->width, infmt->height, infmt->row_stride);
 }

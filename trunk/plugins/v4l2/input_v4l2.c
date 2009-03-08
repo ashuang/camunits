@@ -298,7 +298,7 @@ add_v4l2_format (CamV4L2 * self, uint32_t width, uint32_t height,
             fmt->fmt.pix.width * cam_pixel_format_bpp (cam_pixelformat) / 8;
     }
 
-    CamUnitFormat *new_fmt = cam_unit_add_output_format_full (CAM_UNIT (self),
+    CamUnitFormat *new_fmt = cam_unit_add_output_format (CAM_UNIT (self),
             cam_pixelformat, NULL, fmt->fmt.pix.width, fmt->fmt.pix.height,
             fmt->fmt.pix.bytesperline);
             //, fmt->fmt.pix.sizeimage);

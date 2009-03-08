@@ -208,7 +208,7 @@ on_input_format_changed(CamUnit *super, const CamUnitFormat *infmt)
     self->outbuf = cam_framebuffer_new(dst_data, buf_sz);
     self->outbuf->bytesused = buf_sz;
 
-    cam_unit_add_output_format_full(CAM_UNIT(self), 
+    cam_unit_add_output_format(CAM_UNIT(self), 
             infmt->pixelformat,
             NULL, infmt->width, infmt->height, out_stride);
 }

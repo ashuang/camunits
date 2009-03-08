@@ -167,7 +167,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     cam_unit_remove_all_output_formats (super);
     if (!infmt) return;
     if (infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
-        cam_unit_add_output_format_full (super, infmt->pixelformat,
+        cam_unit_add_output_format (super, infmt->pixelformat,
                 infmt->name, infmt->width, infmt->height, 
                 infmt->row_stride);
     } else {
@@ -213,7 +213,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
         for (GList *witer=worker_formats; witer; witer=witer->next) {
             CamUnitFormat *wfmt = CAM_UNIT_FORMAT (witer->data);
             if (wfmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
-                CamUnitFormat *my_fmt = cam_unit_add_output_format_full (super,
+                CamUnitFormat *my_fmt = cam_unit_add_output_format (super,
                         wfmt->pixelformat, wfmt->name, wfmt->width, 
                         wfmt->height, wfmt->row_stride);
                 g_object_set_data (G_OBJECT (my_fmt), "convert_to_gray:wfmt", 

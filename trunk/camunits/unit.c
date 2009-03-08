@@ -791,7 +791,7 @@ cam_unit_get_control_string (CamUnit *self, const char *id,
 }
 
 CamUnitFormat *
-cam_unit_add_output_format_full (CamUnit *self, CamPixelFormat pfmt, 
+cam_unit_add_output_format (CamUnit *self, CamPixelFormat pfmt, 
         const char *name, 
         int width, int height, int row_stride)
 {

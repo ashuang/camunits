@@ -158,7 +158,7 @@ update_output_format (CamippResize *self, int width, int height,
     int bpp = cam_pixel_format_bpp (infmt->pixelformat);
     int stride = width * bpp / 8;
 
-    cam_unit_add_output_format_full (CAM_UNIT (self), infmt->pixelformat,
+    cam_unit_add_output_format (CAM_UNIT (self), infmt->pixelformat,
             NULL, width, height, stride);
 }
 

@@ -237,7 +237,7 @@ camlcm_input_init (CamlcmInput *self)
     self->lcm_thread = g_thread_create (lcm_thread, self, TRUE, NULL);
 
     // set a dummy output format
-    cam_unit_add_output_format_full (CAM_UNIT(self), CAM_PIXEL_FORMAT_GRAY, 
+    cam_unit_add_output_format (CAM_UNIT(self), CAM_PIXEL_FORMAT_GRAY, 
             "1x1 Gray 8bpp dummy format", 1, 1, 1);
 
     return;
@@ -344,7 +344,7 @@ camlcm_input_try_produce_frame (CamUnit *super)
             cam_unit_stream_shutdown (super);
         }
         cam_unit_remove_all_output_formats(super);
-        cam_unit_add_output_format_full(super, 
+        cam_unit_add_output_format(super, 
                 self->received_image->pixelformat, NULL,
                 self->received_image->width,
                 self->received_image->height, 
