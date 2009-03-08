@@ -135,7 +135,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
 
     outbuf->bytesused = buf_sz;
 
-    cam_unit_produce_frame (super, outbuf, super->fmt);
+    cam_unit_produce_frame (super, outbuf, outfmt);
     g_object_unref (outbuf);
 }
 
@@ -153,7 +153,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
     // actually, we can only handle 8-bit RGB input data.
     if (infmt->pixelformat != CAM_PIXEL_FORMAT_RGB) return;
 
-    cam_unit_add_output_format_full (super, infmt->pixelformat,
+    cam_unit_add_output_format (super, infmt->pixelformat,
             infmt->name, infmt->width, infmt->height, 
             infmt->row_stride);
 }
