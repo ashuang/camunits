@@ -57,7 +57,8 @@ cam_convert_to_gray_class_init( CamConvertToGrayClass *klass )
 static void
 cam_convert_to_gray_init (CamConvertToGray *self)
 {
-    cam_unit_set_preferred_format (CAM_UNIT (self), CAM_PIXEL_FORMAT_RGB, 0, 0);
+    cam_unit_set_preferred_format (CAM_UNIT (self), CAM_PIXEL_FORMAT_RGB, 0, 0,
+            NULL);
     self->worker = NULL;
     self->manager = cam_unit_manager_get_and_ref();
     g_signal_connect (G_OBJECT(self), "input-format-changed",

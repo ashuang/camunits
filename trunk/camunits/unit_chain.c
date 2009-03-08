@@ -872,23 +872,8 @@ _start_element (GMarkupParseContext *ctx, const char *element_name,
             free(fmt_name);
             return;
         }
-        cam_unit_set_preferred_format (cpc->unit, pfmt, width, height);
-
-        if(fmt_name) {
-            GList * formats = cam_unit_get_output_formats(cpc->unit);
-            for(GList * fiter=formats; fiter; fiter=fiter->next) {
-                CamUnitFormat *fmt = CAM_UNIT_FORMAT(fiter->data);
-
-                if(fmt->width == width && 
-                   fmt->height == height &&
-                   fmt->pixelformat == pfmt &&
-                   !strcmp(fmt->name, fmt_name)) {
-                    cam_unit_stream_init(cpc->unit, fmt);
-                    break;
-                }
-            }
-            g_list_free(formats);
-        }
+        cam_unit_set_preferred_format (cpc->unit, pfmt, width, height, 
+                fmt_name);
 
         cam_unit_chain_insert_unit_tail (cpc->chain, cpc->unit);
 
