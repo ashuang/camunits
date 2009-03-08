@@ -207,7 +207,9 @@ GList * cam_unit_get_output_formats(CamUnit *self);
  *
  * Initializes a unit, reserves buffers and system resources.
  *
- * If %format is NULL, then the first available format is used.
+ * If %format is NULL, then a format is automatically chosen based on 
+ * any preferences indicated by cam_unit_set_preferred_format() and the size
+ * and resolution of the available formats.
  *
  * Returns: 0 on success, < 0 on failure
  */
@@ -221,13 +223,15 @@ int cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format);
  *         acceptable.
  * @height: the preferred image height, or 0 to indicate that any height is
  *          acceptable.
+ * @name: the name of the desired format, or NULL to indicate no name
+ *          preference.
  *
  * Sets the preferred format when initializing the unit with a NULL format.  If
  * a format matching the requested parameters is not found, then an arbitrary
  * format is chosen.
  */
 int cam_unit_set_preferred_format (CamUnit *self, 
-        CamPixelFormat pixelformat, int width, int height);
+        CamPixelFormat pixelformat, int width, int height, const char *name);
 
 /**
  * cam_unit_stream_shutdown:

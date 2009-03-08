@@ -53,6 +53,7 @@ struct _CamUnitPriv {
     CamPixelFormat requested_pixelformat;
     int requested_width;
     int requested_height;
+    char * requested_format_name;
 };
 #define CAM_UNIT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT, CamUnitPriv))
 
@@ -105,6 +106,7 @@ cam_unit_init (CamUnit *self)
     priv->requested_pixelformat = CAM_PIXEL_FORMAT_ANY;
     priv->requested_width = 0;
     priv->requested_height = 0;
+    priv->requested_format_name = NULL;
 }
 
 static void
@@ -131,6 +133,7 @@ cam_unit_finalize (GObject *obj)
         g_object_unref (ofiter->data);
     }
     g_list_free (priv->output_formats);
+    free(priv->requested_format_name);
 
     G_OBJECT_CLASS (cam_unit_parent_class)->finalize(obj);
 }
@@ -430,6 +433,10 @@ cam_unit_stream_init (CamUnit * self, const CamUnitFormat *format)
                     priv->requested_height == cfmt->height) {
                 score += max_wh;
             }
+            if (priv->requested_format_name && cfmt->name &&
+                !strcmp(priv->requested_format_name, cfmt->name)) {
+                score += max_wh;
+            }
 
             if (!format || score > best_score) {
                 best_score = score;
@@ -580,13 +587,19 @@ cam_unit_get_input (CamUnit *self) {
 
 int 
 cam_unit_set_preferred_format (CamUnit *self, 
-        CamPixelFormat pixelformat, int width, int height)
+        CamPixelFormat pixelformat, int width, int height, const char *name)
 {
     CamUnitPriv *priv = CAM_UNIT_GET_PRIVATE(self);
     priv->requested_pixelformat = pixelformat;
 
     priv->requested_width = width;
     priv->requested_height = height;
+
+    free(priv->requested_format_name);
+    if(name)
+        priv->requested_format_name = strdup(name);
+    else
+        priv->requested_format_name = NULL;
     return 0;
 }
 
