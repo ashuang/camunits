@@ -15,6 +15,19 @@
 
 #define err(args...) fprintf (stderr, args)
 
+typedef struct _CamUnitChainGLWidgetPriv CamUnitChainGLWidgetPriv;
+struct _CamUnitChainGLWidgetPriv {
+    /*< private >*/
+    CamUnitChain *chain;
+    GtkWidget *vbox;
+    GtkWidget *aspect;
+    GtkWidget *gl_area;
+    GtkWidget *msg_area;
+
+    double aspect_ratio;
+};
+#define CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_CHAIN_GL_WIDGET, CamUnitChainGLWidgetPriv))
+
 enum {
     GL_DRAW_FINISHED_SIGNAL,
     LAST_SIGNAL
@@ -44,27 +57,28 @@ static void
 cam_unit_chain_gl_widget_init (CamUnitChainGLWidget *self)
 {
     dbg (DBG_GUI, "unit control widget constructor\n");
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
     
-    self->chain = NULL;
+    priv->chain = NULL;
 
-    self->aspect_ratio = 1.0;
-    self->aspect = gtk_aspect_frame_new (NULL, 0.5, 0.5, 
-            self->aspect_ratio, FALSE);
-    gtk_box_pack_start (GTK_BOX (self), self->aspect, TRUE, TRUE, 0);
-    gtk_widget_show (self->aspect);
+    priv->aspect_ratio = 1.0;
+    priv->aspect = gtk_aspect_frame_new (NULL, 0.5, 0.5, 
+            priv->aspect_ratio, FALSE);
+    gtk_box_pack_start (GTK_BOX (self), priv->aspect, TRUE, TRUE, 0);
+    gtk_widget_show (priv->aspect);
 
-    self->gl_area = cam_gl_drawing_area_new (FALSE);
-    g_object_ref_sink (G_OBJECT (self->gl_area));
-    self->msg_area = gtk_label_new ("No units in chain");
-    g_object_ref_sink (G_OBJECT (self->msg_area));
+    priv->gl_area = cam_gl_drawing_area_new (FALSE);
+    g_object_ref_sink (G_OBJECT (priv->gl_area));
+    priv->msg_area = gtk_label_new ("No units in chain");
+    g_object_ref_sink (G_OBJECT (priv->msg_area));
 
-//    gtk_widget_show (self->gl_area);
-    gtk_container_add (GTK_CONTAINER (self->aspect), self->msg_area);
-    gtk_widget_show (self->msg_area);
+//    gtk_widget_show (priv->gl_area);
+    gtk_container_add (GTK_CONTAINER (priv->aspect), priv->msg_area);
+    gtk_widget_show (priv->msg_area);
 
-    g_signal_connect (G_OBJECT (self->gl_area), "expose-event",
+    g_signal_connect (G_OBJECT (priv->gl_area), "expose-event",
             G_CALLBACK (on_gl_expose), self);
-    g_signal_connect (G_OBJECT (self->gl_area), "configure-event",
+    g_signal_connect (G_OBJECT (priv->gl_area), "configure-event",
             G_CALLBACK (on_gl_configure), self);
 }
 
@@ -94,6 +108,8 @@ cam_unit_chain_gl_widget_class_init (CamUnitChainGLWidgetClass *klass)
                 G_SIGNAL_RUN_FIRST,
                 0, NULL, NULL, g_cclosure_marshal_VOID__VOID,
                 G_TYPE_NONE, 0);
+
+    g_type_class_add_private (gobject_class, sizeof (CamUnitChainGLWidgetPriv));
 }
 
 // destructor (more or less)
@@ -102,14 +118,15 @@ cam_unit_chain_gl_widget_finalize (GObject *obj)
 {
     CamUnitChainGLWidget *self = CAM_UNIT_CHAIN_GL_WIDGET (obj);
     dbg (DBG_GUI, "unit chain gl widget finalize\n");
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
 
-    if (self->chain) {
-        g_signal_handlers_disconnect_by_func (G_OBJECT (self->chain),
+    if (priv->chain) {
+        g_signal_handlers_disconnect_by_func (G_OBJECT (priv->chain),
                 on_unit_added, self);
-        g_signal_handlers_disconnect_by_func (G_OBJECT (self->chain),
+        g_signal_handlers_disconnect_by_func (G_OBJECT (priv->chain),
                 on_unit_removed, self);
 
-        GList *units = cam_unit_chain_get_units (self->chain);
+        GList *units = cam_unit_chain_get_units (priv->chain);
         for (GList *uiter=units; uiter; uiter=uiter->next) {
             CamUnit *unit = CAM_UNIT (uiter->data);
             if ((cam_unit_get_flags (unit) & CAM_UNIT_RENDERS_GL) && 
@@ -124,11 +141,11 @@ cam_unit_chain_gl_widget_finalize (GObject *obj)
         }
         g_list_free (units);
 
-        dbgl (DBG_REF, "unref chain [%p]\n", self->chain);
-        g_object_unref (self->chain);
+        dbgl (DBG_REF, "unref chain [%p]\n", priv->chain);
+        g_object_unref (priv->chain);
     }
-    g_object_unref (G_OBJECT (self->gl_area));
-    g_object_unref (G_OBJECT (self->msg_area));
+    g_object_unref (G_OBJECT (priv->gl_area));
+    g_object_unref (G_OBJECT (priv->msg_area));
 
     G_OBJECT_CLASS (cam_unit_chain_gl_widget_parent_class)->finalize (obj);
 }
@@ -152,7 +169,8 @@ cam_unit_chain_gl_widget_new (CamUnitChain *chain)
 static void
 on_show_after (CamUnitChainGLWidget *self, CamUnitChain *chain) 
 {
-    if (!self->chain) {
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    if (!priv->chain) {
         cam_unit_chain_gl_widget_set_chain (self, chain);
         g_signal_handlers_disconnect_by_func (G_OBJECT (self),
                 on_show_after, self);
@@ -163,11 +181,12 @@ int
 cam_unit_chain_gl_widget_set_chain (CamUnitChainGLWidget *self, 
         CamUnitChain *chain)
 {
-    if (self->chain) return -1;
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    if (priv->chain) return -1;
     if (!chain) return -1;
     dbg (DBG_GUI, "CamUnitChainGL: setting chain to [%p]\n", chain);
 
-    self->chain = chain;
+    priv->chain = chain;
 
     dbgl (DBG_REF, "ref chain [%p]\n", chain);
     g_object_ref (chain);
@@ -192,9 +211,10 @@ on_gl_configure (GtkWidget *widget, GdkEventConfigure *event,
         void* user_data)
 {
     CamUnitChainGLWidget *self = CAM_UNIT_CHAIN_GL_WIDGET (user_data);
-    if (!self->chain) return TRUE;
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    if (!priv->chain) return TRUE;
 
-    cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (self->gl_area));
+    cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (priv->gl_area));
     return TRUE;
 }
 
@@ -233,14 +253,15 @@ on_gl_expose (GtkWidget * widget, GdkEventExpose * event,
         void* user_data)
 {
     CamUnitChainGLWidget *self = CAM_UNIT_CHAIN_GL_WIDGET (user_data);
-    if (!self->chain) goto blank;
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    if (!priv->chain) goto blank;
 
     // if no units can draw, then don't bother
-    CamUnit *first_render_unit = get_first_renderable_unit (self->chain);
+    CamUnit *first_render_unit = get_first_renderable_unit (priv->chain);
     if (!first_render_unit) goto blank;
 
     // some unit can draw, so clear the drawing buffer
-    cam_gl_drawing_area_set_context (CAM_GL_DRAWING_AREA (self->gl_area));
+    cam_gl_drawing_area_set_context (CAM_GL_DRAWING_AREA (priv->gl_area));
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -256,25 +277,25 @@ on_gl_expose (GtkWidget * widget, GdkEventExpose * event,
     // set the aspect ratio to match the aspect ratio of the 
     // first unit that can render
     double fmt_aspect = (double)fmt->width / fmt->height;
-    if (fmt_aspect != self->aspect_ratio) {
-        self->aspect_ratio = fmt_aspect;
-        gtk_aspect_frame_set (GTK_ASPECT_FRAME (self->aspect),
+    if (fmt_aspect != priv->aspect_ratio) {
+        priv->aspect_ratio = fmt_aspect;
+        gtk_aspect_frame_set (GTK_ASPECT_FRAME (priv->aspect),
                 0.5, 0.5, fmt_aspect, FALSE);
     }
 
-    render_renderable_units (self->chain);
+    render_renderable_units (priv->chain);
 
     g_signal_emit (G_OBJECT(self), _signals[GL_DRAW_FINISHED_SIGNAL], 0, NULL);
 
-    cam_gl_drawing_area_swap_buffers (CAM_GL_DRAWING_AREA (self->gl_area));
+    cam_gl_drawing_area_swap_buffers (CAM_GL_DRAWING_AREA (priv->gl_area));
 
     return TRUE;
 blank:
-    cam_gl_drawing_area_set_context (CAM_GL_DRAWING_AREA (self->gl_area));
+    cam_gl_drawing_area_set_context (CAM_GL_DRAWING_AREA (priv->gl_area));
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
-    cam_gl_drawing_area_swap_buffers (CAM_GL_DRAWING_AREA (self->gl_area));
+    cam_gl_drawing_area_swap_buffers (CAM_GL_DRAWING_AREA (priv->gl_area));
     return TRUE;
 }
 
@@ -282,9 +303,10 @@ static void
 _set_aspect_widget (CamUnitChainGLWidget *self)
 {
     int can_render = 0;
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
 
-    if (self->chain) {
-        GList *units = cam_unit_chain_get_units (self->chain);
+    if (priv->chain) {
+        GList *units = cam_unit_chain_get_units (priv->chain);
         for (GList *uiter=units; uiter; uiter=uiter->next) {
             CamUnit *unit = CAM_UNIT (uiter->data);
             if (cam_unit_get_flags (unit) & CAM_UNIT_RENDERS_GL) {
@@ -298,33 +320,33 @@ _set_aspect_widget (CamUnitChainGLWidget *self)
     }
 
     GList *cur_wlist = 
-        gtk_container_get_children (GTK_CONTAINER (self->aspect));
+        gtk_container_get_children (GTK_CONTAINER (priv->aspect));
     GtkWidget *cur_child = cur_wlist->data;
     assert (cur_child);
     g_list_free (cur_wlist);
 
     if (can_render) {
-        if (cur_child == self->msg_area) {
-            gtk_container_remove (GTK_CONTAINER (self->aspect), self->msg_area);
-            gtk_container_add (GTK_CONTAINER (self->aspect), self->gl_area);
-            gtk_widget_show (GTK_WIDGET (self->gl_area));
+        if (cur_child == priv->msg_area) {
+            gtk_container_remove (GTK_CONTAINER (priv->aspect), priv->msg_area);
+            gtk_container_add (GTK_CONTAINER (priv->aspect), priv->gl_area);
+            gtk_widget_show (GTK_WIDGET (priv->gl_area));
         } else {
-            assert (cur_child == self->gl_area);
+            assert (cur_child == priv->gl_area);
         }
     } else {
-        if (cur_child == self->gl_area) {
-            gtk_container_remove (GTK_CONTAINER (self->aspect), self->gl_area);
-            gtk_container_add (GTK_CONTAINER (self->aspect), self->msg_area);
-            gtk_widget_show (GTK_WIDGET (self->msg_area));
+        if (cur_child == priv->gl_area) {
+            gtk_container_remove (GTK_CONTAINER (priv->aspect), priv->gl_area);
+            gtk_container_add (GTK_CONTAINER (priv->aspect), priv->msg_area);
+            gtk_widget_show (GTK_WIDGET (priv->msg_area));
         } else {
-            assert (cur_child == self->msg_area);
+            assert (cur_child == priv->msg_area);
         }
-        GList *units = cam_unit_chain_get_units (self->chain);
+        GList *units = cam_unit_chain_get_units (priv->chain);
         if (units) {
-            gtk_label_set_text (GTK_LABEL (self->msg_area),
+            gtk_label_set_text (GTK_LABEL (priv->msg_area),
                     "No renderable units in chain.\nDo you need to add an OpenGL unit?");
         } else {
-            gtk_label_set_text (GTK_LABEL (self->msg_area),
+            gtk_label_set_text (GTK_LABEL (priv->msg_area),
                     "No units in chain.");
         }
         g_list_free (units);
@@ -368,8 +390,9 @@ static void
 on_unit_control_changed (CamUnit * unit, CamUnitControl * control,
         CamUnitChainGLWidget * self)
 {
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
     if (cam_unit_is_streaming (unit))
-        cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (self->gl_area));
+        cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (priv->gl_area));
 }
 
 static void 
@@ -392,11 +415,13 @@ void
 cam_unit_chain_gl_widget_request_redraw (CamUnitChainGLWidget *self)
 {
     // trigger an expose event
-    cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (self->gl_area));
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (priv->gl_area));
 }
 
 GtkWidget *
 cam_unit_chain_gl_widget_get_gl_area (CamUnitChainGLWidget * self)
 {
-    return self->gl_area;
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    return priv->gl_area;
 }

@@ -26,26 +26,6 @@ typedef struct _CamUnitControlWidgetClass CamUnitControlWidgetClass;
 struct _CamUnitControlWidget
 {
     GtkEventBox parent;
-
-    CamUnit *unit;
-
-    /*< private >*/
-    GtkAlignment *alignment;
-    GtkExpander *expander;
-    GtkButton *close_button;
-    GtkTable *table;
-    GtkWidget * arrow_bin;
-    GtkWidget * exp_label;
-    GtkTooltips * tooltips;
-
-    GtkComboBox *formats_combo;
-    int formats_combo_nentries;
-
-    int trows;
-    GHashTable *ctl_info;
-
-    int status_changed_handler_id;
-    int formats_changed_handler_id;
 };
 
 struct _CamUnitControlWidgetClass
@@ -59,6 +39,8 @@ CamUnitControlWidget *cam_unit_control_widget_new( CamUnit *unit );
 
 int cam_unit_control_widget_set_unit( CamUnitControlWidget* self, 
         CamUnit *unit );
+
+CamUnit * cam_unit_control_widget_get_unit(CamUnitControlWidget* self);
 
 void cam_unit_control_widget_set_expanded (CamUnitControlWidget * self,
         gboolean expanded);

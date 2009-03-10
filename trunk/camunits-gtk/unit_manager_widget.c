@@ -11,6 +11,16 @@
 
 #define err(args...) fprintf(stderr, args)
 
+typedef struct _CamUnitManagerWidgetPriv CamUnitManagerWidgetPriv;
+struct _CamUnitManagerWidgetPriv {
+    CamUnitManager *manager;
+
+    /*< private >*/
+    GtkTreeStore * tree_store;
+    int press_x, press_y;
+};
+#define CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_MANAGER_WIDGET, CamUnitManagerWidgetPriv))
+
 enum {
     UNIT_DESCRIPTION_ACTIVATED_SIGNAL,
     LAST_SIGNAL
@@ -54,15 +64,16 @@ GtkTargetEntry cam_unit_manager_widget_target_entry = {
 static void
 cam_unit_manager_widget_init( CamUnitManagerWidget *self )
 {
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "unit manager widget constructor\n");
 
-    self->tree_store = GTK_TREE_STORE (cam_tree_store_new (N_COLUMNS,
+    priv->tree_store = GTK_TREE_STORE (cam_tree_store_new (N_COLUMNS,
             G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN));
-    cam_tree_store_set_draggable_col (CAM_TREE_STORE (self->tree_store),
+    cam_tree_store_set_draggable_col (CAM_TREE_STORE (priv->tree_store),
             COL_IS_DRAGGABLE);
 
     gtk_tree_view_set_model (GTK_TREE_VIEW (self),
-            GTK_TREE_MODEL (self->tree_store));
+            GTK_TREE_MODEL (priv->tree_store));
     GtkTreeViewColumn * column = gtk_tree_view_column_new ();
     gtk_tree_view_column_set_title (column, "Available Units");
 //    gtk_tree_view_column_set_sort_column_id (column, COL_TEXT);
@@ -102,10 +113,10 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
     g_signal_connect (G_OBJECT (self), "row-activated", 
             G_CALLBACK (on_row_selected), self);
 
-    gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->tree_store),
+    gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (priv->tree_store),
             COL_TEXT, GTK_SORT_ASCENDING);
 
-    self->manager = NULL;
+    priv->manager = NULL;
 }
 
 static void drag_begin (GtkWidget * widget, GdkDragContext * context);
@@ -141,6 +152,8 @@ cam_unit_manager_widget_class_init( CamUnitManagerWidgetClass *klass )
             0, NULL, NULL, g_cclosure_marshal_VOID__OBJECT,
             G_TYPE_NONE, 1,
             CAM_TYPE_UNIT_DESCRIPTION);
+
+    g_type_class_add_private (gobject_class, sizeof (CamUnitManagerWidgetPriv));
 }
 
 // destructor (more or less)
@@ -148,11 +161,12 @@ static void
 cam_unit_manager_widget_finalize( GObject *obj )
 {
     CamUnitManagerWidget *self = CAM_UNIT_MANAGER_WIDGET( obj );
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "unit manager widget finalize\n" );
     dbgl(DBG_REF, "unref manager\n");
 
-    g_object_unref (self->manager);
-    g_object_unref (self->tree_store);
+    g_object_unref (priv->manager);
+    g_object_unref (priv->tree_store);
 
     G_OBJECT_CLASS (cam_unit_manager_widget_parent_class)->finalize(obj);
 }
@@ -192,7 +206,8 @@ remove_udesc (GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter,
 static int
 remove_description (CamUnitManagerWidget *self, CamUnitDescription *desc)
 {
-    gtk_tree_model_foreach (GTK_TREE_MODEL (self->tree_store),
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
+    gtk_tree_model_foreach (GTK_TREE_MODEL (priv->tree_store),
             remove_udesc, desc);
     return 0;
 }
@@ -201,7 +216,8 @@ static int
 find_or_make_parent_iter (CamUnitManagerWidget * self, 
         char **levels, int i, GtkTreeIter * parent, GtkTreeIter * result)
 {
-    GtkTreeModel *model = GTK_TREE_MODEL (self->tree_store);
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
+    GtkTreeModel *model = GTK_TREE_MODEL (priv->tree_store);
 
     if (!levels[i]) return 0;
 
@@ -221,8 +237,8 @@ find_or_make_parent_iter (CamUnitManagerWidget * self,
         more_children = gtk_tree_model_iter_next (model, &child);
     }
 
-    gtk_tree_store_append (self->tree_store, result, parent);
-    gtk_tree_store_set (self->tree_store, result, 
+    gtk_tree_store_append (priv->tree_store, result, parent);
+    gtk_tree_store_set (priv->tree_store, result, 
             COL_TEXT, levels[i], 
             COL_DESC_PTR, NULL, 
             COL_IS_RENDERABLE, FALSE,
@@ -235,6 +251,7 @@ find_or_make_parent_iter (CamUnitManagerWidget * self,
 static int
 add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
 {
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
     GtkTreeIter iter, parent_iter;
 
     int found_parent = 0;
@@ -250,32 +267,32 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
     }
 
     if (found_parent) {
-        gtk_tree_store_append (self->tree_store, &iter, &parent_iter);
+        gtk_tree_store_append (priv->tree_store, &iter, &parent_iter);
     } else {
-        gtk_tree_store_append (self->tree_store, &iter, NULL);
+        gtk_tree_store_append (priv->tree_store, &iter, NULL);
     }
     int udesc_flags = cam_unit_description_get_flags(desc);
-    gtk_tree_store_set (self->tree_store, &iter,
+    gtk_tree_store_set (priv->tree_store, &iter,
             COL_TEXT, cam_unit_description_get_name(desc),
             COL_DESC_PTR, desc,
             COL_IS_RENDERABLE, udesc_flags & CAM_UNIT_RENDERS_GL,
             COL_IS_DRAGGABLE, TRUE,
             -1);
     GtkTreePath * path =
-        gtk_tree_model_get_path (GTK_TREE_MODEL (self->tree_store), &iter);
+        gtk_tree_model_get_path (GTK_TREE_MODEL (priv->tree_store), &iter);
     gtk_tree_view_expand_to_path (GTK_TREE_VIEW (self), path);
     gtk_tree_path_free (path);
 
-//    gtk_tree_store_append (self->tree_store, &iter2, &iter);
+//    gtk_tree_store_append (priv->tree_store, &iter2, &iter);
 //    sprintf (str, "<small><tt><b>Driver:  </b>%s</tt></small>", 
 //            desc->driver->package);
-//    gtk_tree_store_set (self->tree_store, &iter2, COL_TEXT, str, -1);
+//    gtk_tree_store_set (priv->tree_store, &iter2, COL_TEXT, str, -1);
 //
 #if 0
-    gtk_tree_store_append (self->tree_store, &iter2, &iter);
+    gtk_tree_store_append (priv->tree_store, &iter2, &iter);
     char *idstr = g_strdup_printf ("<small><tt><b>ID:      </b>%s</tt></small>",
             desc->unit_id);
-    gtk_tree_store_set (self->tree_store, &iter2, 
+    gtk_tree_store_set (priv->tree_store, &iter2, 
             COL_TEXT, idstr, 
             COL_DESC_PTR, desc,
             -1);
@@ -287,16 +304,17 @@ add_description (CamUnitManagerWidget * self, CamUnitDescription * desc)
 CamUnitDescription *
 cam_unit_manager_widget_get_selected_description (CamUnitManagerWidget * self)
 {
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
     GtkTreePath * path;
     gtk_tree_view_get_cursor (GTK_TREE_VIEW (self), &path, NULL);
     if (!path)
         return NULL;
 
     GtkTreeIter iter;
-    gtk_tree_model_get_iter (GTK_TREE_MODEL (self->tree_store), &iter, path);
+    gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->tree_store), &iter, path);
 
     CamUnitDescription * desc;
-    gtk_tree_model_get (GTK_TREE_MODEL (self->tree_store), &iter,
+    gtk_tree_model_get (GTK_TREE_MODEL (priv->tree_store), &iter,
             COL_DESC_PTR, &desc, -1);
     return desc;
 }
@@ -317,8 +335,9 @@ int
 cam_unit_manager_widget_set_manager(CamUnitManagerWidget *self, 
         CamUnitManager *manager)
 {
-    if( self->manager ) return -1;
-    self->manager = manager;
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
+    if( priv->manager ) return -1;
+    priv->manager = manager;
 
     dbgl(DBG_REF, "ref manager\n");
     g_object_ref(manager);
@@ -327,7 +346,7 @@ cam_unit_manager_widget_set_manager(CamUnitManagerWidget *self,
     g_signal_connect(G_OBJECT(manager), "unit-description-removed", 
             G_CALLBACK(on_unit_description_removed), self);
 
-    GList *drivers = cam_unit_manager_get_drivers( self->manager );
+    GList *drivers = cam_unit_manager_get_drivers( priv->manager );
     GList *diter;
     for( diter=drivers; diter; diter=diter->next )
         add_driver (self, CAM_UNIT_DRIVER (diter->data));
@@ -355,8 +374,9 @@ static gboolean
 button_press (GtkWidget * widget, GdkEventButton * event)
 {
     CamUnitManagerWidget *self = CAM_UNIT_MANAGER_WIDGET (widget);
-    self->press_x = event->x;
-    self->press_y = event->y;
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
+    priv->press_x = event->x;
+    priv->press_y = event->y;
 
     GtkWidgetClass *wclass = 
         GTK_WIDGET_CLASS (cam_unit_manager_widget_parent_class);
@@ -371,9 +391,10 @@ drag_begin (GtkWidget * widget, GdkDragContext * context)
     GtkTreePath * path = NULL;
     gint cell_x, cell_y;
     CamUnitManagerWidget *self = CAM_UNIT_MANAGER_WIDGET (widget);
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
 
     if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (self),
-            self->press_x, self->press_y,
+            priv->press_x, priv->press_y,
             &path, NULL, &cell_x, &cell_y))
         return;
 
@@ -381,11 +402,11 @@ drag_begin (GtkWidget * widget, GdkDragContext * context)
 //        gtk_tree_path_up (path);
 
     GtkTreeIter iter;
-    gtk_tree_model_get_iter (GTK_TREE_MODEL (self->tree_store), &iter, path);
+    gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->tree_store), &iter, path);
     gtk_tree_path_free (path);
 
     CamUnitDescription * desc;
-    gtk_tree_model_get (GTK_TREE_MODEL (self->tree_store), &iter,
+    gtk_tree_model_get (GTK_TREE_MODEL (priv->tree_store), &iter,
             COL_DESC_PTR, &desc, -1);
     if (!desc) return;
 
@@ -425,10 +446,11 @@ on_row_selected (GtkTreeView *tv, GtkTreePath *path,
         GtkTreeViewColumn *column, void *user_data)
 {
     CamUnitManagerWidget *self = CAM_UNIT_MANAGER_WIDGET (user_data);
+    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
     GtkTreeIter iter;
-    gtk_tree_model_get_iter (GTK_TREE_MODEL (self->tree_store), &iter, path);
+    gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->tree_store), &iter, path);
     CamUnitDescription *udesc = NULL;
-    gtk_tree_model_get (GTK_TREE_MODEL (self->tree_store), &iter, 
+    gtk_tree_model_get (GTK_TREE_MODEL (priv->tree_store), &iter, 
             COL_DESC_PTR, &udesc, -1);
     if (udesc) {
         // a unit description was activated, create a new instance of that

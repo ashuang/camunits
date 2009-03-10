@@ -10,6 +10,23 @@
 
 #define err(args...) fprintf(stderr, args)
 
+typedef struct _CamUnitChainWidgetPriv CamUnitChainWidgetPriv;
+struct _CamUnitChainWidgetPriv {
+    CamUnitChain *chain;
+
+    /*< private >*/
+    GtkBox *box;
+    gboolean child_expand;
+    gboolean child_fill;
+    gboolean child_padding;
+    GtkTable *table;
+    int trows;
+
+    GtkWidget *drag_proxy;
+    int insert_position;
+};
+#define CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_CHAIN_WIDGET, CamUnitChainWidgetPriv))
+
 static void cam_unit_chain_widget_finalize (GObject *obj);
 //static void append_new_unit (CamUnitChainWidget *self, 
 //        CamUnitDescription *udesc);
@@ -45,6 +62,7 @@ G_DEFINE_TYPE (CamUnitChainWidget, cam_unit_chain_widget,
 static void
 cam_unit_chain_widget_init (CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "unit chain widget constructor\n");
 
     cam_unit_chain_widget_set_orientation(self, GTK_ORIENTATION_VERTICAL);
@@ -66,10 +84,10 @@ cam_unit_chain_widget_init (CamUnitChainWidget *self)
     g_signal_connect (G_OBJECT(self), "drag-leave", G_CALLBACK(on_drag_leave), 
             self);
 
-    self->drag_proxy = NULL;
-    self->insert_position = -1;
+    priv->drag_proxy = NULL;
+    priv->insert_position = -1;
 
-    self->chain = NULL;
+    priv->chain = NULL;
 }
 
 static void
@@ -79,6 +97,7 @@ cam_unit_chain_widget_class_init (CamUnitChainWidgetClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
     // add a class-specific destructor
     gobject_class->finalize = cam_unit_chain_widget_finalize;
+    g_type_class_add_private (gobject_class, sizeof (CamUnitChainWidgetPriv));
 }
 
 // destructor (more or less)
@@ -86,9 +105,10 @@ static void
 cam_unit_chain_widget_finalize (GObject *obj)
 {
     CamUnitChainWidget *self = CAM_UNIT_CHAIN_WIDGET (obj);
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "unit chain widget finalize\n");
 
-    g_object_unref(self->chain);
+    g_object_unref(priv->chain);
 
     G_OBJECT_CLASS (cam_unit_chain_widget_parent_class)->finalize(obj);
 }
@@ -105,8 +125,9 @@ cam_unit_chain_widget_new (CamUnitChain *chain)
 int
 cam_unit_chain_widget_set_chain(CamUnitChainWidget *self, CamUnitChain *chain)
 {
-    if (self->chain) return -1;
-    self->chain = chain;
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
+    if (priv->chain) return -1;
+    priv->chain = chain;
 
     g_object_ref(chain);
 
@@ -134,37 +155,38 @@ void
 cam_unit_chain_widget_set_orientation(CamUnitChainWidget *self,
        GtkOrientation orientation)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     if ((orientation == GTK_ORIENTATION_HORIZONTAL && 
-                GTK_IS_HBOX (self->box)) ||
+                GTK_IS_HBOX (priv->box)) ||
         (orientation == GTK_ORIENTATION_VERTICAL && 
-                GTK_IS_VBOX (self->box))) return;
+                GTK_IS_VBOX (priv->box))) return;
 
     GtkBox *newbox = NULL;
     if (orientation == GTK_ORIENTATION_HORIZONTAL) {
         newbox = GTK_BOX(gtk_hbox_new(FALSE, 5));
-        self->child_expand = TRUE;
-        self->child_fill = TRUE;
+        priv->child_expand = TRUE;
+        priv->child_fill = TRUE;
     } else {
         newbox = GTK_BOX(gtk_vbox_new(FALSE, 5));
-        self->child_expand = FALSE;
-        self->child_fill = FALSE;
+        priv->child_expand = FALSE;
+        priv->child_fill = FALSE;
     }
-    self->child_padding = 5;
-    if (self->box) {
-        GList *children = gtk_container_get_children(GTK_CONTAINER(self->box));
+    priv->child_padding = 5;
+    if (priv->box) {
+        GList *children = gtk_container_get_children(GTK_CONTAINER(priv->box));
         GList *iter;
         for (iter=children; iter; iter=iter->next) {
             GtkWidget *child = GTK_WIDGET(iter->data);
             gtk_widget_reparent (child, GTK_WIDGET(newbox));
-            gtk_box_set_child_packing (newbox, child, self->child_expand, 
-                    self->child_fill, self->child_padding, GTK_PACK_START);
+            gtk_box_set_child_packing (newbox, child, priv->child_expand, 
+                    priv->child_fill, priv->child_padding, GTK_PACK_START);
         }
         g_list_free(children);
 
-        gtk_container_remove (GTK_CONTAINER(self), GTK_WIDGET(self->box));
+        gtk_container_remove (GTK_CONTAINER(self), GTK_WIDGET(priv->box));
     }
     gtk_container_add (GTK_CONTAINER(self), GTK_WIDGET(newbox));
-    self->box = newbox;
+    priv->box = newbox;
     gtk_widget_show (GTK_WIDGET(newbox));
 
 }
@@ -176,6 +198,7 @@ static void
 on_unit_control_drag_begin(GtkWidget *widget, GdkDragContext *drag,
         CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbgl (DBG_GUI, "ctl drag begin\n");
     int x, y;
     int w, h;
@@ -189,9 +212,9 @@ on_unit_control_drag_begin(GtkWidget *widget, GdkDragContext *drag,
     gtk_widget_set_size_request(widget, w, h);
     gtk_drag_set_icon_widget (drag, drag_window, x, y);
 
-    self->insert_position = 
-        cam_unit_chain_get_unit_index (self->chain, 
-                CAM_UNIT_CONTROL_WIDGET(widget)->unit);
+    CamUnitControlWidget *ucw = CAM_UNIT_CONTROL_WIDGET(widget);
+    CamUnit *unit = cam_unit_control_widget_get_unit(ucw);
+    priv->insert_position = cam_unit_chain_get_unit_index (priv->chain, unit);
 
     g_object_set_data (G_OBJECT (widget), "cam-unit-control-widget",
             widget);
@@ -203,20 +226,21 @@ static void
 on_unit_control_drag_end(GtkWidget *widget, GdkDragContext *drag,
         CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbgl (DBG_GUI, "ctl drag end\n");
 
     CamUnitControlWidget *ucw = CAM_UNIT_CONTROL_WIDGET(widget);
-    CamUnit *unit = ucw->unit;
-    int original_index = cam_unit_chain_get_unit_index(self->chain, unit);
+    CamUnit *unit = cam_unit_control_widget_get_unit(ucw);
+    int original_index = cam_unit_chain_get_unit_index(priv->chain, unit);
     GtkWidget *old_parent = gtk_widget_get_parent(widget);
 
-    gtk_widget_reparent(widget, GTK_WIDGET(self->box));
-    gtk_box_set_child_packing(self->box, widget, self->child_expand, 
-            self->child_fill, self->child_padding, GTK_PACK_START);
-    if (original_index == self->insert_position) {
-        gtk_box_reorder_child (self->box, widget, original_index);
+    gtk_widget_reparent(widget, GTK_WIDGET(priv->box));
+    gtk_box_set_child_packing(priv->box, widget, priv->child_expand, 
+            priv->child_fill, priv->child_padding, GTK_PACK_START);
+    if (original_index == priv->insert_position) {
+        gtk_box_reorder_child (priv->box, widget, original_index);
     } else {
-        cam_unit_chain_reorder_unit(self->chain, unit, self->insert_position);
+        cam_unit_chain_reorder_unit(priv->chain, unit, priv->insert_position);
     }
     gtk_widget_show(widget);
     gtk_widget_destroy(old_parent);
@@ -226,30 +250,32 @@ static gboolean
 on_drag_motion (GtkWidget * widget, GdkDragContext * drag, 
         gint x, gint y, guint time, CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     GtkWidget * source = gtk_drag_get_source_widget (drag);
 
-    GtkWidget * control_widget = g_object_get_data (G_OBJECT (source),
-            "cam-unit-control-widget");
+    CamUnitControlWidget * ucw = CAM_UNIT_CONTROL_WIDGET(
+            g_object_get_data (G_OBJECT (source), "cam-unit-control-widget"));
 
-    if (!control_widget || !IS_CAM_UNIT_CONTROL_WIDGET (control_widget)) {
+    if (!ucw) {
 //        printf("Warning: \"cam-unit-control-widget\" not set "
 //                "on drag context\n");
         return FALSE;
     }
-    if (! CAM_UNIT_CONTROL_WIDGET(control_widget)->unit) {
+    CamUnit *unit = cam_unit_control_widget_get_unit(ucw);
+    if (! unit) {
         return FALSE;
     }
     gdk_drag_status (drag, GDK_ACTION_MOVE, time);
 
-    if (self->drag_proxy) {
-        gtk_widget_destroy (self->drag_proxy);
-        self->drag_proxy = NULL;
+    if (priv->drag_proxy) {
+        gtk_widget_destroy (priv->drag_proxy);
+        priv->drag_proxy = NULL;
     }
 
     // which unit?
-    self->insert_position = 0;
+    priv->insert_position = 0;
     GList *biter;
-    for (biter=self->box->children; biter; biter=biter->next) {
+    for (biter=priv->box->children; biter; biter=biter->next) {
         GtkBoxChild *child = (GtkBoxChild*) biter->data;
         if (! IS_CAM_UNIT_CONTROL_WIDGET (child->widget)) continue;
 
@@ -258,21 +284,21 @@ on_drag_motion (GtkWidget * widget, GdkDragContext * drag,
                 x, y, &ucw_x, &ucw_y);
 
         if (ucw_y <= child->widget->allocation.height/2) break;
-        self->insert_position++;
+        priv->insert_position++;
     }
 
-    if (! self->drag_proxy) {
-        self->drag_proxy = gtk_drawing_area_new();
-        gtk_widget_set_size_request (self->drag_proxy, 
-                control_widget->allocation.width,
-                control_widget->allocation.height);
-        gtk_box_pack_start (self->box, self->drag_proxy, 
-               self->child_expand, self->child_fill, self->child_padding);
-        gtk_drag_highlight (self->drag_proxy);
+    if (! priv->drag_proxy) {
+        priv->drag_proxy = gtk_drawing_area_new();
+        gtk_widget_set_size_request (priv->drag_proxy, 
+                GTK_WIDGET(ucw)->allocation.width,
+                GTK_WIDGET(ucw)->allocation.height);
+        gtk_box_pack_start (priv->box, priv->drag_proxy, 
+               priv->child_expand, priv->child_fill, priv->child_padding);
+        gtk_drag_highlight (priv->drag_proxy);
     }
 
-    gtk_box_reorder_child(self->box, self->drag_proxy, self->insert_position);
-    gtk_widget_show (self->drag_proxy);
+    gtk_box_reorder_child(priv->box, priv->drag_proxy, priv->insert_position);
+    gtk_widget_show (priv->drag_proxy);
 
 //    gtk_widget_set_size_request(s->drag_proxy, -1, widget->allocation.height);
 //    gtk_widget_show(s->drag_proxy);
@@ -285,10 +311,11 @@ static void
 on_drag_leave(GtkWidget *widget, GdkDragContext *drag, guint time, 
         CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbgl (DBG_GUI, "drag leave\n");
-    if (self->drag_proxy) {
-        gtk_widget_destroy (self->drag_proxy);
-        self->drag_proxy = NULL;
+    if (priv->drag_proxy) {
+        gtk_widget_destroy (priv->drag_proxy);
+        priv->drag_proxy = NULL;
     }
 }
 
@@ -296,6 +323,7 @@ static void
 on_drag_drop(GtkWidget *widget, GdkDragContext *drag, gint x,
         gint y, guint time, CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbgl (DBG_GUI, "chain drag drop\n");
     GtkWidget *source_widget = gtk_drag_get_source_widget (drag);
 
@@ -306,26 +334,26 @@ on_drag_drop(GtkWidget *widget, GdkDragContext *drag, gint x,
         return;
     }
 
-    if (self->insert_position < 0) {
+    if (priv->insert_position < 0) {
         err("ChainWidget: invalid insert position %d!!\n", 
-                self->insert_position);
+                priv->insert_position);
         return;
     }
 
     dbg(DBG_GUI, "dropping control\n");
 
     CamUnitControlWidget *ucw = CAM_UNIT_CONTROL_WIDGET(control_widget);
-    CamUnit *unit = ucw->unit;
+    CamUnit *unit = cam_unit_control_widget_get_unit(ucw);
 
     if (unit) {
-        int original_index = cam_unit_chain_get_unit_index(self->chain, unit);
+        int original_index = cam_unit_chain_get_unit_index(priv->chain, unit);
 
         dbg(DBG_GUI, "dragging [%s] from %d to %d\n", 
-                cam_unit_get_id(unit), original_index, self->insert_position);
+                cam_unit_get_id(unit), original_index, priv->insert_position);
 
         if (original_index == -1) {
-            cam_unit_chain_insert_unit (self->chain, unit,
-                    self->insert_position);
+            cam_unit_chain_insert_unit (priv->chain, unit,
+                    priv->insert_position);
         }
     }
 
@@ -344,16 +372,18 @@ on_unit_added(CamUnitChain *chain, CamUnit *unit, CamUnitChainWidget *self)
 static void
 on_unit_removed(CamUnitChain *chain, CamUnit *unit, CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "ChainWidget detected unit [%s] removed from chain\n", 
             cam_unit_get_id(unit));
     
     GList *biter;
-    for (biter=self->box->children; biter; biter=biter->next) {
+    for (biter=priv->box->children; biter; biter=biter->next) {
         GtkBoxChild *child = (GtkBoxChild*) biter->data;
         if (! IS_CAM_UNIT_CONTROL_WIDGET (child->widget)) continue;
 
         CamUnitControlWidget *ucw = CAM_UNIT_CONTROL_WIDGET(child->widget);
-        if (ucw->unit == unit) {
+        CamUnit *ucw_unit = cam_unit_control_widget_get_unit(ucw);
+        if (ucw_unit == unit) {
             cam_unit_control_widget_detach (ucw);
             gtk_widget_destroy (child->widget);
             return;
@@ -364,16 +394,19 @@ on_unit_removed(CamUnitChain *chain, CamUnit *unit, CamUnitChainWidget *self)
 static void
 on_unit_reordered(CamUnitChain *chain, CamUnit *unit, CamUnitChainWidget *self)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "ChainWidget detected unit [%s] reordered\n",
             cam_unit_get_id(unit));
     int newindex = cam_unit_chain_get_unit_index (chain, unit);
     GList *biter;
-    for (biter=self->box->children; biter; biter=biter->next) {
+    for (biter=priv->box->children; biter; biter=biter->next) {
         GtkBoxChild *child = (GtkBoxChild*) biter->data;
         if (! IS_CAM_UNIT_CONTROL_WIDGET (child->widget)) continue;
 
-        if (CAM_UNIT_CONTROL_WIDGET(child->widget)->unit == unit) {
-            gtk_box_reorder_child (self->box, child->widget, newindex);
+        CamUnitControlWidget *ucw = CAM_UNIT_CONTROL_WIDGET(child->widget);
+        CamUnit *ucw_unit = cam_unit_control_widget_get_unit(ucw);
+        if (ucw_unit == unit) {
+            gtk_box_reorder_child (priv->box, child->widget, newindex);
             break;
         }
     }
@@ -383,19 +416,22 @@ static void
 on_unit_control_close_button_clicked(CamUnitControlWidget *ucw, 
         CamUnitChainWidget *self)
 {
-    cam_unit_chain_remove_unit (self->chain, ucw->unit);
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
+    CamUnit *unit = cam_unit_control_widget_get_unit(ucw);
+    cam_unit_chain_remove_unit (priv->chain, unit);
 }
 
 static void
 make_widget_for_unit (CamUnitChainWidget *self, CamUnit *unit)
 {
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
     // create a widget to control the unit
     GtkWidget *ucw = GTK_WIDGET(cam_unit_control_widget_new(unit));
 
-    int position = cam_unit_chain_get_unit_index (self->chain, unit);
-    gtk_box_pack_start (self->box, ucw, self->child_expand,
-            self->child_fill, self->child_padding);
-    gtk_box_reorder_child (self->box, ucw, position);
+    int position = cam_unit_chain_get_unit_index (priv->chain, unit);
+    gtk_box_pack_start (priv->box, ucw, priv->child_expand,
+            priv->child_fill, priv->child_padding);
+    gtk_box_reorder_child (priv->box, ucw, position);
     gtk_widget_show(ucw);
 
     g_signal_connect (ucw, "drag-begin", 
@@ -410,7 +446,8 @@ CamUnitControlWidget *
 cam_unit_chain_widget_find_unit_by_id (const CamUnitChainWidget * self,
         const char * unit_id)
 {
-    GList *children = gtk_container_get_children(GTK_CONTAINER(self->box));
+    CamUnitChainWidgetPriv *priv = CAM_UNIT_CHAIN_WIDGET_GET_PRIVATE(self);
+    GList *children = gtk_container_get_children(GTK_CONTAINER(priv->box));
     GList * iter;
 
     for (iter = children; iter; iter = iter->next) {
@@ -418,7 +455,8 @@ cam_unit_chain_widget_find_unit_by_id (const CamUnitChainWidget * self,
             continue;
 
         CamUnitControlWidget * widget = iter->data;
-        const char *wuid = cam_unit_get_id(widget->unit);
+        CamUnit *unit = cam_unit_control_widget_get_unit(widget);
+        const char *wuid = cam_unit_get_id(unit);
         if (!strcmp (wuid, unit_id))
             return widget;
     }

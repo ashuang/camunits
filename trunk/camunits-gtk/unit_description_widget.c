@@ -9,6 +9,12 @@
 
 #define err(args...) fprintf(stderr, args)
 
+typedef struct _CamUnitDescriptionWidgetPriv CamUnitDescriptionWidgetPriv;
+struct _CamUnitDescriptionWidgetPriv {
+    /*< private >*/
+    CamUnitManagerWidget *manager;
+};
+#define CAM_UNIT_DESCRIPTION_WIDGET_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_DESCRIPTION_WIDGET, CamUnitDescriptionWidgetPriv))
 
 static void cam_unit_description_widget_finalize( GObject *obj );
 
@@ -38,6 +44,8 @@ cam_unit_description_widget_class_init( CamUnitDescriptionWidgetClass *klass )
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
     // add a class-specific destructor
     gobject_class->finalize = cam_unit_description_widget_finalize;
+    g_type_class_add_private (gobject_class, 
+            sizeof (CamUnitDescriptionWidgetPriv));
 }
 
 // destructor (more or less)
@@ -62,8 +70,10 @@ static void
 on_cursor_changed (GtkTreeView * tree_view, void * user)
 {
     CamUnitDescriptionWidget * self = user;
+    CamUnitDescriptionWidgetPriv *priv = 
+        CAM_UNIT_DESCRIPTION_WIDGET_GET_PRIVATE(self);
     CamUnitDescription * desc =
-        cam_unit_manager_widget_get_selected_description (self->manager);
+        cam_unit_manager_widget_get_selected_description (priv->manager);
 
     GtkTextBuffer * buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self));
     gtk_text_buffer_set_text (buffer, "", -1);
@@ -90,8 +100,10 @@ int
 cam_unit_description_widget_set_manager( CamUnitDescriptionWidget* self, 
         CamUnitManagerWidget *manager )
 {
-    self->manager = manager;
-    g_signal_connect(G_OBJECT(self->manager), "cursor-changed", 
+    CamUnitDescriptionWidgetPriv *priv = 
+        CAM_UNIT_DESCRIPTION_WIDGET_GET_PRIVATE(self);
+    priv->manager = manager;
+    g_signal_connect(G_OBJECT(priv->manager), "cursor-changed", 
             G_CALLBACK(on_cursor_changed), self);
     return 0;
 }
