@@ -26,12 +26,6 @@ typedef struct _CamUnitManagerWidgetClass CamUnitManagerWidgetClass;
 struct _CamUnitManagerWidget
 {
     GtkTreeView parent;
-
-    CamUnitManager *manager;
-
-    /*< private >*/
-    GtkTreeStore * tree_store;
-    int press_x, press_y;
 };
 
 struct _CamUnitManagerWidgetClass

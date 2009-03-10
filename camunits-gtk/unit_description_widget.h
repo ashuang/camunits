@@ -27,9 +27,6 @@ typedef struct _CamUnitDescriptionWidgetClass CamUnitDescriptionWidgetClass;
 struct _CamUnitDescriptionWidget
 {
     GtkTextView parent;
-
-    /*< private >*/
-    CamUnitManagerWidget *manager;
 };
 
 struct _CamUnitDescriptionWidgetClass

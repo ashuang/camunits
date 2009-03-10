@@ -10,6 +10,12 @@
 #include <gtk/gtk.h>
 #include "cam_tree_store.h"
 
+typedef struct _CamTreeStorePriv CamTreeStorePriv;
+struct _CamTreeStorePriv {
+    gint draggable_col;
+};
+#define CAM_TREE_STORE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_TREE_STORE, CamTreeStorePriv))
+
 /* DND interfaces */
 static gboolean real_cam_tree_store_row_draggable   (GtkTreeDragSource *drag_source,
 						   GtkTreePath       *path);
@@ -41,6 +47,8 @@ cam_tree_store_class_init (CamTreeStoreClass *class)
     object_class = (GObjectClass *) class;
 
     object_class->finalize = cam_tree_store_finalize;
+
+    g_type_class_add_private (object_class, sizeof (CamTreeStorePriv));
 }
 
 static void
@@ -54,7 +62,8 @@ cam_tree_store_drag_source_init (GtkTreeDragSourceIface *iface)
 static void
 cam_tree_store_init (CamTreeStore *tree_store)
 {
-    tree_store->draggable_col = -1;
+    CamTreeStorePriv * priv = CAM_TREE_STORE_GET_PRIVATE(tree_store);
+    priv->draggable_col = -1;
 }
 
 /**
@@ -99,7 +108,8 @@ cam_tree_store_set_draggable_col (CamTreeStore * store, gint col)
 {
     g_return_if_fail (col >= 0 &&
             col < gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)));
-    store->draggable_col = col;
+    CamTreeStorePriv * priv = CAM_TREE_STORE_GET_PRIVATE(store);
+    priv->draggable_col = col;
 }
 
 /* DND */
@@ -109,7 +119,8 @@ static gboolean real_cam_tree_store_row_draggable (GtkTreeDragSource *drag_sourc
                                                    GtkTreePath       *path)
 {
     CamTreeStore * model = CAM_TREE_STORE (drag_source);
-    if (model->draggable_col < 0)
+    CamTreeStorePriv * priv = CAM_TREE_STORE_GET_PRIVATE(model);
+    if (priv->draggable_col < 0)
         return TRUE;
 
     GtkTreeIter iter;
@@ -117,7 +128,7 @@ static gboolean real_cam_tree_store_row_draggable (GtkTreeDragSource *drag_sourc
 
     gboolean val;
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-            model->draggable_col, &val, -1);
+            priv->draggable_col, &val, -1);
     return val;
 }
                

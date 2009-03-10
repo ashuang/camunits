@@ -30,8 +30,6 @@ typedef struct _CamTreeStoreClass CamTreeStoreClass;
 struct _CamTreeStore
 {
     GtkTreeStore parent;
-
-    gint draggable_col;
 };
 
 struct _CamTreeStoreClass

@@ -25,15 +25,6 @@ typedef struct _CamUnitChainGLWidgetClass CamUnitChainGLWidgetClass;
 struct _CamUnitChainGLWidget
 {
     GtkVBox parent;
-
-    /*< private >*/
-    CamUnitChain *chain;
-    GtkWidget *vbox;
-    GtkWidget *aspect;
-    GtkWidget *gl_area;
-    GtkWidget *msg_area;
-
-    double aspect_ratio;
 };
 
 struct _CamUnitChainGLWidgetClass

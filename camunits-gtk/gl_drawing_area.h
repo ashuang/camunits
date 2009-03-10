@@ -18,9 +18,7 @@ typedef struct _CamGLDrawingArea        CamGLDrawingArea;
 typedef struct _CamGLDrawingAreaClass   CamGLDrawingAreaClass;
 
 struct _CamGLDrawingArea {
-    GtkDrawingArea  area;
-
-    gboolean vblank_sync;
+    GtkDrawingArea  parent;
 };
 
 struct _CamGLDrawingAreaClass {

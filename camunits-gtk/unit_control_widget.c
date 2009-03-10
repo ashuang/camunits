@@ -22,6 +22,30 @@ static void on_control_value_changed(CamUnit *unit, CamUnitControl *ctl,
 static void on_formats_combo_changed(GtkComboBox *combo, 
         CamUnitControlWidget *self);
 
+typedef struct _CamUnitControlWidgetPriv CamUnitControlWidgetPriv;
+struct _CamUnitControlWidgetPriv {
+    CamUnit *unit;
+
+    /*< private >*/
+    GtkAlignment *alignment;
+    GtkExpander *expander;
+    GtkButton *close_button;
+    GtkTable *table;
+    GtkWidget * arrow_bin;
+    GtkWidget * exp_label;
+    GtkTooltips * tooltips;
+
+    GtkComboBox *formats_combo;
+    int formats_combo_nentries;
+
+    int trows;
+    GHashTable *ctl_info;
+
+    int status_changed_handler_id;
+    int formats_changed_handler_id;
+};
+#define CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CAM_TYPE_UNIT_CONTROL_WIDGET, CamUnitControlWidgetPriv))
+
 enum {
     CLOSE_BUTTON_CLICKED_SIGNAL,
     LAST_SIGNAL
@@ -53,6 +77,7 @@ static void
 cam_unit_control_widget_init(CamUnitControlWidget *self)
 {
     dbg(DBG_GUI, "unit control widget constructor\n");
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     
     gtk_drag_source_set (GTK_WIDGET(self), GDK_BUTTON1_MASK,
             &cam_unit_control_widget_target_entry, 1, GDK_ACTION_PRIVATE);
@@ -79,77 +104,77 @@ cam_unit_control_widget_init(CamUnitControlWidget *self)
     gtk_widget_show (hbox);
 
     // alignment widget to contain the expander
-    self->alignment = GTK_ALIGNMENT(gtk_alignment_new(0, 0.5, 1, 0));
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET(self->alignment), 
+    priv->alignment = GTK_ALIGNMENT(gtk_alignment_new(0, 0.5, 1, 0));
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET(priv->alignment), 
             FALSE, FALSE, 0);
-    gtk_widget_show(GTK_WIDGET(self->alignment));
+    gtk_widget_show(GTK_WIDGET(priv->alignment));
 
     // expander
-    self->expander = GTK_EXPANDER(gtk_expander_new(NULL));
-    g_signal_connect(G_OBJECT(self->expander), "notify::expanded",
+    priv->expander = GTK_EXPANDER(gtk_expander_new(NULL));
+    g_signal_connect(G_OBJECT(priv->expander), "notify::expanded",
             G_CALLBACK(on_expander_notify), self);
-    gtk_container_add(GTK_CONTAINER(self->alignment), 
-            GTK_WIDGET(self->expander));
-    //gtk_expander_set_expanded(self->expander, FALSE);
-    gtk_widget_show(GTK_WIDGET(self->expander));
+    gtk_container_add(GTK_CONTAINER(priv->alignment), 
+            GTK_WIDGET(priv->expander));
+    //gtk_expander_set_expanded(priv->expander, FALSE);
+    gtk_widget_show(GTK_WIDGET(priv->expander));
 
-    self->exp_label = gtk_label_new ("blah");
-    gtk_misc_set_alignment (GTK_MISC (self->exp_label), 0, 0.5);
-    gtk_label_set_ellipsize (GTK_LABEL (self->exp_label), PANGO_ELLIPSIZE_END);
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (self->exp_label),
+    priv->exp_label = gtk_label_new ("blah");
+    gtk_misc_set_alignment (GTK_MISC (priv->exp_label), 0, 0.5);
+    gtk_label_set_ellipsize (GTK_LABEL (priv->exp_label), PANGO_ELLIPSIZE_END);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (priv->exp_label),
             TRUE, TRUE, 0);
-    gtk_widget_show (GTK_WIDGET (self->exp_label));
+    gtk_widget_show (GTK_WIDGET (priv->exp_label));
     
     // close button
-    self->close_button = GTK_BUTTON(gtk_button_new ());
+    priv->close_button = GTK_BUTTON(gtk_button_new ());
     GtkWidget * image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
             GTK_ICON_SIZE_BUTTON);
-    gtk_button_set_image (self->close_button, image);
-    gtk_button_set_relief (self->close_button, GTK_RELIEF_NONE);
-    gtk_button_set_focus_on_click (self->close_button, FALSE);
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET(self->close_button), 
+    gtk_button_set_image (priv->close_button, image);
+    gtk_button_set_relief (priv->close_button, GTK_RELIEF_NONE);
+    gtk_button_set_focus_on_click (priv->close_button, FALSE);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET(priv->close_button), 
             FALSE, FALSE, 0);
-    g_signal_connect (G_OBJECT (self->close_button), "clicked",
+    g_signal_connect (G_OBJECT (priv->close_button), "clicked",
             G_CALLBACK (on_close_button_clicked), self);
-    gtk_widget_show (GTK_WIDGET(self->close_button));
+    gtk_widget_show (GTK_WIDGET(priv->close_button));
 
     // table for all the widgets
-    self->table = GTK_TABLE(gtk_table_new(1, 3, FALSE));
+    priv->table = GTK_TABLE(gtk_table_new(1, 3, FALSE));
     gtk_container_set_border_width(GTK_CONTAINER(vbox), 2);
-    gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(self->table), 
+    gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(priv->table), 
             FALSE, FALSE, 0);
-    //gtk_widget_show(GTK_WIDGET(self->table));
-    self->trows = 0;
+    //gtk_widget_show(GTK_WIDGET(priv->table));
+    priv->trows = 0;
 
 //    // arrow bin for the output format combo box
-//    self->arrow_bin = gtk_arrow_bin_new ();
-//    gtk_box_pack_start (GTK_BOX (vbox_outer), self->arrow_bin,
+//    priv->arrow_bin = gtk_arrow_bin_new ();
+//    gtk_box_pack_start (GTK_BOX (vbox_outer), priv->arrow_bin,
 //            FALSE, FALSE, 0);
-//    gtk_widget_show (self->arrow_bin);
+//    gtk_widget_show (priv->arrow_bin);
     // output formats selector
-    self->formats_combo = GTK_COMBO_BOX(gtk_combo_box_new_text());
+    priv->formats_combo = GTK_COMBO_BOX(gtk_combo_box_new_text());
     GtkWidget *fmtlabel = gtk_label_new("Format:");
     gtk_misc_set_alignment (GTK_MISC (fmtlabel), 1, 0.5);
 
     GtkWidget * fhbox = gtk_hbox_new (FALSE, 0);
     gtk_box_pack_start (GTK_BOX (fhbox), fmtlabel, FALSE, FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (fhbox), GTK_WIDGET (self->formats_combo),
+    gtk_box_pack_start (GTK_BOX (fhbox), GTK_WIDGET (priv->formats_combo),
             TRUE, TRUE, 0);
     gtk_box_pack_start (GTK_BOX (vbox), fhbox, FALSE, FALSE, 0);
     gtk_widget_show (fmtlabel);
-    gtk_widget_show (GTK_WIDGET (self->formats_combo));
+    gtk_widget_show (GTK_WIDGET (priv->formats_combo));
     gtk_widget_show (fhbox);
 
-    self->ctl_info = g_hash_table_new_full(NULL, NULL, NULL, free);
+    priv->ctl_info = g_hash_table_new_full(NULL, NULL, NULL, free);
 
-    self->status_changed_handler_id = 0;
-    self->formats_changed_handler_id = 0;
+    priv->status_changed_handler_id = 0;
+    priv->formats_changed_handler_id = 0;
 
-    self->unit = NULL;
+    priv->unit = NULL;
 
-    self->tooltips = gtk_tooltips_new ();
-    gtk_tooltips_enable (self->tooltips);
-    g_object_ref (self->tooltips);
+    priv->tooltips = gtk_tooltips_new ();
+    gtk_tooltips_enable (priv->tooltips);
+    g_object_ref (priv->tooltips);
 }
 
 static void
@@ -169,6 +194,8 @@ cam_unit_control_widget_class_init(CamUnitControlWidgetClass *klass)
             NULL,
             g_cclosure_marshal_VOID__VOID,
             G_TYPE_NONE, 0);
+
+    g_type_class_add_private (gobject_class, sizeof (CamUnitControlWidgetPriv));
 }
 
 // destructor (more or less)
@@ -176,14 +203,15 @@ static void
 cam_unit_control_widget_finalize(GObject *obj)
 {
     CamUnitControlWidget *self = CAM_UNIT_CONTROL_WIDGET(obj);
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     dbg(DBG_GUI, "unit control widget finalize (%s)\n",
-            self->unit ?  cam_unit_get_id(self->unit) : NULL);
+            priv->unit ?  cam_unit_get_id(priv->unit) : NULL);
 
-    g_hash_table_destroy(self->ctl_info);
-    self->ctl_info = NULL;
+    g_hash_table_destroy(priv->ctl_info);
+    priv->ctl_info = NULL;
 
     cam_unit_control_widget_detach(self);
-    g_object_unref (self->tooltips);
+    g_object_unref (priv->tooltips);
 
     G_OBJECT_CLASS (cam_unit_control_widget_parent_class)->finalize(obj);
 }
@@ -230,7 +258,8 @@ set_slider_label(CamUnitControlWidget *self, ControlWidgetInfo *ci)
 static void
 on_slider_changed(GtkRange *range, CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) g_object_get_data(G_OBJECT(range), 
@@ -314,7 +343,8 @@ set_tooltip (CamUnitControlWidget * self, GtkWidget * widget,
     snprintf (str, sizeof (str), "ID: %s\nType: %s", 
             cam_unit_control_get_id(ctl),
             cam_unit_control_get_control_type_str (ctl));
-    gtk_tooltips_set_tip (self->tooltips, widget, str, str);
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    gtk_tooltips_set_tip (priv->tooltips, widget, str, str);
 }
 
 static void
@@ -322,13 +352,14 @@ add_slider (CamUnitControlWidget * self,
         float min, float max, float step, float initial_value,
         int use_int, CamUnitControl * ctl)
 {
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     // label
     char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
-    gtk_table_attach (self->table, label, 0, 1,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, label, 0, 1,
+            priv->trows, priv->trows+1,
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (label);
     GtkWidget *range = gtk_hscale_new_with_range(min, max, step);
@@ -343,16 +374,16 @@ add_slider (CamUnitControlWidget * self,
     if (use_int)
         GTK_RANGE (range)->round_digits = 0;
 
-    gtk_table_attach (self->table, range, 1, 2,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, range, 1, 2,
+            priv->trows, priv->trows+1,
             GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0, 0);
     gtk_widget_show (range);
     gtk_range_set_value (GTK_RANGE (range), initial_value);
 
     // numerical label
     GtkWidget *labelval = gtk_label_new (NULL);
-    gtk_table_attach (self->table, labelval, 2, 3,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, labelval, 2, 3,
+            priv->trows, priv->trows+1,
             GTK_FILL, 0, 0, 0);
     PangoFontDescription * desc = pango_font_description_new ();
     pango_font_description_set_family_static (desc, "monospace");
@@ -369,20 +400,21 @@ add_slider (CamUnitControlWidget * self,
     ci->maxchars = MAX (num_chars (min), num_chars (max));
     ci->ctl = ctl;
     ci->use_int = use_int;
-    g_hash_table_insert(self->ctl_info, ctl, ci);
+    g_hash_table_insert(priv->ctl_info, ctl, ci);
     control_set_sensitive (ci);
 
     set_slider_label (self, ci);
     g_signal_connect (G_OBJECT (range), "value-changed",
             G_CALLBACK (on_slider_changed), self);
 
-    self->trows++;
+    priv->trows++;
 }
 
 static void
 on_spin_button_changed(GtkSpinButton *spinb, CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) g_object_get_data(G_OBJECT(spinb), 
@@ -427,13 +459,14 @@ add_spinbutton (CamUnitControlWidget * self,
         float min, float max, float step, float initial_value,
         int use_int, CamUnitControl * ctl)
 {
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     // label
     char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
-    gtk_table_attach (self->table, label, 0, 1,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, label, 0, 1,
+            priv->trows, priv->trows+1,
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (label);
 
@@ -442,8 +475,8 @@ add_spinbutton (CamUnitControlWidget * self,
     GtkWidget *spinb = gtk_spin_button_new_with_range (min, max, step);
     set_tooltip (self, spinb, ctl);
 
-    gtk_table_attach (self->table, spinb, 1, 3,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, spinb, 1, 3,
+            priv->trows, priv->trows+1,
             GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0, 0);
     gtk_widget_show (spinb);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spinb), initial_value);
@@ -464,14 +497,14 @@ add_spinbutton (CamUnitControlWidget * self,
     ci->maxchars = MAX (num_chars (min), num_chars (max));
     ci->ctl = ctl;
     ci->use_int = use_int;
-    g_hash_table_insert(self->ctl_info, ctl, ci);
+    g_hash_table_insert(priv->ctl_info, ctl, ci);
     control_set_sensitive (ci);
 
     set_slider_label (self, ci);
     g_signal_connect (G_OBJECT (spinb), "value-changed",
             G_CALLBACK (on_spin_button_changed), self);
 
-    self->trows++;
+    priv->trows++;
 }
 
 static void
@@ -513,7 +546,8 @@ add_integer_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 static void
 on_boolean_ctl_clicked(GtkWidget *cb, CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) g_object_get_data(G_OBJECT(cb), 
@@ -526,7 +560,8 @@ on_boolean_ctl_clicked(GtkWidget *cb, CamUnitControlWidget *self)
 static void
 on_boolean_ctl_changed(GtkWidget *cb, CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) g_object_get_data(G_OBJECT(cb), 
@@ -553,10 +588,11 @@ static void
 add_boolean_ctl_helper(CamUnitControlWidget *self, CamUnitControl *ctl,
         GtkWidget *cb) 
 {
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     gtk_widget_show (cb);
 
-    gtk_table_attach (GTK_TABLE (self->table), cb, 1, 3,
-            self->trows, self->trows+1,
+    gtk_table_attach (GTK_TABLE (priv->table), cb, 1, 3,
+            priv->trows, priv->trows+1,
             GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0, 0);
 
     if (GTK_IS_TOGGLE_BUTTON (cb)) {
@@ -573,7 +609,7 @@ add_boolean_ctl_helper(CamUnitControlWidget *self, CamUnitControl *ctl,
     ci->labelval = NULL;
     ci->maxchars = 0;
     ci->ctl = ctl;
-    g_hash_table_insert(self->ctl_info, ctl, ci);
+    g_hash_table_insert(priv->ctl_info, ctl, ci);
 
     control_set_sensitive (ci);
 
@@ -586,7 +622,7 @@ add_boolean_ctl_helper(CamUnitControlWidget *self, CamUnitControl *ctl,
                 G_CALLBACK (on_boolean_ctl_clicked), self);
     }
 
-    self->trows++;
+    priv->trows++;
 }
 
 static void
@@ -635,7 +671,8 @@ _enum_val_to_iter(GtkComboBox *combo, int value, GtkTreeIter *result)
 static void
 on_menu_changed (GtkComboBox * combo, CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) g_object_get_data(G_OBJECT(combo), 
@@ -670,13 +707,14 @@ on_menu_changed (GtkComboBox * combo, CamUnitControlWidget *self)
 static void
 add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     // label
     char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
-    gtk_table_attach (self->table, label, 0, 1,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, label, 0, 1,
+            priv->trows, priv->trows+1,
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (label);
 
@@ -726,8 +764,8 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
     }
 #endif
 
-    gtk_table_attach (self->table, eb, 1, 3,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, eb, 1, 3,
+            priv->trows, priv->trows+1,
             GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0, 0);
     gtk_widget_show (eb);
     gtk_widget_show (mb);
@@ -744,20 +782,21 @@ add_menu_control(CamUnitControlWidget *self, CamUnitControl *ctl)
     ci->labelval = NULL;
     ci->maxchars = 0;
     ci->ctl = ctl;
-    g_hash_table_insert(self->ctl_info, ctl, ci);
+    g_hash_table_insert(priv->ctl_info, ctl, ci);
 
     control_set_sensitive (ci);
 
     g_signal_connect (G_OBJECT (mb), "changed", G_CALLBACK (on_menu_changed), 
             self);
 
-    self->trows++;
+    priv->trows++;
 }
 
 static void
 on_file_entry_choser_bt_clicked(GtkButton *button, CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
     ControlWidgetInfo *ci = 
         (ControlWidgetInfo*) g_object_get_data(G_OBJECT(button), 
@@ -795,20 +834,21 @@ on_file_entry_choser_bt_clicked(GtkButton *button, CamUnitControlWidget *self)
 static void
 add_string_control_filename(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     // label
     char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
-    gtk_table_attach (self->table, label, 0, 1,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, label, 0, 1,
+            priv->trows, priv->trows+1,
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (label);
 
     // hbox to contain the text entry and file chooser button
     GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
-    gtk_table_attach(self->table, hbox, 1, 3, 
-            self->trows, self->trows+1,
+    gtk_table_attach(priv->table, hbox, 1, 3, 
+            priv->trows, priv->trows+1,
             GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0, 0);
     gtk_widget_show(hbox);
 
@@ -838,8 +878,8 @@ add_string_control_filename(CamUnitControlWidget *self, CamUnitControl *ctl)
     ci->labelval = NULL;
     ci->maxchars = -1;
     ci->ctl = ctl;
-    g_hash_table_insert(self->ctl_info, ctl, ci);
-    self->trows++;
+    g_hash_table_insert(priv->ctl_info, ctl, ci);
+    priv->trows++;
 }
 
 static void
@@ -890,13 +930,14 @@ on_string_control_key (GtkEntry * entry, GdkEventKey * event,
 static void
 add_string_control_entry(CamUnitControlWidget *self, CamUnitControl *ctl)
 {
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
     // label
     char *tmp = g_strjoin("", cam_unit_control_get_name(ctl), ":", NULL);
     GtkWidget *label = gtk_label_new(tmp);
     free(tmp);
     gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
-    gtk_table_attach (self->table, label, 0, 1,
-            self->trows, self->trows+1,
+    gtk_table_attach (priv->table, label, 0, 1,
+            priv->trows, priv->trows+1,
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (label);
 
@@ -911,8 +952,8 @@ add_string_control_entry(CamUnitControlWidget *self, CamUnitControl *ctl)
     GtkWidget *button = gtk_button_new_with_label ("Set");
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
-    gtk_table_attach(self->table, hbox, 1, 3, 
-            self->trows, self->trows+1,
+    gtk_table_attach(priv->table, hbox, 1, 3, 
+            priv->trows, priv->trows+1,
             GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0, 0);
 
     gtk_widget_show_all(hbox);
@@ -934,8 +975,8 @@ add_string_control_entry(CamUnitControlWidget *self, CamUnitControl *ctl)
     ci->button = button;
     ci->maxchars = -1;
     ci->ctl = ctl;
-    g_hash_table_insert(self->ctl_info, ctl, ci);
-    self->trows++;
+    g_hash_table_insert(priv->ctl_info, ctl, ci);
+    priv->trows++;
 
     control_set_sensitive (ci);
 }
@@ -956,9 +997,10 @@ static void
 on_control_value_changed(CamUnit *unit, CamUnitControl *ctl, 
         CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 
-    ControlWidgetInfo *ci = g_hash_table_lookup(self->ctl_info, ctl);
+    ControlWidgetInfo *ci = g_hash_table_lookup(priv->ctl_info, ctl);
     if(ci) {
         GValue val = { 0, };
         cam_unit_control_get_val(ctl, &val);
@@ -1022,12 +1064,13 @@ static void
 on_control_parameters_changed(CamUnit *unit, CamUnitControl *ctl,
         CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
 //    int enabled = cam_unit_control_get_enabled(ctl);
 //    printf("control enabled changed [%s] to %d\n", 
 //                cam_unit_control_get_name(ctl), enabled);
 
-    ControlWidgetInfo *ci = g_hash_table_lookup(self->ctl_info, ctl);
+    ControlWidgetInfo *ci = g_hash_table_lookup(priv->ctl_info, ctl);
     if(ci) {
         control_set_sensitive (ci);
 
@@ -1110,50 +1153,60 @@ on_control_parameters_changed(CamUnit *unit, CamUnitControl *ctl,
 static void
 set_frame_label(CamUnitControlWidget *self)
 {
-    if (self->unit) {
-        const char *uname = cam_unit_get_name(self->unit);
-        const char *sstr = cam_unit_is_streaming (self->unit) ? 
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if (priv->unit) {
+        const char *uname = cam_unit_get_name(priv->unit);
+        const char *sstr = cam_unit_is_streaming (priv->unit) ? 
             "Streaming" : "Off";
         char *tmp = g_strjoin("", uname, " [", sstr, "]", NULL);
-        gtk_label_set (GTK_LABEL (self->exp_label), tmp);
+        gtk_label_set (GTK_LABEL (priv->exp_label), tmp);
         free(tmp);
     } else {
-        gtk_label_set (GTK_LABEL (self->exp_label), "INVALID UNIT");
+        gtk_label_set (GTK_LABEL (priv->exp_label), "INVALID UNIT");
     }
 }
 
 static void
 update_formats_combo(CamUnitControlWidget *self)
 {
-    for(; self->formats_combo_nentries; self->formats_combo_nentries--) {
-        gtk_combo_box_remove_text(self->formats_combo, 0);
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    for(; priv->formats_combo_nentries; priv->formats_combo_nentries--) {
+        gtk_combo_box_remove_text(priv->formats_combo, 0);
     }
 
-    if (! self->unit) return;
+    if (! priv->unit) return;
 
-    const CamUnitFormat *out_fmt = cam_unit_get_output_format(self->unit);
-    GList *output_formats = cam_unit_get_output_formats(self->unit);
+    const CamUnitFormat *out_fmt = cam_unit_get_output_format(priv->unit);
+    GList *output_formats = cam_unit_get_output_formats(priv->unit);
     GList *fiter;
     int selected = -1;
-    self->formats_combo_nentries = 0;
+    priv->formats_combo_nentries = 0;
     for(fiter=output_formats; fiter; fiter=fiter->next) {
         CamUnitFormat *fmt = (CamUnitFormat*) fiter->data;
-        gtk_combo_box_append_text(self->formats_combo, 
+        gtk_combo_box_append_text(priv->formats_combo, 
                 fmt->name);
 
         if(fmt == out_fmt) {
-            selected = self->formats_combo_nentries;
+            selected = priv->formats_combo_nentries;
         }
-        self->formats_combo_nentries++;
+        priv->formats_combo_nentries++;
     }
-    gtk_combo_box_set_active(GTK_COMBO_BOX(self->formats_combo), selected);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->formats_combo), selected);
+}
+
+CamUnit * 
+cam_unit_control_widget_get_unit(CamUnitControlWidget* self)
+{
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    return priv->unit;
 }
 
 int
 cam_unit_control_widget_set_unit(
         CamUnitControlWidget *self, CamUnit *unit)
 {
-    if(self->unit) return -1;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(priv->unit) return -1;
     dbg(DBG_GUI, "UDCW: setting to [%s]\n", 
             cam_unit_get_id(unit));
 
@@ -1162,35 +1215,35 @@ cam_unit_control_widget_set_unit(
         g_object_ref_sink (unit);
     }
 
-    self->unit = unit;
+    priv->unit = unit;
     set_frame_label(self);
 
     // prepare the output formats selection combo box
-    if (self->unit) {
-        self->formats_changed_handler_id = 
+    if (priv->unit) {
+        priv->formats_changed_handler_id = 
             g_signal_connect(G_OBJECT(unit), "output-formats-changed",
                     G_CALLBACK(on_output_formats_changed), self);
-        self->status_changed_handler_id = 
+        priv->status_changed_handler_id = 
             g_signal_connect(G_OBJECT(unit), "status-changed",
                     G_CALLBACK(on_status_changed), self);
-        g_signal_connect(G_OBJECT(self->formats_combo), "changed",
+        g_signal_connect(G_OBJECT(priv->formats_combo), "changed",
                 G_CALLBACK(on_formats_combo_changed), self);
     }
 
     update_formats_combo(self);
 
-//    gtk_container_add (GTK_CONTAINER (self->arrow_bin), hbox);
+//    gtk_container_add (GTK_CONTAINER (priv->arrow_bin), hbox);
 
 #if 0
-    gtk_table_attach (self->table, fmtlabel, 0, 1, 0, 1,
+    gtk_table_attach (priv->table, fmtlabel, 0, 1, 0, 1,
             GTK_FILL, 0, 0, 0);
     gtk_widget_show (fmtlabel);
-    gtk_table_attach_defaults(self->table, GTK_WIDGET(self->formats_combo), 
+    gtk_table_attach_defaults(priv->table, GTK_WIDGET(priv->formats_combo), 
             1, 3, 0, 1);
 #endif
 
     // prepare the unit controls widgets
-    if (self->unit) {
+    if (priv->unit) {
         GList *controls = cam_unit_list_controls(unit);
         GList *citer;
         for(citer=controls; citer; citer=citer->next) {
@@ -1198,7 +1251,7 @@ cam_unit_control_widget_set_unit(
 
             dbg(DBG_GUI, "adding widget for [%s] of [%s]\n", 
                     cam_unit_control_get_name(ctl), 
-                    cam_unit_get_id(self->unit));
+                    cam_unit_get_id(priv->unit));
 
             CamUnitControlType ctl_type = cam_unit_control_get_control_type(ctl);
             switch(ctl_type) {
@@ -1231,29 +1284,30 @@ cam_unit_control_widget_set_unit(
                 G_CALLBACK(on_control_parameters_changed), self);
     }
 
-    //gtk_widget_show_all(GTK_WIDGET(self->table));
+    //gtk_widget_show_all(GTK_WIDGET(priv->table));
 
-    gtk_expander_set_expanded(self->expander, FALSE);
+    gtk_expander_set_expanded(priv->expander, FALSE);
     return 0;
 }
 
 void 
 cam_unit_control_widget_detach(CamUnitControlWidget *self)
 {
-    if(! self->unit) return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return;
     dbg(DBG_GUI, "detaching control widget from unit signals\n");
 
-    g_signal_handlers_disconnect_by_func (G_OBJECT (self->unit),
+    g_signal_handlers_disconnect_by_func (G_OBJECT (priv->unit),
             G_CALLBACK(on_control_value_changed), self);
-    g_signal_handlers_disconnect_by_func (G_OBJECT (self->unit),
+    g_signal_handlers_disconnect_by_func (G_OBJECT (priv->unit),
             G_CALLBACK(on_control_parameters_changed), self);
-    g_signal_handler_disconnect(self->unit, 
-            self->status_changed_handler_id);
-    g_signal_handler_disconnect(self->unit, 
-            self->formats_changed_handler_id);
+    g_signal_handler_disconnect(priv->unit, 
+            priv->status_changed_handler_id);
+    g_signal_handler_disconnect(priv->unit, 
+            priv->formats_changed_handler_id);
     dbgl(DBG_REF, "unref unit\n");
-    g_object_unref (self->unit);
-    self->unit = NULL;
+    g_object_unref (priv->unit);
+    priv->unit = NULL;
 }
 
 static void
@@ -1271,18 +1325,19 @@ on_formats_combo_changed(GtkComboBox *combo, CamUnitControlWidget *self)
     int selected = gtk_combo_box_get_active (combo);
     if (selected < 0)
         return;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
 
-    GList *output_formats = cam_unit_get_output_formats(self->unit);
+    GList *output_formats = cam_unit_get_output_formats(priv->unit);
     if (!output_formats)
         return;
 
     GList *format_entry = g_list_nth (output_formats, selected);
     g_assert (format_entry);
-    if (format_entry->data != cam_unit_get_output_format (self->unit)) {
+    if (format_entry->data != cam_unit_get_output_format (priv->unit)) {
         CamUnitFormat *cfmt = CAM_UNIT_FORMAT (format_entry->data);
-        if (cam_unit_is_streaming (self->unit)) {
-            cam_unit_stream_shutdown (self->unit);
-            cam_unit_stream_init (self->unit, cfmt);
+        if (cam_unit_is_streaming (priv->unit)) {
+            cam_unit_stream_shutdown (priv->unit);
+            cam_unit_stream_init (priv->unit, cfmt);
         }
     }
     g_list_free (output_formats);
@@ -1299,10 +1354,11 @@ static void
 on_expander_notify(GtkWidget *widget, GParamSpec *param, 
         CamUnitControlWidget *self)
 {
-    if(gtk_expander_get_expanded(self->expander)) {
-        gtk_widget_show(GTK_WIDGET(self->table));
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(gtk_expander_get_expanded(priv->expander)) {
+        gtk_widget_show(GTK_WIDGET(priv->table));
     } else {
-        gtk_widget_hide(GTK_WIDGET(self->table));
+        gtk_widget_hide(GTK_WIDGET(priv->table));
     }
 }
 
@@ -1317,5 +1373,6 @@ void
 cam_unit_control_widget_set_expanded (CamUnitControlWidget * self,
         gboolean expanded)
 {
-    gtk_expander_set_expanded (GTK_EXPANDER (self->expander), expanded);
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    gtk_expander_set_expanded (GTK_EXPANDER (priv->expander), expanded);
 }

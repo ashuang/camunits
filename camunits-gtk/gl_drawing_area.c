@@ -26,6 +26,8 @@ struct _CamGLDrawingAreaPrivate {
     XVisualInfo * visual;
     GLXContext context;
 
+    gboolean vblank_sync;
+
 #ifdef USE_VBLANK
     guint vblank_watch;
     int pipe[2];
@@ -113,7 +115,8 @@ cam_gl_drawing_area_new (gboolean vblank_sync)
 {
     GObject * object = g_object_new (CAM_TYPE_GL_DRAWING_AREA, NULL);
     CamGLDrawingArea * self = CAM_GL_DRAWING_AREA (object);
-    self->vblank_sync = vblank_sync;
+    CamGLDrawingAreaPrivate * priv = CAM_GL_DRAWING_AREA_GET_PRIVATE (self);
+    priv->vblank_sync = vblank_sync;
     return GTK_WIDGET (object);
 }
 
@@ -121,7 +124,8 @@ void
 cam_gl_drawing_area_set_vblank_sync (CamGLDrawingArea *self, 
         gboolean vblank_sync)
 {
-    self->vblank_sync = vblank_sync;
+    CamGLDrawingAreaPrivate * priv = CAM_GL_DRAWING_AREA_GET_PRIVATE (self);
+    priv->vblank_sync = vblank_sync;
 }
 
 static void
@@ -292,12 +296,12 @@ cam_gl_drawing_area_realize (GtkWidget * widget)
     }
 
     /* If the user doesn't want vblank sync, we are done */
-    if (!self->vblank_sync)
+    if (!priv->vblank_sync)
         return;
 
     /* Check for the presence of the video_sync extension */
     if (!is_glx_extension_present (priv->dpy, screen, "GLX_SGI_video_sync")) {
-        self->vblank_sync = 0;
+        priv->vblank_sync = 0;
         fprintf (stderr, "Video sync functions not found, disabling...\n");
         return;
     }
@@ -315,14 +319,14 @@ cam_gl_drawing_area_realize (GtkWidget * widget)
             (unsigned char *)"glXWaitVideoSyncSGI");
 
     if (!GetVideoSyncSGI || !WaitVideoSyncSGI) {
-        self->vblank_sync = 0;
+        priv->vblank_sync = 0;
         fprintf (stderr, "Video sync functions not found, disabling...\n");
         return;
     }
 
     unsigned int count = 0;
     if (GetVideoSyncSGI (&count) != 0) {
-        self->vblank_sync = 0;
+        priv->vblank_sync = 0;
         fprintf (stderr, "Video sync counter failed, disabling...\n");
         return;
     }
@@ -334,7 +338,7 @@ cam_gl_drawing_area_realize (GtkWidget * widget)
     fcntl (priv->pipe[0], F_SETFL, O_NONBLOCK);
 
     if (pthread_create (&priv->thread, NULL, swap_thread, priv) != 0) {
-        self->vblank_sync = 0;
+        priv->vblank_sync = 0;
         fprintf (stderr, "Video sync thread creation failed, disabling...\n");
         return;
     }

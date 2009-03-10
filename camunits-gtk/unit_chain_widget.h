@@ -26,19 +26,6 @@ typedef struct _CamUnitChainWidgetClass CamUnitChainWidgetClass;
 struct _CamUnitChainWidget
 {
     GtkEventBox parent;
-
-    CamUnitChain *chain;
-
-    /*< private >*/
-    GtkBox *box;
-    gboolean child_expand;
-    gboolean child_fill;
-    gboolean child_padding;
-    GtkTable *table;
-    int trows;
-
-    GtkWidget *drag_proxy;
-    int insert_position;
 };
 
 struct _CamUnitChainWidgetClass
