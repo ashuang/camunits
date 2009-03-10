@@ -21,6 +21,19 @@
 
 #define err(args...) fprintf(stderr, args)
 
+enum {
+    OPTION_GBRG = 0,
+    OPTION_GRBG,
+    OPTION_BGGR,
+    OPTION_RGGB
+};
+
+static CamPixelFormat _option_to_pfmt[] = {
+    CAM_PIXEL_FORMAT_BAYER_GBRG,
+    CAM_PIXEL_FORMAT_BAYER_GRBG,
+    CAM_PIXEL_FORMAT_BAYER_BGGR,
+    CAM_PIXEL_FORMAT_BAYER_RGGB
+};
 
 typedef struct _CamFastBayerFilter {
     CamUnit parent;
@@ -83,15 +96,15 @@ cam_fast_bayer_filter_init( CamFastBayerFilter *self )
     CamUnit *super = CAM_UNIT( self );
 
     CamUnitControlEnumValue tiling_entries[] = {
-        { CAM_PIXEL_FORMAT_BAYER_GBRG, "GBRG", 1 },
-        { CAM_PIXEL_FORMAT_BAYER_GRBG, "GRBG", 1 },
-        { CAM_PIXEL_FORMAT_BAYER_BGGR, "BGGR", 1 },
-        { CAM_PIXEL_FORMAT_BAYER_RGGB, "RGGB", 1 },
+        { OPTION_GBRG, "GBRG", 1 },
+        { OPTION_GRBG, "GRBG", 1 },
+        { OPTION_BGGR, "BGGR", 1 },
+        { OPTION_RGGB, "RGGB", 1 },
         { 0, NULL, 0 }
     };
 
     self->bayer_tile_ctl = cam_unit_add_control_enum (super, "tiling", 
-            "Tiling", CAM_PIXEL_FORMAT_BAYER_GBRG, 1, tiling_entries);
+            "Tiling", OPTION_GBRG, 1, tiling_entries);
 
     for (int i = 0; i < 4; i++) {
         self->planes[i] = NULL;
@@ -198,7 +211,8 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         in_data = self->aligned_buffer;
     }
 
-    int tiling = cam_unit_control_get_enum(self->bayer_tile_ctl);
+    int tiling_option = cam_unit_control_get_enum(self->bayer_tile_ctl);
+    CamPixelFormat tiling = _option_to_pfmt[tiling_option];
 
     if (outfmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         uint8_t * plane = self->planes[0] + 2*self->plane_stride + 16;
