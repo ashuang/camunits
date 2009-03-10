@@ -2,6 +2,9 @@
 #define __cam_tree_store_h__
 
 /*
+ * SECTION:cam_tree_store
+ * @short_description: TreeStore for CamUnitManagerWidget
+ *
  * CamTreeSource is a sub-class of GtkTreeSource that overrides the methods
  * for the GtkTreeDragSource interface so that we can control which rows
  * are draggable and which are not.  We also prevent rows from being deleted

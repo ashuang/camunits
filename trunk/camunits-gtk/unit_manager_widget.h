@@ -35,10 +35,8 @@ struct _CamUnitManagerWidgetClass
 
 GType cam_unit_manager_widget_get_type(void);
 
-CamUnitManagerWidget *cam_unit_manager_widget_new( CamUnitManager *manager );
+CamUnitManagerWidget *cam_unit_manager_widget_new(void);
 
-int cam_unit_manager_widget_set_manager( CamUnitManagerWidget* self, 
-        CamUnitManager *manager );
 CamUnitDescription * cam_unit_manager_widget_get_selected_description (
         CamUnitManagerWidget * self);
 

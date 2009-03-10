@@ -272,7 +272,7 @@ setup_gtk (state_t *self)
 
 
     // manager widget
-    self->manager_widget = cam_unit_manager_widget_new (self->manager);
+    self->manager_widget = cam_unit_manager_widget_new ();
     GtkWidget *sw1 = gtk_scrolled_window_new (NULL, NULL);
     gtk_container_add (GTK_CONTAINER (sw1), GTK_WIDGET (self->manager_widget));
     //gtk_paned_pack1 (GTK_PANED (hpane1), sw, FALSE, TRUE);

@@ -35,6 +35,7 @@ static void on_unit_description_removed(CamUnitManager *manager,
         CamUnitDescription *description, CamUnitManagerWidget *self);
 static void on_row_selected (GtkTreeView *tv, GtkTreePath *path,
         GtkTreeViewColumn *column, void *user_data);
+static int add_driver (CamUnitManagerWidget * self, CamUnitDriver * driver);
 
 static gboolean button_press (GtkWidget * widget, GdkEventButton * event);
 
@@ -116,7 +117,20 @@ cam_unit_manager_widget_init( CamUnitManagerWidget *self )
     gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (priv->tree_store),
             COL_TEXT, GTK_SORT_ASCENDING);
 
-    priv->manager = NULL;
+    priv->manager = cam_unit_manager_get_and_ref();
+
+    dbgl(DBG_REF, "ref manager\n");
+    g_signal_connect(G_OBJECT(priv->manager), "unit-description-added", 
+            G_CALLBACK(on_unit_description_added), self);
+    g_signal_connect(G_OBJECT(priv->manager), "unit-description-removed", 
+            G_CALLBACK(on_unit_description_removed), self);
+
+    GList *drivers = cam_unit_manager_get_drivers(priv->manager);
+    for(GList *diter=drivers; diter; diter=diter->next) {
+        add_driver (self, CAM_UNIT_DRIVER (diter->data));
+    }
+
+    g_list_free( drivers );
 }
 
 static void drag_begin (GtkWidget * widget, GdkDragContext * context);
@@ -172,12 +186,11 @@ cam_unit_manager_widget_finalize( GObject *obj )
 }
 
 CamUnitManagerWidget *
-cam_unit_manager_widget_new( CamUnitManager *manager )
+cam_unit_manager_widget_new()
 {
     CamUnitManagerWidget * self = 
         CAM_UNIT_MANAGER_WIDGET(g_object_new(CAM_TYPE_UNIT_MANAGER_WIDGET, 
                     NULL));
-    cam_unit_manager_widget_set_manager( self, manager );
     return self;
 }
 
@@ -328,31 +341,6 @@ add_driver (CamUnitManagerWidget * self, CamUnitDriver * driver)
         add_description (self, CAM_UNIT_DESCRIPTION (diter->data));
 
     g_list_free (descs);
-    return 0;
-}
-
-int
-cam_unit_manager_widget_set_manager(CamUnitManagerWidget *self, 
-        CamUnitManager *manager)
-{
-    CamUnitManagerWidgetPriv *priv = CAM_UNIT_MANAGER_WIDGET_GET_PRIVATE(self);
-    if( priv->manager ) return -1;
-    priv->manager = manager;
-
-    dbgl(DBG_REF, "ref manager\n");
-    g_object_ref(manager);
-    g_signal_connect(G_OBJECT(manager), "unit-description-added", 
-            G_CALLBACK(on_unit_description_added), self);
-    g_signal_connect(G_OBJECT(manager), "unit-description-removed", 
-            G_CALLBACK(on_unit_description_removed), self);
-
-    GList *drivers = cam_unit_manager_get_drivers( priv->manager );
-    GList *diter;
-    for( diter=drivers; diter; diter=diter->next )
-        add_driver (self, CAM_UNIT_DRIVER (diter->data));
-
-    g_list_free( drivers );
-
     return 0;
 }
 

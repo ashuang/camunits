@@ -23,7 +23,6 @@ CamGLDrawingAreaClass
 <TITLE>CamUnitManagerWidget</TITLE>
 CamUnitManagerWidget
 cam_unit_manager_widget_new
-cam_unit_manager_widget_set_manager
 cam_unit_manager_widget_get_selected_description
 cam_unit_manager_widget_target_entry
 CAM_UNIT_MANAGER_WIDGET_DND_ID
