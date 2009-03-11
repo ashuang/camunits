@@ -1,5 +1,252 @@
+2009-03-10  ashuang
+
+	* [r376] plugins/convert/filter_fast_bayer.c: restore old values
+	  for bayer tiling control
+	* [r375] camunits-gtk/cam_tree_store.h,
+	  camunits-gtk/unit_manager_widget.c,
+	  camunits-gtk/unit_manager_widget.h, camview/camview.c,
+	  docs/reference/libcamunits-gtk/camunits-gtk-sections.txt: change
+	  CamUnitManagerWidget API
+	  
+	  cam_unit_manager_widget_new no longer takes a parameter removed
+	  cam_unit_manager_widget_set_manager
+	* [r374] camunits-gtk/cam_tree_store.c,
+	  camunits-gtk/cam_tree_store.h, camunits-gtk/gl_drawing_area.c,
+	  camunits-gtk/gl_drawing_area.h,
+	  camunits-gtk/unit_chain_gl_widget.c,
+	  camunits-gtk/unit_chain_gl_widget.h,
+	  camunits-gtk/unit_chain_widget.c,
+	  camunits-gtk/unit_chain_widget.h,
+	  camunits-gtk/unit_control_widget.c,
+	  camunits-gtk/unit_control_widget.h,
+	  camunits-gtk/unit_description_widget.c,
+	  camunits-gtk/unit_description_widget.h,
+	  camunits-gtk/unit_manager_widget.c,
+	  camunits-gtk/unit_manager_widget.h: move all fields from
+	  camunits-gtk public structs to private structs.
+
+2009-03-08  ashuang
+
+	* [r373] camunits-gtk/unit_control_widget.c, camunits/unit.c,
+	  camunits/unit.h, camunits/unit_control.c,
+	  camunits/unit_control.h,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  plugins/convert/filter_fast_bayer.c,
+	  plugins/dc1394/input_dc1394.c, plugins/other/input_example.c,
+	  plugins/other/input_log.c, plugins/v4l/input_v4l.c,
+	  plugins/v4l2/input_v4l2.c: Modify CamUnitControl API
+	  
+	  hide all fields from public struct.
+	  
+	  enumerated controls no longer have integer values implicitly
+	  assigned by ordering. integer values associated with enumerated
+	  controls are now explicitly assigned, using arrays of
+	  CamUnitControlEnumValue structs.
+	  
+	  modified symbols: cam_unit_add_control_enum
+	  cam_unit_control_new_enum cam_unit_control_modify_enum
+	  
+	  new symbols: CamUnitControlEnumValue
+	  cam_unit_control_get_enum_values
+	* [r372] camunits/unit.c: bugfix
+	* [r370] examples/filter_plugin/filter_plugin.c: update example
+	* [r369] docs/tutorial/subclassing.sgml: update docs
+	* [r368] camunits/unit.c, camunits/unit.h,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  plugins/convert/convert_colorspace.c,
+	  plugins/convert/convert_jpeg_compress.c,
+	  plugins/convert/convert_jpeg_decompress.c,
+	  plugins/convert/convert_to_rgb8.c,
+	  plugins/convert/filter_fast_bayer.c,
+	  plugins/dc1394/input_dc1394.c, plugins/other/filter_gl.c,
+	  plugins/other/input_example.c, plugins/other/input_log.c,
+	  plugins/other/output_logger.c, plugins/v4l/input_v4l.c,
+	  plugins/v4l2/input_v4l2.c: rename cam_unit_add_output_format_full
+	  to cam_unit_add_output_format
+	* [r367] camunits/unit.c, camunits/unit.h, camunits/unit_chain.c,
+	  plugins/convert/convert_to_rgb8.c: add const char * name
+	  parameter to cam_unit_set_preferred_format
+
+2009-03-07  ashuang
+
+	* [r366] docs/tutorial/subclassing.sgml: update docs
+	* [r365] camunits/unit.c, camunits/unit.h, camunits/unit_driver.c,
+	  docs/reference/libcamunits/camunits-sections.txt: move all public
+	  fields from CamUnit to private CamUnitPrivate struct. remove
+	  cam_unit_set_id, cam_unit_set_name
+	* [r363] camunits-gtk/unit_chain_widget.c, camunits/unit.c,
+	  camunits/unit_driver.c, plugins/convert/convert_colorspace.c,
+	  plugins/convert/convert_jpeg_decompress.c,
+	  plugins/convert/convert_to_rgb8.c,
+	  plugins/convert/filter_fast_bayer.c,
+	  plugins/dc1394/input_dc1394.c, plugins/other/filter_gl.c,
+	  plugins/other/input_example.c, plugins/other/input_log.c,
+	  plugins/v4l/input_v4l.c, plugins/v4l2/input_v4l2.c: convert files
+	  to use CamUnit accessor methods instead of accessing struct
+	  fields directly
+	* [r362] camunits-gtk/unit_control_widget.c, camunits/unit.c,
+	  camunits/unit_chain.c, camunits/unit_control.c,
+	  camunits/unit_control.h: add accessor methods to CamUnitControl
+	  start refactoring to use those methods
+	* [r361] camunits/unit_driver.c: bugfix
+	* [r360] camunits-gtk/unit_description_widget.c: bugfix -- null
+	  pointer
+
+2009-03-06  ashuang
+
+	* [r359] camunits/framebuffer.h, camunits/unit.h,
+	  camunits/unit_driver.h, docs/tutorial/subclassing.sgml,
+	  examples/filter_plugin/filter_plugin.c: update documentation
+	* [r358] camlog/camlog.c, camunits-gtk/unit_description_widget.c,
+	  camunits-gtk/unit_manager_widget.c, camunits/unit_driver.c,
+	  camunits/unit_driver.h, camunits/unit_manager.c,
+	  camview/camview.c, configure.in,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  examples/basic/snapshot.c, plugins/dc1394/input_dc1394.c,
+	  plugins/other/input_log.c, plugins/v4l/input_v4l.c,
+	  plugins/v4l2/input_v4l2.c: hide CamUnitDescription fields from
+	  public struct
+	* [r357] camlog/camlog.c, camunits-gtk/unit_manager_widget.c,
+	  camunits/unit_chain.h, camunits/unit_driver.c,
+	  camunits/unit_driver.h, camunits/unit_manager.c,
+	  examples/Makefile.am, examples/basic/snapshot.c,
+	  examples/filter_example: hide CamUnitDriver fields from public
+	  struct fix some bugs introduced by last commit
+	* [r356] camview/camview.c: camview use
+	  cam_unit_manager_get_and_ref instead of chain->manager
+	* [r354] camlog/camlog.c: remove hack
+	* [r353] camunits/unit_chain.c, camunits/unit_chain.h,
+	  camunits/unit_manager.c, camunits/unit_manager.h: hide
+	  CamUnitManager and CamUnitChain struct definitions
+	* [r346] camunits/gl_texture.c, camunits/gl_texture.h,
+	  camunits/unit.c, camunits/unit.h, camunits/unit_format.c,
+	  camunits/unit_format.h, docs/tutorial/subclassing.sgml,
+	  examples/filter_example/filter_example.c,
+	  examples/filter_plugin/filter_plugin.c,
+	  plugins/convert/convert_colorspace.c,
+	  plugins/convert/convert_jpeg_compress.c,
+	  plugins/convert/convert_jpeg_decompress.c,
+	  plugins/convert/convert_to_rgb8.c,
+	  plugins/convert/filter_fast_bayer.c,
+	  plugins/dc1394/input_dc1394.c, plugins/other/filter_gl.c,
+	  plugins/other/input_example.c, plugins/other/input_log.c,
+	  plugins/other/output_logger.c, plugins/v4l/input_v4l.c,
+	  plugins/v4l2/input_v4l2.c: remove max_data_size field from
+	  CamUnitFormat
+
+2009-03-05  ashuang
+
+	* [r345] configure.in, plugins/Makefile.am, plugins/misc,
+	  plugins/other: move plugins/misc to plugins/other
+	* [r344] docs/plugins/Makefile.am,
+	  plugins/convert/convert_colorspace.c: more documentation
+	* [r343] docs/plugins/convert-fast-debayer.sgml,
+	  docs/plugins/convert-to-rgb8.sgml, docs/plugins/filter-gl.sgml,
+	  docs/plugins/input-dc1394.sgml, docs/plugins/input-example.sgml,
+	  docs/plugins/output-logger.sgml: more documentation for core
+	  plugins
+
+2009-03-04  ashuang
+
+	* [r341] docs/plugins/convert-colorspace.sgml,
+	  docs/plugins/convert-fast-debayer.sgml,
+	  docs/plugins/convert-jpeg-compress.sgml,
+	  docs/plugins/convert-jpeg-decompress.sgml: more plugin
+	  documentation
+
+2009-03-03  ashuang
+
+	* [r340] docs/plugins/build/Makefile.am,
+	  docs/plugins/camunits-plugins-docs.sgml,
+	  docs/plugins/convert-jpeg-decompress.sgml,
+	  docs/plugins/input-dc1394-widget.png,
+	  docs/plugins/input-dc1394.sgml, docs/plugins/input-example.sgml,
+	  docs/plugins/input-log.sgml, docs/plugins/input-v4l.sgml,
+	  docs/plugins/input-v4l2-widget.png, docs/plugins/input-v4l2.sgml:
+	  more plugin documentation
+	* [r338] camunits/pixels.h, configure.in, docs/Makefile.am,
+	  docs/plugins, docs/plugins/Makefile.am, docs/plugins/build,
+	  docs/plugins/build/Makefile.am,
+	  docs/plugins/camunits-plugins-docs.sgml,
+	  docs/plugins/convert-colorspace.sgml,
+	  docs/plugins/convert-fast-debayer.sgml,
+	  docs/plugins/convert-jpeg-compress.sgml,
+	  docs/plugins/convert-jpeg-decompress.sgml,
+	  docs/plugins/convert-to-rgb8.sgml, docs/plugins/filter-gl.sgml,
+	  docs/plugins/input-dc1394.sgml,
+	  docs/plugins/input-example-widget.png,
+	  docs/plugins/input-example.sgml,
+	  docs/plugins/input-log-widget.png, docs/plugins/input-log.sgml,
+	  docs/plugins/input-v4l.sgml, docs/plugins/input-v4l2.sgml,
+	  docs/plugins/output-logger-widget.png,
+	  docs/plugins/output-logger.sgml: start plugin documentation
+	* [r337] camunits/Makefile.am, camunits/convert_colorspace.c,
+	  camunits/convert_colorspace.h, camunits/convert_to_rgb8.c,
+	  camunits/convert_to_rgb8.h, camunits/filter_fast_bayer.c,
+	  camunits/filter_fast_bayer.h, camunits/filter_gl.c,
+	  camunits/filter_gl.h, camunits/input_example.c,
+	  camunits/input_example.h, camunits/input_log.c,
+	  camunits/input_log.h, camunits/output_logger.c,
+	  camunits/output_logger.h, camunits/unit_manager.c, configure.in,
+	  docs/reference/libcamunits/camunits-docs.sgml,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  docs/reference/libcamunits/camunits.types, plugins/Makefile.am,
+	  plugins/convert, plugins/convert/Makefile.am,
+	  plugins/convert/convert_colorspace.c,
+	  plugins/convert/convert_jpeg_compress.c,
+	  plugins/convert/convert_jpeg_decompress.c,
+	  plugins/convert/convert_to_rgb8.c,
+	  plugins/convert/filter_fast_bayer.c, plugins/jpeg, plugins/misc,
+	  plugins/misc/Makefile.am, plugins/misc/filter_gl.c,
+	  plugins/misc/input_example.c, plugins/misc/input_log.c,
+	  plugins/misc/output_logger.c: convert all remaining core units to
+	  plugins first pass
+
+2009-03-02  ashuang
+
+	* [r336] camunits/Makefile.am, camunits/convert_jpeg_compress.c,
+	  camunits/convert_jpeg_compress.h,
+	  camunits/convert_jpeg_decompress.c,
+	  camunits/convert_jpeg_decompress.h, camunits/convert_to_rgb8.c,
+	  camunits/input_v4l2.c, camunits/input_v4l2.h,
+	  camunits/unit_manager.c, configure.in, plugins/Makefile.am,
+	  plugins/jpeg, plugins/jpeg/Makefile.am,
+	  plugins/jpeg/convert_jpeg_compress.c,
+	  plugins/jpeg/convert_jpeg_decompress.c, plugins/v4l2,
+	  plugins/v4l2/Makefile.am, plugins/v4l2/input_v4l2.c: move V4L2
+	  input unit to plugin move JPEG compression, decompression units
+	  to plugins
+
+2009-03-01  ashuang
+
+	* [r334] camunits/Makefile.am, camunits/convert_to_rgb8.c,
+	  camunits/convert_to_rgb8.h, camunits/unit_manager.h:
+	  convert_to_rgb now uses IPP and Framewave plugins if they are
+	  available added dbg.h to dist include
+	* [r333] camlog/camlog.c, camlog/signal_pipe.c,
+	  camunits-gtk/gl_drawing_area.c, camunits/unit_chain.c,
+	  camunits/unit_chain.h, camunits/unit_manager.c,
+	  camunits/unit_manager.h, camview/camview.c,
+	  docs/reference/libcamunits/camunits-sections.txt: convert
+	  CamUnitManager to follow a singleton pattern removed:
+	  cam_unit_manager_new cam_unit_chain_new_with_manager
+	  cam_unit_chain_get_manager
+	  
+	  added: cam_unit_manager_get_and_ref
+
 2009-02-15  ashuang
 
+	* [r327] ChangeLog, NEWS, configure.in: camunits release 0.1.2
+	* [r326] camunits/framebuffer.h, camunits/log.h, camunits/pixels.h,
+	  camunits/unit_chain.h, camunits/unit_control.h,
+	  docs/reference/libcamunits/camunits-docs.sgml,
+	  docs/reference/libcamunits/camunits-sections.txt,
+	  docs/tutorial/bookinfo.sgml, docs/tutorial/subclassing.sgml,
+	  examples/filter_example/filter_example.c,
+	  examples/filter_example/filter_example.h,
+	  examples/filter_example/main.c,
+	  examples/filter_plugin/filter_plugin.c: update documentation,
+	  examples
 	* [r325] camunits/Makefile.am, camunits/input_v4l.c,
 	  camunits/input_v4l.h, camunits/log.c, camunits/pwc-ioctl.h,
 	  camunits/unit_manager.c, configure.in,

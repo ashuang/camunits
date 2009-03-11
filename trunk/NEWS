@@ -1,3 +1,72 @@
+camunits 0.2.0 - Mar 11, 2009
+=============================
+
+This release features a wide-ranging API overhaul, and breaks the old API in
+many ways.
+
+- Most classes have had all of their fields moved away from the public structs
+  and into private structs.  This is so that future changes do not result in
+  any API or ABI incompatibilities, and is in keeping with GTK+3 plans.
+  Currently, the only classes that still have publicly exposed fields in their
+  structs are: CamUnitFormat, CamFrameBuffer
+
+- CamUnitManager has been converted to follow a singleton pattern
+
+- CamUnitControl has been modified so that enumerated controls no longer have
+  integer values implicitly assigned by ordering.  integer values associated
+  with enumerated controls are now explicitly assigned, using arrays of
+  CamUnitControlEnumValue structs.
+
+- All core units have been converted to plugins.  All functions specific to
+  core units have been removed from the API.
+
+- when adding an output format, max_data_size is no longer specified.
+
+- convert.to_rgb now uses IPP and Framewave JPEG decompression plugins from
+  camunits-extra if they are available
+
+Camunits Core
+----
+
+new functions:
+  cam_unit_manager_get_and_ref
+  cam_unit_add_output_format
+  cam_unit_control_get_enum_values
+  cam_unit_control_get_name
+  cam_unit_control_get_id
+  cam_unit_control_get_control_type
+  cam_unit_control_get_control_type_str
+
+new structs:
+  CamUnitControlEnumValue
+
+removed functions:
+  cam_unit_manager_new
+  cam_unit_chain_new_with_manager
+  cam_unit_chain_get_manager
+  cam_unit_add_output_format_full (changed, renamed: cam_unit_add_output_format)
+  cam_unit_set_id
+  cam_unit_set_name
+  cam_unit_control_get_type_str (renamed: cam_unit_control_get_control_type_str)
+
+  all functions related to core units have been removed.
+
+modified functions:  (parameter list has changed)
+  cam_unit_add_control_enum
+  cam_unit_control_new_enum
+  cam_unit_control_modify_enum
+  cam_unit_set_preferred_format   (new  parameter added: const char *name)
+
+Camunits GTK
+----
+
+removed functions:
+  cam_unit_manager_set_manager
+
+modified functions:  (parameter list has changed)
+  cam_unit_manager_widget
+
+
 camunits 0.1.2 - Feb 15, 2009
 =============================
 * add plugin example
