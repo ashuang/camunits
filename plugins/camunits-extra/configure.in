@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 AC_INIT(lcm/plugins/lcm_publish.c)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(camunits-extra, 0.1.2)
+AM_INIT_AUTOMAKE(camunits-extra, 0.2.0)
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CC
@@ -16,32 +16,68 @@ AM_PATH_CAMUNITS(,,
        [AC_MSG_ERROR([Camunits is not found, but is required by camunits-lcm.])])
 
 dnl check for lcm
-AM_PATH_LCM(,,
-       [AC_MSG_WARN([LCM not found, LCM plugins will not be built.])])
+AC_ARG_WITH(lcm-plugins,
+            [AS_HELP_STRING([--without-lcm-plugins],
+             [Don't compile LCM plugins])],
+            [], [with_lcm_plugins=yes])
+if test x$with_lcm_plugins = xyes; then
+    AM_PATH_LCM(,,
+           [AC_MSG_WARN([LCM not found, LCM plugins will not be built.])
+            LCM_RSN="LCM not found"])
+fi
 AM_CONDITIONAL(HAVE_LCM, test "x$LCM_LIBS" != x)
 
 dnl check for IPP
-AM_PATH_IPP(,,
-       [AC_MSG_WARN([IPP not found, IPP plugins will not be built.])])
+AC_ARG_WITH(ipp-plugins,
+            [AS_HELP_STRING([--without-ipp-plugins],
+             [Don't compile IPP plugins])],
+            [], [with_ipp_plugins=yes])
+if test x$with_ipp_plugins = xyes; then
+    AM_PATH_IPP(,,
+           [AC_MSG_WARN([IPP not found, IPP plugins will not be built.])
+            IPP_RSN="IPP not found"])
+fi
 AM_CONDITIONAL(HAVE_IPP, test "x$IPP_LIBS" != x)
 
 dnl check for Framewave
-AM_PATH_FRAMEWAVE(,,
-       [AC_MSG_WARN([Framewave not found, Framewave plugins will not be built.])])
+AC_ARG_WITH(framewave-plugins,
+            [AS_HELP_STRING([--without-framewave-plugins],
+             [Don't compile Framewave plugins])],
+            [], [with_framewave_plugins=yes])
+if test x$with_framewave_plugins = xyes; then
+    AM_PATH_FRAMEWAVE(,,
+           [AC_MSG_WARN([Framewave not found, Framewave plugins will not be built.])
+            FRAMEWAVE_RSN="Framewave not found"])
+fi
 AM_CONDITIONAL(HAVE_FRAMEWAVE, test "x$FRAMEWAVE_LIBS" != x)
 
 dnl check for libCVD
-AC_MSG_CHECKING(for libCVD)
-have_cvd=yes
-AC_LANG_PUSH(C++)
-AC_CHECK_HEADERS(cvd/image.h,[],[have_cvd=no])
-AC_CHECK_LIB(cvd, main,[],[have_cvd=no])
-AC_LANG_POP(C++)
+AC_ARG_WITH(cvd-plugins,
+            [AS_HELP_STRING([--without-cvd-plugins],
+             [Don't compile libCVD plugins])],
+            [], [with_cvd_plugins=yes])
+if test x$with_cvd_plugins = xyes; then
+    AC_MSG_CHECKING(for libCVD)
+    have_cvd=yes
+    AC_LANG_PUSH(C++)
+    AC_CHECK_HEADERS(cvd/image.h,[],[have_cvd=no
+                                  CVD_RSN="CVD not found"])
+    AC_CHECK_LIB(cvd, main,[],[have_cvd=no
+                            CVD_RSN="CVD not found"])
+    AC_LANG_POP(C++)
+fi
 AM_CONDITIONAL(HAVE_CVD, test x$have_cvd = xyes)
 
-dnl check for opencv
-PKG_CHECK_MODULES(OPENCV, [opencv >= 0.96],,
-      [AC_MSG_WARN([OpenCV not found, OpenCV plugins will not be built.])])
+dnl opencv
+AC_ARG_WITH(opencv-plugins,
+            [AS_HELP_STRING([--without-opencv-plugins],
+             [Don't compile OpenCV plugins])],
+            [], [with_opencv_plugins=yes])
+if test x$with_opencv_plugins = xyes; then
+    PKG_CHECK_MODULES(OPENCV, [opencv >= 0.96],,
+          [AC_MSG_WARN([OpenCV not found, OpenCV plugins will not be built.])
+          OPENCV_RSN="OpenCV not found"])
+fi
 AM_CONDITIONAL(HAVE_OPENCV, test "x$OPENCV_LIBS" != x)
 
 AM_DISABLE_STATIC
@@ -101,19 +137,19 @@ AC_OUTPUT([
 ])
 
 if test "x$LCM_LIBS" = x; then
-    LCM_MSG="Disabled (LCM not found)"
+    LCM_MSG="Disabled $LCM_RSN"
 else
     LCM_MSG="Enabled"
 fi
 
 if test "x$IPP_LIBS" = x; then
-    IPP_MSG="Disabled (IPP not found)"
+    IPP_MSG="Disabled $IPP_RSN"
 else
     IPP_MSG="Enabled"
 fi
 
 if test "x$FRAMEWAVE_LIBS" = x; then
-    FRAMEWAVE_MSG="Disabled (Framewave not found)"
+    FRAMEWAVE_MSG="Disabled $FRAMEWAVE_RSN"
 else
     FRAMEWAVE_MSG="Enabled"
 fi
@@ -122,11 +158,11 @@ KLTSTB_MSG="Enabled"
 if test x$have_cvd = xyes; then
     CVD_MSG="Enabled"
 else
-    CVD_MSG="Disabled"
+    CVD_MSG="Disabled $CVD_RSN"
 fi
 
 if test "x$OPENCV_LIBS" = x; then
-    OPENCV_MSG="Disabled (OpenCV not found)"
+    OPENCV_MSG="Disabled $OPENCV_RSN"
 else
     OPENCV_MSG="Enabled"
 fi
