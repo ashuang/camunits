@@ -172,12 +172,6 @@ cam_unit_chain_finalize (GObject *obj)
     if (self->event_source)
         g_source_destroy ((GSource *) self->event_source);
 
-    // unref the CamUnitManager
-    if (self->manager) {
-        dbgl (DBG_REF, "unref manager\n");
-        g_object_unref (self->manager);
-    }
-
     // release units in the chain
     GList *uiter;
     for (uiter=self->units; uiter; uiter=uiter->next) {
@@ -190,6 +184,12 @@ cam_unit_chain_finalize (GObject *obj)
         g_object_unref (unit);
     }
     g_list_free (self->units);
+
+    // unref the CamUnitManager
+    if (self->manager) {
+        dbgl (DBG_REF, "unref manager\n");
+        g_object_unref (self->manager);
+    }
 
     G_OBJECT_CLASS (cam_unit_chain_parent_class)->finalize (obj);
 }

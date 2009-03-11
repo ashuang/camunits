@@ -107,6 +107,7 @@ cam_logger_unit_class_init (CamLoggerUnitClass *klass)
     gobject_class->finalize = log_finalize;
     klass->parent_class.try_set_control = try_set_control;
     klass->parent_class.on_input_frame_ready = on_input_frame_ready;
+    if (!g_thread_supported ()) g_thread_init (NULL);
 }
 
 static void
