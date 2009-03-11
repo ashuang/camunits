@@ -31,7 +31,7 @@ AC_ARG_ENABLE(camunitstest, [  --disable-camunitstest      do not try to compile
     no_camunits=yes
   fi
 
-  min_camunits_version=ifelse([$1], ,0.0.4,$1)
+  min_camunits_version=ifelse([$1], ,0.2.0,$1)
   AC_MSG_CHECKING(for camunits - version >= $min_camunits_version)
 
   if test x$PKG_CONFIG != xno ; then

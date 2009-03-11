@@ -1,3 +1,131 @@
+2009-03-11  ashuang
+
+	* [r379] configure.in: added configure options
+	  --without-lcm-plugins --without-opencv-plugins
+	  --without-ipp-plugins --without-framewave-plugins
+	  --without-cvd-plugins bump version to 0.2.0
+	* [r377] cvd/Makefile.am, framewave/jpeg-plugins/Makefile.am,
+	  ipp/jpeg-plugins/Makefile.am, ipp/plugins/Makefile.am,
+	  klt-stb/Makefile.am, lcm/plugins/Makefile.am, opencv/Makefile.am,
+	  util/Makefile.am: plugins do not need to link against libcamunits
+
+2009-03-08  ashuang
+
+	* [r373] ipp/plugins/filter_fixed_gauss.c,
+	  lcm/plugins/lcm_input_log_sync.c, util/image_files.c,
+	  util/throttle.c: Modify CamUnitControl API
+	  
+	  hide all fields from public struct.
+	  
+	  enumerated controls no longer have integer values implicitly
+	  assigned by ordering. integer values associated with enumerated
+	  controls are now explicitly assigned, using arrays of
+	  CamUnitControlEnumValue structs.
+	  
+	  modified symbols: cam_unit_add_control_enum
+	  cam_unit_control_new_enum cam_unit_control_modify_enum
+	  
+	  new symbols: CamUnitControlEnumValue
+	  cam_unit_control_get_enum_values
+	* [r371] cvd/demo_libcvd_fast.cpp: missed one
+	* [r368] framewave/jpeg-plugins/unit_jpeg_compress.c,
+	  framewave/jpeg-plugins/unit_jpeg_decompress.c,
+	  framewave/plugins/pyr_down_gauss.c, framewave/plugins/resize.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_compress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.c,
+	  ipp/plugins/filter_fixed_gauss.c, ipp/plugins/pyr_down_gauss.c,
+	  ipp/plugins/resize.c, klt-stb/demo_klt_stb.c,
+	  lcm/plugins/lcm_input.c, lcm/plugins/lcm_input_legacy.c,
+	  lcm/plugins/lcm_input_log_sync.c, lcm/plugins/lcm_publish.c,
+	  lcm/plugins/lcm_sync_publish.c, opencv/demo_canny.c,
+	  opencv/demo_good_features_to_track.c,
+	  opencv/demo_object_detection.c, opencv/undistort.c,
+	  util/convert_to_gray.c, util/image_files.c, util/snapshot.c,
+	  util/throttle.c: rename cam_unit_add_output_format_full to
+	  cam_unit_add_output_format
+	* [r367] util/convert_to_gray.c: add const char * name parameter to
+	  cam_unit_set_preferred_format
+
+2009-03-07  ashuang
+
+	* [r364] cvd/demo_libcvd_fast.cpp: more replace unit->fmt with
+	  cam_unit_get_output_format
+	* [r363] framewave/plugins/resize.c,
+	  ipp/plugins/filter_fixed_gauss.c, ipp/plugins/resize.c,
+	  klt-stb/demo_klt_stb.c, lcm/plugins/lcm_input.c,
+	  lcm/plugins/lcm_input_legacy.c, lcm/plugins/lcm_input_log_sync.c,
+	  opencv/demo_canny.c, opencv/demo_good_features_to_track.c,
+	  opencv/demo_object_detection.c, util/convert_to_gray.c,
+	  util/snapshot.c, util/throttle.c: convert files to use CamUnit
+	  accessor methods instead of accessing struct fields directly
+
+2009-03-06  ashuang
+
+	* [r358] lcm/plugins/lcm_input_legacy.c,
+	  lcm/plugins/lcm_input_log_sync.c: hide CamUnitDescription fields
+	  from public struct
+	* [r352] Makefile.am: more bugfix
+	* [r351] configure.in, lcm/plugins/lcm_publish.c: bugfix
+	* [r350] lcm/plugins/lcm_input.c, lcm/plugins/lcm_input.h,
+	  lcm/plugins/lcm_publish.c, lcm/plugins/lcm_publish.h: remove
+	  cruft
+	* [r348] lcm/plugins/lcm_input.c: bugfixes
+	* [r347] cvd/demo_libcvd_fast.cpp,
+	  framewave/jpeg-plugins/unit_jpeg_compress.c,
+	  framewave/jpeg-plugins/unit_jpeg_decompress.c,
+	  framewave/plugins/resize.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_compress.c,
+	  ipp/jpeg-plugins/convert_ipp_jpeg_decompress.c,
+	  ipp/plugins/filter_fixed_gauss.c, ipp/plugins/pyr_down_gauss.c,
+	  ipp/plugins/resize.c, klt-stb/demo_klt_stb.c,
+	  lcm/lcmtypes/Makefile.am,
+	  lcm/lcmtypes/camlcm_image_announce_t.lcm,
+	  lcm/plugins/Makefile.am, lcm/plugins/lcm_input.c,
+	  lcm/plugins/lcm_input_legacy.c, lcm/plugins/lcm_input_log_sync.c,
+	  lcm/plugins/lcm_publish.c, lcm/plugins/lcm_publish.h,
+	  lcm/plugins/lcm_sync_publish.c, opencv/Makefile.am,
+	  opencv/demo_canny.c, opencv/demo_good_features_to_track.c,
+	  opencv/demo_object_detection.c, opencv/undistort.c,
+	  util/convert_to_gray.c, util/image_files.c, util/snapshot.c,
+	  util/throttle.c: modify plugins, remove max_data_size references
+	  modify lcm.input unit to act more like legacy (no more announce
+	  crap)
+
+2009-03-05  ashuang
+
+	* [r344] Makefile.am, configure.in, docs, docs/Makefile.am,
+	  docs/build, docs/build/Makefile.am,
+	  docs/framewave-jpeg-compress.sgml,
+	  docs/framewave-jpeg-decompress.sgml, docs/framewave-resize.sgml,
+	  docs/ipp-jpeg-compress.sgml, docs/ipp-jpeg-decompress.sgml,
+	  docs/ipp-resize.sgml, docs/main.sgml: more documentation
+
+2009-03-03  ashuang
+
+	* [r339] util/convert_to_gray.c: update for core -> plugin move
+
+2009-03-02  ashuang
+
+	* [r336] util/convert_to_gray.c: move V4L2 input unit to plugin
+	  move JPEG compression, decompression units to plugins
+
+2009-03-01  ashuang
+
+	* [r335] util/convert_to_gray.c: convert.to_gray uses IPP and
+	  Framewave plugins for JPEG decompression if it can
+	* [r332] m4/framewave.m4, m4/ipp.m4: add HAVE_IPP, HAVE_FRAMEWAVE
+	  defines
+
+2009-02-17  ashuang
+
+	* [r331] opencv/Makefile.am, opencv/demo_object_detection.c: add
+	  opencv object detection demo
+
+2009-02-15  ashuang
+
+	* [r329] ChangeLog, NEWS, README, configure.in: camunits-extra
+	  release 0.1.2
+
 2009-02-12  ashuang
 
 	* [r323] configure.in, cvd/demo_libcvd_fast.cpp,

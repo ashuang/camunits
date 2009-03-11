@@ -31,7 +31,7 @@ AC_ARG_ENABLE(lcmtest, [  --disable-lcmtest      do not try to compile and run a
     no_lcm=yes
   fi
 
-  min_lcm_version=ifelse([$1], ,0.0.1,$1)
+  min_lcm_version=ifelse([$1], ,0.2.1,$1)
   AC_MSG_CHECKING(for lcm - version >= $min_lcm_version)
 
   if test x$PKG_CONFIG != xno ; then

@@ -1,3 +1,19 @@
+camunits-extra 0.2.0 - Mar 11, 2009
+===================================
+
+LCM image publish and receive plugins re-architected.
+
+add opencv.demo_object_detection plugin
+
+convert.to_gray uses IPP and Framewave plugins if possible
+
+added configure options
+    --without-lcm-plugins
+    --without-opencv-plugins
+    --without-ipp-plugins
+    --without-framewave-plugins
+    --without-cvd-plugins
+
 camunits-extra 0.1.2 - Feb 15, 2009
 ===================================
 First release of camunits-extra
