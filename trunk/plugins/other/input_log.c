@@ -307,6 +307,9 @@ log_try_produce_frame (CamUnit *super)
     // check the next frame and see if we should skip the current frame
     // however, don't skip frames when paused
     if (advance_mode == CAM_INPUT_LOG_ADVANCE_MODE_HARD && (! paused)) {
+        CamLogFrameInfo new_cur_info;
+        memcpy(&new_cur_info, &cur_info, sizeof(new_cur_info));
+        int nskipped = 0;
         while (0 == cam_log_next_frame (self->camlog)) {
             CamLogFrameInfo next_info;
 
@@ -314,15 +317,25 @@ log_try_produce_frame (CamUnit *super)
 
             int64_t dt = (int64_t) ((next_info.timestamp - 
                         cur_info.timestamp) / speed);
+
+            // given the playback speed, when would we expect to play this
+            // frame?
             int64_t expected_play_utime = self->next_frame_time + dt;
 
-            if (expected_play_utime <= now) {
-                cur_info = next_info;
-                self->next_frame_time = expected_play_utime;
+            // if it's in the past, then mark it as the next frame to play, and
+            // then see if we should skip it
+            if(expected_play_utime <= now) {
+                memcpy(&new_cur_info, &next_info, sizeof(new_cur_info));
+                nskipped ++;
+            } else {
+                // if it's in the future, then stop looking.
                 break;
             }
         }
-        cam_log_seek_to_offset (self->camlog, cur_info.offset);
+        if(nskipped) {
+            dbg(DBG_INPUT, "skipped %d frames\n", nskipped);
+        }
+        cam_log_seek_to_offset (self->camlog, new_cur_info.offset);
     }
 
     CamFrameBuffer * buf = cam_log_get_frame (self->camlog);
