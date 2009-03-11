@@ -124,7 +124,7 @@ framewave_jpeg_decompress_la_SOURCES = jcapimin.c \
 					unit_jpeg_decompress.c
 
 framewave_jpeg_compress_la_LDFLAGS = -avoid-version -module
-framewave_jpeg_compress_la_LIBADD = $(CAMUNITS_LIBS) $(FRAMEWAVE_JPEG_LIBS)
+framewave_jpeg_compress_la_LIBADD = $(FRAMEWAVE_JPEG_LIBS)
 
 framewave_jpeg_decompress_la_LDFLAGS = -avoid-version -module
-framewave_jpeg_decompress_la_LIBADD = $(CAMUNITS_LIBS) $(FRAMEWAVE_JPEG_LIBS)
+framewave_jpeg_decompress_la_LIBADD = $(FRAMEWAVE_JPEG_LIBS)

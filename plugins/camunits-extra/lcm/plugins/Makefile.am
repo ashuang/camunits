@@ -35,7 +35,7 @@ camlcm_publish_la_SOURCES = \
 	lcm_publish.c
 
 camlcm_publish_la_LDFLAGS = -avoid-version -module 
-camlcm_publish_la_LIBADD = $(CAMUNITS_LIBS) $(LCM_LIBS)
+camlcm_publish_la_LIBADD = $(LCM_LIBS)
 
 lcm_publish.c lcm_publish.h: $(camlcm_c_files) $(camlcm_h_files)
 
@@ -45,7 +45,7 @@ camlcm_input_la_SOURCES = \
 	lcm_input.c
 
 camlcm_input_la_LDFLAGS = -avoid-version -module 
-camlcm_input_la_LIBADD = $(CAMUNITS_LIBS) $(LCM_LIBS)
+camlcm_input_la_LIBADD = $(LCM_LIBS)
 
 lcm_input.c lcm_input.h: $(camlcm_c_files) $(camlcm_h_files)
 
@@ -56,7 +56,7 @@ camlcm_input_log_sync_la_SOURCES = \
 	lcm_input_log_sync.h 
 
 camlcm_input_log_sync_la_LDFLAGS = -avoid-version -module 
-camlcm_input_log_sync_la_LIBADD = $(CAMUNITS_LIBS) $(LCM_LIBS)
+camlcm_input_log_sync_la_LIBADD = $(LCM_LIBS)
 
 lcm_input_log_sync.c lcm_input_log_sync.h: $(camlcm_c_files) $(camlcm_h_files)
 
@@ -67,7 +67,7 @@ camlcm_sync_publish_la_SOURCES = \
 	lcm_sync_publish.h 
 
 camlcm_sync_publish_la_LDFLAGS = -avoid-version -module 
-camlcm_sync_publish_la_LIBADD = $(CAMUNITS_LIBS) $(LCM_LIBS)
+camlcm_sync_publish_la_LIBADD = $(LCM_LIBS)
 
 lcm_sync_publish.c lcm_sync_publish.h: $(camlcm_c_files) $(camlcm_h_files)
 
@@ -78,7 +78,7 @@ camlcm_input_legacy_la_SOURCES = \
 	lcm_input_legacy.h 
 
 camlcm_input_legacy_la_LDFLAGS = -avoid-version -module 
-camlcm_input_legacy_la_LIBADD = $(CAMUNITS_LIBS) $(LCM_LIBS)
+camlcm_input_legacy_la_LIBADD = $(LCM_LIBS)
 
 lcm_input_legacy.c lcm_input_legacy.h: $(camlcm_c_files) $(camlcm_h_files)
 

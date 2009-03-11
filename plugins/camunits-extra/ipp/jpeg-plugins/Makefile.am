@@ -69,7 +69,7 @@ ipp_jpeg_decompress_la_SOURCES = $(jpeg_sources) \
 					 convert_ipp_jpeg_decompress.c
 
 ipp_jpeg_compress_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-ipp_jpeg_compress_la_LIBADD = $(CAMUNITS_LIBS) $(IPP_JPEG_LIBS)
+ipp_jpeg_compress_la_LIBADD = $(IPP_JPEG_LIBS)
 
 ipp_jpeg_decompress_la_LDFLAGS = -avoid-version -module $(IPP_LDFLAGS)
-ipp_jpeg_decompress_la_LIBADD = $(CAMUNITS_LIBS) $(IPP_JPEG_LIBS)
+ipp_jpeg_decompress_la_LIBADD = $(IPP_JPEG_LIBS)

@@ -8,17 +8,17 @@ camunitsplugin_LTLIBRARIES = camextra_throttle.la \
 # throttle unit
 camextra_throttle_la_SOURCES = throttle.c
 camextra_throttle_la_LDFLAGS = -avoid-version -module 
-camextra_throttle_la_LIBADD = $(CAMUNITS_LIBS)
+camextra_throttle_la_LIBADD = 
 
 # file output unit
 camextra_image_files_la_SOURCES = image_files.c
 camextra_image_files_la_LDFLAGS = -avoid-version -module 
-camextra_image_files_la_LIBADD = $(CAMUNITS_LIBS)
+camextra_image_files_la_LIBADD = 
 
 # snapshot unit
 camextra_snapshot_la_SOURCES = snapshot.c 
 camextra_snapshot_la_LDFLAGS = -avoid-version -module 
-camextra_snapshot_la_LIBADD = $(CAMUNITS_LIBS) 
+camextra_snapshot_la_LIBADD = 
 
 ## single image file input unit
 #camextra_input_single_file_la_SOURCES = input_single_file.c 
@@ -28,4 +28,4 @@ camextra_snapshot_la_LIBADD = $(CAMUNITS_LIBS)
 # convert to grayscale unit
 camextra_convert_to_gray_la_SOURCES = convert_to_gray.c 
 camextra_convert_to_gray_la_LDFLAGS = -avoid-version -module 
-camextra_convert_to_gray_la_LIBADD = $(CAMUNITS_LIBS) 
+camextra_convert_to_gray_la_LIBADD = 
