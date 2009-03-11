@@ -226,7 +226,8 @@ cam_unit_driver_finalize (GObject *obj)
     CamUnitDriver *self = CAM_UNIT_DRIVER (obj);
     CamUnitDriverPriv * priv = CAM_UNIT_DRIVER_GET_PRIVATE (self);
 
-    dbg (DBG_DRIVER, "CamUnitDriver finalize [%s]\n", priv->package);
+    dbg (DBG_DRIVER, "CamUnitDriver finalize [%s.%s]\n", priv->package, 
+            priv->name);
 
     free (priv->stock_unit_name);
     free (priv->package);
