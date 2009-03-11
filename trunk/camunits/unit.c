@@ -311,7 +311,7 @@ cam_unit_set_input (CamUnit * self, CamUnit * input)
 { 
     CamUnitPriv *priv = CAM_UNIT_GET_PRIVATE(self);
     dbg(DBG_UNIT, "setting input of %s to %s\n", priv->name, 
-            cam_unit_get_name(input));
+            input ? cam_unit_get_name(input) : "NULL");
 
     if (priv->is_streaming) {
         err("Unit: refusing to set unit input when streaming.\n");
