@@ -13,19 +13,7 @@
       <sub name="CamUnitChain" link="CamUnitChain.html"/>
       <sub name="CamUnitManager" link="CamUnitManager.html"/>
     </sub>
-    <sub name="Built-in Units" link="ch03.html">
-      <sub name="CamV4L2" link="CamV4L2.html"/>
-      <sub name="CamInputExample" link="CamInputExample.html"/>
-      <sub name="CamInputLog" link="CamInputLog.html"/>
-      <sub name="CamConvertToRgb8" link="CamConvertToRgb8.html"/>
-      <sub name="CamFilterGL" link="CamFilterGL.html"/>
-      <sub name="CamConvertJpegCompress" link="CamConvertJpegCompress.html"/>
-      <sub name="CamConvertJpegDecompress" link="CamConvertJpegDecompress.html"/>
-      <sub name="CamFastBayerFilter" link="CamFastBayerFilter.html"/>
-      <sub name="CamColorConversionFilter" link="CamColorConversionFilter.html"/>
-      <sub name="CamLoggerUnit" link="CamLoggerUnit.html"/>
-    </sub>
-    <sub name="Other stuff" link="ch04.html">
+    <sub name="Other stuff" link="ch03.html">
       <sub name="pixels" link="camunits-pixels.html"/>
       <sub name="log" link="camunits-log.html"/>
       <sub name="plugin" link="camunits-plugin.html"/>
@@ -63,14 +51,12 @@
     <function name="cam_unit_draw_gl_init ()" link="CamUnit.html#cam-unit-draw-gl-init"/>
     <function name="cam_unit_draw_gl ()" link="CamUnit.html#cam-unit-draw-gl"/>
     <function name="cam_unit_draw_gl_shutdown ()" link="CamUnit.html#cam-unit-draw-gl-shutdown"/>
-    <function name="cam_unit_set_name ()" link="CamUnit.html#cam-unit-set-name"/>
-    <function name="cam_unit_set_id ()" link="CamUnit.html#cam-unit-set-id"/>
     <function name="cam_unit_add_control_enum ()" link="CamUnit.html#cam-unit-add-control-enum"/>
     <function name="cam_unit_add_control_int ()" link="CamUnit.html#cam-unit-add-control-int"/>
     <function name="cam_unit_add_control_float ()" link="CamUnit.html#cam-unit-add-control-float"/>
     <function name="cam_unit_add_control_boolean ()" link="CamUnit.html#cam-unit-add-control-boolean"/>
     <function name="cam_unit_add_control_string ()" link="CamUnit.html#cam-unit-add-control-string"/>
-    <function name="cam_unit_add_output_format_full ()" link="CamUnit.html#cam-unit-add-output-format-full"/>
+    <function name="cam_unit_add_output_format ()" link="CamUnit.html#cam-unit-add-output-format"/>
     <function name="cam_unit_remove_output_format ()" link="CamUnit.html#cam-unit-remove-output-format"/>
     <function name="cam_unit_remove_all_output_formats ()" link="CamUnit.html#cam-unit-remove-all-output-formats"/>
     <function name="cam_unit_produce_frame ()" link="CamUnit.html#cam-unit-produce-frame"/>
@@ -87,6 +73,7 @@
     <function name="enum CamUnitControlType" link="CamUnitControl.html#CamUnitControlType"/>
     <function name="enum CamUnitControlUIHint" link="CamUnitControl.html#CamUnitControlUIHint"/>
     <function name="CamUnitControlCallback ()" link="CamUnitControl.html#CamUnitControlCallback"/>
+    <function name="CamUnitControlEnumValue" link="CamUnitControl.html#CamUnitControlEnumValue"/>
     <function name="CamUnitControl" link="CamUnitControl.html#CamUnitControl-struct"/>
     <function name="cam_unit_control_new_enum ()" link="CamUnitControl.html#cam-unit-control-new-enum"/>
     <function name="cam_unit_control_new_int ()" link="CamUnitControl.html#cam-unit-control-new-int"/>
@@ -113,6 +100,7 @@
     <function name="cam_unit_control_get_int ()" link="CamUnitControl.html#cam-unit-control-get-int"/>
     <function name="cam_unit_control_get_float ()" link="CamUnitControl.html#cam-unit-control-get-float"/>
     <function name="cam_unit_control_get_enum ()" link="CamUnitControl.html#cam-unit-control-get-enum"/>
+    <function name="cam_unit_control_get_enum_entries ()" link="CamUnitControl.html#cam-unit-control-get-enum-entries"/>
     <function name="cam_unit_control_get_boolean ()" link="CamUnitControl.html#cam-unit-control-get-boolean"/>
     <function name="cam_unit_control_get_string ()" link="CamUnitControl.html#cam-unit-control-get-string"/>
     <function name="cam_unit_control_get_max_int ()" link="CamUnitControl.html#cam-unit-control-get-max-int"/>
@@ -125,11 +113,14 @@
     <function name="cam_unit_control_get_enabled ()" link="CamUnitControl.html#cam-unit-control-get-enabled"/>
     <function name="cam_unit_control_set_ui_hints ()" link="CamUnitControl.html#cam-unit-control-set-ui-hints"/>
     <function name="cam_unit_control_get_ui_hints ()" link="CamUnitControl.html#cam-unit-control-get-ui-hints"/>
-    <function name="cam_unit_control_get_type_str ()" link="CamUnitControl.html#cam-unit-control-get-type-str"/>
     <function name="The &quot;parameters-changed&quot; signal" link="CamUnitControl.html#CamUnitControl-parameters-changed"/>
     <function name="The &quot;value-changed&quot; signal" link="CamUnitControl.html#CamUnitControl-value-changed"/>
     <function name="CamUnitDescription" link="CamUnitDriver.html#CamUnitDescription-struct"/>
     <function name="cam_unit_description_new ()" link="CamUnitDriver.html#cam-unit-description-new"/>
+    <function name="cam_unit_description_get_driver ()" link="CamUnitDriver.html#cam-unit-description-get-driver"/>
+    <function name="cam_unit_description_get_unit_id ()" link="CamUnitDriver.html#cam-unit-description-get-unit-id"/>
+    <function name="cam_unit_description_get_name ()" link="CamUnitDriver.html#cam-unit-description-get-name"/>
+    <function name="cam_unit_description_get_flags ()" link="CamUnitDriver.html#cam-unit-description-get-flags"/>
     <function name="CamUnitDriver" link="CamUnitDriver.html#CamUnitDriver-struct"/>
     <function name="CamUnitConstructor ()" link="CamUnitDriver.html#CamUnitConstructor"/>
     <function name="cam_unit_driver_new_stock ()" link="CamUnitDriver.html#cam-unit-driver-new-stock"/>
@@ -154,11 +145,8 @@
     <function name="cam_framebuffer_metadata_get ()" link="CamFrameBuffer.html#cam-framebuffer-metadata-get"/>
     <function name="cam_framebuffer_metadata_set ()" link="CamFrameBuffer.html#cam-framebuffer-metadata-set"/>
     <function name="cam_framebuffer_metadata_list_keys ()" link="CamFrameBuffer.html#cam-framebuffer-metadata-list-keys"/>
-    <function name="CamUnitChainSource" link="CamUnitChain.html#CamUnitChainSource"/>
     <function name="CamUnitChain" link="CamUnitChain.html#CamUnitChain-struct"/>
     <function name="cam_unit_chain_new ()" link="CamUnitChain.html#cam-unit-chain-new"/>
-    <function name="cam_unit_chain_new_with_manager ()" link="CamUnitChain.html#cam-unit-chain-new-with-manager"/>
-    <function name="cam_unit_chain_get_manager ()" link="CamUnitChain.html#cam-unit-chain-get-manager"/>
     <function name="cam_unit_chain_get_length ()" link="CamUnitChain.html#cam-unit-chain-get-length"/>
     <function name="cam_unit_chain_has_unit ()" link="CamUnitChain.html#cam-unit-chain-has-unit"/>
     <function name="cam_unit_chain_insert_unit ()" link="CamUnitChain.html#cam-unit-chain-insert-unit"/>
@@ -182,7 +170,7 @@
     <function name="The &quot;unit-removed&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-removed"/>
     <function name="The &quot;unit-reordered&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-reordered"/>
     <function name="CamUnitManager" link="CamUnitManager.html#CamUnitManager-struct"/>
-    <function name="cam_unit_manager_new ()" link="CamUnitManager.html#cam-unit-manager-new"/>
+    <function name="cam_unit_manager_get_and_ref ()" link="CamUnitManager.html#cam-unit-manager-get-and-ref"/>
     <function name="cam_unit_manager_add_driver ()" link="CamUnitManager.html#cam-unit-manager-add-driver"/>
     <function name="cam_unit_manager_remove_driver ()" link="CamUnitManager.html#cam-unit-manager-remove-driver"/>
     <function name="cam_unit_manager_start_drivers ()" link="CamUnitManager.html#cam-unit-manager-start-drivers"/>
@@ -198,39 +186,6 @@
     <function name="The &quot;unit-description-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-added"/>
     <function name="The &quot;unit-description-removed&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-removed"/>
     <function name="The &quot;unit-driver-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-driver-added"/>
-    <function name="CamV4L2Driver" link="CamV4L2.html#CamV4L2Driver-struct"/>
-    <function name="cam_v4l2_driver_new ()" link="CamV4L2.html#cam-v4l2-driver-new"/>
-    <function name="CamV4L2" link="CamV4L2.html#CamV4L2-struct"/>
-    <function name="cam_v4l2_new ()" link="CamV4L2.html#cam-v4l2-new"/>
-    <function name="CamInputExampleDriver" link="CamInputExample.html#CamInputExampleDriver-struct"/>
-    <function name="cam_input_example_driver_new ()" link="CamInputExample.html#cam-input-example-driver-new"/>
-    <function name="CamInputExample" link="CamInputExample.html#CamInputExample-struct"/>
-    <function name="cam_input_example_new ()" link="CamInputExample.html#cam-input-example-new"/>
-    <function name="CamInputLogDriver" link="CamInputLog.html#CamInputLogDriver-struct"/>
-    <function name="cam_input_log_driver_new ()" link="CamInputLog.html#cam-input-log-driver-new"/>
-    <function name="CamInputLog" link="CamInputLog.html#CamInputLog-struct"/>
-    <function name="cam_input_log_new ()" link="CamInputLog.html#cam-input-log-new"/>
-    <function name="CamConvertToRgb8" link="CamConvertToRgb8.html#CamConvertToRgb8-struct"/>
-    <function name="cam_convert_to_rgb8_new ()" link="CamConvertToRgb8.html#cam-convert-to-rgb8-new"/>
-    <function name="cam_convert_to_rgb8_driver_new ()" link="CamConvertToRgb8.html#cam-convert-to-rgb8-driver-new"/>
-    <function name="CamFilterGL" link="CamFilterGL.html#CamFilterGL-struct"/>
-    <function name="cam_filter_gl_new ()" link="CamFilterGL.html#cam-filter-gl-new"/>
-    <function name="cam_filter_gl_driver_new ()" link="CamFilterGL.html#cam-filter-gl-driver-new"/>
-    <function name="CamConvertJpegCompress" link="CamConvertJpegCompress.html#CamConvertJpegCompress-struct"/>
-    <function name="cam_convert_jpeg_compress_new ()" link="CamConvertJpegCompress.html#cam-convert-jpeg-compress-new"/>
-    <function name="cam_convert_jpeg_compress_driver_new ()" link="CamConvertJpegCompress.html#cam-convert-jpeg-compress-driver-new"/>
-    <function name="CamConvertJpegDecompress" link="CamConvertJpegDecompress.html#CamConvertJpegDecompress-struct"/>
-    <function name="cam_convert_jpeg_decompress_new ()" link="CamConvertJpegDecompress.html#cam-convert-jpeg-decompress-new"/>
-    <function name="cam_convert_jpeg_decompress_driver_new ()" link="CamConvertJpegDecompress.html#cam-convert-jpeg-decompress-driver-new"/>
-    <function name="CamFastBayerFilter" link="CamFastBayerFilter.html#CamFastBayerFilter-struct"/>
-    <function name="cam_fast_bayer_filter_new ()" link="CamFastBayerFilter.html#cam-fast-bayer-filter-new"/>
-    <function name="cam_fast_bayer_filter_driver_new ()" link="CamFastBayerFilter.html#cam-fast-bayer-filter-driver-new"/>
-    <function name="CamColorConversionFilter" link="CamColorConversionFilter.html#CamColorConversionFilter-struct"/>
-    <function name="cam_color_conversion_filter_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-new"/>
-    <function name="cam_color_conversion_filter_driver_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new"/>
-    <function name="CamLoggerUnit" link="CamLoggerUnit.html#CamLoggerUnit-struct"/>
-    <function name="cam_logger_unit_new ()" link="CamLoggerUnit.html#cam-logger-unit-new"/>
-    <function name="cam_logger_unit_driver_new ()" link="CamLoggerUnit.html#cam-logger-unit-driver-new"/>
     <function name="cam_pf_fourcc()" link="camunits-pixels.html#cam-pf-fourcc"/>
     <function name="enum CamPixelFormat" link="camunits-pixels.html#CamPixelFormat"/>
     <function name="cam_pixel_format_nickname ()" link="camunits-pixels.html#cam-pixel-format-nickname"/>

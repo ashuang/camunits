@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -49,6 +48,10 @@
                                                          const char *name,
                                                          const char *unit_id,
                                                          uint32_t flags);
+<a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamUnitDriver.html#cam-unit-description-get-driver" title="cam_unit_description_get_driver ()">cam_unit_description_get_driver</a>     (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
+const char*         <a class="link" href="CamUnitDriver.html#cam-unit-description-get-unit-id" title="cam_unit_description_get_unit_id ()">cam_unit_description_get_unit_id</a>    (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
+const char*         <a class="link" href="CamUnitDriver.html#cam-unit-description-get-name" title="cam_unit_description_get_name ()">cam_unit_description_get_name</a>       (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
+uint32_t            <a class="link" href="CamUnitDriver.html#cam-unit-description-get-flags" title="cam_unit_description_get_flags ()">cam_unit_description_get_flags</a>      (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);
                     <a class="link" href="CamUnitDriver.html#CamUnitDriver-struct" title="CamUnitDriver">CamUnitDriver</a>;
 <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a>*            (<a class="link" href="CamUnitDriver.html#CamUnitConstructor" title="CamUnitConstructor ()">*CamUnitConstructor</a>)               (void);
 <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      <a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock" title="cam_unit_driver_new_stock ()">cam_unit_driver_new_stock</a>           (const char *package,
@@ -110,9 +113,6 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----CamUnitDriver
-               +----<a class="link" href="CamV4L2.html#CamV4L2Driver">CamV4L2Driver</a>
-               +----<a class="link" href="CamInputExample.html#CamInputExampleDriver">CamInputExampleDriver</a>
-               +----<a class="link" href="CamInputLog.html#CamInputLogDriver">CamInputLogDriver</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -149,12 +149,12 @@ The CamUnitDriver is useful primarily for input devices, where the steps
 required to instantiate a <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> may differ depending on the physical
 device.  Pure software units such as color conversion filters do not have to
 worry about this, and will typically use a "stock" CamUnitDriver -- see
-#<a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock" title="cam_unit_driver_new_stock ()"><code class="function">cam_unit_driver_new_stock()</code></a>.
+<a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock" title="cam_unit_driver_new_stock ()"><code class="function">cam_unit_driver_new_stock()</code></a>.
 </p>
 <p>
 Unless you are writing a new input unit, or doing something other than
 implementing a standard image processing filter, you should not have to deal
-with this class very much, and <a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock" title="cam_unit_driver_new_stock ()"><span class="type">cam_unit_driver_new_stock</span></a> should be
+with this class very much, and <a class="link" href="CamUnitDriver.html#cam-unit-driver-new-stock" title="cam_unit_driver_new_stock ()"><code class="function">cam_unit_driver_new_stock()</code></a> should be
 sufficient.  The <a class="link" href="CamUnitManager.html" title="CamUnitManager"><span class="type">CamUnitManager</span></a> maintains a list of drivers to provide a
 global view of what's available across all drivers, and the <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a>
 should usually be used as a proxy to instantiate new <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> objects.</p>
@@ -166,13 +166,7 @@ should usually be used as a proxy to instantiate new <a class="link" href="CamUn
 <a name="CamUnitDriver.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="CamUnitDescription-struct"></a><h3>CamUnitDescription</h3>
-<pre class="programlisting">typedef struct {
-    CamUnitDriver * driver;
-    char * name;
-    char * unit_id;
-    uint32_t flags;
-} CamUnitDescription;
-</pre>
+<pre class="programlisting">typedef struct _CamUnitDescription CamUnitDescription;</pre>
 <p>
 Provides a brief description of an available unit, before that unit
 is actually instantiated.</p>
@@ -181,28 +175,7 @@ is actually instantiated.</p>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *<em class="structfield"><code>driver</code></em>;</span></p></td>
-<td>  the <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> providing this description
-</td>
-</tr>
-<tr>
-<td><p><span class="term">char *<em class="structfield"><code>name</code></em>;</span></p></td>
-<td>    a nickname / human-understandable name for the available unit
-</td>
-</tr>
-<tr>
-<td><p><span class="term">char *<em class="structfield"><code>unit_id</code></em>;</span></p></td>
-<td> a string identifying the unit
-</td>
-</tr>
-<tr>
-<td><p><span class="term">uint32_t <em class="structfield"><code>flags</code></em>;</span></p></td>
-<td>   a bitwise OR of <a class="link" href="CamUnit.html#CamUnitFlags" title="enum CamUnitFlags"><span class="type">CamUnitFlags</span></a>
-</td>
-</tr>
-</tbody>
+<tbody></tbody>
 </table></div>
 </div>
 <hr>
@@ -249,6 +222,106 @@ unless you're implementing a new <a class="link" href="CamUnitDriver.html" title
 <td>
 
 
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-unit-description-get-driver"></a><h3>cam_unit_description_get_driver ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a>*      cam_unit_description_get_driver     (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the driver that can produce the described unit.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-unit-description-get-unit-id"></a><h3>cam_unit_description_get_unit_id ()</h3>
+<pre class="programlisting">const char*         cam_unit_description_get_unit_id    (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the id of the described unit.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-unit-description-get-name"></a><h3>cam_unit_description_get_name ()</h3>
+<pre class="programlisting">const char*         cam_unit_description_get_name       (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the name of the unit.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="cam-unit-description-get-flags"></a><h3>cam_unit_description_get_flags ()</h3>
+<pre class="programlisting">uint32_t            cam_unit_description_get_flags      (const <a class="link" href="CamUnitDriver.html#CamUnitDescription">CamUnitDescription</a> *udesc);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>udesc</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the flags associated with the described unit.
 </td>
 </tr>
 </tbody>
@@ -493,7 +566,8 @@ resources it used for doing so.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> the package of the unit driver.
+<td> the package of the unit driver.  The result is always a valid
+string.
 </td>
 </tr>
 </tbody>
@@ -648,7 +722,8 @@ this will emit the "unit-description-removed" signal.</p>
                                                          const char *package,
                                                          const char *name);</pre>
 <p>
-Protected method.  Sets the package and name of the driver.</p>
+Protected method.  Sets the package and name of the driver.  Subclasses
+should call this once on instantiation only.</p>
 <p>
 
 </p>
@@ -662,12 +737,14 @@ Protected method.  Sets the package and name of the driver.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>package</code></em> :</span></p></td>
-<td>  The name of the package.  Can be NULL.
+<td>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
-<td>     The name of the driver.  Must not be NULL.
+<td>
+
+
 </td>
 </tr>
 </tbody>

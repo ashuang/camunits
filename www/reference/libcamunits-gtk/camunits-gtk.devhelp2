@@ -36,7 +36,6 @@
     <keyword type="" name="The &quot;gl-draw-finished&quot; signal" link="CamUnitChainGLWidget.html#CamUnitChainGLWidget-gl-draw-finished"/>
     <keyword type="struct" name="CamUnitManagerWidget" link="CamUnitManagerWidget.html#CamUnitManagerWidget-struct"/>
     <keyword type="function" name="cam_unit_manager_widget_new ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-new"/>
-    <keyword type="function" name="cam_unit_manager_widget_set_manager ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-set-manager"/>
     <keyword type="function" name="cam_unit_manager_widget_get_selected_description ()" link="CamUnitManagerWidget.html#cam-unit-manager-widget-get-selected-description"/>
     <keyword type="variable" name="cam_unit_manager_widget_target_entry" link="CamUnitManagerWidget.html#cam-unit-manager-widget-target-entry"/>
     <keyword type="macro" name="CAM_UNIT_MANAGER_WIDGET_DND_ID" link="CamUnitManagerWidget.html#CAM-UNIT-MANAGER-WIDGET-DND-ID:CAPS"/>

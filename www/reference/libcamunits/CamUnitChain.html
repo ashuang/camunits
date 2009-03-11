@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -45,11 +44,8 @@ processing chain.</p>
 <div class="refsynopsisdiv">
 <a name="CamUnitChain.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-                    <a class="link" href="CamUnitChain.html#CamUnitChainSource" title="CamUnitChainSource">CamUnitChainSource</a>;
                     <a class="link" href="CamUnitChain.html#CamUnitChain-struct" title="CamUnitChain">CamUnitChain</a>;
 <a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       <a class="link" href="CamUnitChain.html#cam-unit-chain-new" title="cam_unit_chain_new ()">cam_unit_chain_new</a>                  (void);
-<a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       <a class="link" href="CamUnitChain.html#cam-unit-chain-new-with-manager" title="cam_unit_chain_new_with_manager ()">cam_unit_chain_new_with_manager</a>     (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager);
-<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a class="link" href="CamUnitChain.html#cam-unit-chain-get-manager" title="cam_unit_chain_get_manager ()">cam_unit_chain_get_manager</a>          (<a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);
 int                 <a class="link" href="CamUnitChain.html#cam-unit-chain-get-length" title="cam_unit_chain_get_length ()">cam_unit_chain_get_length</a>           (const <a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);
 int                 <a class="link" href="CamUnitChain.html#cam-unit-chain-has-unit" title="cam_unit_chain_has_unit ()">cam_unit_chain_has_unit</a>             (const <a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self,
                                                          const <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *unit);
@@ -129,14 +125,6 @@ attaching the units to a GMainLoop.</p>
 <div class="refsect1" lang="en">
 <a name="CamUnitChain.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="CamUnitChainSource"></a><h3>CamUnitChainSource</h3>
-<pre class="programlisting">typedef struct _CamUnitChainSource CamUnitChainSource;</pre>
-<p>
-
-</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
 <a name="CamUnitChain-struct"></a><h3>CamUnitChain</h3>
 <pre class="programlisting">typedef struct _CamUnitChain CamUnitChain;</pre>
 <p>
@@ -159,57 +147,6 @@ attaching the units to a GMainLoop.</p>
 
 </td>
 </tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="cam-unit-chain-new-with-manager"></a><h3>cam_unit_chain_new_with_manager ()</h3>
-<pre class="programlisting"><a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a>*       cam_unit_chain_new_with_manager     (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *manager);</pre>
-<p>
-Constructor.  create a new chain with an existing manager.  on return,
-the reference count on <code class="literal">manager</code> is incremeneted.</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>manager</code></em> :</span></p></td>
-<td> an existing CamUnitManager to use with the new CamUnitChain.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly allocated CamUnitChain
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="cam-unit-chain-get-manager"></a><h3>cam_unit_chain_get_manager ()</h3>
-<pre class="programlisting"><a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_chain_get_manager          (<a class="link" href="CamUnitChain.html" title="CamUnitChain">CamUnitChain</a> *self);</pre>
-<p>
-</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> the unit manager associated with the chain
-</td>
-</tr>
-</tbody>
 </table></div>
 </div>
 <hr>

@@ -7,13 +7,12 @@
 <link rel="start" href="index.html" title="Camunits Reference Manual">
 <link rel="up" href="ch02.html" title="Image Processing Chains">
 <link rel="prev" href="CamUnitChain.html" title="CamUnitChain">
-<link rel="next" href="ch03.html" title="Built-in Units">
+<link rel="next" href="ch03.html" title="Other stuff">
 <meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -46,9 +45,7 @@
 <a name="CamUnitManager.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="CamUnitManager.html#CamUnitManager-struct" title="CamUnitManager">CamUnitManager</a>;
-<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a class="link" href="CamUnitManager.html#cam-unit-manager-new" title="cam_unit_manager_new ()">cam_unit_manager_new</a>                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> start_drivers);
+<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     <a class="link" href="CamUnitManager.html#cam-unit-manager-get-and-ref" title="cam_unit_manager_get_and_ref ()">cam_unit_manager_get_and_ref</a>        (void);
 void                <a class="link" href="CamUnitManager.html#cam-unit-manager-add-driver" title="cam_unit_manager_add_driver ()">cam_unit_manager_add_driver</a>         (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          <a class="link" href="CamUnitDriver.html" title="CamUnitDriver">CamUnitDriver</a> *driver);
 int                 <a class="link" href="CamUnitManager.html#cam-unit-manager-remove-driver" title="cam_unit_manager_remove_driver ()">cam_unit_manager_remove_driver</a>      (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
@@ -101,7 +98,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 <div class="refsect1" lang="en">
 <a name="CamUnitManager.description"></a><h2>Description</h2>
 <p>
-CamUnitManager is a factory-like class that provide a (hopefully) convenient
+CamUnitManager is a factory-like class that provide a 
 way to list and instantiate all available units.  A single <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> is
 responsible only for describing and instantiating units of a specific type,
 whereas a CamUnitManager attempts to aggregate all of the information
@@ -109,25 +106,20 @@ provided by all known <a class="link" href="CamUnitDriver.html" title="CamUnitDr
 </p>
 <p>
 Before becoming available for use, a <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> must first be
-registered with a CamUnitManager.  There are three ways this can happen.
+registered with a CamUnitManager.  There are two recommended ways for this
+tohappen.
 First, Camunits provides a set of "core" drivers that are always loaded
 when
 a CamUnitManager is created.  Second, a CamUnitManager searches the plugin
 directories (typically /usr/lib/camunits/ and the colon-separated list of
 directories in the "CAMUNITS_PLUGIN_PATH" environment variable) for
-dynamically loadable plugins.  Finally, it is possible to subclass
-<a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> and register drivers at runtime via 
-<a class="link" href="CamUnitManager.html#cam-unit-manager-add-driver" title="cam_unit_manager_add_driver ()"><code class="function">cam_unit_manager_add_driver()</code></a>.
+dynamically loadable plugins.  
 </p>
 <p>
 In a simple Camunits application, there is no need to work directly with
 the
 CamUnitManager.  Instead, a simple Camunits application may use a
-<a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> object, which itself contains a CamUnitManager.  Reasons for
-using a CamUnitManager directly could be sharing a manager across multiple
-chains, implementing new <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> and <a class="link" href="CamUnitDriver.html" title="CamUnitDriver"><span class="type">CamUnitDriver</span></a> subclasses, or
-completely foregoing the <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> for a non-standard arrangement of
-<a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> objects.</p>
+<a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a> object, which itself uses a CamUnitManager.</p>
 <p>
 
 </p>
@@ -136,41 +128,32 @@ completely foregoing the <a class="link" href="CamUnitChain.html" title="CamUnit
 <a name="CamUnitManager.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="CamUnitManager-struct"></a><h3>CamUnitManager</h3>
-<pre class="programlisting">typedef struct {
-} CamUnitManager;
-</pre>
+<pre class="programlisting">typedef struct _CamUnitManager CamUnitManager;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="cam-unit-manager-new"></a><h3>cam_unit_manager_new ()</h3>
-<pre class="programlisting"><a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_manager_new                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> start_drivers);</pre>
+<a name="cam-unit-manager-get-and-ref"></a><h3>cam_unit_manager_get_and_ref ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a>*     cam_unit_manager_get_and_ref        (void);</pre>
 <p>
-Constructor.  Instantiates a new unit manager with a core set of unit
-drivers already registered.</p>
+Singleton accessor.  Retrieves a pointer to the singleton instance of the
+CamUnitManager, creating it and starting the drivers if necessary.  The
+reference count on the instance is incremented on return.  If the reference
+count ever reaches zero (decremented by g_object_unref), then the instance
+is destroyed, but can be re-instantiated by another call to this function.</p>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>start_drivers</code></em> :</span></p></td>
-<td> TRUE if the unit manager should automatically call
-                <a class="link" href="CamUnitDriver.html#cam-unit-driver-start" title="cam_unit_driver_start ()"><span class="type">cam_unit_driver_start</span></a> on unit drivers as they are added to
-                the unit manager.  If in doubt, set this to TRUE.
-</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly allocated CamUnitManager
+<td> a pointer to the singleton CamUnitManager, and increments the
+reference count on it.
 </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
@@ -327,7 +310,9 @@ This list should be freed with g_list_free when no longer needed</p>
                                                         (<a class="link" href="CamUnitManager.html" title="CamUnitManager">CamUnitManager</a> *self,
                                                          const char *unit_id);</pre>
 <p>
-Searches all known drivers for a unit description matching unit_id.</p>
+Searches all known drivers for a unit description matching unit_id.  The
+reference count of the returned <a class="link" href="CamUnitDriver.html#CamUnitDescription"><span class="type">CamUnitDescription</span></a>, if any, is not
+modified.</p>
 <p>
 
 </p>

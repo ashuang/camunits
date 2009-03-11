@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -64,7 +63,8 @@ int                 <a class="link" href="CamUnit.html#cam-unit-stream-init" tit
 int                 <a class="link" href="CamUnit.html#cam-unit-set-preferred-format" title="cam_unit_set_preferred_format ()">cam_unit_set_preferred_format</a>       (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          <a class="link" href="camunits-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> pixelformat,
                                                          int width,
-                                                         int height);
+                                                         int height,
+                                                         const char *name);
 int                 <a class="link" href="CamUnit.html#cam-unit-stream-shutdown" title="cam_unit_stream_shutdown ()">cam_unit_stream_shutdown</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
@@ -91,7 +91,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-enum" title="cam_unit_set_control_enum ()">cam_unit_set_control_enum</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
-                                                         int index);
+                                                         int value);
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="CamUnit.html#cam-unit-set-control-boolean" title="cam_unit_set_control_boolean ()">cam_unit_set_control_boolean</a>        (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
@@ -130,17 +130,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 int                 <a class="link" href="CamUnit.html#cam-unit-draw-gl-init" title="cam_unit_draw_gl_init ()">cam_unit_draw_gl_init</a>               (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 int                 <a class="link" href="CamUnit.html#cam-unit-draw-gl" title="cam_unit_draw_gl ()">cam_unit_draw_gl</a>                    (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
 int                 <a class="link" href="CamUnit.html#cam-unit-draw-gl-shutdown" title="cam_unit_draw_gl_shutdown ()">cam_unit_draw_gl_shutdown</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
-void                <a class="link" href="CamUnit.html#cam-unit-set-name" title="cam_unit_set_name ()">cam_unit_set_name</a>                   (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
-                                                         const char *name);
-void                <a class="link" href="CamUnit.html#cam-unit-set-id" title="cam_unit_set_id ()">cam_unit_set_id</a>                     (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
-                                                         const char *unit_id);
 <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnit.html#cam-unit-add-control-enum" title="cam_unit_add_control_enum ()">cam_unit_add_control_enum</a>           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
-                                                         const char *name,
-                                                         int default_index,
+                                                         constchar *name,
+                                                         int default_value,
                                                          int enabled,
-                                                         const char **entries,
-                                                         const int *entries_enabled);
+                                                         const <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a> *entries);
 <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnit.html#cam-unit-add-control-int" title="cam_unit_add_control_int ()">cam_unit_add_control_int</a>            (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
                                                          const char *name,
@@ -167,13 +162,12 @@ void                <a class="link" href="CamUnit.html#cam-unit-set-id" title="c
                                                          const char *name,
                                                          const char *default_val,
                                                          int enabled);
-<a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a>*      <a class="link" href="CamUnit.html#cam-unit-add-output-format-full" title="cam_unit_add_output_format_full ()">cam_unit_add_output_format_full</a>     (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a>*      <a class="link" href="CamUnit.html#cam-unit-add-output-format" title="cam_unit_add_output_format ()">cam_unit_add_output_format</a>          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          <a class="link" href="camunits-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> pfmt,
                                                          const char *name,
                                                          int width,
                                                          int height,
-                                                         int row_stride,
-                                                         int max_data_size);
+                                                         int row_stride);
 void                <a class="link" href="CamUnit.html#cam-unit-remove-output-format" title="cam_unit_remove_output_format ()">cam_unit_remove_output_format</a>       (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a> *fmt);
 void                <a class="link" href="CamUnit.html#cam-unit-remove-all-output-formats" title="cam_unit_remove_all_output_formats ()">cam_unit_remove_all_output_formats</a>  (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self);
@@ -192,16 +186,6 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----CamUnit
-               +----<a class="link" href="CamV4L2.html" title="CamV4L2">CamV4L2</a>
-               +----<a class="link" href="CamInputExample.html" title="CamInputExample">CamInputExample</a>
-               +----<a class="link" href="CamInputLog.html" title="CamInputLog">CamInputLog</a>
-               +----<a class="link" href="CamFilterGL.html" title="CamFilterGL">CamFilterGL</a>
-               +----<a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter">CamColorConversionFilter</a>
-               +----<a class="link" href="CamConvertToRgb8.html" title="CamConvertToRgb8">CamConvertToRgb8</a>
-               +----<a class="link" href="CamFastBayerFilter.html" title="CamFastBayerFilter">CamFastBayerFilter</a>
-               +----<a class="link" href="CamConvertJpegCompress.html" title="CamConvertJpegCompress">CamConvertJpegCompress</a>
-               +----<a class="link" href="CamConvertJpegDecompress.html" title="CamConvertJpegDecompress">CamConvertJpegDecompress</a>
-               +----<a class="link" href="CamLoggerUnit.html" title="CamLoggerUnit">CamLoggerUnit</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -231,14 +215,16 @@ unit as falling into one of two categories: Input and Filter
 <p>
 Input units are always the first unit in a chain, and do not consume images
 as input.  Instead, an input unit generates images to be consumed by other
-units.  Examples of input units are <span class="type">CamDC1394</span> and <a class="link" href="CamInputLog.html" title="CamInputLog"><span class="type">CamInputLog</span></a>
+units.  Examples of input units are <code class="literal">input.dc1394</code> and 
+<code class="literal">input.log</code> (see the Camunits Core Plugins documentation).
 </p>
 <p>
 Filter units form the backbone of an image processing chain, and may
 transform an image in some way.  Examples of filter units that modify 
-images are <a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter"><span class="type">CamColorConversionFilter</span></a> and <a class="link" href="CamFastBayerFilter.html" title="CamFastBayerFilter"><span class="type">CamFastBayerFilter</span></a>.  Other filter
+images are <code class="literal">convert.colorspace</code> and
+<code class="literal">convert.fast_debayer</code>.  Other filter
 units may simply pass the image through while doing something else (e.g.
-<a class="link" href="CamFilterGL.html" title="CamFilterGL"><span class="type">CamFilterGL</span></a>)
+<code class="literal">output.opengl</code>)
 </p>
 <p>
 A CamUnit object is either streaming or not.  A streaming unit has been
@@ -270,10 +256,7 @@ Filter units must have an associated input unit, set using
 <hr>
 <div class="refsect2" lang="en">
 <a name="CamUnit-struct"></a><h3>CamUnit</h3>
-<pre class="programlisting">typedef struct {
-    char * unit_id;
-} CamUnit;
-</pre>
+<pre class="programlisting">typedef struct _CamUnit CamUnit;</pre>
 <p>
 
 </p>
@@ -285,8 +268,10 @@ Filter units must have an associated input unit, set using
                                                          <a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *input);</pre>
 <p>
 Sets the input of a CamUnit.  This method only makes sense for filter units
-(e.g. <a class="link" href="CamColorConversionFilter.html" title="CamColorConversionFilter"><span class="type">CamColorConversionFilter</span></a>, <a class="link" href="CamFilterGL.html" title="CamFilterGL"><span class="type">CamFilterGL</span></a>), and is meaningless for input
-units (e.g. <a class="link" href="CamInputLog.html" title="CamInputLog"><span class="type">CamInputLog</span></a>).  When using a CamUnit as part of a <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a>,
+(e.g. <code class="literal">convert.colorspace</code>,
+<code class="literal">output.opengl</code>), and is meaningless for input
+units (e.g. <code class="literal">input.log</code>).  When using a CamUnit as part of
+a <a class="link" href="CamUnitChain.html" title="CamUnitChain"><span class="type">CamUnitChain</span></a>,
 the chain should take care of invoking this method when appropriate.
 </p>
 <p>
@@ -507,7 +492,9 @@ g_list_free after usage.  Do not modify the returned CamUnitFormat objects
 Initializes a unit, reserves buffers and system resources.
 </p>
 <p>
-If <code class="literal">format</code> is NULL, then the first available format is used.</p>
+If <code class="literal">format</code> is NULL, then a format is automatically chosen based on 
+any preferences indicated by <a class="link" href="CamUnit.html#cam-unit-set-preferred-format" title="cam_unit_set_preferred_format ()"><code class="function">cam_unit_set_preferred_format()</code></a> and the size
+and resolution of the available formats.</p>
 <p>
 
 </p>
@@ -538,7 +525,8 @@ If <code class="literal">format</code> is NULL, then the first available format 
 <pre class="programlisting">int                 cam_unit_set_preferred_format       (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          <a class="link" href="camunits-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> pixelformat,
                                                          int width,
-                                                         int height);</pre>
+                                                         int height,
+                                                         const char *name);</pre>
 <p>
 Sets the preferred format when initializing the unit with a NULL format.  If
 a format matching the requested parameters is not found, then an arbitrary
@@ -570,6 +558,12 @@ format is chosen.</p>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
 <td> the preferred image height, or 0 to indicate that any height is
          acceptable.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> the name of the desired format, or NULL to indicate no name
+         preference.
 </td>
 </tr>
 <tr>
@@ -850,7 +844,7 @@ Convenience function to set a control</p>
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            cam_unit_set_control_enum           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
-                                                         int index);</pre>
+                                                         int value);</pre>
 <p>
 Convenience function to set a control</p>
 <p>
@@ -870,7 +864,7 @@ Convenience function to set a control</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>index</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -1245,71 +1239,13 @@ Call this method to have the unit render to an active OpenGL context</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="cam-unit-set-name"></a><h3>cam_unit_set_name ()</h3>
-<pre class="programlisting">void                cam_unit_set_name                   (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
-                                                         const char *name);</pre>
-<p>
-protected method.  Should only be called by subclasses of CamUnit.  Sets the
-name of the unit.</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
-<td>
-
-
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="cam-unit-set-id"></a><h3>cam_unit_set_id ()</h3>
-<pre class="programlisting">void                cam_unit_set_id                     (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
-                                                         const char *unit_id);</pre>
-<p>
-protected method.  Do not call directly.</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>unit_id</code></em> :</span></p></td>
-<td>
-
-
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
 <a name="cam-unit-add-control-enum"></a><h3>cam_unit_add_control_enum ()</h3>
 <pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_add_control_enum           (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          const char *id,
-                                                         const char *name,
-                                                         int default_index,
+                                                         constchar *name,
+                                                         int default_value,
                                                          int enabled,
-                                                         const char **entries,
-                                                         const int *entries_enabled);</pre>
+                                                         const <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a> *entries);</pre>
 <p>
 protected method.</p>
 <p>
@@ -1334,7 +1270,7 @@ protected method.</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default_index</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>default_value</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -1349,15 +1285,9 @@ protected method.</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
+<td> a pointer to a newly created <a class="link" href="CamUnitControl.html" title="CamUnitControl"><span class="type">CamUnitControl</span></a>.  This can be safely
+ignored.
 </td>
 </tr>
 </tbody>
@@ -1424,9 +1354,8 @@ protected method.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
+<td> a pointer to a newly created <a class="link" href="CamUnitControl.html" title="CamUnitControl"><span class="type">CamUnitControl</span></a>.  This can be safely
+ignored.
 </td>
 </tr>
 </tbody>
@@ -1493,9 +1422,8 @@ protected method.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
+<td> a pointer to a newly created <a class="link" href="CamUnitControl.html" title="CamUnitControl"><span class="type">CamUnitControl</span></a>.  This can be safely
+ignored.
 </td>
 </tr>
 </tbody>
@@ -1544,9 +1472,8 @@ protected method.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
+<td> a pointer to a newly created <a class="link" href="CamUnitControl.html" title="CamUnitControl"><span class="type">CamUnitControl</span></a>.  This can be safely
+ignored.
 </td>
 </tr>
 </tbody>
@@ -1595,9 +1522,8 @@ protected method.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
+<td> a pointer to a newly created <a class="link" href="CamUnitControl.html" title="CamUnitControl"><span class="type">CamUnitControl</span></a>.  This can be safely
+ignored.
 </td>
 </tr>
 </tbody>
@@ -1605,14 +1531,13 @@ protected method.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="cam-unit-add-output-format-full"></a><h3>cam_unit_add_output_format_full ()</h3>
-<pre class="programlisting"><a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a>*      cam_unit_add_output_format_full     (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
+<a name="cam-unit-add-output-format"></a><h3>cam_unit_add_output_format ()</h3>
+<pre class="programlisting"><a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a>*      cam_unit_add_output_format          (<a class="link" href="CamUnit.html" title="CamUnit">CamUnit</a> *self,
                                                          <a class="link" href="camunits-pixels.html#CamPixelFormat" title="enum CamPixelFormat">CamPixelFormat</a> pfmt,
                                                          const char *name,
                                                          int width,
                                                          int height,
-                                                         int row_stride,
-                                                         int max_data_size);</pre>
+                                                         int row_stride);</pre>
 <p>
 Protected method.  Subclasses of CamUnit should invoke this to configure the
 acceptable output formats.</p>
@@ -1653,15 +1578,9 @@ acceptable output formats.</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max_data_size</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
+<td> a pointer to a newly created <a class="link" href="CamUnitFormat.html" title="CamUnitFormat"><span class="type">CamUnitFormat</span></a>.  This can be safely
+ignored.
 </td>
 </tr>
 </tbody>

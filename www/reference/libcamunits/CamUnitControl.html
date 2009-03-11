@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -56,13 +55,13 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 >GValue</a> *actual,
                                                          void *user_data);
+                    <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a>;
                     <a class="link" href="CamUnitControl.html#CamUnitControl-struct" title="CamUnitControl">CamUnitControl</a>;
 <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-enum" title="cam_unit_control_new_enum ()">cam_unit_control_new_enum</a>           (const char *id,
                                                          const char *name,
-                                                         int initial_index,
+                                                         int initial_value,
                                                          int enabled,
-                                                         const char **entries,
-                                                         const int *entries_enabled);
+                                                         const <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a> *entries);
 <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     <a class="link" href="CamUnitControl.html#cam-unit-control-new-int" title="cam_unit_control_new_int ()">cam_unit_control_new_int</a>            (const char *id,
                                                          const char *name,
                                                          int min,
@@ -99,9 +98,9 @@ void                <a class="link" href="CamUnitControl.html#cam-unit-control-m
                                                          float step,
                                                          int enabled);
 void                <a class="link" href="CamUnitControl.html#cam-unit-control-modify-enum" title="cam_unit_control_modify_enum ()">cam_unit_control_modify_enum</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         int selected_value,
                                                          int enabled,
-                                                         const char **entries,
-                                                         const int *entries_enabled);
+                                                         const <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a> *entries);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-try-set-val" title="cam_unit_control_try_set_val ()">cam_unit_control_try_set_val</a>        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          const <a
 href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
@@ -137,6 +136,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-int" title="cam_unit_control_get_int ()">cam_unit_control_get_int</a>            (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 float               <a class="link" href="CamUnitControl.html#cam-unit-control-get-float" title="cam_unit_control_get_float ()">cam_unit_control_get_float</a>          (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-enum" title="cam_unit_control_get_enum ()">cam_unit_control_get_enum</a>           (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              <a class="link" href="CamUnitControl.html#cam-unit-control-get-enum-entries" title="cam_unit_control_get_enum_entries ()">cam_unit_control_get_enum_entries</a>   (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-boolean" title="cam_unit_control_get_boolean ()">cam_unit_control_get_boolean</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-get-string" title="cam_unit_control_get_string ()">cam_unit_control_get_string</a>         (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-max-int" title="cam_unit_control_get_max_int ()">cam_unit_control_get_max_int</a>        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
@@ -151,7 +153,6 @@ int                 <a class="link" href="CamUnitControl.html#cam-unit-control-g
 void                <a class="link" href="CamUnitControl.html#cam-unit-control-set-ui-hints" title="cam_unit_control_set_ui_hints ()">cam_unit_control_set_ui_hints</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
                                                          int flags);
 int                 <a class="link" href="CamUnitControl.html#cam-unit-control-get-ui-hints" title="cam_unit_control_get_ui_hints ()">cam_unit_control_get_ui_hints</a>       (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);
-const char*         <a class="link" href="CamUnitControl.html#cam-unit-control-get-type-str" title="cam_unit_control_get_type_str ()">cam_unit_control_get_type_str</a>       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -179,7 +180,7 @@ cam_unit_get_control_* methods.
 </p>
 <p>
 The only time in which you use this class directly is when implementing a
-subclass of <a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a>.
+<a class="link" href="CamUnit.html" title="CamUnit"><span class="type">CamUnit</span></a> plugin.
 </p>
 <p>
 CamUnitControl represents a control value that can both change
@@ -335,6 +336,26 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="CamUnitControlEnumValue"></a><h3>CamUnitControlEnumValue</h3>
+<pre class="programlisting">typedef struct {
+    // The numerical value for an enum.  Must be unique within the control.
+    int value;
+
+    // A human-readable name, used for display purposes.
+    const char *nickname;
+    
+    // Determines if this entry can be selected by the user or not.
+    gboolean enabled;
+} CamUnitControlEnumValue;
+</pre>
+<p>
+This struct is used to define and modify enumerated controls.</p>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="CamUnitControl-struct"></a><h3>CamUnitControl</h3>
 <pre class="programlisting">typedef struct _CamUnitControl CamUnitControl;</pre>
 <p>
@@ -348,10 +369,9 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 <a name="cam-unit-control-new-enum"></a><h3>cam_unit_control_new_enum ()</h3>
 <pre class="programlisting"><a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a>*     cam_unit_control_new_enum           (const char *id,
                                                          const char *name,
-                                                         int initial_index,
+                                                         int initial_value,
                                                          int enabled,
-                                                         const char **entries,
-                                                         const int *entries_enabled);</pre>
+                                                         const <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a> *entries);</pre>
 <p>
 </p>
 <p>
@@ -371,7 +391,7 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>initial_index</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>initial_value</code></em> :</span></p></td>
 <td> the initial value for the control.
 </td>
 </tr>
@@ -382,15 +402,8 @@ A control option on a CamUnit that the user or a program can adjust.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>entries</code></em> :</span></p></td>
-<td> a NULL-terminated array of strings specifying the different
-          options to present to the user.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em> :</span></p></td>
-<td> an array of integers indicating whether each entry
-          in <em class="parameter"><code>entries</code></em> should be enabled.  1 indicates enabled, and 0
-          disabled.  Specify NULL to implicitly enable all entries.
+<td> an array of <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue"><span class="type">CamUnitControlEnumValue</span></a> structs.  The last entry of
+the array serves as a sentinel, and must have nickname set to NULL
 </td>
 </tr>
 <tr>
@@ -741,9 +754,9 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 <div class="refsect2" lang="en">
 <a name="cam-unit-control-modify-enum"></a><h3>cam_unit_control_modify_enum ()</h3>
 <pre class="programlisting">void                cam_unit_control_modify_enum        (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self,
+                                                         int selected_value,
                                                          int enabled,
-                                                         const char **entries,
-                                                         const int *entries_enabled);</pre>
+                                                         const <a class="link" href="CamUnitControl.html#CamUnitControlEnumValue" title="CamUnitControlEnumValue">CamUnitControlEnumValue</a> *entries);</pre>
 <p>
 
 </p>
@@ -756,17 +769,17 @@ general, you shouldn't need to call this when subclassing from <a class="link" h
 </td>
 </tr>
 <tr>
+<td><p><span class="term"><em class="parameter"><code>selected_value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
 <td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>entries</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>entries_enabled</code></em> :</span></p></td>
 <td>
 
 
@@ -1259,6 +1272,34 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="cam-unit-control-get-enum-entries"></a><h3>cam_unit_control_get_enum_entries ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+>GList</a>*              cam_unit_control_get_enum_entries   (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a GList of CamUnitControlEnumValue*.  Do not modify the entries.
+The list must be freed with g_list_free when no longer needed.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="cam-unit-control-get-boolean"></a><h3>cam_unit_control_get_boolean ()</h3>
 <pre class="programlisting">int                 cam_unit_control_get_boolean        (const <a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *self);</pre>
 <p>
@@ -1554,31 +1595,6 @@ See also: <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title=
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a logical OR of <a class="link" href="CamUnitControl.html#CamUnitControlUIHint" title="enum CamUnitControlUIHint"><span class="type">CamUnitControlUIHint</span></a> values
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="cam-unit-control-get-type-str"></a><h3>cam_unit_control_get_type_str ()</h3>
-<pre class="programlisting">const char*         cam_unit_control_get_type_str       (<a class="link" href="CamUnitControl.html" title="CamUnitControl">CamUnitControl</a> *ctl);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ctl</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
 </td>
 </tr>
 </tbody>

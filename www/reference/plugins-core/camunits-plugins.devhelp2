@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Camunits Core Plugins" link="index.html" author="Albert HuangDavid Moore" name="camunits-plugins" version="2">
+  <chapters>
+    <sub name="Input" link="ch01.html">
+      <sub name="input.example" link="input-example.html"/>
+      <sub name="input.log" link="input-log.html"/>
+      <sub name="input.dc1394" link="input-dc1394.html"/>
+      <sub name="input.v4l2" link="input-v4l2.html"/>
+      <sub name="input.v4l" link="input-v4l.html"/>
+    </sub>
+    <sub name="Convert" link="ch02.html">
+      <sub name="convert.colorspace" link="convert-colorspace.html"/>
+      <sub name="convert.jpeg_decompress" link="convert-jpeg-decompress.html"/>
+      <sub name="convert.jpeg_compress" link="convert-jpeg-compress.html"/>
+      <sub name="convert.fast_debayer" link="convert-fast-debayer.html"/>
+      <sub name="convert.to_rgb8" link="convert-to-rgb8.html"/>
+    </sub>
+    <sub name="Other" link="ch03.html">
+      <sub name="output.logger" link="output-logger.html"/>
+      <sub name="filter.gl" link="filter-gl.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <keyword type="" name="menu" link="input-example.html#input-example-menu"/>
+    <keyword type="" name="bool" link="input-example.html#input-example-bool"/>
+    <keyword type="" name="int 1" link="input-example.html#input-example-int-1"/>
+    <keyword type="" name="int2" link="input-example.html#input-example-int-2"/>
+    <keyword type="" name="Filename" link="input-log.html#input-log-filename"/>
+    <keyword type="" name="Frame" link="input-log.html#input-log-frame"/>
+    <keyword type="" name="Pause" link="input-log.html#input-log-pause"/>
+    <keyword type="" name="Mode" link="input-log.html#input-log-mode"/>
+    <keyword type="" name="Playback Speed" link="input-log.html#input-log-speed"/>
+    <keyword type="" name="Loop" link="input-log.html#input-log-loop"/>
+    <keyword type="" name="Loop Start Frame" link="input-log.html#input-log-loop-start-frame"/>
+    <keyword type="" name="Loop End Frame" link="input-log.html#input-log-loop-end-frame"/>
+    <keyword type="" name="Quality" link="convert-jpeg-compress.html#convert-jpeg-quality"/>
+    <keyword type="" name="Tiling" link="convert-fast-debayer.html#input-example-menu"/>
+    <keyword type="" name="Filename" link="output-logger.html#output-logger-desired-filename"/>
+    <keyword type="" name="Enable Filename Auto Suffix" link="output-logger.html#output-logger-auto-suffix-enable"/>
+    <keyword type="" name="Record" link="output-logger.html#output-logger-record"/>
+  </functions>
+</book>

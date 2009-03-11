@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -48,8 +47,7 @@ object.</p>
                                                          const char *name,
                                                          int width,
                                                          int height,
-                                                         int row_stride,
-                                                         int max_data_size);
+                                                         int row_stride);
 int                 <a class="link" href="CamUnitFormat.html#cam-unit-format-equals" title="cam_unit_format_equals ()">cam_unit_format_equals</a>              (const <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a> *self,
                                                          const <a class="link" href="CamUnitFormat.html" title="CamUnitFormat">CamUnitFormat</a> *a);
 </pre>
@@ -96,7 +94,6 @@ to the specified CamUnitFormat.</p>
     int row_stride;
     int width;
     int height;
-    int max_data_size;
 } CamUnitFormat;
 </pre>
 <p>
@@ -137,12 +134,6 @@ to the specified CamUnitFormat.</p>
 <td> the height, in pixels, of the frame.
 </td>
 </tr>
-<tr>
-<td><p><span class="term">int <em class="structfield"><code>max_data_size</code></em>;</span></p></td>
-<td> the maximum size of an image for this format, in bytes.
-                Used mostly for internal buffer allocation
-</td>
-</tr>
 </tbody>
 </table></div>
 </div>
@@ -153,8 +144,7 @@ to the specified CamUnitFormat.</p>
                                                          const char *name,
                                                          int width,
                                                          int height,
-                                                         int row_stride,
-                                                         int max_data_size);</pre>
+                                                         int row_stride);</pre>
 <p>
 </p>
 <p>
@@ -188,13 +178,6 @@ to the specified CamUnitFormat.</p>
 <td><p><span class="term"><em class="parameter"><code>row_stride</code></em> :</span></p></td>
 <td> number of bytes separating rows.  Should be 0 when the term row
              stride is not meaningful for the specified pixel format.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>max_data_size</code></em> :</span></p></td>
-<td> the maximum number of bytes that an image of this format is
-                expected to be.  This is typically used for internal buffer
-                allocation.
 </td>
 </tr>
 <tr>

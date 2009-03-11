@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>input.log</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Camunits Core Plugins">
+<link rel="up" href="ch01.html" title="Input">
+<link rel="prev" href="input-example.html" title="input.example">
+<link rel="next" href="input-dc1394.html" title="input.dc1394">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="chapter" href="ch01.html" title="Input">
+<link rel="chapter" href="ch02.html" title="Convert">
+<link rel="chapter" href="ch03.html" title="Other">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="input-example.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Camunits Core Plugins</th>
+<td><a accesskey="n" href="input-dc1394.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="input-log"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><code class="code">input.log</code></span></h2>
+<p>Log Input Unit — Read images from a Camunits log file</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" lang="en">
+<a name="id340280"></a><h2>Description</h2>
+<p>
+    <code class="literal">input.log</code> provides units that can read images from a
+    Camunits log file.  Various features of the log playback can be controlled,
+    such as the playback speed, frame skipping, and looping.
+    </p>
+<div class="refsect3" lang="en">
+<a name="id340295"></a><h4>Input Formats</h4>
+<p>None.  This is an input unit.</p>
+</div>
+<div class="refsect3" lang="en">
+<a name="id340306"></a><h4>Output Formats</h4>
+<p>The output format is determined by the log file</p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id340318"></a><h2>Controls</h2>
+<div class="mediaobject"><img src="input-log-widget.png"></div>
+<div class="refsect2" lang="en">
+<a name="input-log-filename"></a><h3>Filename</h3>
+<p>
+    Which log file to read from.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>filename</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>string</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-frame"></a><h3>Frame</h3>
+<p>
+    The next frame number to read.  This is zero-indexed, and automatically
+    advances.  It is also controllable.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>frame</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>int</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-pause"></a><h3>Pause</h3>
+<p>
+    Pauses playback if set.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>pause</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-mode"></a><h3>Mode</h3>
+<p>
+    There are two auto-advance modes, and behave differently only if the
+    image processing chain handles images more slowly than they are produced by
+    the log input unit.  In the first mode (0), the log input unit will delay
+    playback of the next frame, and never skips frames.  In the second mode
+    (1), the log input unit will skip frames to maintain a "realtime" playback
+    effect.  
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>mode</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>enumeration</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-speed"></a><h3>Playback Speed</h3>
+<p>
+    Scales the rate at which frames are produced, relative to the rate at which
+    they were logged.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>speed</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>float</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-loop"></a><h3>Loop</h3>
+<p>
+    If set, then log playback will constantly loop, playing back a specified
+    region of the log file.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>loop</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-loop-start-frame"></a><h3>Loop Start Frame</h3>
+<p>
+    Controls the frame at which looping starts.  Only applicable if
+    <code class="literal">loop</code> is set.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>loop-start-frame</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>int</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="input-log-loop-end-frame"></a><h3>Loop End Frame</h3>
+<p>
+    Controls the frame at which looping ends.  Only applicable if
+    <code class="literal">loop</code> is set.
+    </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em>:</span></p></td>
+<td>loop-end-frame</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em>:</span></p></td>
+<td>int</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>

@@ -13,19 +13,7 @@
       <sub name="CamUnitChain" link="CamUnitChain.html"/>
       <sub name="CamUnitManager" link="CamUnitManager.html"/>
     </sub>
-    <sub name="Built-in Units" link="ch03.html">
-      <sub name="CamV4L2" link="CamV4L2.html"/>
-      <sub name="CamInputExample" link="CamInputExample.html"/>
-      <sub name="CamInputLog" link="CamInputLog.html"/>
-      <sub name="CamConvertToRgb8" link="CamConvertToRgb8.html"/>
-      <sub name="CamFilterGL" link="CamFilterGL.html"/>
-      <sub name="CamConvertJpegCompress" link="CamConvertJpegCompress.html"/>
-      <sub name="CamConvertJpegDecompress" link="CamConvertJpegDecompress.html"/>
-      <sub name="CamFastBayerFilter" link="CamFastBayerFilter.html"/>
-      <sub name="CamColorConversionFilter" link="CamColorConversionFilter.html"/>
-      <sub name="CamLoggerUnit" link="CamLoggerUnit.html"/>
-    </sub>
-    <sub name="Other stuff" link="ch04.html">
+    <sub name="Other stuff" link="ch03.html">
       <sub name="pixels" link="camunits-pixels.html"/>
       <sub name="log" link="camunits-log.html"/>
       <sub name="plugin" link="camunits-plugin.html"/>
@@ -63,14 +51,12 @@
     <keyword type="function" name="cam_unit_draw_gl_init ()" link="CamUnit.html#cam-unit-draw-gl-init"/>
     <keyword type="function" name="cam_unit_draw_gl ()" link="CamUnit.html#cam-unit-draw-gl"/>
     <keyword type="function" name="cam_unit_draw_gl_shutdown ()" link="CamUnit.html#cam-unit-draw-gl-shutdown"/>
-    <keyword type="function" name="cam_unit_set_name ()" link="CamUnit.html#cam-unit-set-name"/>
-    <keyword type="function" name="cam_unit_set_id ()" link="CamUnit.html#cam-unit-set-id"/>
     <keyword type="function" name="cam_unit_add_control_enum ()" link="CamUnit.html#cam-unit-add-control-enum"/>
     <keyword type="function" name="cam_unit_add_control_int ()" link="CamUnit.html#cam-unit-add-control-int"/>
     <keyword type="function" name="cam_unit_add_control_float ()" link="CamUnit.html#cam-unit-add-control-float"/>
     <keyword type="function" name="cam_unit_add_control_boolean ()" link="CamUnit.html#cam-unit-add-control-boolean"/>
     <keyword type="function" name="cam_unit_add_control_string ()" link="CamUnit.html#cam-unit-add-control-string"/>
-    <keyword type="function" name="cam_unit_add_output_format_full ()" link="CamUnit.html#cam-unit-add-output-format-full"/>
+    <keyword type="function" name="cam_unit_add_output_format ()" link="CamUnit.html#cam-unit-add-output-format"/>
     <keyword type="function" name="cam_unit_remove_output_format ()" link="CamUnit.html#cam-unit-remove-output-format"/>
     <keyword type="function" name="cam_unit_remove_all_output_formats ()" link="CamUnit.html#cam-unit-remove-all-output-formats"/>
     <keyword type="function" name="cam_unit_produce_frame ()" link="CamUnit.html#cam-unit-produce-frame"/>
@@ -87,6 +73,7 @@
     <keyword type="enum" name="enum CamUnitControlType" link="CamUnitControl.html#CamUnitControlType"/>
     <keyword type="enum" name="enum CamUnitControlUIHint" link="CamUnitControl.html#CamUnitControlUIHint"/>
     <keyword type="function" name="CamUnitControlCallback ()" link="CamUnitControl.html#CamUnitControlCallback"/>
+    <keyword type="struct" name="CamUnitControlEnumValue" link="CamUnitControl.html#CamUnitControlEnumValue"/>
     <keyword type="struct" name="CamUnitControl" link="CamUnitControl.html#CamUnitControl-struct"/>
     <keyword type="function" name="cam_unit_control_new_enum ()" link="CamUnitControl.html#cam-unit-control-new-enum"/>
     <keyword type="function" name="cam_unit_control_new_int ()" link="CamUnitControl.html#cam-unit-control-new-int"/>
@@ -113,6 +100,7 @@
     <keyword type="function" name="cam_unit_control_get_int ()" link="CamUnitControl.html#cam-unit-control-get-int"/>
     <keyword type="function" name="cam_unit_control_get_float ()" link="CamUnitControl.html#cam-unit-control-get-float"/>
     <keyword type="function" name="cam_unit_control_get_enum ()" link="CamUnitControl.html#cam-unit-control-get-enum"/>
+    <keyword type="function" name="cam_unit_control_get_enum_entries ()" link="CamUnitControl.html#cam-unit-control-get-enum-entries"/>
     <keyword type="function" name="cam_unit_control_get_boolean ()" link="CamUnitControl.html#cam-unit-control-get-boolean"/>
     <keyword type="function" name="cam_unit_control_get_string ()" link="CamUnitControl.html#cam-unit-control-get-string"/>
     <keyword type="function" name="cam_unit_control_get_max_int ()" link="CamUnitControl.html#cam-unit-control-get-max-int"/>
@@ -125,11 +113,14 @@
     <keyword type="function" name="cam_unit_control_get_enabled ()" link="CamUnitControl.html#cam-unit-control-get-enabled"/>
     <keyword type="function" name="cam_unit_control_set_ui_hints ()" link="CamUnitControl.html#cam-unit-control-set-ui-hints"/>
     <keyword type="function" name="cam_unit_control_get_ui_hints ()" link="CamUnitControl.html#cam-unit-control-get-ui-hints"/>
-    <keyword type="function" name="cam_unit_control_get_type_str ()" link="CamUnitControl.html#cam-unit-control-get-type-str"/>
     <keyword type="" name="The &quot;parameters-changed&quot; signal" link="CamUnitControl.html#CamUnitControl-parameters-changed"/>
     <keyword type="" name="The &quot;value-changed&quot; signal" link="CamUnitControl.html#CamUnitControl-value-changed"/>
     <keyword type="struct" name="CamUnitDescription" link="CamUnitDriver.html#CamUnitDescription-struct"/>
     <keyword type="function" name="cam_unit_description_new ()" link="CamUnitDriver.html#cam-unit-description-new"/>
+    <keyword type="function" name="cam_unit_description_get_driver ()" link="CamUnitDriver.html#cam-unit-description-get-driver"/>
+    <keyword type="function" name="cam_unit_description_get_unit_id ()" link="CamUnitDriver.html#cam-unit-description-get-unit-id"/>
+    <keyword type="function" name="cam_unit_description_get_name ()" link="CamUnitDriver.html#cam-unit-description-get-name"/>
+    <keyword type="function" name="cam_unit_description_get_flags ()" link="CamUnitDriver.html#cam-unit-description-get-flags"/>
     <keyword type="struct" name="CamUnitDriver" link="CamUnitDriver.html#CamUnitDriver-struct"/>
     <keyword type="function" name="CamUnitConstructor ()" link="CamUnitDriver.html#CamUnitConstructor"/>
     <keyword type="function" name="cam_unit_driver_new_stock ()" link="CamUnitDriver.html#cam-unit-driver-new-stock"/>
@@ -154,11 +145,8 @@
     <keyword type="function" name="cam_framebuffer_metadata_get ()" link="CamFrameBuffer.html#cam-framebuffer-metadata-get"/>
     <keyword type="function" name="cam_framebuffer_metadata_set ()" link="CamFrameBuffer.html#cam-framebuffer-metadata-set"/>
     <keyword type="function" name="cam_framebuffer_metadata_list_keys ()" link="CamFrameBuffer.html#cam-framebuffer-metadata-list-keys"/>
-    <keyword type="struct" name="CamUnitChainSource" link="CamUnitChain.html#CamUnitChainSource"/>
     <keyword type="struct" name="CamUnitChain" link="CamUnitChain.html#CamUnitChain-struct"/>
     <keyword type="function" name="cam_unit_chain_new ()" link="CamUnitChain.html#cam-unit-chain-new"/>
-    <keyword type="function" name="cam_unit_chain_new_with_manager ()" link="CamUnitChain.html#cam-unit-chain-new-with-manager"/>
-    <keyword type="function" name="cam_unit_chain_get_manager ()" link="CamUnitChain.html#cam-unit-chain-get-manager"/>
     <keyword type="function" name="cam_unit_chain_get_length ()" link="CamUnitChain.html#cam-unit-chain-get-length"/>
     <keyword type="function" name="cam_unit_chain_has_unit ()" link="CamUnitChain.html#cam-unit-chain-has-unit"/>
     <keyword type="function" name="cam_unit_chain_insert_unit ()" link="CamUnitChain.html#cam-unit-chain-insert-unit"/>
@@ -182,7 +170,7 @@
     <keyword type="" name="The &quot;unit-removed&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-removed"/>
     <keyword type="" name="The &quot;unit-reordered&quot; signal" link="CamUnitChain.html#CamUnitChain-unit-reordered"/>
     <keyword type="struct" name="CamUnitManager" link="CamUnitManager.html#CamUnitManager-struct"/>
-    <keyword type="function" name="cam_unit_manager_new ()" link="CamUnitManager.html#cam-unit-manager-new"/>
+    <keyword type="function" name="cam_unit_manager_get_and_ref ()" link="CamUnitManager.html#cam-unit-manager-get-and-ref"/>
     <keyword type="function" name="cam_unit_manager_add_driver ()" link="CamUnitManager.html#cam-unit-manager-add-driver"/>
     <keyword type="function" name="cam_unit_manager_remove_driver ()" link="CamUnitManager.html#cam-unit-manager-remove-driver"/>
     <keyword type="function" name="cam_unit_manager_start_drivers ()" link="CamUnitManager.html#cam-unit-manager-start-drivers"/>
@@ -198,39 +186,6 @@
     <keyword type="" name="The &quot;unit-description-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-added"/>
     <keyword type="" name="The &quot;unit-description-removed&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-description-removed"/>
     <keyword type="" name="The &quot;unit-driver-added&quot; signal" link="CamUnitManager.html#CamUnitManager-unit-driver-added"/>
-    <keyword type="struct" name="CamV4L2Driver" link="CamV4L2.html#CamV4L2Driver-struct"/>
-    <keyword type="function" name="cam_v4l2_driver_new ()" link="CamV4L2.html#cam-v4l2-driver-new"/>
-    <keyword type="struct" name="CamV4L2" link="CamV4L2.html#CamV4L2-struct"/>
-    <keyword type="function" name="cam_v4l2_new ()" link="CamV4L2.html#cam-v4l2-new"/>
-    <keyword type="struct" name="CamInputExampleDriver" link="CamInputExample.html#CamInputExampleDriver-struct"/>
-    <keyword type="function" name="cam_input_example_driver_new ()" link="CamInputExample.html#cam-input-example-driver-new"/>
-    <keyword type="struct" name="CamInputExample" link="CamInputExample.html#CamInputExample-struct"/>
-    <keyword type="function" name="cam_input_example_new ()" link="CamInputExample.html#cam-input-example-new"/>
-    <keyword type="struct" name="CamInputLogDriver" link="CamInputLog.html#CamInputLogDriver-struct"/>
-    <keyword type="function" name="cam_input_log_driver_new ()" link="CamInputLog.html#cam-input-log-driver-new"/>
-    <keyword type="struct" name="CamInputLog" link="CamInputLog.html#CamInputLog-struct"/>
-    <keyword type="function" name="cam_input_log_new ()" link="CamInputLog.html#cam-input-log-new"/>
-    <keyword type="struct" name="CamConvertToRgb8" link="CamConvertToRgb8.html#CamConvertToRgb8-struct"/>
-    <keyword type="function" name="cam_convert_to_rgb8_new ()" link="CamConvertToRgb8.html#cam-convert-to-rgb8-new"/>
-    <keyword type="function" name="cam_convert_to_rgb8_driver_new ()" link="CamConvertToRgb8.html#cam-convert-to-rgb8-driver-new"/>
-    <keyword type="struct" name="CamFilterGL" link="CamFilterGL.html#CamFilterGL-struct"/>
-    <keyword type="function" name="cam_filter_gl_new ()" link="CamFilterGL.html#cam-filter-gl-new"/>
-    <keyword type="function" name="cam_filter_gl_driver_new ()" link="CamFilterGL.html#cam-filter-gl-driver-new"/>
-    <keyword type="struct" name="CamConvertJpegCompress" link="CamConvertJpegCompress.html#CamConvertJpegCompress-struct"/>
-    <keyword type="function" name="cam_convert_jpeg_compress_new ()" link="CamConvertJpegCompress.html#cam-convert-jpeg-compress-new"/>
-    <keyword type="function" name="cam_convert_jpeg_compress_driver_new ()" link="CamConvertJpegCompress.html#cam-convert-jpeg-compress-driver-new"/>
-    <keyword type="struct" name="CamConvertJpegDecompress" link="CamConvertJpegDecompress.html#CamConvertJpegDecompress-struct"/>
-    <keyword type="function" name="cam_convert_jpeg_decompress_new ()" link="CamConvertJpegDecompress.html#cam-convert-jpeg-decompress-new"/>
-    <keyword type="function" name="cam_convert_jpeg_decompress_driver_new ()" link="CamConvertJpegDecompress.html#cam-convert-jpeg-decompress-driver-new"/>
-    <keyword type="struct" name="CamFastBayerFilter" link="CamFastBayerFilter.html#CamFastBayerFilter-struct"/>
-    <keyword type="function" name="cam_fast_bayer_filter_new ()" link="CamFastBayerFilter.html#cam-fast-bayer-filter-new"/>
-    <keyword type="function" name="cam_fast_bayer_filter_driver_new ()" link="CamFastBayerFilter.html#cam-fast-bayer-filter-driver-new"/>
-    <keyword type="struct" name="CamColorConversionFilter" link="CamColorConversionFilter.html#CamColorConversionFilter-struct"/>
-    <keyword type="function" name="cam_color_conversion_filter_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-new"/>
-    <keyword type="function" name="cam_color_conversion_filter_driver_new ()" link="CamColorConversionFilter.html#cam-color-conversion-filter-driver-new"/>
-    <keyword type="struct" name="CamLoggerUnit" link="CamLoggerUnit.html#CamLoggerUnit-struct"/>
-    <keyword type="function" name="cam_logger_unit_new ()" link="CamLoggerUnit.html#cam-logger-unit-new"/>
-    <keyword type="function" name="cam_logger_unit_driver_new ()" link="CamLoggerUnit.html#cam-logger-unit-driver-new"/>
     <keyword type="macro" name="cam_pf_fourcc()" link="camunits-pixels.html#cam-pf-fourcc"/>
     <keyword type="enum" name="enum CamPixelFormat" link="camunits-pixels.html#CamPixelFormat"/>
     <keyword type="function" name="cam_pixel_format_nickname ()" link="camunits-pixels.html#cam-pixel-format-nickname"/>

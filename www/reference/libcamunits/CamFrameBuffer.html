@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="chapter" href="ch01.html" title="Units">
 <link rel="chapter" href="ch02.html" title="Image Processing Chains">
-<link rel="chapter" href="ch03.html" title="Built-in Units">
-<link rel="chapter" href="ch04.html" title="Other stuff">
+<link rel="chapter" href="ch03.html" title="Other stuff">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -85,12 +84,11 @@ usages may include identifying the image source (e.g. the UID of a firewire
 camera), the exposure settings for the image, etc.
 </p>
 <p>
-When logging images with <a class="link" href="CamLoggerUnit.html" title="CamLoggerUnit"><span class="type">CamLoggerUnit</span></a> (unit id "output.logger"), the
+When logging images with <code class="literal">output.logger</code>, the
 metadata dictionary is also logged to disk.  Additionally, when replaying
-logs with <a class="link" href="CamInputLog.html" title="CamInputLog"><span class="type">CamInputLog</span></a> (unit id typically "input.log:/path/to/file"), the
-metadata dictionary will be repopulated from the log file.  Thus, the
-metadata dictionary can be used to store metadata that persists in a log
-file.</p>
+logs with <code class="literal">input.log</code>, the metadata dictionary will be
+repopulated from the log file.  Thus, the metadata dictionary can be used to
+store metadata that persists in a log file.</p>
 <p>
 
 </p>
