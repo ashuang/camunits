@@ -318,13 +318,14 @@ cam_unit_chain_remove_unit (CamUnitChain *self, CamUnit *unit)
     CamUnit *prev = link->prev ? CAM_UNIT (link->prev->data) : NULL;
     CamUnit *next = link->next ? CAM_UNIT (link->next->data) : NULL;
 
+    update_unit_status (self, unit, FALSE);
+    cam_unit_set_input (unit, NULL);
+
     self->units = g_list_delete_link (self->units, link);
     g_signal_handlers_disconnect_by_func (unit, on_unit_status_changed, self);
     g_signal_emit (G_OBJECT (self), chain_signals[UNIT_REMOVED_SIGNAL],
             0, unit);
     dbgl (DBG_REF, "unref unit [%s]\n", cam_unit_get_id (unit));
-    update_unit_status (self, unit, FALSE);
-    cam_unit_set_input (unit, NULL);
     g_object_unref (unit);
 
     if (next) {
