@@ -194,6 +194,7 @@ on_input_format_changed (CamUnit *super, const CamUnitFormat *infmt)
             case CAM_PIXEL_FORMAT_I420:
             case CAM_PIXEL_FORMAT_GRAY:
             case CAM_PIXEL_FORMAT_YUYV:
+            case CAM_PIXEL_FORMAT_UYVY:
             case CAM_PIXEL_FORMAT_BGRA:
             case CAM_PIXEL_FORMAT_BGR:
                 _maybe_set_worker(self, "convert.colorspace");
