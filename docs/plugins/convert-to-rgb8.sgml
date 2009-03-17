@@ -39,6 +39,7 @@
                 <member>BGRA 32bpp</member>
                 <member>Gray 8bpp</member>
                 <member>YUYV</member>
+                <member>UYVY</member>
                 </simplelist></entry>
                 <entry><simpara>Uses <literal>convert.colorspace</literal> internally.
                 </simpara></entry>
