@@ -3,7 +3,7 @@ camunitsplugin_LTLIBRARIES = \
 		   ipp_resize.la \
 		   ipp_filter_fixed_gauss.la
 
-INCLUDES = $(GLIB_CFLAGS) $(CAMUNITS_CFLAGS) $(IPP_CFLAGS)
+INCLUDES = $(GLIB_CFLAGS) $(Camunits_CFLAGS) $(IPP_CFLAGS)
 
 # gaussian downsample
 ipp_pyr_down_gauss_la_SOURCES = pyr_down_gauss.c 

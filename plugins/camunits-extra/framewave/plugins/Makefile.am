@@ -1,7 +1,7 @@
 camunitsplugin_LTLIBRARIES = \
 		   framewave_resize.la
 
-INCLUDES = $(GLIB_CFLAGS) $(CAMUNITS_CFLAGS) $(FRAMEWAVE_CFLAGS)
+INCLUDES = $(GLIB_CFLAGS) $(Camunits_CFLAGS) $(FRAMEWAVE_CFLAGS)
 
 # resize
 framewave_resize_la_SOURCES = resize.c 

@@ -27,7 +27,7 @@ camunitsplugin_LTLIBRARIES = camlcm_publish.la \
 						   camlcm_input_log_sync.la \
 						   camlcm_input_legacy.la
 
-INCLUDES = -I$(top_srcdir)/src $(GLIB_CFLAGS) $(CAMUNITS_CFLAGS) $(LCM_CFLAGS)
+INCLUDES = -I$(top_srcdir)/src $(GLIB_CFLAGS) $(Camunits_CFLAGS) $(LCM_CFLAGS)
 
 # publish unit
 camlcm_publish_la_SOURCES = \

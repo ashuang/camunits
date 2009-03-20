@@ -12,8 +12,8 @@ AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
 PKG_PROG_PKG_CONFIG
 
 dnl check for camunits
-AM_PATH_CAMUNITS(,,
-       [AC_MSG_ERROR([Camunits is not found, but is required by camunits-lcm.])])
+PKG_CHECK_MODULES(Camunits, [camunits >= 0.2.0],,
+                  [AC_MSG_ERROR([Camunits is not found, but is required by camunits-extra.])])
 
 dnl check for lcm
 AC_ARG_WITH(lcm-plugins,
@@ -21,7 +21,7 @@ AC_ARG_WITH(lcm-plugins,
              [Don't compile LCM plugins])],
             [], [with_lcm_plugins=yes])
 if test x$with_lcm_plugins = xyes; then
-    AM_PATH_LCM(,,
+    PKG_CHECK_MODULES(LCM, [lcm >= 0.2.1],,
            [AC_MSG_WARN([LCM not found, LCM plugins will not be built.])
             LCM_RSN="LCM not found"])
 fi
