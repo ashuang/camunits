@@ -8,4 +8,4 @@ Description: GTK widgets for libcamunits
 Requires: camunits
 Version: @VERSION@
 Libs: -L${libdir} -lcamunits-gtk
-Cflags: -I${includedir}/camunits -I${includedir}
+Cflags: -I${includedir}
