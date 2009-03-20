@@ -6,5 +6,5 @@ lcmtypes = camlcm_image_t.lcm \
 
 EXTRA_DIST = $(lcmtypes)
 
-lcmtypesdir = $(camunitsdatadir)/lcmtypes
+lcmtypesdir = $(camunitsextradatadir)/lcmtypes
 lcmtypes_DATA = $(lcmtypes)

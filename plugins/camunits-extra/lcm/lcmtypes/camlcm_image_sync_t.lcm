@@ -1,20 +1,20 @@
 package camlcm;
 
-// image_sync_t is used by libcam plugins to synchronize playback of a libcam
-// log file with playback of an LCM log file.
+// image_sync_t is used by camunits plugins to synchronize playback of a
+// camunits log file with playback of an LCM log file.
 //
-// The expected usage scenario is when an image stream is recorded to a libcam
-// log file, and a lcm-syncpub unit is in the libcam chain that publishes
-// image_sync_t messages to an LCM network, where they may be logged to the
-// an LCM logfile.
+// The expected usage scenario is when an image stream is recorded to a
+// camunits log file, and a lcm-syncpub unit is in the camunits chain that
+// publishes image_sync_t messages to an LCM network, where they may be logged
+// to the an LCM logfile.
 //
 // Later, when playing back an LCM log file, the image_sync_t messages can be
-// used by a libcam log playback unit to synchronize its playback of the
-// libcam log file with the LCM log file.
+// used by a camunits log playback unit to synchronize its playback of the
+// camunits log file with the LCM log file.
 //
 // The existence of this message type is largely predicated on the notion that
 // we may not always want full resolution image data in an LCM log file, and
-// may instead store it in a dedicated libcam log file.
+// may instead store it in a dedicated camunits log file.
 
 struct image_sync_t
 {

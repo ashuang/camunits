@@ -1,1 +1,2 @@
 usr/lib/camunits/camlcm_*.so
+usr/share/camunits-extra/lcmtypes/*.lcm

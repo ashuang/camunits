@@ -83,8 +83,8 @@ AM_CONDITIONAL(HAVE_OPENCV, test "x$OPENCV_LIBS" != x)
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-camunitsdatadir="$datadir/camunits"
-AC_SUBST(camunitsdatadir)
+camunitsextradatadir="$datadir/camunits-extra"
+AC_SUBST(camunitsextradatadir)
 camunitsplugindir="$libdir/camunits"
 AC_SUBST(camunitsplugindir)
 
