@@ -12,4 +12,4 @@ Description: Image acquisition library for machine vision researchers
 Requires:
 Version: @VERSION@
 Libs: -L${libdir} -lcamunits
-Cflags: -I${includedir}/camunits -I${includedir}
+Cflags: -I${includedir}
