@@ -5,3 +5,13 @@ DEB_DH_INSTALL_SOURCEDIR=$(CURDIR)/debian/tmp
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/buildcore.mk
 include /usr/share/cdbs/1/class/autotools.mk
+
+
+
+get-orig-source:
+	mkdir tmp; \
+	cd tmp; \
+	wget http://camunits.googlecode.com/files/camunits-extra-0.2.0.tar.gz; \
+	mv camunits-extra-0.2.0.tar.gz ../camunits-extra_0.2.0.orig.tar.gz; \
+	cd ..; \
+	rmdir tmp
