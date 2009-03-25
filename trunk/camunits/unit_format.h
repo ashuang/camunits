@@ -18,10 +18,8 @@ extern "C" {
  * %pixelformat field, which specifies how the image is actually represented.
  * Typical values for %pixelformat are CAM_PIXEL_FORMAT_GRAY,
  * CAM_PIXEL_FORMAT_RGB, etc.  Additionally, the
- * CamUnitFormat class specifies the width and height of an image, the row
- * stride (for pixel formats where stride is meaningful), and the maximum
- * length of the image data (for variable length formats such as JPEG and other
- * compressed formats)
+ * CamUnitFormat class specifies the width and height of an image, and the row
+ * stride for pixel formats where stride is meaningful.
  *
  * Each instance of a #CamUnit provides a list of output formats that it is
  * able to produce.  On initialization, one of these output formats must be
