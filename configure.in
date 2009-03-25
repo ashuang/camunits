@@ -8,7 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 case "$target_os" in
 	linux*) arch=linux;;
 	darwin*)
-		CFLAGS="$CFLAGS -I/usr/X11R6/include -I/opt/local/include"
+		AM_CFLAGS="$AM_CFLAGS -I/usr/X11R6/include -I/opt/local/include"
 		LDFLAGS="$LDFLAGS -L/usr/X11R6/lib -L/opt/local/lib -Wl,-dylib_file,/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib"
 		;;
 	*) arch=unknown;;
@@ -118,7 +118,9 @@ AC_SUBST(camunitsdatadir)
 dnl ---------------------------------------------------------------------------
 dnl additional plugin paths can be specified as a configure argument
 dnl ---------------------------------------------------------------------------
-AC_ARG_WITH(plugin-extra-path,[  --with-plugin-extra-path=<path>  Colon-separated plugin search path])
+AC_ARG_WITH(plugin-extra-path,
+            [AS_HELP_STRING([--with-plugin-extra-path=<path>],
+             [Colon-separated plugin search path])])
 if ! test -z "$with_plugin_extra_path" ; then
     extra_plugin_path="$with_plugin_extra_path"
 else
@@ -128,12 +130,12 @@ CAMUNITS_PLUGIN_PATH="$camunitsplugindir:$with_plugin_extra_path"
 AC_SUBST(CAMUNITS_PLUGIN_PATH)
 
 dnl ---------------------------------------------------------------------------
-dnl Warnings
+dnl C99 support, Warnings, and Large file support
 dnl ---------------------------------------------------------------------------
 if test "x$GCC" = "xyes"; then
-    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+    AM_CFLAGS="$AM_CFLAGS -std=gnu99 -Wall -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
     LDFLAGS="$LDFLAGS -g -Wall"
-    AC_SUBST(CFLAGS)
+    AC_SUBST(AM_CFLAGS)
     AC_SUBST(LDFLAGS)
 fi
 
