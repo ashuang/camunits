@@ -133,7 +133,24 @@ cam_fast_bayer_filter_stream_init (CamUnit * super, const CamUnitFormat * fmt)
     const CamUnitFormat * infmt = cam_unit_get_output_format(input);
 
     if(is_bayer_pixel_format(infmt->pixelformat)) {
-        cam_unit_control_force_set_enum (self->bayer_tile_ctl, infmt->pixelformat);
+        int tiling = OPTION_GBRG;
+        switch (infmt->pixelformat) {
+            case CAM_PIXEL_FORMAT_BAYER_GBRG:
+                tiling = OPTION_GBRG;
+                break;
+            case CAM_PIXEL_FORMAT_BAYER_GRBG:
+                tiling = OPTION_GRBG;
+                break;
+            case CAM_PIXEL_FORMAT_BAYER_BGGR:
+                tiling = OPTION_BGGR;
+                break;
+            case CAM_PIXEL_FORMAT_BAYER_RGGB:
+                tiling = OPTION_RGGB;
+                break;
+            default:
+                break;
+        }
+        cam_unit_control_force_set_enum(self->bayer_tile_ctl, tiling);
     } else if(infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY) {
         // nothing?
     } else {
