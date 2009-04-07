@@ -9,7 +9,7 @@ Xs-Vcs-Browser: http://camunits.googlecode.com/svn/debian/trunk
 
 Package: camunits
 Architecture: any
-Depends: libcamunits5, libcamunits5-dev, camunits-utils, libcamunits-gtk5, libcamunits-gtk5-dev, camview, camunits-plugins-dc1394
+Depends: libcamunits6, libcamunits6-dev, camunits-utils, libcamunits-gtk6, libcamunits-gtk6-dev, camview, camunits-plugins-dc1394
 Conflicts: ${ar-conflicts}
 Description: Metapackage for the camunits libraries and binaries
  A collection of software libraries and utilities primarily inteded for
@@ -20,10 +20,10 @@ Description: Metapackage for the camunits libraries and binaries
  package.
  .
 
-Package: libcamunits5
+Package: libcamunits6
 Section: libs
 Architecture: any
-Recommends: camunits-utils, libcamunits-gtk5
+Recommends: camunits-utils, libcamunits-gtk6
 Suggests: camunits-plugins-dc1394
 Depends: ${shlibs:Depends}
 Description: device-independent image acquisition and processing API
@@ -33,11 +33,11 @@ Description: device-independent image acquisition and processing API
  .
  This package contains shared libraries. 
 
-Package: libcamunits5-dev
+Package: libcamunits6-dev
 Section: libdevel
 Architecture: any
 Provides: libcamunits-dev
-Depends: libcamunits5 (= ${binary:Version}), libc6-dev
+Depends: libcamunits6 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcamunits is a library primarily intended for robotics and machine vision
  researchers.  It provides a device-independent API for acquiring, logging, and
@@ -54,7 +54,7 @@ Description: Camunits utility programs
  acquisition and processing API.  It currently provides camlog, a program for 
  logging image streams to disk using the Camunits log format.
 
-Package: libcamunits-gtk5
+Package: libcamunits-gtk6
 Section: libs
 Architecture: any
 Recommends: camview
@@ -66,11 +66,11 @@ Description: GTK+ widgets for libcamunits
  .
  This package contains shared libraries. 
 
-Package: libcamunits-gtk5-dev
+Package: libcamunits-gtk6-dev
 Section: libdevel
 Architecture: any
 Provides: libcamunits-gtk-dev
-Depends: libcamunits-gtk5 (= ${binary:Version}), libcamunits5-dev, libc6-dev
+Depends: libcamunits-gtk6 (= ${binary:Version}), libcamunits6-dev, libc6-dev
 Description: Camunits GTK+ widgets
  libcamunits-gtk is a library containing GTK+ widgets for Camunits classes.  It
  is intended to provide an easy, consistent, and uniform way to include
