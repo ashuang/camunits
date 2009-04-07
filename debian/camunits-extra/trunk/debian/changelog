@@ -1,9 +1,9 @@
-camunits-extra (0.2.0-2) unstable; urgency=low
+camunits-extra (0.2.0-1) unstable; urgency=low
 
   * New upstream release
   * Package framewave plugins
 
- -- Albert Huang <albert@csail.mit.edu>  Fri, 20 Mar 2009 17:43:23 -0400
+ -- Albert Huang <albert@csail.mit.edu>  Tue, 07 Apr 2009 17:53:21 -0400
 
 camunits-extra (0.1.2-1) unstable; urgency=low
 
