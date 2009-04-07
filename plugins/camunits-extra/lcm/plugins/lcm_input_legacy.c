@@ -257,6 +257,7 @@ _try_produce_frame (CamUnit *super)
         cam_unit_add_output_format (super, msg->pixelformat, NULL,
                 msg->width, msg->height, msg->stride);
         cam_unit_stream_init (super, NULL);
+        outfmt = cam_unit_get_output_format(super);
     }
 
     CamFrameBuffer *buf = cam_framebuffer_new (msg->image, msg->size);
