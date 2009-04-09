@@ -197,6 +197,8 @@ cam_unit_manager_finalize (GObject *obj)
     g_hash_table_destroy(priv->running_drivers);
 
     G_OBJECT_CLASS (cam_unit_manager_parent_class)->finalize (obj);
+
+    _singleton = NULL;
 }
 
 static CamUnitManager *

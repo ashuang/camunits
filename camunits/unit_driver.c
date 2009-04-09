@@ -333,8 +333,9 @@ CamUnitDescription *
 cam_unit_driver_find_unit_description (CamUnitDriver *self, const char *id)
 {
     CamUnitDriverPriv * priv = CAM_UNIT_DRIVER_GET_PRIVATE (self);
-    dbg (DBG_DRIVER, "[%s] searching for unit description [%s]\n", 
-            priv->package, id);
+    dbg (DBG_DRIVER, "[%s%s%s] searching for unit description [%s]\n", 
+            priv->package, strlen(priv->package) ? "." : "",
+            priv->name, id);
     GList *uditer;
     for (uditer=priv->udescs; uditer; uditer=uditer->next) {
         CamUnitDescription *udesc = CAM_UNIT_DESCRIPTION (uditer->data);
