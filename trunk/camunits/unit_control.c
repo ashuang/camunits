@@ -353,7 +353,15 @@ cam_unit_control_modify_int (CamUnitControl * self,
 static void
 num_chars_float (float x, int sf, int * width, int * prec)
 {
-    int i = floor (log10 (x) + 1.0);
+    int i = 1;
+    int v = x;
+    if(v > 1) {
+        for(; v>1; v/=10)
+            i++;
+    } else if(v > 0) {
+        for(; v<1; v*=10)
+            i--;
+    }
     int j = i - sf;
     if (i <= 0) {
         *width = -j + 2;
