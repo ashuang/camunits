@@ -37,6 +37,8 @@ Package: libcamunits6-dev
 Section: libdevel
 Architecture: any
 Provides: libcamunits-dev
+Replaces: libcamunits5-dev
+Conflicts: libcamunits5-dev
 Depends: libcamunits6 (= ${binary:Version}), libc6-dev
 Description: device-independent image acquisition and processing API
  libcamunits is a library primarily intended for robotics and machine vision
@@ -70,6 +72,8 @@ Package: libcamunits-gtk6-dev
 Section: libdevel
 Architecture: any
 Provides: libcamunits-gtk-dev
+Replaces: libcamunits-gtk5-dev
+Conflicts: libcamunits-gtk5-dev
 Depends: libcamunits-gtk6 (= ${binary:Version}), libcamunits6-dev, libc6-dev
 Description: Camunits GTK+ widgets
  libcamunits-gtk is a library containing GTK+ widgets for Camunits classes.  It
