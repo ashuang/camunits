@@ -32,6 +32,7 @@ typedef struct _CamlcmInput {
     GThread *lcm_thread;
     GAsyncQueue *source_q;
     int thread_exit_requested;
+    CamFrameBuffer *outbuf;
 
     GMutex *mutex;
     // these members are thread-synchronized by the mutex
@@ -215,6 +216,8 @@ camlcm_input_init (CamlcmInput *self)
     self->lcm_url = strdup("");
     self->lcm_url_ctl = cam_unit_add_control_string (super, "lcm-url", 
             "LCM URL", self->lcm_url, 1);
+    self->outbuf = cam_framebuffer_new_alloc(1);
+    self->received_image = NULL;
 
     // setup a notification pipe
     int fds[2];
@@ -277,6 +280,8 @@ camlcm_input_finalize (GObject *obj)
         camlcm_image_t_destroy(self->received_image);
         self->received_image = NULL;
     }
+    g_object_unref(self->outbuf);
+    self->outbuf = NULL;
 
     if (self->read_fd >= 0) {
         close (self->read_fd);
@@ -325,57 +330,63 @@ camlcm_input_try_produce_frame (CamUnit *super)
     if (1 != read (self->read_fd, &c, 1)) {
         dbgi ("CamlcmInput: expected read, but got (%s) %s:%d\n",
                 strerror (errno), __FILE__, __LINE__);
-        goto fail;
+        g_mutex_unlock (self->mutex);
+        return FALSE;
     }
     assert (self->unhandled_frame);
     if (1 == read (self->read_fd, &c, 1)) {
         err ("%s:%s Unexpected data in read pipe!\n", __FILE__, __FUNCTION__);
     }
 
-    // new buffer is available.
+    // new buffer is available.  populate our internal CamFrameBuffer
 
-    // has the output format changed?
-    if(self->received_image->width != outfmt->width ||
-       self->received_image->height != outfmt->height ||
-       self->received_image->row_stride != outfmt->row_stride ||
-       self->received_image->pixelformat != outfmt->pixelformat) {
-
-        if (cam_unit_is_streaming(super)) {
-            cam_unit_stream_shutdown (super);
-        }
-        cam_unit_remove_all_output_formats(super);
-        cam_unit_add_output_format(super, 
-                self->received_image->pixelformat, NULL,
-                self->received_image->width,
-                self->received_image->height, 
-                self->received_image->row_stride);
-
-        cam_unit_stream_init (super, NULL);
+    // resize buffer if needed
+    if(self->received_image->size > self->outbuf->length) {
+        g_object_unref(self->outbuf);
+        // make it a little bigger than it needs to be.
+        int newbufsize = self->received_image->size * 1.2;
+        self->outbuf = cam_framebuffer_new_alloc(newbufsize);
     }
 
-    CamFrameBuffer *outbuf = cam_framebuffer_new(self->received_image->data,
+    memcpy(self->outbuf->data, self->received_image->data, 
             self->received_image->size);
-    outbuf->timestamp = self->received_image->utime;
-    outbuf->bytesused = self->received_image->size;
+    self->outbuf->timestamp = self->received_image->utime;
+    self->outbuf->bytesused = self->received_image->size;
     for (int i=0; i<self->received_image->nmetadata; i++) {
-        cam_framebuffer_metadata_set (outbuf, 
+        cam_framebuffer_metadata_set (self->outbuf, 
                 self->received_image->metadata[i].key, 
                 self->received_image->metadata[i].value, 
                 self->received_image->metadata[i].n);
     }
 
+    int width = self->received_image->width;
+    int height = self->received_image->height;
+    int row_stride = self->received_image->row_stride;
+    CamPixelFormat pfmt = self->received_image->pixelformat;
+
+    // done with shared buffer
+    g_mutex_unlock (self->mutex);
+
+    // has the output format changed?
+    if(width != outfmt->width ||
+       height != outfmt->height ||
+       row_stride != outfmt->row_stride ||
+       pfmt != outfmt->pixelformat) {
+
+        if (cam_unit_is_streaming(super)) {
+            cam_unit_stream_shutdown (super);
+        }
+        cam_unit_remove_all_output_formats(super);
+        cam_unit_add_output_format(super, pfmt, NULL, width, height, 
+                row_stride);
+
+        cam_unit_stream_init (super, NULL);
+    }
+
     self->unhandled_frame = 0;
 
-    g_mutex_unlock (self->mutex);
-
-    cam_unit_produce_frame (super, outbuf, cam_unit_get_output_format(super));
-    g_object_unref (outbuf);
-
+    cam_unit_produce_frame (super, self->outbuf, cam_unit_get_output_format(super));
     return TRUE;
-
-fail:
-    g_mutex_unlock (self->mutex);
-    return FALSE;
 }
 
 static gboolean 
