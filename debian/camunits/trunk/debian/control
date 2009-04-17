@@ -25,6 +25,8 @@ Section: libs
 Architecture: any
 Recommends: camunits-utils, libcamunits-gtk6
 Suggests: camunits-plugins-dc1394
+Replaces: libcamunits5
+Conflicts: libcamunits5
 Depends: ${shlibs:Depends}
 Description: device-independent image acquisition and processing API
  libcamunits is a library primarily intended for robotics and machine vision
@@ -61,6 +63,8 @@ Section: libs
 Architecture: any
 Recommends: camview
 Depends: ${shlibs:Depends}
+Replaces: libcamunits-gtk6
+Conflicts: libcamunits-gtk6
 Description: GTK+ widgets for libcamunits
  libcamunits-gtk is a library containing GTK+ widgets for Camunits classes.  It
  is intended to provide an easy, consistent, and uniform way to include
