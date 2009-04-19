@@ -523,6 +523,14 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
                 DC1394_CAPTURE_FLAGS_DEFAULT) != DC1394_SUCCESS)
         goto fail;
 
+    unsigned int bandwidth_usage;
+    if(dc1394_video_get_bandwidth_usage(self->cam, &bandwidth_usage) == 
+            DC1394_SUCCESS) {
+        dbg(DBG_INPUT, "Required bandwidth: %d\n", bandwidth_usage);
+    } else {
+        dbg(DBG_INPUT, "Unable to query bandiwdth usage.\n");
+    }
+
     if (dc1394_video_set_transmission (self->cam, DC1394_ON) !=
             DC1394_SUCCESS)
         goto fail;
@@ -603,10 +611,7 @@ dc1394_try_produce_frame (CamUnit * super)
         }
     }
 
-
-    // TODO don't malloc
-    CamFrameBuffer * buf = 
-        cam_framebuffer_new (frame->image, frame->image_bytes);
+    CamFrameBuffer *buf = cam_framebuffer_new(frame->image, frame->image_bytes);
 
     if (frame->frames_behind >= self->num_buffers-2)
         fprintf (stderr, "Warning: video1394 buffer contains %d frames, "
@@ -614,38 +619,8 @@ dc1394_try_produce_frame (CamUnit * super)
                 frame->frames_behind);
     
     buf->bytesused = frame->image_bytes;
+    buf->timestamp = frame->timestamp;
 
-#if 0
-    CamDC1394Private * priv = CAM_DC1394_GET_PRIVATE (self);
-
-    struct raw1394_cycle_timer ct = { 0xffffffff, 0 };
-
-    // XXX gross hack...
-    for (int i=0; i<100 && ct.cycle_timer == 0xffffffff; i++) {
-        ioctl (priv->raw1394_fd, RAW1394_IOC_GET_CYCLE_TIMER, &ct);
-    }
-//    printf ("cyctime: %x\n", ct.cycle_timer);
-
-    if (priv->embedded_timestamp && ct.cycle_timer != 0xffffffff) {
-        uint32_t bus_timestamp = (buf->data[0] << 24) |
-            (buf->data[1] << 16) | (buf->data[2] << 8) |
-            buf->data[3];
-        /* bottom 4 bits of cycle offset will be a frame count */
-        bus_timestamp &= 0xfffffff0;
-
-        uint32_t cycle_usec_now = CYCLE_TIMER_TO_USEC (ct.cycle_timer, 0x7f);
-
-        int usec_diff = cycle_usec_now -
-            CYCLE_TIMER_TO_USEC (bus_timestamp, 0x7f);
-        if (usec_diff < 0)
-            usec_diff += CYCLE_TIMER_MAX_USEC (0x7f);
-
-        buf->timestamp = ct.local_time - usec_diff;
-    }
-    else {
-#endif
-        buf->timestamp = frame->timestamp;
-//    }
     char str[20];
     sprintf (str, "0x%016"PRIx64, self->cam->guid);
     cam_framebuffer_metadata_set (buf, "Source GUID", (uint8_t *) str,
@@ -1005,6 +980,13 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
     const char *ctl_id = cam_unit_control_get_id(ctl);
     if (!strcmp (ctl_id, "packet-size")) {
         g_value_copy (proposed, actual);
+
+        // re-initialize unit 
+        if(cam_unit_is_streaming(super)) {
+            const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
+            cam_unit_stream_shutdown(super);
+            cam_unit_stream_init(super, outfmt);
+        }
         return TRUE;
     }
 
