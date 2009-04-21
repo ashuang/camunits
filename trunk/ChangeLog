@@ -1,3 +1,51 @@
+2009-04-19  ashuang
+
+	* [r406] plugins/dc1394/input_dc1394.c: re-init dc1394 unit when
+	  packet size changes. add some debugging info
+
+2009-04-13  ashuang
+
+	* [r402] camunits/unit_control.c: don't use floor and log10
+	  functions
+
+2009-04-09  ashuang
+
+	* [r401] camunits/unit_driver.c, camunits/unit_manager.c: unit
+	  manager unset singleton on finalize unit driver debugging output
+
+2009-03-26  ashuang
+
+	* [r395] plugins/convert/filter_fast_bayer.c: fix fast_debayer
+	  regression (auto-setting of tiling control based on input)
+
+2009-03-25  ashuang
+
+	* [r394] camunits-gtk/Makefile.am, camunits/Makefile.am,
+	  configure.in: configure.in set AM_CFLAGS instead of CFLAGS
+	* [r392] camunits/unit_format.h: update code docs
+
+2009-03-20  ashuang
+
+	* [r390] camunits-gtk/camunits-gtk.pc.in, camunits/camunits.pc.in:
+	  generated pkg-config files, remove -I include/camunits
+
+2009-03-17  ashuang
+
+	* [r386] bootstrap.sh, docs/plugins/convert-to-rgb8.sgml,
+	  plugins/convert/convert_to_rgb8.c: add UYVY as input for
+	  convert.to_rgb8 add bootstrap.sh convenience scripts
+
+2009-03-11  ashuang
+
+	* [r383] ChangeLog, NEWS, configure.in: release 0.2.0
+	* [r382] plugins/other/input_log.c: log playback hard mode bugfix
+	* [r381] camunits/unit_chain.c: unit_chain: shutdown unit before
+	  disconnecting signal handlers
+	* [r380] camunits/unit.c: fix null reference segv
+	* [r378] camunits/unit_chain.c, camunits/unit_driver.c,
+	  plugins/other/output_logger.c: logger: initialize gthread if not
+	  already initialized unit_chain, unref manager last
+
 2009-03-10  ashuang
 
 	* [r376] plugins/convert/filter_fast_bayer.c: restore old values

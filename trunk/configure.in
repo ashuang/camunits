@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 AC_INIT(camunits/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(camunits, 0.2.0)
+AM_INIT_AUTOMAKE(camunits, 0.2.1)
 AC_CONFIG_MACRO_DIR([m4])
 
 case "$target_os" in
@@ -18,7 +18,7 @@ AC_PROG_CC
 AM_PATH_GLIB_2_0(,,,gthread gobject gmodule)
 AM_PATH_GTK_2_0
 AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
-             [AC_MSG_ERROR([GL not found, but is required by camunits.])])
+             [AC_MSG_ERROR([OpenGL not found, but is required by camunits.])])
 AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, JPEG_LIBS='-ljpeg',
              [AC_MSG_ERROR([libjpeg not found, but is required by camunits.])])
 PKG_PROG_PKG_CONFIG
@@ -67,7 +67,7 @@ dnl  3. If the interface changes consist solely of additions, increment AGE.
 dnl  4. If the interface has removed elements, set AGE to 0.
 dnl ---------------------------------------------------------------------------
 CAMUNITS_AGE=0
-CAMUNITS_REVISION=0
+CAMUNITS_REVISION=1
 CAMUNITS_CURRENT=6
 AC_SUBST(CAMUNITS_AGE)
 AC_SUBST(CAMUNITS_REVISION)
@@ -76,7 +76,7 @@ CAMUNITS_VERSION_INFO=$CAMUNITS_CURRENT:$CAMUNITS_REVISION:$CAMUNITS_AGE
 AC_SUBST(CAMUNITS_VERSION_INFO)
 
 CAMUNITS_GTK_AGE=0
-CAMUNITS_GTK_REVISION=0
+CAMUNITS_GTK_REVISION=1
 CAMUNITS_GTK_CURRENT=6
 AC_SUBST(CAMUNITS_GTK_AGE)
 AC_SUBST(CAMUNITS_GTK_REVISION)

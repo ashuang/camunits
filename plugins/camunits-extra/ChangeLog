@@ -1,5 +1,40 @@
+2009-04-21  ashuang
+
+	* [r407] ipp/plugins/Makefile.am, ipp/plugins/filter_sobel.c: add
+	  ipp sobel filter unit
+
+2009-04-16  ashuang
+
+	* [r404] lcm/plugins/lcm_input.c: LCM input unit fix threading
+	  buffer issue
+
+2009-04-07  ashuang
+
+	* [r398] lcm/plugins/lcm_input_legacy.c: bugfix
+
+2009-03-20  ashuang
+
+	* [r391] bootstrap.sh, configure.in, cvd/Makefile.am,
+	  framewave/plugins/Makefile.am, ipp/plugins/Makefile.am,
+	  klt-stb/Makefile.am, lcm/plugins/Makefile.am, m4, m4/camunits.m4,
+	  m4/lcm.m4, opencv/Makefile.am, progs/Makefile.am,
+	  util/Makefile.am: don't use custom camunits.m4, lcm.m4 files
+	* [r387] configure.in, lcm/lcmtypes/Makefile.am,
+	  lcm/lcmtypes/camlcm_image_sync_t.lcm, po/Makevars: change
+	  residual libcam references to camunits lcm plugin install lcm
+	  type definitions to share/camunits-extra/lcmtypes instead of
+	  share/camunits/lcmtypes debian packaging for camunits-extra
+	  install lcm type definition files
+
+2009-03-17  ashuang
+
+	* [r386] bootstrap.sh, util/convert_to_gray.c: add UYVY as input
+	  for convert.to_rgb8 add bootstrap.sh convenience scripts
+
 2009-03-11  ashuang
 
+	* [r384] ChangeLog, NEWS, m4/camunits.m4, m4/lcm.m4: camunits-extra
+	  release 0.2.0
 	* [r379] configure.in: added configure options
 	  --without-lcm-plugins --without-opencv-plugins
 	  --without-ipp-plugins --without-framewave-plugins
