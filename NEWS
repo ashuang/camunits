@@ -1,3 +1,20 @@
+camunits 0.2.1 - Apr 20, 2009
+=============================
+
+This is a maintenance release.
+
+ libcamunits:
+   - remove math functions
+   - unit manager unset singleton on finalize
+ core plugins:
+   - input.dc1394: re-init dc1394 unit when packet size changes.
+   - convert.fast_debaye: fix regression (auto-setting of tiling control)
+   - convert.to_rgb8: add UYVY as acceptable input
+ camunits-extra:
+   - add ipp.filter-sobel
+ build system:
+	set AM_CFLAGS instead of CFLAGS
+
 camunits 0.2.0 - Mar 11, 2009
 =============================
 
