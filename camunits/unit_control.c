@@ -356,10 +356,10 @@ num_chars_float (float x, int sf, int * width, int * prec)
     int i = 1;
     int v = x;
     if(v > 1) {
-        for(; v>1; v/=10)
+        for(; v>0; v/=10)
             i++;
     } else if(v > 0) {
-        for(; v<1; v*=10)
+        for(; v<0; v*=10)
             i--;
     }
     int j = i - sf;
