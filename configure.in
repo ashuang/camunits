@@ -21,15 +21,29 @@ AC_CHECK_LIB(GL, glBegin, GL_LIBS='-lGL',
              [AC_MSG_ERROR([OpenGL not found, but is required by camunits.])])
 AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, JPEG_LIBS='-ljpeg',
              [AC_MSG_ERROR([libjpeg not found, but is required by camunits.])])
-PKG_PROG_PKG_CONFIG
-PKG_CHECK_MODULES(DC1394, [libdc1394-2 >= 2.0.0],,
-                  [AC_MSG_WARN([libdc1394 not found, firewire camera support will be disabled])])
 
 AC_SUBST(GL_LIBS)
 AC_SUBST(JPEG_LIBS)
 AM_CONDITIONAL(HAVE_GL, test "x$GL_LIBS" != x)
 AM_CONDITIONAL(HAVE_JPEG, test "x$JPEG_LIBS" != x)
-AM_CONDITIONAL(HAVE_DC1394, test "x$DC1394_LIBS" != x)
+
+AC_ARG_WITH(dc1394-plugin,
+            [AS_HELP_STRING([--with-dc1394-plugin],
+             [Compile dc1394 plugin if available])],
+             [], [with_dc1394_plugin=yes])
+if test x$with_dc1394_plugin = xyes; then
+    PKG_PROG_PKG_CONFIG
+    PKG_CHECK_MODULES(DC1394, [libdc1394-2 >= 2.0.0],,
+                      [AC_MSG_WARN([libdc1394 not found, firewire camera support will be disabled])])
+    if test "x$DC1394_LIBS" = x; then
+        DC1394MSG="Disabled (libdc1394 not found)"
+    else
+        DC1394MSG="Enabled"
+    fi
+else
+    DC1394MSG="Disabled"
+fi
+AM_CONDITIONAL(HAVE_DC1394, test x$with_dc1394_plugin = xyes -a "x$DC1394_LIBS" != x)
 
 AM_CONDITIONAL([LINUX], [test x$arch = xlinux])
 
@@ -169,12 +183,6 @@ AC_OUTPUT([
   docs/plugins/Makefile
   docs/plugins/build/Makefile
 ])
-
-if test "x$DC1394_LIBS" = x; then
-    DC1394MSG="Disabled (libdc1394 not found)"
-else
-    DC1394MSG="Enabled"
-fi
 
 if test x$have_intel = xyes; then
     INTELMSG="Enabled"
