@@ -514,6 +514,13 @@ dc1394_stream_init (CamUnit * super, const CamUnitFormat * format)
             self->num_buffers = 25000000 / bytes_per_frame;
             printf ("%d\n", self->num_buffers);
         }
+    } else {
+        // use the highest supported framerate
+        // should make this a proper control...
+        dc1394framerates_t framerates;
+        dc1394_video_get_supported_framerates(self->cam,vidmode,&framerates);
+        dc1394framerate_t framerate=framerates.framerates[framerates.num-1];
+        dc1394_video_set_framerate(self->cam, framerate);
     }
 
 //  FIXME
