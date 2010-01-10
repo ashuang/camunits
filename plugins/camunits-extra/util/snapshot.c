@@ -149,12 +149,9 @@ _take_snapshot (CamutilSnapshot * self)
     CamUnit *super = CAM_UNIT(self);
 
     if(!self->prev_buf) {
+        fprintf(stderr, "Sorry, don't have a frame to save.\n");
         return;
     }
-
-    const char *prefix = cam_unit_control_get_string (self->directory_ctl);
-    char fname[PATH_MAX];
-    memset(fname, 0, sizeof(fname));
 
     const char *suffix = "";
     const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
@@ -173,8 +170,14 @@ _take_snapshot (CamutilSnapshot * self)
             suffix = "jpg";
             break;
         default:
-            break;
+            fprintf(stderr, "ERROR:  Snapshot unit can't handle this image format.\n");
+            fprintf(stderr, "        Supported formats are: Gray8, Bayer8, RGB, JPEG\n");
+            return;
     }
+
+    const char *prefix = cam_unit_control_get_string (self->directory_ctl);
+    char fname[PATH_MAX];
+    memset(fname, 0, sizeof(fname));
 
     int max_tries = 1000000;
     int i;
@@ -206,7 +209,7 @@ _take_snapshot (CamutilSnapshot * self)
     } else if (!strcmp(suffix, "jpg")) {
         int status = fwrite(self->prev_buf->data, self->prev_buf->bytesused, 1, fp);
         if(1 != status) {
-            perror("fwrite");
+            perror("ERROR writing snapshot (fwrite)");
         }
     }
     fclose(fp);
@@ -293,6 +296,7 @@ _copy_framebuffer (CamutilSnapshot *self, const CamFrameBuffer *inbuf)
     self->prev_buf = cam_framebuffer_new_alloc (inbuf->bytesused);
     memcpy (self->prev_buf->data, inbuf->data, inbuf->bytesused);
     cam_framebuffer_copy_metadata (self->prev_buf, inbuf);
+    self->prev_buf->bytesused = inbuf->bytesused;
 }
 
 static void 
@@ -315,7 +319,9 @@ _try_set_control (CamUnit *super, const CamUnitControl *ctl,
     if (ctl == self->directory_ctl) {
         // nothing to do...
     } else if (ctl == self->snap_raw_ctl) {
-        _take_snapshot(self);
+        if(g_value_get_boolean(proposed))
+            _take_snapshot(self);
+        return FALSE;
     } else if (ctl == self->snap_gl_ctl) {
         // TODO
     }
