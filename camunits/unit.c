@@ -754,7 +754,9 @@ cam_unit_set_control_##type (CamUnit *self, const char *id, arg val)\
 {\
     CamUnitControl *ctl = cam_unit_find_control (self, id);\
     if (!ctl) return FALSE;\
-    return cam_unit_control_try_set_##type (ctl, val);\
+    int ret = cam_unit_control_try_set_##type (ctl, val);\
+    if (ret == 0) return TRUE;\
+    else return FALSE;\
 }
 
 DEFINE_SET_CONTROL_FUNC (int, int)
