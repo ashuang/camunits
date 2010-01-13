@@ -1,5 +1,5 @@
-libcam
-======
+Camunits
+========
 
 Image acquisition library for computer vision researchers
 
@@ -8,5 +8,10 @@ To compile, run:
    ./configure
    make
 
-As root:
+Then, as root:
    make install
+
+
+When manually installing on GNU/Linux systems, you may need to run 'ldconfig'
+as root after installation.  This updates the run-time linker.
+   ldconfig
