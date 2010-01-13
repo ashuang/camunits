@@ -12,6 +12,14 @@ make
 make install 
 }}}
 
+== GNU/Linux ==
+
+After installation, you may need to run `ldconfig` as root to refresh the dynamic linker cache.
+
+{{{
+ldconfig
+}}}
+
 == Mac OS X ==
 
 Camunits has been built and run successfully on Mac OS 10.5 (Leopard).  To build, you will need glib and gtk+ installed, which we suggest getting from [http://darwinports.com/ Darwinports].  After installing darwinports, run:
@@ -59,4 +67,4 @@ make
  # Install (requires superuser privileges)
 {{{
 make install
-}}
+}}}
