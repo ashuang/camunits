@@ -5,22 +5,22 @@ Summary: Image acquisition library for machine vision researchers
 
 Group: Development/Libraries
 License: LGPL
-URL: http://code.google.com/p/libcam/
-Source0: http://libcam.googlecode.com/files/%{name}-%{version}.tar.gz
+URL: http://code.google.com/p/camunits/
+Source0: http://camunits.googlecode.com/files/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 Write me
 
 %package devel
-Summary: Headers and libraries for libcam application development
+Summary: Headers and libraries for camunits application development
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: pkgconfig
 
 %description devel
-The libcam-devel package contains the libraries and include files
-that you can use to develop libcam applications.
+The camunits-devel package contains the libraries and include files
+that you can use to develop camunits applications.
 
 %prep
 %setup -q
@@ -52,8 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{_libdir}/lib*.so
 %{_libdir}/pkgconfig/*.pc
-%{_includedir}/libcam
-%{_datadir}/gtk-doc/html/libcam
+%{_includedir}/camunits
+%{_datadir}/gtk-doc/html/camunits
 
 %changelog
 * Mon Nov 12 2007 David Moore <dcm@acm.org> 0.0.1-1
