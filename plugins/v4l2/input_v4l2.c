@@ -764,38 +764,20 @@ add_user_controls (CamV4L2 *self)
 {
     struct v4l2_queryctrl queryctrl;
 
-    uint32_t id;
-    for (id = V4L2_CID_BASE; id < V4L2_CID_LASTP1; id++) {
-        memset (&queryctrl, 0, sizeof (queryctrl));
-        queryctrl.id = id;
-        if (0 == ioctl (self->fd, VIDIOC_QUERYCTRL, &queryctrl)) {
-            if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED)
-                continue;
+    // add all controls?
+    memset(&queryctrl, 0, sizeof(queryctrl));
+    queryctrl.id = V4L2_CTRL_FLAG_NEXT_CTRL;
+    while (0 == ioctl (self->fd, VIDIOC_QUERYCTRL, &queryctrl)) {
+        dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
 
-            dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
-            add_control (self, &queryctrl);
-        } else {
-            if (errno == EINVAL)
-                continue;
-            perror ("VIDIOC_QUERYCTRL");
+        if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED) {
+            queryctrl.id |= V4L2_CTRL_FLAG_NEXT_CTRL;
+            continue;
         }
-    }
 
-    for (id = V4L2_CID_PRIVATE_BASE; id < V4L2_CID_PRIVATE_BASE + 100; id++) {
-        memset (&queryctrl, 0, sizeof (queryctrl));
-        queryctrl.id = id;
-        if (0 == ioctl (self->fd, VIDIOC_QUERYCTRL, &queryctrl)) {
-            if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED)
-                continue;
-
-            dbg (DBG_INPUT, "Private Control %s\n", queryctrl.name);
-            add_control (self, &queryctrl);
-
-        } else {
-            if (errno == EINVAL)
-                break;
-            perror ("VIDIOC_QUERYCTRL");
-        }
+        dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
+        add_control (self, &queryctrl);
+        queryctrl.id |= V4L2_CTRL_FLAG_NEXT_CTRL;
     }
 }
 
