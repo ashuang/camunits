@@ -808,7 +808,6 @@ add_user_controls (CamV4L2 *self)
             continue;
         }
 
-        dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
         add_control (self, &queryctrl);
         queryctrl.id |= V4L2_CTRL_FLAG_NEXT_CTRL;
     }
