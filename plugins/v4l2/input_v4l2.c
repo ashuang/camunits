@@ -36,11 +36,14 @@ typedef struct _CamV4L2 {
     /*< public >*/
 
     /*< private >*/
+    char *dev_path;
     int fd;
     int num_buffers;
     uint8_t ** buffers;
     int buffer_length;
     int buffers_outstanding;
+
+    int use_try_fmt;
 
     CamUnitControl *standard_ctl;
 //    CamUnitControl *stream_ctl;
@@ -216,11 +219,13 @@ cam_v4l2_init (CamV4L2 * self)
 {
     dbg (DBG_INPUT, "v4l2 constructor\n");
 
+    self->dev_path = NULL;
     self->fd = -1;
     self->buffers = NULL;
     self->num_buffers = 0;
     self->buffer_length = 0;
     self->buffers_outstanding = 0;
+    self->use_try_fmt = 1;
 }
 
 static void v4l2_finalize (GObject * obj);
@@ -267,8 +272,19 @@ v4l2_finalize (GObject * obj)
         free (g_object_get_data (G_OBJECT (outfmt), "input_v4l2:v4l2_format"));
     }
     g_list_free(output_formats);
+    if(self->dev_path)
+        g_free(self->dev_path);
 
     G_OBJECT_CLASS (cam_v4l2_parent_class)->finalize (obj);
+}
+
+static int
+open_camera_device(CamV4L2 *self)
+{
+    if(self->fd >= 0)
+        close(self->fd);
+    self->fd = open(self->dev_path, O_RDWR | O_NONBLOCK, 0);
+    return self->fd;
 }
 
 static int
@@ -283,12 +299,23 @@ add_v4l2_format (CamV4L2 * self, uint32_t width, uint32_t height,
     fmt->fmt.pix.field = V4L2_FIELD_ANY;
     fmt->fmt.pix.bytesperline = 0;
 
-    if (ioctl (self->fd, VIDIOC_TRY_FMT, fmt) < 0) {
-        perror ("ioctl");
-        fprintf (stderr, 
-                "Error: VIDIOC_TRY_FMT failed (%s %dx%d)\n",
-                cam_pixel_format_nickname(cam_pixelformat), width, height);
-        return -1;
+    // test out the video format.
+    if (0 && self->use_try_fmt && ioctl (self->fd, VIDIOC_TRY_FMT, fmt) < 0) {
+        if(errno == EINVAL) {
+            perror ("ioctl");
+            fprintf (stderr, 
+                    "Error: VIDIOC_TRY_FMT failed (%s %dx%d)\n",
+                    cam_pixel_format_nickname(cam_pixelformat), width, height);
+            return -1;
+        } else if (errno != EBUSY) {
+            // Sometimes (esp on UVC), VIDIOC_TRY_FMT fails but the video
+            // format is fine.  If we get an error that's not EINVAL or EBUSY,
+            // then stop using VIDIOC_TRY_FMT because it's probably just a 
+            // waste of time.
+            self->use_try_fmt = 0;
+
+            dbg(DBG_INPUT, "disabling use of VIDIOC_TRY_FMT\n");
+        }
     } 
 
     if (fmt->fmt.pix.height*fmt->fmt.pix.bytesperline > 
@@ -426,9 +453,10 @@ CamV4L2 *
 cam_v4l2_new (const char *path)
 {
     CamV4L2 * self = (CamV4L2*) (g_object_new (cam_v4l2_get_type(), NULL));
+    self->dev_path = g_strdup(path);
 
-    self->fd = open (path, O_RDWR | O_NONBLOCK, 0);
-    if (self->fd < 0) goto fail;
+    if(open_camera_device(self) < 0) 
+        goto fail;
 
     struct v4l2_cropcap cropcap;
     memset (&cropcap, 0, sizeof (cropcap));
@@ -453,6 +481,9 @@ cam_v4l2_new (const char *path)
         if (f.pixelformat == 0x32435750) { // 'PWC2'
             cam_pixelformat = CAM_PIXEL_FORMAT_I420;
         }
+
+        // HACK.  This seems to improve stability.
+        open_camera_device(self);
 
         int can_enum_frames = 0;
 #ifdef VIDIOC_ENUM_FRAMESIZES
@@ -502,7 +533,7 @@ cam_v4l2_new (const char *path)
                 curfmt.fmt.pix.width, 
                 curfmt.fmt.pix.height);
         if (ioctl (self->fd, VIDIOC_S_FMT, &curfmt) < 0) {
-            err ("damn\n");
+            err("V4L2:  Unable to set output format!\n");
         }
     }
     add_all_controls (CAM_UNIT (self));
@@ -767,7 +798,9 @@ add_user_controls (CamV4L2 *self)
     // add all controls?
     memset(&queryctrl, 0, sizeof(queryctrl));
     queryctrl.id = V4L2_CTRL_FLAG_NEXT_CTRL;
+    int nctrl = 0;
     while (0 == ioctl (self->fd, VIDIOC_QUERYCTRL, &queryctrl)) {
+        nctrl ++;
         dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
 
         if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED) {
@@ -778,6 +811,45 @@ add_user_controls (CamV4L2 *self)
         dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
         add_control (self, &queryctrl);
         queryctrl.id |= V4L2_CTRL_FLAG_NEXT_CTRL;
+    }
+
+    // if the V4L2 driver does not support the V4L2_CTRL_FLAG_NEXT_CTRL
+    // method of enumerating controls, then try enumerating them 
+    // explicitly here.
+    if(0 == nctrl && errno == EINVAL) {
+        uint32_t id;
+        for (id = V4L2_CID_BASE; id < V4L2_CID_LASTP1; id++) {
+            memset (&queryctrl, 0, sizeof (queryctrl));
+            queryctrl.id = id;
+            if (0 == ioctl (self->fd, VIDIOC_QUERYCTRL, &queryctrl)) {
+                if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED)
+                    continue;
+
+                dbg (DBG_INPUT, "Control %s\n", queryctrl.name);
+                add_control (self, &queryctrl);
+            } else {
+                if (errno == EINVAL)
+                    continue;
+                perror ("VIDIOC_QUERYCTRL");
+            }
+        }
+
+        for (id = V4L2_CID_PRIVATE_BASE; id<V4L2_CID_PRIVATE_BASE + 100; id++) {
+            memset (&queryctrl, 0, sizeof (queryctrl));
+            queryctrl.id = id;
+            if (0 == ioctl (self->fd, VIDIOC_QUERYCTRL, &queryctrl)) {
+                if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED)
+                    continue;
+
+                dbg (DBG_INPUT, "Private Control %s\n", queryctrl.name);
+                add_control (self, &queryctrl);
+
+            } else {
+                if (errno == EINVAL)
+                    break;
+                perror ("VIDIOC_QUERYCTRL");
+            }
+        }
     }
 }
 
