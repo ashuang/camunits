@@ -351,9 +351,16 @@ state_setup (state_t *self)
 
     if (self->xml_fname) {
         char *xml_str = NULL;
-        if (g_file_get_contents (self->xml_fname, &xml_str, NULL, NULL)) {
-            cam_unit_chain_load_from_str (self->chain, xml_str, NULL);
+        GError *err = NULL;
+        g_file_get_contents (self->xml_fname, &xml_str, NULL, &err);
+        if(err) {
+            fprintf(stderr, "\n\nError loading chain from file!\n");
+            fprintf(stderr, "==============================\n");
+            fprintf(stderr, "%s\n", err->message);
+            free(xml_str);
+            return -1;
         }
+        cam_unit_chain_load_from_str (self->chain, xml_str, NULL);
         free (xml_str);
     }
 
@@ -364,9 +371,12 @@ static int
 state_cleanup (state_t *self)
 {
     // halt and destroy chain
-    cam_unit_chain_all_units_stream_shutdown (self->chain);
-    g_object_unref (self->manager);
-    g_object_unref (self->chain);
+    if(self->chain) {
+        cam_unit_chain_all_units_stream_shutdown (self->chain);
+        g_object_unref (self->chain);
+    }
+    if(self->manager)
+        g_object_unref (self->manager);
     free (self->xml_fname);
     return 0;
 }
@@ -434,18 +444,34 @@ int main (int argc, char **argv)
 
     g_thread_init (NULL);
 
-    if (0 != state_setup (self)) return 1;
+    if (0 != state_setup (self)) {
+        state_cleanup(self);
+        return 1;
+    }
 
     if (self->use_gui) {
         camview_gtk_quit_on_interrupt ();
         gtk_main ();
         state_cleanup (self);
     } else {
+        // did everything start up correctly?
+        CamUnit *faulty = cam_unit_chain_all_units_stream_init(self->chain);
+        if (faulty) {
+            int faulty_index = 0;
+            for(GList *uiter = cam_unit_chain_get_units(self->chain);
+                    uiter && uiter->data != faulty; uiter = uiter->next)
+                faulty_index ++;
+
+            fprintf(stderr, "Unit %d [%s] is not streaming, aborting...\n",
+                    faulty_index, cam_unit_get_name (faulty));
+            return -1;
+        }
+
         GMainLoop *mainloop = g_main_loop_new (NULL, FALSE);
         camview_g_quit_on_interrupt (mainloop);
         g_main_loop_run (mainloop);
-        state_cleanup (self);
         g_main_loop_unref (mainloop);
+        state_cleanup (self);
     }
 
     return 0;
