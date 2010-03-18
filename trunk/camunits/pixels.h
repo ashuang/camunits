@@ -39,23 +39,39 @@ typedef enum {
     CAM_PIXEL_FORMAT_NV12=cam_pf_fourcc('N','V','1','2'), /* YUV 4:2:0, 
                                                      Y plane, followed by 
                                                      interleaved U-V plane */
+
     CAM_PIXEL_FORMAT_GRAY=cam_pf_fourcc('G','R','E','Y'),
     CAM_PIXEL_FORMAT_RGB=cam_pf_fourcc('R','G','B','3'),
     CAM_PIXEL_FORMAT_BGR=cam_pf_fourcc('B','G','R','3'),
     CAM_PIXEL_FORMAT_RGBA=cam_pf_fourcc('R','G','B','4'),
     CAM_PIXEL_FORMAT_BGRA=cam_pf_fourcc('B','G','R','4'),
-    CAM_PIXEL_FORMAT_BAYER_BGGR=cam_pf_fourcc('B','A','8','1'),
 
-    /* Others */
+    CAM_PIXEL_FORMAT_BAYER_BGGR=cam_pf_fourcc('B','A','8','1'),
     CAM_PIXEL_FORMAT_BAYER_GBRG=cam_pf_fourcc('X','X','X','2'),
     CAM_PIXEL_FORMAT_BAYER_GRBG=cam_pf_fourcc('X','X','X','3'),
     CAM_PIXEL_FORMAT_BAYER_RGGB=cam_pf_fourcc('X','X','X','4'),
-    CAM_PIXEL_FORMAT_MJPEG=cam_pf_fourcc('M','J','P','G'),
-    CAM_PIXEL_FORMAT_BE_GRAY16=357,         /* 16-bpp luminance/grayscale, big-endian */
+
+    /* Others */
+    CAM_PIXEL_FORMAT_BE_BAYER16_BGGR=cam_pf_fourcc('B','B','A','1'), /* 16-bpp, bayer, big-endian */
+    CAM_PIXEL_FORMAT_BE_BAYER16_GBRG=cam_pf_fourcc('B','B','A','2'),
+    CAM_PIXEL_FORMAT_BE_BAYER16_GRBG=cam_pf_fourcc('B','B','A','3'),
+    CAM_PIXEL_FORMAT_BE_BAYER16_RGGB=cam_pf_fourcc('B','B','A','4'),
+
+    CAM_PIXEL_FORMAT_LE_BAYER16_BGGR=cam_pf_fourcc('L','B','A','1'), /* 16-bpp, bayer, little-endian */
+    CAM_PIXEL_FORMAT_LE_BAYER16_GBRG=cam_pf_fourcc('L','B','A','2'),
+    CAM_PIXEL_FORMAT_LE_BAYER16_GRBG=cam_pf_fourcc('L','B','A','3'),
+    CAM_PIXEL_FORMAT_LE_BAYER16_RGGB=cam_pf_fourcc('L','B','A','4'),
+
     CAM_PIXEL_FORMAT_BE_RGB16=358,          /* 48-bpp rgb (16-bits per channel), big-endian */
+    CAM_PIXEL_FORMAT_LE_RGB16=cam_pf_fourcc('R','G','B','L'), /* 48-bpp rgb (16-bits per channel), little-endian */
+
+    CAM_PIXEL_FORMAT_BE_GRAY16=357,         /* 16-bpp luminance/grayscale, big-endian */
+    CAM_PIXEL_FORMAT_LE_GRAY16=cam_pf_fourcc('L','G','1','6'), /* 16-bit grayscale, little-endian */
+
+    CAM_PIXEL_FORMAT_MJPEG=cam_pf_fourcc('M','J','P','G'),
     CAM_PIXEL_FORMAT_BE_SIGNED_GRAY16=359,
     CAM_PIXEL_FORMAT_BE_SIGNED_RGB16=360,
-    CAM_PIXEL_FORMAT_LE_GRAY16=cam_pf_fourcc('L','G','1','6'), /* 16-bit grayscale, little-endian */
+
     CAM_PIXEL_FORMAT_FLOAT_GRAY32=cam_pf_fourcc('F','G','3','2'), /* 32-bit grayscale IEEE float, native byte order */
 //    CAM_PIXEL_FORMAT_FLOAT_RGB32,
     CAM_PIXEL_FORMAT_INVALID=0xFFFFFFFE,
