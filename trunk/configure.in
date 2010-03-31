@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 AC_INIT(camunits/unit.h)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(camunits, 0.2.1)
+AM_INIT_AUTOMAKE(camunits, 0.3.0)
 AC_CONFIG_MACRO_DIR([m4])
 
 case "$target_os" in
@@ -81,7 +81,7 @@ dnl  3. If the interface changes consist solely of additions, increment AGE.
 dnl  4. If the interface has removed elements, set AGE to 0.
 dnl ---------------------------------------------------------------------------
 CAMUNITS_AGE=0
-CAMUNITS_REVISION=1
+CAMUNITS_REVISION=2
 CAMUNITS_CURRENT=6
 AC_SUBST(CAMUNITS_AGE)
 AC_SUBST(CAMUNITS_REVISION)
@@ -90,7 +90,7 @@ CAMUNITS_VERSION_INFO=$CAMUNITS_CURRENT:$CAMUNITS_REVISION:$CAMUNITS_AGE
 AC_SUBST(CAMUNITS_VERSION_INFO)
 
 CAMUNITS_GTK_AGE=0
-CAMUNITS_GTK_REVISION=1
+CAMUNITS_GTK_REVISION=2
 CAMUNITS_GTK_CURRENT=6
 AC_SUBST(CAMUNITS_GTK_AGE)
 AC_SUBST(CAMUNITS_GTK_REVISION)
