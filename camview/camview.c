@@ -442,7 +442,9 @@ int main (int argc, char **argv)
         g_type_init ();
     }
 
-    g_thread_init (NULL);
+    if (!g_thread_get_initialized()) {
+        g_thread_init (NULL);
+    }
 
     if (0 != state_setup (self)) {
         state_cleanup(self);
