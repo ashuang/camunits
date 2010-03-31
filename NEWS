@@ -1,3 +1,19 @@
+camunits 0.3.0 - Jan 28, 2010
+=============================
+
+This is a maintenance release.
+
+ libcamunits:
+   - fix camunits float control
+   - fix return value bug in cam-unit_control_try_set##type()
+ core plugins:
+   - input.dc1394: set framerate for non format 7 modes
+   - input.v4l2: enable V4L2 extended controls
+ camunits-extra:
+   - bugfixes to snapshot unit
+ build system:
+   - add --without-dc1394-plugin configure option
+
 camunits 0.2.1 - Apr 20, 2009
 =============================
 

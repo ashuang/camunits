@@ -1,3 +1,37 @@
+2010-01-27  ashuang
+
+	* [r419] plugins/v4l2/input_v4l2.c: remove redundant dbg()
+	* [r418] plugins/v4l2/input_v4l2.c: V4L2 tweaks
+	* [r417] plugins/v4l2/input_v4l2.c: try to enumerate v4l2 controls
+	  better.
+
+2010-01-13  ashuang
+
+	* [r415] README, camunits.spec.in: update README
+
+2010-01-11  markus.achtelik
+
+	* [r414] camunits/unit.c: fixed return value bug in
+	  cam_unit_control_try_set_##type()
+
+2009-10-20  ashuang
+
+	* [r412] plugins/dc1394/input_dc1394.c: set framerate for non
+	  format 7 modes
+
+2009-09-02  ashuang
+
+	* [r411] configure.in: add --without-dc1394-plugin configure option
+
+2009-05-25  ashuang
+
+	* [r410] camunits/unit_control.c: camunits float control range
+	  (abachrac)
+
+2009-04-21  ashuang
+
+	* [r408] ChangeLog, NEWS, configure.in: release 0.2.1
+
 2009-04-19  ashuang
 
 	* [r406] plugins/dc1394/input_dc1394.c: re-init dc1394 unit when
