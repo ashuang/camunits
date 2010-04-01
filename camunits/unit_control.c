@@ -37,8 +37,9 @@ struct _CamUnitControlPriv {
     float max_float;
     float min_float;
     float step_float;
-    int display_width;
-    int display_prec;
+//    int display_width;
+//    int display_prec;
+    char * display_fmt;
 
     int ui_hints;
 
@@ -146,6 +147,8 @@ cam_unit_control_finalize (GObject *obj)
         free((char*)(priv->enum_values[i].nickname));
     }
     free(priv->enum_values);
+    if(priv->display_fmt)
+        g_free(priv->display_fmt);
 #if 0
     if (priv->enum_entries) {
         int i;
@@ -187,6 +190,7 @@ cam_unit_control_new_basic (const char *id, const char *name,
     priv->id = strdup (id);
     priv->name = strdup (name);
     priv->enabled = enabled;
+    priv->display_fmt = NULL;
     return self;
 }
 
@@ -328,6 +332,7 @@ cam_unit_control_new_int (const char *id, const char *name,
     priv->min_int = min;
     priv->max_int = max;
     priv->step_int = step;
+    priv->display_fmt = g_strdup("%d");
     g_value_init (&priv->val, G_TYPE_INT);
     g_value_set_int (&priv->val, initial_val);
     g_value_init (&priv->initial_val, G_TYPE_INT);
@@ -377,18 +382,20 @@ num_chars_float (float x, int sf, int * width, int * prec)
     }
 }
 
-int cam_unit_control_get_float_display_width(CamUnitControl *self);
-int cam_unit_control_get_float_display_width(CamUnitControl *self)
+void
+cam_unit_control_set_display_format(CamUnitControl *self, const char *fmt)
 {
     CamUnitControlPriv *priv = CAM_UNIT_CONTROL_GET_PRIVATE(self);
-    return priv->display_width;
+    if(priv->display_fmt)
+        g_free(priv->display_fmt);
+    priv->display_fmt = g_strdup(fmt);
 }
 
-int cam_unit_control_get_float_display_prec(CamUnitControl *self);
-int cam_unit_control_get_float_display_prec(CamUnitControl *self)
+char *
+cam_unit_control_get_display_format(CamUnitControl *self)
 {
     CamUnitControlPriv *priv = CAM_UNIT_CONTROL_GET_PRIVATE(self);
-    return priv->display_prec;
+    return g_strdup(priv->display_fmt);
 }
 
 CamUnitControl * 
@@ -415,8 +422,11 @@ cam_unit_control_new_float (const char *id, const char *name,
     g_value_init (&priv->initial_val, G_TYPE_FLOAT);
     g_value_set_float (&priv->initial_val, initial_val);
 
+    int disp_width;
+    int disp_prec;
     num_chars_float (priv->max_float - priv->min_float, 3,
-            &priv->display_width, &priv->display_prec);
+            &disp_width, &disp_prec);
+    priv->display_fmt = g_strdup_printf("%%%d.%d", disp_width, disp_prec);
     return self;
 }
 
@@ -451,6 +461,7 @@ cam_unit_control_new_boolean (const char *id, const char *name,
     g_value_set_boolean (&priv->val, initial_val);
     g_value_init (&priv->initial_val, G_TYPE_BOOLEAN);
     g_value_set_boolean (&priv->initial_val, initial_val);
+    priv->display_fmt = g_strdup("%d");
     return self;
 }
 
@@ -465,6 +476,7 @@ cam_unit_control_new_string (const char *id, const char *name,
     g_value_set_string (&priv->val, initial_val);
     g_value_init (&priv->initial_val, G_TYPE_STRING);
     g_value_set_string (&priv->initial_val, initial_val);
+    priv->display_fmt = g_strdup("%s");
     return self;
 }
 

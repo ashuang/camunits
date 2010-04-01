@@ -187,6 +187,7 @@ cam_input_example_init (CamInputExample *self)
             10, 100, 2, 50, 1);
     self->int2_ctl = cam_unit_add_control_int (super, "int2", "int 2", 
             0, 255, 1, 127, 1);
+    cam_unit_control_set_display_format(self->int2_ctl, "0x%02X");
 
     self->x = 320 - cam_unit_control_get_int (self->int1_ctl) / 2;
     self->y = 240 - cam_unit_control_get_int (self->int1_ctl) / 2;
