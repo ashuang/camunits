@@ -254,6 +254,25 @@ void cam_unit_control_modify_enum (CamUnitControl * self,
         const CamUnitControlEnumValue *entries);
 
 /**
+ * cam_unit_control_set_display_format:
+ * @fmt_str: a printf-style format string
+ *
+ * Sets the suggested way to format the display value of the control.  Valid
+ * only for int and float controls.  A default is chosen automatically
+ * when the control is created, but can be overriden with this function.
+ */
+void cam_unit_control_set_display_format(CamUnitControl *self, 
+        const char *fmt_str);
+
+/**
+ * cam_unit_control_get_display_format:
+ *
+ * Returns: the suggested way to format the display value of the control.  Free
+ * the returned char* with g_free().
+ */
+char * cam_unit_control_get_display_format(CamUnitControl *self);
+
+/**
  * cam_unit_control_try_set_val:
  * @val: A #GValue encapsulating the new value
  * Returns: 0 on success, -1 on failure

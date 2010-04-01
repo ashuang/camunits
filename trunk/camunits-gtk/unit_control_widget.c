@@ -235,23 +235,22 @@ num_chars (int n)
     return i;
 }
 
-int cam_unit_control_get_float_display_width(CamUnitControl *self);
-int cam_unit_control_get_float_display_prec(CamUnitControl *self);
-
 static void
 set_slider_label(CamUnitControlWidget *self, ControlWidgetInfo *ci)
 {
     if (ci->labelval) {
-        char str[20];
+        char *fmt = cam_unit_control_get_display_format(ci->ctl);
+        char *str = NULL;
         if (!ci->use_int) {
-            sprintf (str, "%*.*f", 
-                    cam_unit_control_get_float_display_width(ci->ctl),
-                    cam_unit_control_get_float_display_prec(ci->ctl),
-                    gtk_range_get_value (GTK_RANGE(ci->widget)));
-        } else
-            sprintf (str, "%*d", ci->maxchars, 
+            str = g_strdup_printf(fmt, 
+                    gtk_range_get_value(GTK_RANGE(ci->widget)));
+        } else {
+            str = g_strdup_printf(fmt, 
                     (int) gtk_range_get_value (GTK_RANGE(ci->widget)));
+        }
         gtk_label_set_text (GTK_LABEL(ci->labelval), str);
+        g_free(str);
+        g_free(fmt);
     }
 }
 
@@ -454,6 +453,30 @@ on_spin_button_changed(GtkSpinButton *spinb, CamUnitControlWidget *self)
     }
 }
 
+// this callback function allows us to override the text formatting for the
+// displayed values in the GtkSpinButton
+static gboolean
+on_spin_button_output(GtkSpinButton *spinb, CamUnitControlWidget *self)
+{
+    char *text = NULL;
+    CamUnitControlWidgetPriv * priv = CAM_UNIT_CONTROL_WIDGET_GET_PRIVATE(self);
+    if(! priv->unit) return FALSE;
+    ControlWidgetInfo *ci = 
+        (ControlWidgetInfo*) g_object_get_data(G_OBJECT(spinb), 
+                "ControlWidgetInfo");
+    CamUnitControl *ctl = ci->ctl;
+    char *fmt = cam_unit_control_get_display_format(ctl);
+    CamUnitControlType ctl_type = cam_unit_control_get_control_type(ci->ctl);
+    if (ctl_type == CAM_UNIT_CONTROL_TYPE_INT) {
+        text = g_strdup_printf(fmt, cam_unit_control_get_int(ctl));
+    } else if (ctl_type == CAM_UNIT_CONTROL_TYPE_FLOAT) {
+        text = g_strdup_printf(fmt, cam_unit_control_get_float(ctl));
+    }
+    gtk_entry_set_text(GTK_ENTRY(spinb), text);
+    g_free(text);
+    return TRUE;
+}
+
 static void
 add_spinbutton (CamUnitControlWidget * self,
         float min, float max, float step, float initial_value,
@@ -503,6 +526,8 @@ add_spinbutton (CamUnitControlWidget * self,
     set_slider_label (self, ci);
     g_signal_connect (G_OBJECT (spinb), "value-changed",
             G_CALLBACK (on_spin_button_changed), self);
+    g_signal_connect (G_OBJECT (spinb), "output",
+            G_CALLBACK (on_spin_button_output), self);
 
     priv->trows++;
 }
