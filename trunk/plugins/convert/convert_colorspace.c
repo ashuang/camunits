@@ -88,6 +88,10 @@ DECL_STANDARD_CONV (uyvy_to_bgra, cam_pixel_convert_8u_uyvy_to_8u_bgra)
 DECL_STANDARD_CONV (uyvy_to_gray, cam_pixel_convert_8u_uyvy_to_8u_gray)
 DECL_STANDARD_CONV (uyvy_to_rgb, cam_pixel_convert_8u_uyvy_to_8u_rgb)
 
+DECL_STANDARD_CONV (iyu1_to_bgra, cam_pixel_convert_8u_iyu1_to_8u_bgra)
+DECL_STANDARD_CONV (iyu1_to_gray, cam_pixel_convert_8u_iyu1_to_8u_gray)
+DECL_STANDARD_CONV (iyu1_to_rgb, cam_pixel_convert_8u_iyu1_to_8u_rgb)
+
 DECL_STANDARD_CONV (bgra_to_rgb, cam_pixel_convert_8u_bgra_to_8u_rgb)
 DECL_STANDARD_CONV (bgra_to_bgr, cam_pixel_convert_8u_bgra_to_8u_bgr)
 DECL_STANDARD_CONV (bgr_to_rgb, cam_pixel_convert_8u_bgr_to_8u_rgb)
@@ -145,6 +149,10 @@ cam_color_conversion_filter_init( CamColorConversionFilter *self )
     add_conv (self, CAM_PIXEL_FORMAT_UYVY, CAM_PIXEL_FORMAT_BGRA, uyvy_to_bgra);
     add_conv (self, CAM_PIXEL_FORMAT_UYVY, CAM_PIXEL_FORMAT_GRAY, uyvy_to_gray);
     add_conv (self, CAM_PIXEL_FORMAT_UYVY, CAM_PIXEL_FORMAT_RGB, uyvy_to_rgb);
+
+    add_conv (self, CAM_PIXEL_FORMAT_IYU1, CAM_PIXEL_FORMAT_BGRA, iyu1_to_bgra);
+    add_conv (self, CAM_PIXEL_FORMAT_IYU1, CAM_PIXEL_FORMAT_GRAY, iyu1_to_gray);
+    add_conv (self, CAM_PIXEL_FORMAT_IYU1, CAM_PIXEL_FORMAT_RGB, iyu1_to_rgb);
 
     add_conv (self, CAM_PIXEL_FORMAT_BGRA, CAM_PIXEL_FORMAT_RGB, bgra_to_rgb);
     add_conv (self, CAM_PIXEL_FORMAT_BGRA, CAM_PIXEL_FORMAT_BGR, bgra_to_bgr);
