@@ -796,6 +796,133 @@ cam_pixel_convert_8u_yuyv_to_8u_rgb(uint8_t *dest, int dstride, int dwidth,
     return 0;
 }
 
+cam_pixel_convert_8u_iyu1_to_8u_gray (uint8_t *dest, int dstride, int dwidth,
+        int dheight, const uint8_t *src, int sstride)
+{
+    int i, j, k;
+    for (i=0; i<dheight; i++) {
+        uint8_t *drow = dest + i*dstride;
+        const uint8_t *srow = src + i*sstride;
+        for (j=0, k=0; j<dwidth; j++, k++) {
+            if ((k%3) == 0) k++;
+            drow[j] = srow[k];
+        }
+    }
+    return 0;
+}
+
+int 
+cam_pixel_convert_8u_iyu1_to_8u_rgb(uint8_t *dest, int dstride, int dwidth,
+        int dheight, const uint8_t *src, int sstride)
+{
+    int i, j;
+
+    for (i = 0; i < dheight; i++) {
+        uint8_t * drow = dest + i * dstride;
+        const uint8_t * srow = src + i * sstride;
+        for (j = 0; j < dwidth / 4; j++) {
+            uint8_t u  = srow[6*j+0];
+            uint8_t y1 = srow[6*j+1];
+            uint8_t y2 = srow[6*j+2];
+            uint8_t v  = srow[6*j+3];
+            uint8_t y3 = srow[6*j+4];
+            uint8_t y4 = srow[6*j+5];
+
+            int cb = ((u-128) * 454)>>8;
+            int cr = ((v-128) * 359)>>8;
+            int cg = ((v-128) * 183 + (u-128) * 88)>>8;
+            int r, g, b;
+
+            r = y1 + cr;
+            b = y1 + cb;
+            g = y1 - cg;
+            drow[12*j+0]  = MAX(0, MIN(255,r));
+            drow[12*j+1]  = MAX(0, MIN(255,g));
+            drow[12*j+2]  = MAX(0, MIN(255,b));
+
+            r = y2 + cr;
+            b = y2 + cb;
+            g = y2 - cg;
+            drow[12*j+3]  = MAX(0, MIN(255,r));
+            drow[12*j+4]  = MAX(0, MIN(255,g));
+            drow[12*j+5]  = MAX(0, MIN(255,b));
+
+            r = y3 + cr;
+            b = y3 + cb;
+            g = y3 - cg;
+            drow[12*j+6]  = MAX(0, MIN(255,r));
+            drow[12*j+7]  = MAX(0, MIN(255,g));
+            drow[12*j+8]  = MAX(0, MIN(255,b));
+
+            r = y4 + cr;
+            b = y4 + cb;
+            g = y4 - cg;
+            drow[12*j+9]  = MAX(0, MIN(255,r));
+            drow[12*j+10] = MAX(0, MIN(255,g));
+            drow[12*j+11] = MAX(0, MIN(255,b));
+        }
+    }
+    return 0;
+}
+
+int 
+cam_pixel_convert_8u_iyu1_to_8u_bgra(uint8_t *dest, int dstride, int dwidth,
+        int dheight, const uint8_t *src, int sstride)
+{
+    int i, j;
+
+    for (i = 0; i < dheight; i++) {
+        uint8_t * drow = dest + i * dstride;
+        const uint8_t * srow = src + i * sstride;
+        for (j = 0; j < dwidth / 4; j++) {
+            uint8_t u  = srow[6*j+0];
+            uint8_t y1 = srow[6*j+1];
+            uint8_t y2 = srow[6*j+2];
+            uint8_t v  = srow[6*j+3];
+            uint8_t y3 = srow[6*j+4];
+            uint8_t y4 = srow[6*j+5];
+
+            int cb = ((u-128) * 454)>>8;
+            int cr = ((v-128) * 359)>>8;
+            int cg = ((v-128) * 183 + (u-128) * 88)>>8;
+            int r, g, b;
+
+            r = y1 + cr;
+            b = y1 + cb;
+            g = y1 - cg;
+            drow[16*j+0]  = MAX(0, MIN(255,b));
+            drow[16*j+1]  = MAX(0, MIN(255,g));
+            drow[16*j+2]  = MAX(0, MIN(255,r));
+            drow[16*j+3]  = 0;
+
+            r = y2 + cr;
+            b = y2 + cb;
+            g = y2 - cg;
+            drow[16*j+4]  = MAX(0, MIN(255,b));
+            drow[16*j+5]  = MAX(0, MIN(255,g));
+            drow[16*j+6]  = MAX(0, MIN(255,r));
+            drow[16*j+7]  = 0;
+
+            r = y3 + cr;
+            b = y3 + cb;
+            g = y3 - cg;
+            drow[16*j+8]  = MAX(0, MIN(255,b));
+            drow[16*j+9]  = MAX(0, MIN(255,g));
+            drow[16*j+10] = MAX(0, MIN(255,r));
+            drow[16*j+11] = 0;
+
+            r = y4 + cr;
+            b = y4 + cb;
+            g = y4 - cg;
+            drow[16*j+12] = MAX(0, MIN(255,b));
+            drow[16*j+13] = MAX(0, MIN(255,g));
+            drow[16*j+14] = MAX(0, MIN(255,r));
+            drow[16*j+15] = 0;
+        }
+    }
+    return 0;
+}
+
 int
 cam_pixel_replicate_border_8u (uint8_t * src, int sstride, int width, int height)
 {
