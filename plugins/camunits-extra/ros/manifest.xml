@@ -1,0 +1,15 @@
+<package>
+  <description brief="camunits_ros_output">
+
+     camunits_ros_output
+
+  </description>
+  <author>abachrac</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/camunits_ros_output</url>
+  <depend package="image_transport"/>
+  <depend package="camera_info_manager"/>
+</package>
+
+
