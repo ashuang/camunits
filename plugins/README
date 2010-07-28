@@ -1,11 +1,11 @@
-This directory contains libcam plugins that are not part of the main libcam
-distribution, but are hosted in the libcam svn repository for the convenience
-of the libcam developers.
+This directory contains Camunits plugins that are not part of the main Camunits
+distribution, but are hosted in the Camunits svn repository for the convenience
+of the Camunits developers.
 
 Plugins hosted in this directory:
-  - may not be as well supported or documented as those in the main libcam
+  - may not be as well supported or documented as those in the main Camunits
     distribution.  
-  - may be distributed under a different license than the main libcam 
+  - may be distributed under a different license than the main Camunits 
     distribution.
   - may (probably will) have external third party dependencies.
   - may have intellectual property restrictions.
