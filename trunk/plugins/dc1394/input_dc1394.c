@@ -990,7 +990,6 @@ dc1394_try_set_control(CamUnit *super, const CamUnitControl *ctl,
 
         // re-initialize unit 
         if(cam_unit_is_streaming(super)) {
-            CamUnitControl * ctl = cam_unit_find_control(super, "packet-size");
             cam_unit_control_force_set_val(ctl, proposed);
             const CamUnitFormat *outfmt = cam_unit_get_output_format(super);
             cam_unit_stream_shutdown(super);
