@@ -1,5 +1,10 @@
+2010-01-10  ashuang
+
+	* [r413] util/snapshot.c: bugfixes to snapshot unit
+
 2009-04-21  ashuang
 
+	* [r408] ChangeLog, NEWS, configure.in: release 0.2.1
 	* [r407] ipp/plugins/Makefile.am, ipp/plugins/filter_sobel.c: add
 	  ipp sobel filter unit
 
