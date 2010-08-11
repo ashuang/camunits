@@ -68,6 +68,19 @@ typedef int (*cc_func_t)(CamColorConversionFilter *self,
             outfmt->width, outfmt->height, inbuf->data, infmt->row_stride); \
     }
 
+#define DECL_STANDARD_CONV_DEFAULT_STRIDE(name, conversion_func, stride_multiplier) \
+    static inline int name (CamColorConversionFilter *self, \
+        const CamUnitFormat *infmt, const CamFrameBuffer *inbuf, \
+        const CamUnitFormat *outfmt, CamFrameBuffer *outbuf) \
+    { \
+        if(0 == infmt->row_stride) \
+            return conversion_func (outbuf->data, outfmt->row_stride, \
+                outfmt->width, outfmt->height, inbuf->data, infmt->width * stride_multiplier); \
+        else \
+            return conversion_func (outbuf->data, outfmt->row_stride, \
+                outfmt->width, outfmt->height, inbuf->data, infmt->row_stride); \
+    }
+
 DECL_STANDARD_CONV (gray_to_rgb, cam_pixel_convert_8u_gray_to_8u_RGB)
 DECL_STANDARD_CONV (gray_to_rgba, cam_pixel_convert_8u_gray_to_8u_RGBA)
 DECL_STANDARD_CONV (rgb_to_gray, cam_pixel_convert_8u_rgb_to_8u_gray)
@@ -80,13 +93,13 @@ DECL_STANDARD_CONV (yuv420p_to_bgr, cam_pixel_convert_8u_yuv420p_to_8u_bgr)
 DECL_STANDARD_CONV (yuv420p_to_bgra, cam_pixel_convert_8u_yuv420p_to_8u_bgra)
 DECL_STANDARD_CONV (yuv420p_to_gray, cam_pixel_convert_8u_yuv420p_to_8u_gray)
 
-DECL_STANDARD_CONV (yuyv_to_bgra, cam_pixel_convert_8u_yuyv_to_8u_bgra)
-DECL_STANDARD_CONV (yuyv_to_gray, cam_pixel_convert_8u_yuyv_to_8u_gray)
-DECL_STANDARD_CONV (yuyv_to_rgb, cam_pixel_convert_8u_yuyv_to_8u_rgb)
+DECL_STANDARD_CONV_DEFAULT_STRIDE (yuyv_to_bgra, cam_pixel_convert_8u_yuyv_to_8u_bgra, 2)
+DECL_STANDARD_CONV_DEFAULT_STRIDE (yuyv_to_gray, cam_pixel_convert_8u_yuyv_to_8u_gray, 2)
+DECL_STANDARD_CONV_DEFAULT_STRIDE (yuyv_to_rgb, cam_pixel_convert_8u_yuyv_to_8u_rgb, 2)
 
-DECL_STANDARD_CONV (uyvy_to_bgra, cam_pixel_convert_8u_uyvy_to_8u_bgra)
-DECL_STANDARD_CONV (uyvy_to_gray, cam_pixel_convert_8u_uyvy_to_8u_gray)
-DECL_STANDARD_CONV (uyvy_to_rgb, cam_pixel_convert_8u_uyvy_to_8u_rgb)
+DECL_STANDARD_CONV_DEFAULT_STRIDE (uyvy_to_bgra, cam_pixel_convert_8u_uyvy_to_8u_bgra, 2)
+DECL_STANDARD_CONV_DEFAULT_STRIDE (uyvy_to_gray, cam_pixel_convert_8u_uyvy_to_8u_gray, 2)
+DECL_STANDARD_CONV_DEFAULT_STRIDE (uyvy_to_rgb, cam_pixel_convert_8u_uyvy_to_8u_rgb, 2)
 
 DECL_STANDARD_CONV (iyu1_to_bgra, cam_pixel_convert_8u_iyu1_to_8u_bgra)
 DECL_STANDARD_CONV (iyu1_to_gray, cam_pixel_convert_8u_iyu1_to_8u_gray)
