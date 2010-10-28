@@ -15,6 +15,13 @@
 
 #define err(args...) fprintf(stderr, args)
 
+static int
+cam_gl_texture_upload_now (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
+        const void * data);
+
+static void
+cam_gl_texture_upload_check(CamGLTexture *t);
+
 struct _CamGLTexture {
     int width, height;
     GLenum target;
@@ -28,19 +35,24 @@ struct _CamGLTexture {
     GLuint pbo;
     int use_pbo;
     int buf_size;
+
+    CamPixelFormat buf_pixelformat;
+    int buf_stride;
+    void * upload_buffer;
+    int buf_uploaded;
 };
     
 CamGLTexture *
 cam_gl_texture_new (int width, int height, int buf_size)
 {
-    CamGLTexture * t;
-
-    t = malloc (sizeof (CamGLTexture));
-    memset (t, 0, sizeof (CamGLTexture));
+    CamGLTexture * t = calloc(1, sizeof(CamGLTexture));
 
     int has_non_power_of_two = 0;
     int has_texture_rectangle = 0;
     int has_pbo = 0;
+
+    t->upload_buffer = malloc(buf_size);
+    t->buf_uploaded = 1;
 
     const char * extstr = (const char *) glGetString (GL_EXTENSIONS);
     if (extstr) {
@@ -112,12 +124,14 @@ cam_gl_texture_free (CamGLTexture * t)
     if (t->pbo) {
         glDeleteBuffersARB (1, &t->pbo);
     }
+    free(t->upload_buffer);
     free (t);
 }
 
 void
 cam_gl_texture_draw_alpha (CamGLTexture * t, double alpha)
 {
+    cam_gl_texture_upload_check(t);
     glPushAttrib (GL_ENABLE_BIT);
     glEnable (t->target);
     glEnable (GL_BLEND);
@@ -141,6 +155,7 @@ cam_gl_texture_draw_alpha (CamGLTexture * t, double alpha)
 void
 cam_gl_texture_draw (CamGLTexture * t)
 {
+    cam_gl_texture_upload_check(t);
     glEnable (t->target);
     glBindTexture (t->target, t->texname);
     glBegin (GL_QUADS);
@@ -161,6 +176,7 @@ cam_gl_texture_draw (CamGLTexture * t)
 void
 cam_gl_texture_draw_partial (CamGLTexture * t, double x, double y, double w, double h)
 {
+    cam_gl_texture_upload_check(t);
     glEnable (t->target);
     glBindTexture (t->target, t->texname);
     glBegin (GL_QUADS);
@@ -181,31 +197,28 @@ cam_gl_texture_draw_partial (CamGLTexture * t, double x, double y, double w, dou
     glDisable (t->target);
 }
 
-#if 0
-void
-gl_util_draw_frame_at (GLUtil * gu, double x, double y, 
-        double width, double height)
-{
-    glEnable (gu->target);
-    glBindTexture (gu->target, gu->texname);
-    glBegin (GL_QUADS);
-    glColor3f (1.0, 1.0, 1.0);
-    glTexCoord2i (0,0);
-    glVertex2f (x, y);
-    glTexCoord2i (0,gu->tex_height);
-    glVertex2f (x, y + height);
-    glTexCoord2i (gu->tex_width,gu->tex_height);
-    glVertex2f (x + width, y + height);
-    glTexCoord2i (gu->tex_width,0);
-    glVertex2f (x + width, y);
-    glEnd ();
-    glBindTexture (gu->target, 0);
-    glDisable (gu->target);
-}
-#endif
-
 int
 cam_gl_texture_upload (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
+        const void * data)
+{
+    t->buf_pixelformat = pixelformat;
+    t->buf_stride = stride;
+    memcpy(t->upload_buffer, data, t->buf_size);
+    t->buf_uploaded = 0;
+    return 0;
+}
+
+static void
+cam_gl_texture_upload_check(CamGLTexture *t)
+{
+    if (!t->buf_uploaded) {
+        cam_gl_texture_upload_now(t, t->buf_pixelformat, t->buf_stride, t->upload_buffer);
+        t->buf_uploaded = 1;
+    }
+}
+
+static int
+cam_gl_texture_upload_now (CamGLTexture * t, CamPixelFormat pixelformat, int stride,
         const void * data)
 {
     if (t->use_pbo && (stride * t->height) > t->buf_size) {
@@ -321,18 +334,3 @@ cam_gl_texture_set_interp (CamGLTexture * t, GLint nearest_or_linear)
 {
     t->interp_mode = nearest_or_linear;
 }
-
-#if 0
-void
-gl_util_new_sub_frame (GLUtil * gu, void * data, GLenum format, GLenum type,
-        int row_length,
-        int x, int y, int w, int h)
-{
-    glBindTexture (gu->target, gu->texname);
-    glPixelStorei (GL_UNPACK_ROW_LENGTH, row_length);
-    glTexSubImage2D (gu->target, 0, x, y, w, h, format, type, data);
-    glPixelStorei (GL_UNPACK_ROW_LENGTH, 0);
-    glBindTexture (gu->target, 0);
-}
-
-#endif
