@@ -41,6 +41,8 @@ int cam_unit_chain_gl_widget_set_chain (CamUnitChainGLWidget* self,
 
 void cam_unit_chain_gl_widget_request_redraw (CamUnitChainGLWidget *self);
 
+void cam_unit_chain_gl_widget_set_context (CamUnitChainGLWidget *self);
+
 GtkWidget * cam_unit_chain_gl_widget_get_gl_area (CamUnitChainGLWidget * self);
 
 G_END_DECLS
