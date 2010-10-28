@@ -56,7 +56,7 @@ static void on_show_after (CamUnitChainGLWidget *self, CamUnitChain *chain);
 static void
 cam_unit_chain_gl_widget_init (CamUnitChainGLWidget *self)
 {
-    dbg (DBG_GUI, "unit control widget constructor\n");
+    dbg (DBG_GUI, "unit chain gl widget constructor\n");
     CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
     
     priv->chain = NULL;
