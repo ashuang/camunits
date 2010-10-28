@@ -419,6 +419,13 @@ cam_unit_chain_gl_widget_request_redraw (CamUnitChainGLWidget *self)
     cam_gl_drawing_area_invalidate (CAM_GL_DRAWING_AREA (priv->gl_area));
 }
 
+void
+cam_unit_chain_gl_widget_set_context(CamUnitChainGLWidget* self)
+{
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    cam_gl_drawing_area_set_context (CAM_GL_DRAWING_AREA (priv->gl_area));
+}
+
 GtkWidget *
 cam_unit_chain_gl_widget_get_gl_area (CamUnitChainGLWidget * self)
 {
