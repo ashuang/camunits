@@ -177,6 +177,13 @@ on_show_after (CamUnitChainGLWidget *self, CamUnitChain *chain)
     }
 }
 
+CamUnitChain *
+cam_unit_chain_gl_widget_get_chain (CamUnitChainGLWidget *self)
+{
+    CamUnitChainGLWidgetPriv * priv = CAM_UNIT_CHAIN_GL_WIDGET_GET_PRIVATE(self);
+    return priv->chain;
+}
+
 int
 cam_unit_chain_gl_widget_set_chain (CamUnitChainGLWidget *self, 
         CamUnitChain *chain)
