@@ -39,6 +39,8 @@ CamUnitChainGLWidget *cam_unit_chain_gl_widget_new (CamUnitChain *chain);
 int cam_unit_chain_gl_widget_set_chain (CamUnitChainGLWidget* self, 
         CamUnitChain *chain);
 
+CamUnitChain * cam_unit_chain_gl_widget_get_chain (CamUnitChainGLWidget* self);
+
 void cam_unit_chain_gl_widget_request_redraw (CamUnitChainGLWidget *self);
 
 void cam_unit_chain_gl_widget_set_context (CamUnitChainGLWidget *self);
