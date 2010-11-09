@@ -710,11 +710,12 @@ cam_unit_chain_snapshot (const CamUnitChain *self)
             GEnumClass *pf_class = 
                 G_ENUM_CLASS (g_type_class_ref (CAM_TYPE_PIXEL_FORMAT));
 
+            GEnumValue *pf_ev = g_enum_get_value(pf_class, fmt->pixelformat);
             char *fmt_name_escaped = g_strescape(fmt->name, NULL);
             g_string_append_printf (result, 
                     " width=\"%d\" height=\"%d\" pixelformat=\"%s\" format_name=\"%s\"", 
                     fmt->width, fmt->height, 
-                    g_enum_get_value(pf_class, fmt->pixelformat)->value_name,
+                    (pf_ev)?pf_ev->value_name:"UNRECOGNIZED",
                     fmt_name_escaped);
 
             g_type_class_unref (pf_class);
