@@ -1,4 +1,4 @@
-INCLUDES = $(GLIB_CFLAGS) $(FRAMEWAVE_CFLAGS)
+INCLUDES = $(GLIB_CFLAGS) $(Camunits_CFLAGS) $(FRAMEWAVE_CFLAGS)
 
 camunitsplugin_LTLIBRARIES = framewave_jpeg_compress.la \
 						   framewave_jpeg_decompress.la

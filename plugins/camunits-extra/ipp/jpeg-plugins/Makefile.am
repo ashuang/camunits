@@ -1,4 +1,4 @@
-INCLUDES = $(GLIB_CFLAGS) $(IPP_CFLAGS)
+INCLUDES = $(GLIB_CFLAGS) $(Camunits_CFLAGS) $(IPP_CFLAGS)
 
 camunitsplugin_LTLIBRARIES = ipp_jpeg_compress.la \
 						   ipp_jpeg_decompress.la

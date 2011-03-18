@@ -108,10 +108,10 @@ dnl ---------------------------------------------------------------------------
 dnl Warnings
 dnl ---------------------------------------------------------------------------
 if test "x$GCC" = "xyes"; then
-    CFLAGS="$CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
-    LDFLAGS="$LDFLAGS -g -Wall"
-    AC_SUBST(CFLAGS)
-    AC_SUBST(LDFLAGS)
+    AM_CFLAGS="$AM_CFLAGS -g -Wall -std=gnu99 -Wmissing-declarations -Wmissing-prototypes -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+    AM_LDFLAGS="$AM_LDFLAGS -g -Wall"
+    AC_SUBST(AM_CFLAGS)
+    AC_SUBST(AM_LDFLAGS)
 fi
 
 AC_OUTPUT([
