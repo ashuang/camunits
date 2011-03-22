@@ -33,12 +33,12 @@ libcamunits_la_SOURCES += cpuid.c
 
 noinst_LTLIBRARIES = libcamunits_sse2.la libcamunits_sse3.la
 
-libcamunits_sse2_la_CFLAGS = -msse2
+libcamunits_sse2_la_CFLAGS = -msse2 -g
 libcamunits_sse2_la_SOURCES = \
 	pixels_sse2.c \
 	pixels_sse2.h
 
-libcamunits_sse3_la_CFLAGS = -msse3
+libcamunits_sse3_la_CFLAGS = -msse3 -g
 libcamunits_sse3_la_SOURCES = \
 	pixels_sse3.c \
 	pixels_sse3.h
