@@ -31,6 +31,14 @@ static int cpuid_detected = 0;
 static int has_sse2;
 static int has_sse3;
 
+int cam_pixel_check_sse2(){
+    if (!cpuid_detected) {
+        cpuid_detect (&has_sse2, &has_sse3);
+        cpuid_detected = 1;
+    }
+    return has_sse2;
+}
+
 GType
 cam_pixel_format_get_type (void)
 {
@@ -963,10 +971,11 @@ int
 cam_pixel_split_bayer_planes_8u (uint8_t *dst[4], int dstride,
         const uint8_t * src, int sstride, int width, int height)
 {
-    if (!cpuid_detected) {
-        cpuid_detect (&has_sse2, &has_sse3);
-        cpuid_detected = 1;
-    }
+  if (!cpuid_detected) {
+      fprintf(stderr,"Error in cam_pixel_split_bayer_planes_8u"
+          "must call cam_pixel_check_sse2 first\n");
+      return -1;
+  }
 
 #ifdef HAVE_INTEL
     if (has_sse2)
@@ -984,10 +993,11 @@ cam_pixel_bayer_interpolate_to_8u_bgra (uint8_t ** src, int sstride,
         uint8_t * dst, int dstride, int width, int height,
         CamPixelFormat format)
 {
-    if (!cpuid_detected) {
-        cpuid_detect (&has_sse2, &has_sse3);
-        cpuid_detected = 1;
-    }
+  if (!cpuid_detected) {
+      fprintf(stderr,"Error in cam_pixel_bayer_interpolate_to_8u_bgra"
+          "must call cam_pixel_check_sse2 first\n");
+      return -1;
+  }
     
 #ifdef HAVE_INTEL
     if (has_sse3)
@@ -1008,10 +1018,11 @@ cam_pixel_bayer_interpolate_to_8u_gray (uint8_t * src, int sstride,
         uint8_t * dst, int dstride, int width, int height,
         CamPixelFormat format)
 {
-    if (!cpuid_detected) {
-        cpuid_detect (&has_sse2, &has_sse3);
-        cpuid_detected = 1;
-    }
+  if (!cpuid_detected) {
+      fprintf(stderr,"Error in cam_pixel_bayer_interpolate_to_8u_gray"
+          "must call cam_pixel_check_sse2 first\n");
+      return -1;
+  }
 
 #ifdef HAVE_INTEL
     if (has_sse3)
