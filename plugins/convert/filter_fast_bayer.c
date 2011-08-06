@@ -201,6 +201,11 @@ cam_fast_bayer_filter_stream_shutdown (CamUnit * super)
 CamFastBayerFilter * 
 cam_fast_bayer_filter_new()
 {
+    int have_sse2 = cam_pixel_check_sse2();
+    if (!have_sse2){
+      err("Error: The fast-debayer pluger requires at least SSE2\n");
+      return NULL;
+    }
     return (CamFastBayerFilter*)
             g_object_new(cam_fast_bayer_filter_get_type(), NULL);
 }

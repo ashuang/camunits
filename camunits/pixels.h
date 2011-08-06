@@ -467,6 +467,16 @@ int cam_pixel_copy_8u_generic (const uint8_t *src, int sstride,
         int width, int height,
         int bits_per_pixel);
 
+
+/**
+ * cam_pixel_check_sse2:
+ *
+ * Check whether the CPU supports sse2
+ * This has to be called before the debayer funtions
+ *
+ */
+int cam_pixel_check_sse2();
+
 #ifdef __cplusplus
 }
 #endif
