@@ -134,7 +134,7 @@ function(pods_install_pkg_config_file)
         "Description: ${pc_description}\n"
         "Requires: ${pc_requires}\n"
         "Version: ${pc_version}\n"
-        "Libs: -L\${exec_prefix}/lib ${pc_libs}\n"
+        "Libs: -L\${libdir} ${pc_libs}\n"
         "Cflags: -I\${includedir} ${pc_cflags}\n")
 
     # mark the .pc file for installation to the lib/pkgconfig directory
