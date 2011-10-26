@@ -23,6 +23,8 @@ typedef struct {
     CamUnitControl *canny_pruning_ctl;
     CamUnitControl *min_window_width_ctl;
     CamUnitControl *min_window_height_ctl;
+    CamUnitControl *max_window_width_ctl;
+    CamUnitControl *max_window_height_ctl;
 } CamcvHCC;
 
 typedef struct {
@@ -95,6 +97,12 @@ camcv_hcc_init (CamcvHCC *self)
     self->min_window_height_ctl = cam_unit_add_control_int(super, "min-window-height",
             "Min Window Height", 0, 1000, 1, 0, 1);
     cam_unit_control_set_ui_hints(self->min_window_height_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
+    self->max_window_width_ctl = cam_unit_add_control_int(super, "max-window-width",
+            "Max Window Width", 0, 1000, 1, 1000, 1);
+    cam_unit_control_set_ui_hints(self->max_window_width_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
+    self->max_window_height_ctl = cam_unit_add_control_int(super, "max-window-height",
+            "Max Window Height", 0, 1000, 1, 1000, 1);
+    cam_unit_control_set_ui_hints(self->max_window_height_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
 
     g_signal_connect (G_OBJECT (self), "input-format-changed",
             G_CALLBACK (on_input_format_changed), self);
@@ -173,10 +181,14 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
         cam_unit_control_get_int(self->min_window_width_ctl), 
         cam_unit_control_get_int(self->min_window_height_ctl)
     };
+    CvSize max_window_size = {
+        cam_unit_control_get_int(self->max_window_width_ctl),
+        cam_unit_control_get_int(self->max_window_height_ctl)
+    };
 
     if(self->cascade) {
         self->objects = cvHaarDetectObjects(cvimg, self->cascade, self->storage,
-                scale_factor, min_neighbors, flags, min_window_size);
+                scale_factor, min_neighbors, flags, min_window_size, max_window_size);
     }
 
     cam_unit_produce_frame (super, inbuf, infmt);
