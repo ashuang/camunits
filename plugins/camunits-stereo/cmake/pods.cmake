@@ -26,7 +26,7 @@
 #
 # ----
 # File: pods.cmake
-# Distributed with pods version: 11.03.11
+# Distributed with pods version: 11.11.01
 
 # pods_install_headers(<header1.h> ... DESTINATION <subdir_name>)
 # 
@@ -140,18 +140,6 @@ function(pods_install_pkg_config_file)
     # mark the .pc file for installation to the lib/pkgconfig directory
     install(FILES ${pc_fname} DESTINATION lib/pkgconfig)
     
-    # find targets that this pkg-config file depends on
-    if (pc_libs)
-        string(REPLACE " " ";" split_lib ${pc_libs})
-        foreach(lib ${split_lib})
-            string(REGEX REPLACE "^-l" "" libname ${lib})
-            get_target_property(IS_TARGET ${libname} LOCATION)
-            if (NOT IS_TARGET STREQUAL "IS_TARGET-NOTFOUND")
-                set_property(GLOBAL APPEND PROPERTY "PODS_PKG_CONFIG_TARGETS-${pc_name}" ${libname})
-            endif() 
-        endforeach()
-    endif()
-    
 endfunction(pods_install_pkg_config_file)
 
 
@@ -161,7 +149,8 @@ endfunction(pods_install_pkg_config_file)
 # specified module.
 #
 # A script will be installed to bin/<script_name>.  The script simply
-# adds <install-prefix>/lib/pythonX.Y/site-packages to the python path, and
+# adds <install-prefix>/lib/pythonX.Y/dist-packages and 
+# <install-prefix>/lib/pythonX.Y/site-packages to the python path, and
 # then invokes `python -m <python_module>`.
 #
 # example:
@@ -176,11 +165,13 @@ function(pods_install_python_script script_name py_module)
 
     # where do we install .py files to?
     set(python_install_dir 
+        ${CMAKE_INSTALL_PREFIX}/lib/python${pyversion}/dist-packages)
+    set(python_old_install_dir 
         ${CMAKE_INSTALL_PREFIX}/lib/python${pyversion}/site-packages)
 
     # write the script file
     file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${script_name} "#!/bin/sh\n"
-        "export PYTHONPATH=${python_install_dir}:\${PYTHONPATH}\n"
+        "export PYTHONPATH=${python_install_dir}:${python_old_install_dir}:\${PYTHONPATH}\n"
         "exec ${PYTHON_EXECUTABLE} -m ${py_module} $*\n")
 
     # install it...
@@ -189,7 +180,7 @@ endfunction()
 
 # pods_install_python_packages(<src_dir>)
 #
-# Install python packages to lib/pythonX.Y/site-packages, where X.Y refers to
+# Install python packages to lib/pythonX.Y/dist-packages, where X.Y refers to
 # the current python version (e.g., 2.6)
 #
 # Recursively searches <src_dir> for .py files, byte-compiles them, and
@@ -204,7 +195,7 @@ function(pods_install_python_packages py_src_dir)
 
     # where do we install .py files to?
     set(python_install_dir 
-        ${CMAKE_INSTALL_PREFIX}/lib/python${pyversion}/site-packages)
+        ${CMAKE_INSTALL_PREFIX}/lib/python${pyversion}/dist-packages)
 
     if(ARGC GREATER 1)
         message(FATAL_ERROR "NYI")
@@ -212,21 +203,12 @@ function(pods_install_python_packages py_src_dir)
         # get a list of all .py files
         file(GLOB_RECURSE py_files RELATIVE ${py_src_dir} ${py_src_dir}/*.py)
 
-        # add rules for byte-compiling .py --> .pyc
+        #install all the .py files
         foreach(py_file ${py_files})
             get_filename_component(py_dirname ${py_file} PATH)
-            add_custom_command(OUTPUT "${py_src_dir}/${py_file}c" 
-                COMMAND ${PYTHON_EXECUTABLE} -m py_compile ${py_src_dir}/${py_file} 
-                DEPENDS ${py_src_dir}/${py_file})
-            list(APPEND pyc_files "${py_src_dir}/${py_file}c")
-
-            # install python file and byte-compiled file
-            install(FILES ${py_src_dir}/${py_file} ${py_src_dir}/${py_file}c
+            install(FILES ${py_src_dir}/${py_file}
                 DESTINATION "${python_install_dir}/${py_dirname}")
-#            message("${py_src_dir}/${py_file} -> ${python_install_dir}/${py_dirname}")
         endforeach()
-        string(REGEX REPLACE "[^a-zA-Z0-9]" "_" san_src_dir "${py_src_dir}")
-        add_custom_target("pyc_${san_src_dir}" ALL DEPENDS ${pyc_files})
     endif()
 endfunction()
 
@@ -265,19 +247,21 @@ macro(pods_use_pkg_config_packages target)
     #    message("ldflags: ${_pods_pkg_ldflags}")
     include_directories(${_pods_pkg_include_flags})
     target_link_libraries(${target} ${_pods_pkg_ldflags})
-   
-    # make the target depend on libraries being installed by this source build
-    foreach(_pkg ${ARGN})
-        get_property(_has_dependencies GLOBAL PROPERTY "PODS_PKG_CONFIG_TARGETS-${_pkg}" SET)
-        if(_has_dependencies)
-            get_property(_dependencies GLOBAL PROPERTY "PODS_PKG_CONFIG_TARGETS-${_pkg}")
-            add_dependencies(${target} ${_dependencies})
-            #            message("Found dependencies for ${_pkg}: ${dependencies}")
-        endif()
-        unset(_has_dependencies)
-        unset(_dependencies)
-    endforeach()
+    
+    # make the target depend on libraries that are cmake targets
+    if (_pods_pkg_ldflags)
+        string(REPLACE " " ";" _split_ldflags ${_pods_pkg_ldflags})
+        foreach(lib ${_split_ldflags})
+                string(REGEX REPLACE "^-l" "" libname ${lib})
+                get_target_property(IS_TARGET ${libname} LOCATION)
+                if (NOT IS_TARGET STREQUAL "IS_TARGET-NOTFOUND")
+                    #message("---- ${target} depends on  ${libname}")
+                    add_dependencies(${target} ${libname})
+                endif() 
+        endforeach()
+    endif()
 
+    unset(_split_ldflags)
     unset(_pods_pkg_include_flags)
     unset(_pods_pkg_ldflags)
 endmacro()
