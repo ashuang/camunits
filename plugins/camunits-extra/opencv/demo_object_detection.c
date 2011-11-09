@@ -183,7 +183,7 @@ on_input_frame_ready (CamUnit *super, const CamFrameBuffer *inbuf,
     };
 
     if(self->cascade) {
-#if (CV_MAJOR_VERSION > 2 && CV_MINOR_VERESION > 1)
+#if (CV_MAJOR_VERSION > 2 && CV_MINOR_VERSION > 1)
         CvSize max_window_size = {
             cam_unit_control_get_int(self->max_window_width_ctl),
             cam_unit_control_get_int(self->max_window_height_ctl)
