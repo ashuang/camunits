@@ -18,6 +18,7 @@ struct _CamcvUndistort {
     CamUnitControl *flen_y_ctl;
     CamUnitControl *k_1_ctl;
     CamUnitControl *k_2_ctl;
+    CamUnitControl *k_3_ctl;
     CamUnitControl *p_1_ctl;
     CamUnitControl *p_2_ctl;
 
@@ -101,6 +102,7 @@ camcv_undistort_init(CamcvUndistort *self)
 
     self->k_1_ctl = cam_unit_add_control_float(super, "k_1", "K 1", -FLT_MAX, FLT_MAX, 0.01, 0, 1);
     self->k_2_ctl = cam_unit_add_control_float(super, "k_2", "K 2", -FLT_MAX, FLT_MAX, 0.01, 0, 1);
+    self->k_3_ctl = cam_unit_add_control_float(super, "k_3", "K 3", -FLT_MAX, FLT_MAX, 0.01, 0, 1);
     self->p_1_ctl = cam_unit_add_control_float(super, "p_1", "P 1", -FLT_MAX, FLT_MAX, 0.01, 0, 1);
     self->p_2_ctl = cam_unit_add_control_float(super, "p_2", "P 2", -FLT_MAX, FLT_MAX, 0.01, 0, 1);
 
@@ -110,6 +112,7 @@ camcv_undistort_init(CamcvUndistort *self)
     cam_unit_control_set_ui_hints(self->flen_y_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
     cam_unit_control_set_ui_hints(self->k_1_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
     cam_unit_control_set_ui_hints(self->k_2_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
+    cam_unit_control_set_ui_hints(self->k_3_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
     cam_unit_control_set_ui_hints(self->p_1_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
     cam_unit_control_set_ui_hints(self->p_2_ctl, CAM_UNIT_CONTROL_SPINBUTTON);
 
@@ -168,14 +171,20 @@ on_input_frame_ready(CamUnit *super, const CamFrameBuffer *inbuf,
 
     // TODO don't malloc
     CvSize img_size = { infmt->width, infmt->height };
-    IplImage *src_cv = cvCreateImage(img_size, IPL_DEPTH_8U, 1);
+    IplImage *src_cv;
+    if(infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY)
+        src_cv = cvCreateImage(img_size, IPL_DEPTH_8U, 1);
+    
+    if(infmt->pixelformat == CAM_PIXEL_FORMAT_RGB)
+        src_cv = cvCreateImage(img_size, IPL_DEPTH_8U, 3);
+
+    //this function might need to change
     for(int r=0; r<infmt->height; r++) {
         memcpy(src_cv->imageData + r * src_cv->widthStep, 
-                inbuf->data + r * infmt->row_stride,
-                infmt->width);
+               inbuf->data + r * infmt->row_stride,
+               src_cv->widthStep);
     }
 
-    // go!
     cvRemap(src_cv, self->dst_cv, self->mapx, self->mapy,
             CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
 //    cvUndistort2(src_cv, self->dst_cv, &intrinsic_matrix, &distortion_matrix);
@@ -193,14 +202,20 @@ on_input_format_changed(CamUnit *super, const CamUnitFormat *infmt)
     CamcvUndistort *self = (CamcvUndistort*)(super);
     cam_unit_remove_all_output_formats(CAM_UNIT(self));
     if(!infmt) return;
-    if(infmt->pixelformat != CAM_PIXEL_FORMAT_GRAY) return;
+    if(infmt->pixelformat != CAM_PIXEL_FORMAT_GRAY && infmt->pixelformat != CAM_PIXEL_FORMAT_RGB) return;
 
     if(self->dst_cv) {
         cvReleaseImage(&self->dst_cv);
         g_object_unref(self->outbuf);
     }
+
     CvSize img_size = { infmt->width, infmt->height };
-    self->dst_cv = cvCreateImage(img_size, IPL_DEPTH_8U, 1);
+    if(infmt->pixelformat == CAM_PIXEL_FORMAT_GRAY)
+        self->dst_cv = cvCreateImage(img_size, IPL_DEPTH_8U, 1);
+    
+    if(infmt->pixelformat == CAM_PIXEL_FORMAT_RGB)
+        self->dst_cv = cvCreateImage(img_size, IPL_DEPTH_8U, 3);
+
     uint8_t * dst_data = NULL;
     int out_stride;
     cvGetRawData(self->dst_cv, &dst_data, &out_stride, NULL);
@@ -233,8 +248,9 @@ _update_mapping(CamcvUndistort * self)
     float p2 = cam_unit_control_get_float(self->p_2_ctl);
     float k1 = cam_unit_control_get_float(self->k_1_ctl);
     float k2 = cam_unit_control_get_float(self->k_2_ctl);
-    float distortion_coeffs_data[] = { k1, k2, p1, p2 };
-    CvMat distortion_matrix = cvMat(4, 1, CV_32FC1, distortion_coeffs_data);
+    float k3 = cam_unit_control_get_float(self->k_3_ctl);
+    float distortion_coeffs_data[] = { k1, k2, p1, p2, k3 };
+    CvMat distortion_matrix = cvMat(5, 1, CV_32FC1, distortion_coeffs_data);
 
     cvInitUndistortMap(&intrinsic_matrix, &distortion_matrix,
             self->mapx, self->mapy);
