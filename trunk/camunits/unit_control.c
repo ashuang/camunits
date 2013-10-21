@@ -402,7 +402,7 @@ CamUnitControl *
 cam_unit_control_new_float (const char *id, const char *name, 
         float min, float max, float step, float initial_val, int enabled)
 {
-    dbg (DBG_CONTROL, "[%s] - <%f, %f> step %f initial %f enabled %d\n",
+    dbg (DBG_CONTROL, "[%s] - <%e, %e> step %f initial %f enabled %d\n",
             name, min, max, step, initial_val, enabled);
 #if 0
     if (min >= max || initial_val < min || initial_val > max || step == 0) {
@@ -426,7 +426,9 @@ cam_unit_control_new_float (const char *id, const char *name,
     int disp_prec;
     num_chars_float (priv->max_float - priv->min_float, 3,
             &disp_width, &disp_prec);
-    priv->display_fmt = g_strdup_printf("%%%d.%d", disp_width, disp_prec);
+    if (disp_prec < 2)
+        disp_prec = 2;
+    priv->display_fmt = g_strdup_printf("%%0%d.%df", disp_width, disp_prec);
     return self;
 }
 
