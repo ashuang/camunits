@@ -373,8 +373,6 @@ add_control (CamV4L2 *self, struct v4l2_queryctrl *queryctrl)
         case V4L2_CID_GAIN: sprintf (ctl_id, "gain"); break;
         case V4L2_CID_HFLIP: sprintf (ctl_id, "h-flip"); break;
         case V4L2_CID_VFLIP: sprintf (ctl_id, "v-flip"); break;
-        case V4L2_CID_HCENTER: sprintf (ctl_id, "h-center"); break;
-        case V4L2_CID_VCENTER: sprintf (ctl_id, "v-center"); break;
         default:
            snprintf (ctl_id, sizeof (ctl_id), "control-%d", queryctrl->id);
            break;
