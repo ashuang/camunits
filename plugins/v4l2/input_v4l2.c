@@ -469,6 +469,7 @@ cam_v4l2_new (const char *path)
     f.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     int oldfindex = f.index;
 
+    dbg(DBG_INPUT, "Enumerating formats\n");
     while (ioctl (self->fd, VIDIOC_ENUM_FMT, &f) == 0) {
         /* With some Logitech Quickcams the only way we know there are no more
          * formats is that the index gets modified under us. */
@@ -500,6 +501,25 @@ cam_v4l2_new (const char *path)
             } else {
                 width = framesize.discrete.width;
                 height = framesize.discrete.height;
+            }
+
+            dbg(DBG_INPUT, "framesize: %dx%d\n", width, height);
+
+            struct v4l2_frmivalenum intervalenum;
+            memset(&intervalenum, 0, sizeof(intervalenum));
+            intervalenum.index = 0;
+            intervalenum.pixel_format = f.pixelformat;
+            intervalenum.width = width;
+            intervalenum.height = height;
+            while (0 == ioctl(self->fd, VIDIOC_ENUM_FRAMEINTERVALS, &intervalenum)) {
+              if (intervalenum.type == V4L2_FRMIVAL_TYPE_DISCRETE) {
+                dbg(DBG_INPUT, "discrete %d : %d / %d\n", intervalenum.index,
+                    intervalenum.discrete.numerator,
+                    intervalenum.discrete.denominator);
+                ++intervalenum.index;
+              } else {
+
+              }
             }
 
             add_v4l2_format (self, width, height, cam_pixelformat, 
@@ -643,6 +663,17 @@ v4l2_stream_init (CamUnit * super, const CamUnitFormat * format)
         }
     }
 #endif
+
+    struct v4l2_streamparm sparm;
+    memset(&sparm, 0, sizeof(sparm));
+    sparm.type = reqbuf.type;
+    sparm.parm.capture.capability = V4L2_CAP_TIMEPERFRAME;
+    sparm.parm.capture.capturemode = 0;
+    sparm.parm.capture.timeperframe.numerator = 1;
+    sparm.parm.capture.timeperframe.denominator = 15;
+    if (0 != ioctl(self->fd, VIDIOC_S_PARM, &sparm)) {
+      dbg(DBG_INPUT, "Failed to set capture time per frame\n");
+    }
 
     dbg (DBG_INPUT, "v4l2 mapped %d buffers of size %d\n", 
             self->num_buffers, self->buffer_length);
